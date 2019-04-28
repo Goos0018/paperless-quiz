@@ -56,29 +56,13 @@ public class MainActivity extends AppCompatActivity {
             // When clicked, show a toast with the TextView text
             Toast.makeText(MainActivity.this,adapter.getItem(position).getTitle(),
                     Toast.LENGTH_SHORT).show();
-            //Load Quiz from adapter.getItem(position).getSpreadsheetDocId()
+            //Start an activity to allow the user to log in to this quiz
+            //Load Quiz details from adapter.getItem(position).getSpreadsheetDocId()
         }
     });
 
     getItems(new QuizParser(), adapter);
-    /*
-    QuizAdapter adapter = new QuizAdapter(this, list);
-    //ArrayAdapter<Quiz> adapter = new ArrayAdapter<Quiz>(this, android.R.layout.simple_list_item_1,list);
 
-
-    lv_QuizList.setAdapter(adapter);
-    lv_QuizList.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
-                // When clicked, show a toast with the TextView text
-                Toast.makeText(MainActivity.this,list.get(position).getTitle(),
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
-
-
-*/
     }
 
     public void getItems(JsonParser<Quiz> parser, ArrayAdapter<Quiz> arrayAdapter) {

@@ -32,7 +32,6 @@ import java.util.HashMap;
 
 /*
 This class/screen is the first screen of the app. It allows users to select a quiz from a list of available quiz'es.
-lkjfhdkjlz
  */
 
 public class MainActivity extends AppCompatActivity {

@@ -32,6 +32,7 @@ import java.util.HashMap;
 
 /*
 This class/screen is the first screen of the app. It allows users to select a quiz from a list of available quiz'es.
+lkjfhdkjlz
  */
 
 public class MainActivity extends AppCompatActivity {
@@ -48,10 +49,10 @@ public class MainActivity extends AppCompatActivity {
     lv_QuizList = (ListView) findViewById(R.id.lvQuizList);
     list = new ArrayList<Quiz>();
 
-    Quiz quiz1 = new Quiz("Q001", "TTC meerdaal Quiz 7", "7de TTC Meerdaal Quis in zaal de Kring, Kessel-Lo",
+    Quiz quiz1 = new Quiz("Q001", "TTC meerdaal Quiz 7", "7de TTC Meerdaal Quiz in zaal de Kring, Kessel-Lo",
                 "1LR6F-VJCNPFAhgibNspJJBRCDW_mlCz_PFkepSZYxx8",true);
 
-    Quiz quiz2 = new Quiz("Q001", "Test quiz", "Gebruik deze quis om te controleren dat de app behoorlijk werkt voor jou",
+    Quiz quiz2 = new Quiz("Q001", "Test quiz", "Gebruik deze quiz om te controleren dat de app behoorlijk werkt voor jou",
                 "1LR6F-VJCNPFAhgibNspJJBRCDW_mlCz_PFkepSZYxx8",true);
     list.add(quiz1);
     list.add(quiz2);

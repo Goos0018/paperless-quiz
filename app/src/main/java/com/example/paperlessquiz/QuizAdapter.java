@@ -10,16 +10,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class QuizAdapter extends ArrayAdapter<Quiz>
 {
     private final Context context;
-    private final ArrayList<Quiz> values;
 
-    public QuizAdapter(Context context, ArrayList<Quiz> list) {
-        super(context, R.layout.row_layout, list);
+    public QuizAdapter(Context context) {
+        super(context, R.layout.row_layout, new ArrayList<Quiz>());
         this.context = context;
-        this.values = list;
     }
 
     @NonNull
@@ -33,10 +32,10 @@ public class QuizAdapter extends ArrayAdapter<Quiz>
         TextView tvDescription = (TextView) rowView.findViewById(R.id.tv_description);
         ImageView ivleft = (ImageView) rowView.findViewById(R.id.iv_left);
 
-        tvTitle.setText(values.get(position).getTitle());
-        tvDescription.setText(values.get(position).getDescription());
+        tvTitle.setText(getItem(position).getTitle());
+        tvDescription.setText(this.getItem(position).getDescription());
 
-        if (values.get(position).isavailable())
+        if (getItem(position).isavailable())
         {
             ivleft.setImageResource(R.mipmap.placeholder);
         }

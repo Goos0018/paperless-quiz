@@ -36,8 +36,8 @@ This class/screen is the first screen of the app. It allows users to select a qu
 
 public class MainActivity extends AppCompatActivity {
     ListView lv_QuizList;
-    ArrayList<Quiz> list;
     ProgressDialog loading;
+    QuizAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -46,16 +46,21 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
     lv_QuizList = (ListView) findViewById(R.id.lvQuizList);
-    list = new ArrayList<Quiz>();
+    adapter = new QuizAdapter(this);
 
-    Quiz quiz1 = new Quiz("Q001", "TTC meerdaal Quiz 7", "7de TTC Meerdaal Quiz in zaal de Kring, Kessel-Lo",
-                "1LR6F-VJCNPFAhgibNspJJBRCDW_mlCz_PFkepSZYxx8",true);
+    lv_QuizList.setAdapter(adapter);
+    lv_QuizList.setOnItemClickListener(new AdapterView.OnItemClickListener()
+    {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
+            // When clicked, show a toast with the TextView text
+            Toast.makeText(MainActivity.this,adapter.getItem(position).getTitle(),
+                    Toast.LENGTH_SHORT).show();
+        }
+    });
 
-    Quiz quiz2 = new Quiz("Q001", "Test quiz", "Gebruik deze quiz om te controleren dat de app behoorlijk werkt voor jou",
-                "1LR6F-VJCNPFAhgibNspJJBRCDW_mlCz_PFkepSZYxx8",true);
-    list.add(quiz1);
-    list.add(quiz2);
-    getItems(list);
+    getItems(new QuizParser(), adapter);
+    /*
     QuizAdapter adapter = new QuizAdapter(this, list);
     //ArrayAdapter<Quiz> adapter = new ArrayAdapter<Quiz>(this, android.R.layout.simple_list_item_1,list);
 
@@ -72,10 +77,10 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
+*/
     }
 
-    public void getItems(ArrayList<Quiz> list) {
+    public void getItems(JsonParser<Quiz> parser, ArrayAdapter<Quiz> arrayAdapter) {
 
         loading =  ProgressDialog.show(this,"Loading","please wait",false,true);
 
@@ -83,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        parseItems(response,list);
+                        parseItems(response, parser, arrayAdapter);
                     }
                 },
 
@@ -91,13 +96,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error)
                     {
-                        Quiz quiz1 = new Quiz("Q001", "TTC meerdaal Quiz 7", "7de TTC Meerdaal Quis in zaal de Kring, Kessel-Lo",
-                                "1LR6F-VJCNPFAhgibNspJJBRCDW_mlCz_PFkepSZYxx8",true);
-
-                        Quiz quiz2 = new Quiz("Q001", "Test quiz", "Gebruik deze quis om te controleren dat de app behoorlijk werkt voor jou",
-                                "1LR6F-VJCNPFAhgibNspJJBRCDW_mlCz_PFkepSZYxx8",true);
-                        list.add(quiz1);
-
+                        // TOOD: log error
                     }
                 }
         );
@@ -113,19 +112,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void parseItems(String jsonResponse, ArrayList<Quiz> list) {
+    private void parseItems(String jsonResponse, JsonParser<Quiz> parser, ArrayAdapter<Quiz> arrayAdapter) {
 
-        //ArrayList<HashMap<String, String>> list = new ArrayList<>();
-
-        Quiz quiz1 = new Quiz("Q001", "TTC meerdaal Quiz 7", "7de TTC Meerdaal Quis in zaal de Kring, Kessel-Lo",
-                "1LR6F-VJCNPFAhgibNspJJBRCDW_mlCz_PFkepSZYxx8",true);
-
-        //Quiz quiz2 = new Quiz("Q001", "Test quiz", "Gebruik deze quis om te controleren dat de app behoorlijk werkt voor jou",
-         //       "1LR6F-VJCNPFAhgibNspJJBRCDW_mlCz_PFkepSZYxx8",true);
-        list.add(quiz1);
-
-
-/*
+        ArrayList<Quiz> list = new ArrayList<Quiz>();
         try {
             JSONObject jobj = new JSONObject(jsonResponse);
             JSONArray jarray = jobj.getJSONArray("items");
@@ -135,27 +124,16 @@ public class MainActivity extends AppCompatActivity {
 
                 JSONObject jo = jarray.getJSONObject(i);
 
-
-                Quiz quiz = new Quiz(jo.getString("QuizID"), jo.getString("QuizName"), jo.getString("QuizDescription"), jo.getString("QuizSheet"),true );
-
+                Quiz quiz = parser.parse(jo);
                 list.add(quiz);
-
-
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-/*
-        adapter = new SimpleAdapter(this,list,R.layout.list_item_row,
-                new String[]{"itemName","brand","price"},new int[]{R.id.tv_item_name,R.id.tv_brand,R.id.tv_price});
+        arrayAdapter.addAll(list);
+        //ArrayAdapter<Quiz> adapter = new ArrayAdapter<Quiz>(this, android.R.layout.simple_list_item_1,list);
 
-
-        listView.setAdapter(adapter);
-        */
         loading.dismiss();
     }
-
-
-
 }

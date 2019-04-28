@@ -8,13 +8,16 @@ public class Quiz
     private String description;
     private String spreadsheetDocId;
     private boolean isavailable;
+    private int nrOfRounds;
+    private Round[] rounds;
 
-    public Quiz(String id, String title, String description, String spreadsheetDocId, boolean status) {
+    public Quiz(String id, String title, String description, String spreadsheetDocId, boolean status, int nrOfRounds) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.spreadsheetDocId = spreadsheetDocId;
         this.isavailable = status;
+        this.rounds = new Round[nrOfRounds];
     }
 
     public String getId() {

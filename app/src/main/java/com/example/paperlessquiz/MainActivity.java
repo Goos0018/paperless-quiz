@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
             // When clicked, show a toast with the TextView text
             Toast.makeText(MainActivity.this,adapter.getItem(position).getTitle(),
                     Toast.LENGTH_SHORT).show();
+            //Load Quiz from adapter.getItem(position).getSpreadsheetDocId()
         }
     });
 

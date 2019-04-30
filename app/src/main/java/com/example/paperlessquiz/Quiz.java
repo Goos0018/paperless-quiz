@@ -10,6 +10,11 @@ public class Quiz
     private boolean isavailable;
     private int nrOfRounds;
     private Round[] rounds;
+    private int nrOfParticipants;
+    private Team[] participants;
+    private Organizer Presenter;
+    private Organizer Juror;
+    private Organizer Corrector;
 
     public Quiz(String id, String title, String description, String spreadsheetDocId, boolean status, int nrOfRounds) {
         this.id = id;

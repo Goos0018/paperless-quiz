@@ -7,6 +7,6 @@ public class QuizParser extends JsonParser<Quiz> {
 
     @Override
     protected Quiz parse(JSONObject jo) throws JSONException {
-        return new Quiz(jo.getString("QuizID"), jo.getString("QuizName"), jo.getString("QuizDescription"), jo.getString("QuizSheet"),true );
+        return new Quiz(jo.getString("QuizID"), jo.getString("QuizName"), jo.getString("QuizDescription"), jo.getString("QuizSheet"),true ,10);
     }
 }

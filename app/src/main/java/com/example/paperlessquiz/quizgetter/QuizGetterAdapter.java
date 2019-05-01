@@ -1,4 +1,4 @@
-package com.example.paperlessquiz.quiz;
+package com.example.paperlessquiz.quizgetter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -13,12 +13,12 @@ import com.example.paperlessquiz.R;
 
 import java.util.ArrayList;
 
-public class QuizAdapter extends ArrayAdapter<Quiz>
+public class QuizGetterAdapter extends ArrayAdapter<QuizGetter>
 {
     private final Context context;
 
-    public QuizAdapter(Context context) {
-        super(context, R.layout.row_layout, new ArrayList<Quiz>());
+    public QuizGetterAdapter(Context context) {
+        super(context, R.layout.row_layout, new ArrayList<QuizGetter>());
         this.context = context;
     }
 
@@ -35,17 +35,7 @@ public class QuizAdapter extends ArrayAdapter<Quiz>
 
         tvTitle.setText(getItem(position).getTitle());
         tvDescription.setText(this.getItem(position).getDescription());
-
-        if (getItem(position).isavailable())
-        {
-            ivleft.setImageResource(R.mipmap.placeholder);
-        }
-        else
-        {
-            ivleft.setImageResource(R.mipmap.placeholder);
-        }
-
-
+        ivleft.setImageResource(R.mipmap.placeholder);
         return rowView;
     }
 }

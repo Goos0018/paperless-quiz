@@ -9,10 +9,10 @@ import android.widget.Toast;
 
 import com.example.paperlessquiz.google.adapter.GoogleAccess;
 import com.example.paperlessquiz.google.adapter.LoadingListenerImpl;
-import com.example.paperlessquiz.quiz.AddQuizToAdapterListParsedListener;
-import com.example.paperlessquiz.quiz.Quiz;
-import com.example.paperlessquiz.quiz.QuizAdapter;
-import com.example.paperlessquiz.quiz.QuizParser;
+import com.example.paperlessquiz.quizgetter.AddQuizGetterToAdapterListParsedListener;
+import com.example.paperlessquiz.quizgetter.QuizGetter;
+import com.example.paperlessquiz.quizgetter.QuizGetterAdapter;
+import com.example.paperlessquiz.quizgetter.QuizGetterParser;
 
 /*
 This class/screen is the first screen of the app. It allows users to select a quiz from a list of available quiz'es.
@@ -20,8 +20,10 @@ This class/screen is the first screen of the app. It allows users to select a qu
 
 public class MainActivity extends AppCompatActivity {
     ListView lv_QuizList;
-    QuizAdapter adapter;
-
+    QuizGetterAdapter adapter;
+    String quizListSheetID = "1A4CGyeZZk2LW-xvh_P1dyeufZhV0qpBgCIQdrNEIDgk";
+    String sheetName = "QuizList";
+    String scriptParams = "DocID=" + quizListSheetID + "&Sheet=" + sheetName + "&action=getdata";
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -29,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
     lv_QuizList = (ListView) findViewById(R.id.lvQuizList);
-    adapter = new QuizAdapter(this);
+    adapter = new QuizGetterAdapter(this);
 
     lv_QuizList.setAdapter(adapter);
     lv_QuizList.setOnItemClickListener(new AdapterView.OnItemClickListener()
@@ -39,12 +41,11 @@ public class MainActivity extends AppCompatActivity {
             // When clicked, show a toast with the TextView text
             Toast.makeText(MainActivity.this,adapter.getItem(position).getTitle(),
                     Toast.LENGTH_SHORT).show();
-            //Load Quiz from adapter.getItem(position).getSpreadsheetDocId()
+            //Load QuizGetter from adapter.getItem(position).getSpreadsheetDocId()
         }
     });
 
-    String parameters = "DocID=1A4CGyeZZk2LW-xvh_P1dyeufZhV0qpBgCIQdrNEIDgk&Sheet=QuizList&action=getdata";
-    GoogleAccess<Quiz> googleAccess = new GoogleAccess<Quiz>(this, parameters);
-    googleAccess.getItems(new QuizParser(), new AddQuizToAdapterListParsedListener(adapter), new LoadingListenerImpl(this, "Please wait", "Loading quizzes", "Something went wrong: "));
+    GoogleAccess<QuizGetter> googleAccess = new GoogleAccess<QuizGetter>(this, scriptParams);
+    googleAccess.getItems(new QuizGetterParser(), new AddQuizGetterToAdapterListParsedListener(adapter), new LoadingListenerImpl(this, "Please wait", "Loading quizzes", "Something went wrong: "));
   }
 }

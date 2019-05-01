@@ -1,4 +1,4 @@
-package com.example.paperlessquiz;
+package com.example.paperlessquiz.quiz;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -9,8 +9,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.paperlessquiz.R;
+
 import java.util.ArrayList;
-import java.util.List;
 
 public class QuizAdapter extends ArrayAdapter<Quiz>
 {

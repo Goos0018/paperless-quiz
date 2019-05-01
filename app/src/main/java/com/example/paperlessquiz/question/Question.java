@@ -1,4 +1,4 @@
-package com.example.paperlessquiz;
+package com.example.paperlessquiz.question;
 
 public class Question {
     private String questionID;

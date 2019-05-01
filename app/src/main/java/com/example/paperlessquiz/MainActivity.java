@@ -1,12 +1,18 @@
 package com.example.paperlessquiz;
 
-import android.app.ProgressDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.example.paperlessquiz.google.adapter.GoogleAccess;
+import com.example.paperlessquiz.google.adapter.LoadingListenerImpl;
+import com.example.paperlessquiz.quiz.AddQuizToAdapterListParsedListener;
+import com.example.paperlessquiz.quiz.Quiz;
+import com.example.paperlessquiz.quiz.QuizAdapter;
+import com.example.paperlessquiz.quiz.QuizParser;
 
 /*
 This class/screen is the first screen of the app. It allows users to select a quiz from a list of available quiz'es.

@@ -1,6 +1,7 @@
-package com.example.paperlessquiz;
+package com.example.paperlessquiz.quiz;
 
-import java.util.ArrayList;
+import com.example.paperlessquiz.google.adapter.ListParsedListener;
+
 import java.util.List;
 
 public class AddQuizToAdapterListParsedListener implements ListParsedListener<Quiz> {

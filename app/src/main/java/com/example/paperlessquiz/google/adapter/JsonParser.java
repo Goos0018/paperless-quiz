@@ -1,4 +1,4 @@
-package com.example.paperlessquiz;
+package com.example.paperlessquiz.google.adapter;
 
 import org.json.JSONException;
 import org.json.JSONObject;

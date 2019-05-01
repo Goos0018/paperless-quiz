@@ -1,4 +1,8 @@
-package com.example.paperlessquiz;
+package com.example.paperlessquiz.quiz;
+
+import com.example.paperlessquiz.Organizer;
+import com.example.paperlessquiz.Round;
+import com.example.paperlessquiz.Team;
 
 public class Quiz
 {

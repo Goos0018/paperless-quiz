@@ -29,15 +29,15 @@ public class GoogleAccess<T> {
         this.parameters = parameters;
     }
 
-    public void getItems(JsonParser<T> parser, final ListParsedListener<T> parserListener, LoadingListener loadingListener) {
+    public void getItems(JsonParser<T> parser, final ListParsedListener<T> listParsedListener, LoadingListener loadingListener) {
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, SCRIPT_URL+parameters,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        List<T> items =  parseItems(response, parser, parserListener);
+                        List<T> items =  parseItems(response, parser);
                         loadingListener.loadingEnded();
-                        parserListener.listParsed(items);
+                        listParsedListener.listParsed(items);
                     }
                 },
 
@@ -61,7 +61,7 @@ public class GoogleAccess<T> {
     }
 
 
-    private ArrayList<T> parseItems(String jsonResponse, JsonParser<T> parser, ListParsedListener<T> parserEventListener) {
+    private ArrayList<T> parseItems(String jsonResponse, JsonParser<T> parser) {
 
         ArrayList<T> list = new ArrayList<T>();
         try {

@@ -14,4 +14,10 @@
         android:text="TextView"
         tools:layout_editor_absoluteX="104dp"
         tools:layout_editor_absoluteY="71dp" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="193dp"
+        android:text="TextView" />
 </LinearLayout>

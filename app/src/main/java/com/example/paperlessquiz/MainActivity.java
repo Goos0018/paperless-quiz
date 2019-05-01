@@ -1,5 +1,6 @@
 package com.example.paperlessquiz;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -39,9 +40,12 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
             // When clicked, show a toast with the TextView text
-            Toast.makeText(MainActivity.this,adapter.getItem(position).getTitle(),
-                    Toast.LENGTH_SHORT).show();
+            //Toast.makeText(MainActivity.this,adapter.getItem(position).getTitle(),Toast.LENGTH_SHORT).show();
             //Load QuizGetter from adapter.getItem(position).getSpreadsheetDocId()
+            Intent intent = new Intent(MainActivity.this, com.example.paperlessquiz.LogInToQuiz.class);
+            intent.putExtra("QuizTitle",adapter.getItem(position).getTitle());
+            startActivity(intent);
+
         }
     });
 

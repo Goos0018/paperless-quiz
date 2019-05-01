@@ -20,8 +20,11 @@ public class LogInToQuiz extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in_to_quiz);
+        //String quizTitle = getIntent().getStringExtra("QuizTitle");
 
         TextView textView = findViewById(R.id.textView) ;
+        TextView textView2 = findViewById(R.id.textView2) ;
+        textView2.setText("Quiz that was clicked: " + getIntent().getStringExtra("QuizTitle"));
         GoogleAccess<Quiz> googleAccess = new GoogleAccess<Quiz>(this, scriptParams);
         googleAccess.getItems(new QuizParser(), new AddQuizToTextViewListParsedListener(textView),
                 new LoadingListenerImpl(this, "Please wait", "Loading quiz", "Something went wrong: "));

@@ -15,6 +15,6 @@ public class AddQuizToTextViewListParsedListener implements ListParsedListener<Q
     }
 
     public void listParsed(List<Quiz> list) {
-        textView.setText(list.get(0).getTitle());
+        textView.setText("loaded: " + list.get(0).getTitle());
     }
 }

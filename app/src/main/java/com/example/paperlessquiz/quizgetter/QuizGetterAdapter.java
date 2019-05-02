@@ -33,7 +33,7 @@ public class QuizGetterAdapter extends ArrayAdapter<QuizGetter>
         TextView tvDescription = (TextView) rowView.findViewById(R.id.tv_description);
         ImageView ivleft = (ImageView) rowView.findViewById(R.id.iv_left);
 
-        tvTitle.setText(getItem(position).getTitle());
+        tvTitle.setText(getItem(position).getName());
         tvDescription.setText(this.getItem(position).getDescription());
         ivleft.setImageResource(R.mipmap.placeholder);
         return rowView;

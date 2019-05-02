@@ -73,8 +73,8 @@ public class GoogleAccess<T> {
 
                 JSONObject jo = jarray.getJSONObject(i);
 
-                T quiz = parser.parse(jo);
-                list.add(quiz);
+                T object = parser.parse(jo);
+                list.add(object);
             }
         } catch (JSONException e) {
             e.printStackTrace();

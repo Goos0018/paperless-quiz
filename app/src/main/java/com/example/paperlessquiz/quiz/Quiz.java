@@ -2,10 +2,11 @@ package com.example.paperlessquiz.quiz;
 
 import com.example.paperlessquiz.Organizer;
 import com.example.paperlessquiz.Team;
+import com.example.paperlessquiz.quizgetter.QuizGetter;
 import com.example.paperlessquiz.round.Round;
 
 public class Quiz {
-    private String title;
+    private String name;
     private String description;
     private String spreadsheetDocId;
     private Round[] rounds;
@@ -14,16 +15,40 @@ public class Quiz {
     private Organizer Presenter;
     private Organizer Juror;
     private Organizer Corrector;
-    private String status;
+    private boolean open;
     private int nrOfRounds;
 
-    public Quiz(String title, String status, int nrOfRounds) {
-        this.title = title;
-        this.status = status;
-        this.nrOfRounds = nrOfRounds;
+    public Quiz() {
     }
 
-    public String getTitle() {
-        return title;
+    public Quiz(String name, String description, String spreadsheetDocId, boolean open) {
+        this.name = name;
+        this.description=description;
+        this.spreadsheetDocId=spreadsheetDocId;
+        this.open = open;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setSpreadsheetDocId(String spreadsheetDocId) {
+        this.spreadsheetDocId = spreadsheetDocId;
+    }
+
+    public void isOpen(boolean open) {
+        this.open = open;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getName() {
+        return name;
     }
 }

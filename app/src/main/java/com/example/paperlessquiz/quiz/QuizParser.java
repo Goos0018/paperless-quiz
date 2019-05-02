@@ -8,8 +8,8 @@ import org.json.JSONObject;
 public class QuizParser implements JsonParser<Quiz>
 {
     public Quiz parse(JSONObject jo) throws JSONException {
-        return new Quiz(jo.getString("QuizName"), jo.getString("Status"),
-                jo.getInt("NrOfRounds"));
+        return new Quiz(jo.getString("QuizName"), jo.getString("QuizDescription"),
+                jo.getString("QuizSheetDocID"),jo.getBoolean("QuizOpen"));
     }
 
 }

@@ -1,46 +1,41 @@
 package com.example.paperlessquiz.quizgetter;
 
-import android.location.Location;
-
-import com.example.paperlessquiz.Organizer;
-import com.example.paperlessquiz.round.Round;
-import com.example.paperlessquiz.Team;
-
+import java.io.Serializable;
 import java.util.Date;
 
-public class QuizGetter
+public class QuizGetter implements Serializable
 {
-
     private String id;
-    private String title;
+    private String name;
     private String description;
-    private String spreadsheetDocId;
+    private String sheetDocID;
     private Date date;
     private boolean open;
 
 
 
-    public QuizGetter(String id, String title, String description, String spreadsheetDocId) {
+    public QuizGetter(String id, String name, String description, String sheetDocID, boolean open) {
         this.id = id;
-        this.title = title;
+        this.name = name;
         this.description = description;
-        this.spreadsheetDocId = spreadsheetDocId;
+        this.sheetDocID = sheetDocID;
+        this.open = open;
     }
 
     public String getId() {
         return id;
     }
 
-    public String getTitle() {
-        return title;
+    public String getName() {
+        return name;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public String getSpreadsheetDocId() {
-        return spreadsheetDocId;
+    public String getSheetDocID() {
+        return sheetDocID;
     }
 
     public boolean isOpen() {

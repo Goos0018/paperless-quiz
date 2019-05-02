@@ -10,11 +10,11 @@
     <TextView
         android:id="@+id/tv_prompt"
         android:layout_width="match_parent"
-        android:layout_height="128dp"
+        android:layout_height="53dp"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="10dp"
         android:layout_marginRight="15dp"
-        android:text="Available quizes" />
+        android:text="Please select the quiz to attend - select either participant or organizer" />
 
     <ListView
         android:id="@+id/lvQuizList"

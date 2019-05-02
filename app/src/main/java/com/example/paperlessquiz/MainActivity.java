@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.example.paperlessquiz.google.adapter.GoogleAccess;
 import com.example.paperlessquiz.google.adapter.LoadingListenerImpl;
@@ -39,17 +38,19 @@ public class MainActivity extends AppCompatActivity {
     {
         @Override
         public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
-            // When clicked, show a toast with the TextView text
-            //Toast.makeText(MainActivity.this,adapter.getItem(position).getTitle(),Toast.LENGTH_SHORT).show();
-            //Load QuizGetter from adapter.getItem(position).getSpreadsheetDocId()
-            Intent intent = new Intent(MainActivity.this, com.example.paperlessquiz.LogInToQuiz.class);
-            intent.putExtra("QuizTitle",adapter.getItem(position).getTitle());
+            // When clicked, go to the SelectRole screen to allow the user to select the role for this quiz.
+            // Pass the SpreadSheetDOcID so this screen can get the rest of the details
+            Intent intent = new Intent(MainActivity.this, com.example.paperlessquiz.SelectRole.class);
+            //intent.putExtra("QuizOpen",adapter.getItem(position).isOpen());
+            //intent.putExtra("QuizSheetDocID",adapter.getItem(position).getSheetDocID());
+            intent.putExtra("ThisQuizGetter",adapter.getItem(position));
             startActivity(intent);
 
         }
     });
 
     GoogleAccess<QuizGetter> googleAccess = new GoogleAccess<QuizGetter>(this, scriptParams);
-    googleAccess.getItems(new QuizGetterParser(), new AddQuizGetterToAdapterListParsedListener(adapter), new LoadingListenerImpl(this, "Please wait", "Loading quizzes", "Something went wrong: "));
+    googleAccess.getItems(new QuizGetterParser(), new AddQuizGetterToAdapterListParsedListener(adapter),
+            new LoadingListenerImpl(this, "Please wait", "Loading quizzes", "Something went wrong: "));
   }
 }

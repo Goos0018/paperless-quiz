@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".LogInToQuiz">
+    tools:context=".LogInToQuizAsParticipant">
 
     <TextView
         android:id="@+id/textView"
@@ -20,4 +20,10 @@
         android:layout_width="match_parent"
         android:layout_height="193dp"
         android:text="TextView" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Button" />
 </LinearLayout>

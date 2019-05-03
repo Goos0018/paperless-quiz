@@ -1,4 +1,4 @@
-package com.example.paperlessquiz.quizgetter;
+package com.example.paperlessquiz.quizbasics;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -13,12 +13,12 @@ import com.example.paperlessquiz.R;
 
 import java.util.ArrayList;
 
-public class QuizGetterAdapter extends ArrayAdapter<QuizGetter>
+public class QuizBasicsAdapter extends ArrayAdapter<QuizBasics>
 {
     private final Context context;
 
-    public QuizGetterAdapter(Context context) {
-        super(context, R.layout.row_layout, new ArrayList<QuizGetter>());
+    public QuizBasicsAdapter(Context context) {
+        super(context, R.layout.row_layout, new ArrayList<QuizBasics>());
         this.context = context;
     }
 

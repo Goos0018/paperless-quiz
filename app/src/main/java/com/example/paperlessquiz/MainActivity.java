@@ -9,10 +9,10 @@ import android.widget.ListView;
 
 import com.example.paperlessquiz.google.adapter.GoogleAccess;
 import com.example.paperlessquiz.google.adapter.LoadingListenerImpl;
-import com.example.paperlessquiz.quizgetter.AddQuizGetterToAdapterListParsedListener;
-import com.example.paperlessquiz.quizgetter.QuizGetter;
-import com.example.paperlessquiz.quizgetter.QuizGetterAdapter;
-import com.example.paperlessquiz.quizgetter.QuizGetterParser;
+import com.example.paperlessquiz.quizbasics.AddQuizBasicsToAdapterLPL;
+import com.example.paperlessquiz.quizbasics.QuizBasics;
+import com.example.paperlessquiz.quizbasics.QuizBasicsAdapter;
+import com.example.paperlessquiz.quizbasics.QuizBasicsParser;
 
 /*
 This class/screen is the first screen of the app. It allows users to select a quiz from a list of available quiz'es.
@@ -20,7 +20,7 @@ This class/screen is the first screen of the app. It allows users to select a qu
 
 public class MainActivity extends AppCompatActivity {
     ListView lv_QuizList;
-    QuizGetterAdapter adapter;
+    QuizBasicsAdapter adapter;
     String quizListSheetID = "1A4CGyeZZk2LW-xvh_P1dyeufZhV0qpBgCIQdrNEIDgk";
     String sheetName = "QuizList";
     String scriptParams = "DocID=" + quizListSheetID + "&Sheet=" + sheetName + "&action=getdata";
@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
     lv_QuizList = (ListView) findViewById(R.id.lvQuizList);
-    adapter = new QuizGetterAdapter(this);
+    adapter = new QuizBasicsAdapter(this);
 
     lv_QuizList.setAdapter(adapter);
     lv_QuizList.setOnItemClickListener(new AdapterView.OnItemClickListener()
@@ -49,8 +49,8 @@ public class MainActivity extends AppCompatActivity {
         }
     });
 
-    GoogleAccess<QuizGetter> googleAccess = new GoogleAccess<QuizGetter>(this, scriptParams);
-    googleAccess.getItems(new QuizGetterParser(), new AddQuizGetterToAdapterListParsedListener(adapter),
+    GoogleAccess<QuizBasics> googleAccess = new GoogleAccess<QuizBasics>(this, scriptParams);
+    googleAccess.getItems(new QuizBasicsParser(), new AddQuizBasicsToAdapterLPL(adapter),
             new LoadingListenerImpl(this, "Please wait", "Loading quizzes", "Something went wrong: "));
   }
 }

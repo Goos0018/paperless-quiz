@@ -2,7 +2,6 @@ package com.example.paperlessquiz.quiz;
 
 import com.example.paperlessquiz.Organizer;
 import com.example.paperlessquiz.Team;
-import com.example.paperlessquiz.quizgetter.QuizGetter;
 import com.example.paperlessquiz.round.Round;
 
 public class Quiz {

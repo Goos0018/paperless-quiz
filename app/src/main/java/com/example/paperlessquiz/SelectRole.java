@@ -7,8 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.paperlessquiz.quiz.Quiz;
-import com.example.paperlessquiz.quizgetter.QuizGetter;
+import com.example.paperlessquiz.quizbasics.QuizBasics;
 
 //After a quiz was selected, determine if you want to log in as a participant or an organizer
 public class SelectRole extends AppCompatActivity {
@@ -27,14 +26,14 @@ public class SelectRole extends AppCompatActivity {
         btnParticipant=findViewById(R.id.btn_participant);
         btnOrganizer=findViewById(R.id.btn_organizer);
         tvWelcome=findViewById(R.id.tv_welcome);
-        QuizGetter thisQuizGetter = (QuizGetter) getIntent().getSerializableExtra("ThisQuizGetter");
+        QuizBasics thisQuizBasics = (QuizBasics) getIntent().getSerializableExtra("ThisQuizGetter");
         btnParticipant.setOnClickListener(new View.OnClickListener() {
                   @Override
             public void onClick(View view){
-                      if (thisQuizGetter.isOpen()){
-                          tvWelcome.setText("Welcome to" + thisQuizGetter.getName());
+                      if (thisQuizBasics.isOpen()){
+                          tvWelcome.setText("Welcome to" + thisQuizBasics.getName());
                           Intent intent = new Intent(SelectRole.this, com.example.paperlessquiz.LogInToQuizAsParticipant.class);
-                          intent.putExtra("ThisQuizGetter",thisQuizGetter);
+                          intent.putExtra("ThisQuizGetter", thisQuizBasics);
                           startActivity(intent);
                       }
                       else {
@@ -50,7 +49,7 @@ public class SelectRole extends AppCompatActivity {
             public void onClick(View view){
                 //TODO: modify to ...Organizer
                 Intent intent = new Intent(SelectRole.this, com.example.paperlessquiz.LogInToQuizAsParticipant.class);
-                intent.putExtra("thisQuizGetter",thisQuizGetter);
+                intent.putExtra("thisQuizBasics", thisQuizBasics);
                 startActivity(intent);
             }
 

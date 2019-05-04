@@ -1,6 +1,6 @@
 package com.example.paperlessquiz.round;
 
-import com.example.paperlessquiz.google.adapter.JsonParser;
+import com.example.paperlessquiz.google.access.JsonParser;
 
 import org.json.JSONException;
 import org.json.JSONObject;

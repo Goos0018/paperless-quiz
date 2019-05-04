@@ -1,4 +1,4 @@
-package com.example.paperlessquiz.google.adapter;
+package com.example.paperlessquiz.google.access;
 
 public interface LoadingListener {
     void loadingStarted();

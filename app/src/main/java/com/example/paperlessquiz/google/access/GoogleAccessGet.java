@@ -1,4 +1,4 @@
-package com.example.paperlessquiz.google.adapter;
+package com.example.paperlessquiz.google.access;
 
 import android.content.Context;
 
@@ -18,17 +18,22 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GoogleAccess<T> {
+//This class is used to get data from a Google sheet.
+public class GoogleAccessGet<T> {
 
     private static final String SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxF4oneivWH9QUnOyEJRWWDNIfdaSft5idzfNWgz7USI0ZzKw_o/exec?";
     private Context context;
     private String parameters;
 
-    public GoogleAccess(Context context, String parameters) {
+    public GoogleAccessGet(Context context, String parameters) {
         this.context = context;
         this.parameters = parameters;
     }
 
+    //This method will return
+    //  - either a list of objects T (in that case objectToUpdate is Null
+    //  - or a list containing one single object T that is based on objectToUpdate
+    //For each type of object/specific use, you need to create an implementation of JsonParser and ListParsedListener
     public void getItems(JsonParser<T> parser, final ListParsedListener<T> listParsedListener, LoadingListener loadingListener) {
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, SCRIPT_URL+parameters,

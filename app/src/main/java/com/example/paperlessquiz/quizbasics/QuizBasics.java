@@ -10,9 +10,8 @@ public class QuizBasics implements Serializable
     private String description;
     private String sheetDocID;
     private Date date;
-    private boolean open;
 
-//TODO : rename to QuizBasics object and define Quiz as an extention (QuizBasics + Teamlist + RoundList) + define
+//TODO : QuizDetails as an extention (QuizBasics + Teamlist + RoundList +...
 //TODO: define different constructors for use with GetterParser, QuizPArser, ...
 //Logic: Generate a list of QuizBasics objects from the QuizList + ask user to select one
 //After selection, load remaining basic data (nrOfRounds and IsOpen) from the QuizData in QuizSheet
@@ -26,17 +25,22 @@ public class QuizBasics implements Serializable
 
      */
 
-    public QuizBasics(String id, String name, String description, String sheetDocID, boolean open) {
+    public QuizBasics(String id, String name, String description, String sheetDocID) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.sheetDocID = sheetDocID;
-        this.open = open;
     }
 
-    public String getId() {
-        return id;
+    public QuizBasics(QuizBasics quizBasics) {
+        this.id = quizBasics.id;
+        this.name = quizBasics.name;
+        this.description = quizBasics.description;
+        this.sheetDocID = quizBasics.sheetDocID;
+        this.date = quizBasics.date;
+
     }
+
 
     public String getName() {
         return name;
@@ -50,7 +54,4 @@ public class QuizBasics implements Serializable
         return sheetDocID;
     }
 
-    public boolean isOpen() {
-        return open;
-    }
 }

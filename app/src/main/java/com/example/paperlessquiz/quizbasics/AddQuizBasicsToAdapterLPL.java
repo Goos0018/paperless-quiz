@@ -1,6 +1,7 @@
 package com.example.paperlessquiz.quizbasics;
 
-import com.example.paperlessquiz.google.adapter.ListParsedListener;
+import com.example.paperlessquiz.adapters.QuizBasicsAdapter;
+import com.example.paperlessquiz.google.access.ListParsedListener;
 
 import java.util.List;
 

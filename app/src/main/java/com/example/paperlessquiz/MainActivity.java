@@ -7,11 +7,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.example.paperlessquiz.google.adapter.GoogleAccess;
-import com.example.paperlessquiz.google.adapter.LoadingListenerImpl;
+import com.example.paperlessquiz.google.access.GoogleAccessGet;
+import com.example.paperlessquiz.google.access.LoadingListenerImpl;
 import com.example.paperlessquiz.quizbasics.AddQuizBasicsToAdapterLPL;
 import com.example.paperlessquiz.quizbasics.QuizBasics;
-import com.example.paperlessquiz.quizbasics.QuizBasicsAdapter;
+import com.example.paperlessquiz.adapters.QuizBasicsAdapter;
 import com.example.paperlessquiz.quizbasics.QuizBasicsParser;
 
 /*
@@ -39,18 +39,16 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
             // When clicked, go to the SelectRole screen to allow the user to select the role for this quiz.
-            // Pass the SpreadSheetDOcID so this screen can get the rest of the details
+            // Pass the QuizBasics object so the receiving screen can get the rest of the details
             Intent intent = new Intent(MainActivity.this, com.example.paperlessquiz.SelectRole.class);
-            //intent.putExtra("QuizOpen",adapter.getItem(position).isOpen());
-            //intent.putExtra("QuizSheetDocID",adapter.getItem(position).getSheetDocID());
-            intent.putExtra("ThisQuizGetter",adapter.getItem(position));
+            intent.putExtra("thisQuizBasics",adapter.getItem(position));
             startActivity(intent);
 
         }
     });
 
-    GoogleAccess<QuizBasics> googleAccess = new GoogleAccess<QuizBasics>(this, scriptParams);
-    googleAccess.getItems(new QuizBasicsParser(), new AddQuizBasicsToAdapterLPL(adapter),
+    GoogleAccessGet<QuizBasics> googleAccessGet = new GoogleAccessGet<QuizBasics>(this, scriptParams);
+    googleAccessGet.getItems(new QuizBasicsParser(), new AddQuizBasicsToAdapterLPL(adapter),
             new LoadingListenerImpl(this, "Please wait", "Loading quizzes", "Something went wrong: "));
   }
 }

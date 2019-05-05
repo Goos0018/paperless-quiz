@@ -23,6 +23,7 @@ TODO: layout
 
 public class A_SelectRole extends AppCompatActivity {
 
+
     String quizSheetID, scriptParams;
     String quizDataSheetName = "QuizData";
     boolean quizIsOpen;
@@ -51,7 +52,7 @@ public class A_SelectRole extends AppCompatActivity {
             public void onClick(View view){
                       if (updateQuizBasicsObjectLPL.getQuizExtras().isOpen()){
                           tvWelcome.setText("Welcome to" + thisQuizBasics.getName() + " QuizDetails open is " + quizExtras.isOpen());
-                          Intent intent = new Intent(A_SelectRole.this, SelectLoginName.class);
+                          Intent intent = new Intent(A_SelectRole.this, B_SelectLoginName.class);
                           intent.putExtra("thisQuizBasics", thisQuizBasics);
                           intent.putExtra("thisQuizExtras", quizExtras);
                           intent.putExtra("thisLoginType", "Participant");
@@ -68,7 +69,7 @@ public class A_SelectRole extends AppCompatActivity {
         btnOrganizer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view){
-                Intent intent = new Intent(A_SelectRole.this, SelectLoginName.class);
+                Intent intent = new Intent(A_SelectRole.this, B_SelectLoginName.class);
                 intent.putExtra("thisQuizBasics", thisQuizBasics);
                 intent.putExtra("thisQuizExtras", quizExtras);
                 intent.putExtra("thisLoginType", "Organizer");

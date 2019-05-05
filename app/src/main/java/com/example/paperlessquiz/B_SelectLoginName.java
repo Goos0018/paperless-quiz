@@ -23,7 +23,7 @@ import com.example.paperlessquiz.quizextras.QuizExtras;
     TODO: layout
      */
 
-public class SelectLoginName extends AppCompatActivity {
+public class B_SelectLoginName extends AppCompatActivity {
     ListView lv_NamesList;
     ParticipantsAdapter adapter;
     String thisQuizDocID;
@@ -58,7 +58,7 @@ public class SelectLoginName extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // When clicked, go to the LogIn screen where the user enters his passkey.
                 // Pass the thisLoginEntity object so the receiving screen can get the rest of the details
-                Intent intent = new Intent(SelectLoginName.this, LogInToQuiz.class);
+                Intent intent = new Intent(B_SelectLoginName.this, C_LogInToQuiz.class);
                 intent.putExtra("thisQuizBasics", thisQuizBasics);
                 intent.putExtra("thisQuizExtras", thisQuizExtras);
                 intent.putExtra("thisLoginEntity",adapter.getItem(position));

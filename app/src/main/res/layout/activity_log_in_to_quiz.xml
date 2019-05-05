@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".LogInToQuiz">
+    tools:context=".C_LogInToQuiz">
 
     <TextView
         android:id="@+id/tv_login_prompt"
@@ -18,8 +18,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Please enter the passkey that was given to you" />
+        android:hint="Please enter the passkey that was given to you"
+        android:inputType="textPersonName" />
 
     <Button
         android:id="@+id/btn_submit_login"

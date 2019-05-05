@@ -8,11 +8,11 @@ public class LoginEntity implements Serializable {
     private String passkey;
     private String type;
 
-    public LoginEntity(String id, String name, String passkey, String type) {
+    public LoginEntity(String id, String type, String name, String passkey) {
         this.id = id;
+        this.type = type;
         this.name = name;
         this.passkey = passkey;
-        this.type = type;
     }
 
     public String getName() {

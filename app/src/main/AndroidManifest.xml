@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".B_SelectLoginName"></activity>
+        <activity android:name=".DPA_ShowQuizOverview"></activity>
+        <activity android:name=".B_SelectLoginName" />
         <activity android:name=".A_SelectRole" />
         <activity android:name=".C_LogInToQuiz" />
         <activity android:name=".MainActivity">

@@ -1,17 +1,18 @@
 package com.example.paperlessquiz;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.example.paperlessquiz.adapters.QuizBasicsAdapter;
+import com.example.paperlessquiz.google.access.GoogleAccess;
 import com.example.paperlessquiz.google.access.GoogleAccessGet;
 import com.example.paperlessquiz.google.access.LoadingListenerImpl;
 import com.example.paperlessquiz.quizbasics.AddQuizBasicsToAdapterLPL;
 import com.example.paperlessquiz.quizbasics.QuizBasics;
-import com.example.paperlessquiz.adapters.QuizBasicsAdapter;
 import com.example.paperlessquiz.quizbasics.QuizBasicsParser;
 
 /*
@@ -25,9 +26,10 @@ TODO: layout
 public class MainActivity extends AppCompatActivity {
     ListView lv_QuizList;
     QuizBasicsAdapter adapter;
-    String quizListSheetID = "1A4CGyeZZk2LW-xvh_P1dyeufZhV0qpBgCIQdrNEIDgk";
-    String sheetName = "QuizList";
-    String scriptParams = "DocID=" + quizListSheetID + "&Sheet=" + sheetName + "&action=getdata";
+    String sheetName = QuizBasics.QUIZLIST_TABNAME;
+    String scriptParams = GoogleAccess.PARAMNAME_DOC_ID + QuizBasics.QUIZLIST_DOC_ID + GoogleAccess.PARAM_CONCATENATOR +
+            GoogleAccess.PARAMNAME_SHEET + QuizBasics.QUIZLIST_TABNAME + GoogleAccess.PARAM_CONCATENATOR +
+            GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_GETDATA;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -45,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
             // When clicked, go to the A_SelectRole screen to allow the user to select the role for this quiz.
             // Pass the QuizBasics object so the receiving screen can get the rest of the details
             Intent intent = new Intent(MainActivity.this, A_SelectRole.class);
-            intent.putExtra("thisQuizBasics",adapter.getItem(position));
+            intent.putExtra(QuizBasics.INTENT_EXTRA_NAME_THIS_QUIZ_BASICS,adapter.getItem(position));
             startActivity(intent);
 
         }

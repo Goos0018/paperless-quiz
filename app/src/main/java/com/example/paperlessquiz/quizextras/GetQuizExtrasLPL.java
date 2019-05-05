@@ -5,11 +5,11 @@ import com.example.paperlessquiz.quizbasics.QuizBasics;
 
 import java.util.List;
 
-public class UpdateQuizBasicsObjectLPL implements ListParsedListener<QuizExtras> {
+public class GetQuizExtrasLPL implements ListParsedListener<QuizExtras> {
 
     private QuizExtras quizExtras;
 
-    public UpdateQuizBasicsObjectLPL(QuizExtras quizExtras) {
+    public GetQuizExtrasLPL(QuizExtras quizExtras) {
         this.quizExtras = quizExtras;
 
     }

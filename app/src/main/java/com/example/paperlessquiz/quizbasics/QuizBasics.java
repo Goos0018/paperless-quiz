@@ -1,10 +1,15 @@
 package com.example.paperlessquiz.quizbasics;
 
+import com.example.paperlessquiz.google.access.GoogleAccess;
+
 import java.io.Serializable;
 import java.util.Date;
 
 public class QuizBasics implements Serializable
 {
+    public static final String QUIZLIST_DOC_ID = "1A4CGyeZZk2LW-xvh_P1dyeufZhV0qpBgCIQdrNEIDgk";
+    public static final String QUIZLIST_TABNAME = "QuizList";
+    public static final String INTENT_EXTRA_NAME_THIS_QUIZ_BASICS = "thisQuizBasics";
     private String id;
     private String name;
     private String description;

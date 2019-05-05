@@ -2,7 +2,14 @@ package com.example.paperlessquiz.loginentity;
 
 import java.io.Serializable;
 
+/*
+This class represents a user that can log in. Either a participant team or one of the organizers
+ */
 public class LoginEntity implements Serializable {
+    public static final String INTENT_EXTRA_NAME_THIS_LOGIN_TYPE = "thisLoginType";
+    public static final String SELECTION_PARTICIPANT = "Participant";
+    public static final String SELECTION_ORGANIZER = "Organizer";
+    public static final String INTENT_EXTRA_NAME_THIS_LOGIN_ENTITY = "thisLoginEntity";
     private String id;
     private String name;
     private String passkey;

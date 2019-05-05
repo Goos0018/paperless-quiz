@@ -6,11 +6,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class LoginEntityParser implements JsonParser<LoginEntity> {
+
+    //Strings here MUST match the headers in the Organizers and Teams tabs of the Quiz sheet
+    public static final String ID = "ID";
+    public static final String TYPE = "Type";
+    public static final String NAME = "Name";
+    public static final String PASSKEY = "Passkey";
+
     public LoginEntity parse(JSONObject jo) throws JSONException {
-        //Strings here MUST match the headers in the QuizList tab of the Quizlist sheet
-        return new LoginEntity(jo.getString("ID"), jo.getString("Type"),
-                jo.getString("Name"), jo.getString("Passkey"));
+        return new LoginEntity(jo.getString(ID), jo.getString(TYPE),
+                jo.getString(NAME), jo.getString(PASSKEY));
     }
-
-
 }

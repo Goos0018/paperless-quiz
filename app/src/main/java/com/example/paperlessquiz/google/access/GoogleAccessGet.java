@@ -21,7 +21,6 @@ import java.util.List;
 //This class is used to get data from a Google sheet.
 public class GoogleAccessGet<T> {
 
-    private static final String SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxF4oneivWH9QUnOyEJRWWDNIfdaSft5idzfNWgz7USI0ZzKw_o/exec?";
     private Context context;
     private String parameters;
 
@@ -36,7 +35,7 @@ public class GoogleAccessGet<T> {
     //For each type of object/specific use, you need to create an implementation of JsonParser and ListParsedListener
     public void getItems(JsonParser<T> parser, final ListParsedListener<T> listParsedListener, LoadingListener loadingListener) {
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, SCRIPT_URL+parameters,
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, GoogleAccess.SCRIPT_URL+parameters,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {

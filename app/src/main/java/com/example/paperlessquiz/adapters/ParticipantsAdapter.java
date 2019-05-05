@@ -20,7 +20,7 @@ public class ParticipantsAdapter extends ArrayAdapter<LoginEntity> {
 
 
     public ParticipantsAdapter(Context context) {
-        super(context, R.layout.row_layout_select_quiz, new ArrayList<LoginEntity>());
+        super(context, R.layout.row_layout_select_login_name, new ArrayList<LoginEntity>());
         this.context = context;
     }
 

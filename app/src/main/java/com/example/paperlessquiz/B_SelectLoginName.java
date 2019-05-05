@@ -8,6 +8,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.paperlessquiz.adapters.ParticipantsAdapter;
+import com.example.paperlessquiz.google.access.GoogleAccess;
 import com.example.paperlessquiz.google.access.GoogleAccessGet;
 import com.example.paperlessquiz.google.access.LoadingListenerImpl;
 import com.example.paperlessquiz.loginentity.AddLoginEntitiesToParticipantsAdapterLPL;
@@ -15,6 +16,7 @@ import com.example.paperlessquiz.loginentity.LoginEntity;
 import com.example.paperlessquiz.loginentity.LoginEntityParser;
 import com.example.paperlessquiz.quizbasics.QuizBasics;
 import com.example.paperlessquiz.quizextras.QuizExtras;
+import com.example.paperlessquiz.quizextras.QuizExtrasParser;
 
 /* Select your login name from a list.
     Depending on your role (participant or organizer, this list contains teams or organizers
@@ -34,14 +36,14 @@ public class B_SelectLoginName extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_select_login_name);
+        setContentView(R.layout.activity_b_select_login_name);
 
         lv_NamesList = (ListView) findViewById(R.id.lv_names_list);
         adapter = new ParticipantsAdapter(this);
-        QuizBasics thisQuizBasics = (QuizBasics) getIntent().getSerializableExtra("thisQuizBasics");
-        QuizExtras thisQuizExtras = (QuizExtras) getIntent().getSerializableExtra("thisQuizExtras");
-        loginType=getIntent().getStringExtra("thisLoginType");
-        if (loginType.equals("Participant"))
+        QuizBasics thisQuizBasics = (QuizBasics) getIntent().getSerializableExtra(QuizBasics.INTENT_EXTRA_NAME_THIS_QUIZ_BASICS);
+        QuizExtras thisQuizExtras = (QuizExtras) getIntent().getSerializableExtra(QuizExtrasParser.INTENT_EXTRA_NAME_THIS_QUIZ_EXTRAS);
+        loginType=getIntent().getStringExtra(LoginEntity.INTENT_EXTRA_NAME_THIS_LOGIN_TYPE);
+        if (loginType.equals(LoginEntity.SELECTION_PARTICIPANT))
         {
             sheetName="Teams";
         }
@@ -49,8 +51,9 @@ public class B_SelectLoginName extends AppCompatActivity {
         {
             sheetName="Organizers";
         }
-        thisQuizDocID = thisQuizBasics.getSheetDocID();
-        scriptParams= "DocID=" + thisQuizDocID + "&Sheet=" + sheetName + "&action=getdata";
+        scriptParams= GoogleAccess.PARAMNAME_DOC_ID + thisQuizBasics.getSheetDocID() + GoogleAccess.PARAM_CONCATENATOR +
+                GoogleAccess.PARAMNAME_SHEET + sheetName + GoogleAccess.PARAM_CONCATENATOR +
+                GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_GETDATA;
         lv_NamesList.setAdapter(adapter);
         lv_NamesList.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
@@ -59,9 +62,9 @@ public class B_SelectLoginName extends AppCompatActivity {
                 // When clicked, go to the LogIn screen where the user enters his passkey.
                 // Pass the thisLoginEntity object so the receiving screen can get the rest of the details
                 Intent intent = new Intent(B_SelectLoginName.this, C_LogInToQuiz.class);
-                intent.putExtra("thisQuizBasics", thisQuizBasics);
-                intent.putExtra("thisQuizExtras", thisQuizExtras);
-                intent.putExtra("thisLoginEntity",adapter.getItem(position));
+                intent.putExtra(QuizBasics.INTENT_EXTRA_NAME_THIS_QUIZ_BASICS, thisQuizBasics);
+                intent.putExtra(QuizExtrasParser.INTENT_EXTRA_NAME_THIS_QUIZ_EXTRAS, thisQuizExtras);
+                intent.putExtra(LoginEntity.INTENT_EXTRA_NAME_THIS_LOGIN_ENTITY,adapter.getItem(position));
                 startActivity(intent);
 
             }

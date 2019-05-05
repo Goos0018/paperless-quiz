@@ -1,5 +1,6 @@
 package com.example.paperlessquiz;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.Toast;
 import com.example.paperlessquiz.loginentity.LoginEntity;
 import com.example.paperlessquiz.quizbasics.QuizBasics;
 import com.example.paperlessquiz.quizextras.QuizExtras;
+import com.example.paperlessquiz.quizextras.QuizExtrasParser;
 
 
 public class C_LogInToQuiz extends AppCompatActivity {
@@ -25,11 +27,11 @@ public class C_LogInToQuiz extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_log_in_to_quiz);
+        setContentView(R.layout.activity_c_log_in_to_quiz);
 
-        thisQuizBasics = (QuizBasics)getIntent().getSerializableExtra("thisQuizBasics");
-        thisQuizExtras = (QuizExtras)getIntent().getSerializableExtra("thisQuizExtras");
-        thisLoginEntity = (LoginEntity)getIntent().getSerializableExtra("thisLoginEntity");
+        thisQuizBasics = (QuizBasics)getIntent().getSerializableExtra(QuizBasics.INTENT_EXTRA_NAME_THIS_QUIZ_BASICS);
+        thisQuizExtras = (QuizExtras)getIntent().getSerializableExtra(QuizExtrasParser.INTENT_EXTRA_NAME_THIS_QUIZ_EXTRAS);
+        thisLoginEntity = (LoginEntity)getIntent().getSerializableExtra(LoginEntity.INTENT_EXTRA_NAME_THIS_LOGIN_ENTITY);
         String LoginString = "Welcome " + thisLoginEntity.getName() + " to our quiz " + thisQuizBasics.getName() +
                 ". Please enter your passkey" + "(Name: " + thisLoginEntity.getName() + ". Passkey: " + thisLoginEntity.getPasskey() + ")";
         TextView tv_Name = findViewById(R.id.tv_name) ;
@@ -49,24 +51,26 @@ public class C_LogInToQuiz extends AppCompatActivity {
                 {
                     if (input.equals(thisLoginEntity.getPasskey()))
                     {
-                        Toast.makeText(C_LogInToQuiz.this, "Successful login", Toast.LENGTH_SHORT).show();
+                        if (thisLoginEntity.getType().equals(LoginEntity.SELECTION_PARTICIPANT)) {
+                            //If it is a participant, start the Overview screen
+                            //Toast.makeText(C_LogInToQuiz.this, "Successful login", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(C_LogInToQuiz.this, DPA_ShowQuizOverview.class);
+                            intent.putExtra(QuizBasics.INTENT_EXTRA_NAME_THIS_QUIZ_BASICS, thisQuizBasics);
+                            intent.putExtra(QuizExtrasParser.INTENT_EXTRA_NAME_THIS_QUIZ_EXTRAS, thisQuizExtras);
+                            intent.putExtra(LoginEntity.INTENT_EXTRA_NAME_THIS_LOGIN_ENTITY, thisLoginEntity);
+                            startActivity(intent);
+                        }
+                        else
+                        {
+                            //TODO implement other options
+                            Toast.makeText(C_LogInToQuiz.this, thisLoginEntity.getType() + " still to implement", Toast.LENGTH_SHORT).show();
+                        }
                     }
                     else
                     {
                         Toast.makeText(C_LogInToQuiz.this, "Passkey " + input + " is incorrect - please enter the passkey provided by the organizers", Toast.LENGTH_SHORT).show();
                     }
                 }
-                /*
-                Intent intent = new Intent(com.example.paperlessquiz.MainActivity.this, B_SelectLoginName.class);
-                intent.putExtra("thisQuizBasics", thisQuizBasics);
-                intent.putExtra("thisQuizExtras", thisQuizExtras);
-                intent.putExtra("thisLoginType", "Organizer");
-                startActivity(intent);
-                */
-
-
-
-
             }
         });
 

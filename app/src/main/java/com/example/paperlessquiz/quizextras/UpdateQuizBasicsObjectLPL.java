@@ -14,6 +14,10 @@ public class UpdateQuizBasicsObjectLPL implements ListParsedListener<QuizExtras>
 
     }
 
+    public QuizExtras getQuizExtras() {
+        return quizExtras;
+    }
+
     public void listParsed(List<QuizExtras> list) {
         quizExtras = new QuizExtras(list.get(0));
 

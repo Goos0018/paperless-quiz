@@ -11,8 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SelectRole"></activity>
-        <activity android:name=".LogInToQuizAsParticipant" />
+        <activity android:name=".SelectLoginName"></activity>
+        <activity android:name=".A_SelectRole" />
+        <activity android:name=".LogInToQuiz" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

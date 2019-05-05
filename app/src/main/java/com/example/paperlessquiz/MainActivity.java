@@ -16,6 +16,10 @@ import com.example.paperlessquiz.quizbasics.QuizBasicsParser;
 
 /*
 This class/screen is the first screen of the app. It allows users to select a quiz from a list of available quiz'es.
+The list of the available quizzes comes from a centra, hardcoded Google Sheet
+Basic details of the selected quiz stored and passed around via a quizBasics variable
+TODO: extract string resources + constants
+TODO: layout
  */
 
 public class MainActivity extends AppCompatActivity {
@@ -38,9 +42,9 @@ public class MainActivity extends AppCompatActivity {
     {
         @Override
         public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
-            // When clicked, go to the SelectRole screen to allow the user to select the role for this quiz.
+            // When clicked, go to the A_SelectRole screen to allow the user to select the role for this quiz.
             // Pass the QuizBasics object so the receiving screen can get the rest of the details
-            Intent intent = new Intent(MainActivity.this, com.example.paperlessquiz.SelectRole.class);
+            Intent intent = new Intent(MainActivity.this, A_SelectRole.class);
             intent.putExtra("thisQuizBasics",adapter.getItem(position));
             startActivity(intent);
 

@@ -19,7 +19,7 @@ public class QuizBasicsAdapter extends ArrayAdapter<QuizBasics>
     private final Context context;
 
     public QuizBasicsAdapter(Context context) {
-        super(context, R.layout.row_layout, new ArrayList<QuizBasics>());
+        super(context, R.layout.row_layout_select_quiz, new ArrayList<QuizBasics>());
         this.context = context;
     }
 
@@ -29,7 +29,7 @@ public class QuizBasicsAdapter extends ArrayAdapter<QuizBasics>
     public View getView(int position, View convertView, ViewGroup parent) {
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View rowView = inflater.inflate(R.layout.row_layout,parent,false);
+        View rowView = inflater.inflate(R.layout.row_layout_select_quiz,parent,false);
         TextView tvTitle = (TextView) rowView.findViewById(R.id.tv_title);
         TextView tvDescription = (TextView) rowView.findViewById(R.id.tv_description);
         ImageView ivleft = (ImageView) rowView.findViewById(R.id.iv_left);

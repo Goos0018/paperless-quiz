@@ -56,7 +56,7 @@ public class A_SelectRole extends AppCompatActivity {
                           tvWelcome.setText("Welcome to" + thisQuizBasics.getName() + " QuizDetails open is " + quizExtras.isOpen());
                           Intent intent = new Intent(A_SelectRole.this, B_SelectLoginName.class);
                           intent.putExtra(QuizBasics.INTENT_EXTRA_NAME_THIS_QUIZ_BASICS, thisQuizBasics);
-                          intent.putExtra(QuizExtrasParser.INTENT_EXTRA_NAME_THIS_QUIZ_EXTRAS, quizExtras);
+                          intent.putExtra(QuizExtras.INTENT_EXTRA_NAME_THIS_QUIZ_EXTRAS, quizExtras);
                           intent.putExtra(LoginEntity.INTENT_EXTRA_NAME_THIS_LOGIN_TYPE, LoginEntity.SELECTION_PARTICIPANT);
                           startActivity(intent);
                       }
@@ -73,7 +73,7 @@ public class A_SelectRole extends AppCompatActivity {
             public void onClick(View view){
                 Intent intent = new Intent(A_SelectRole.this, B_SelectLoginName.class);
                 intent.putExtra(QuizBasics.INTENT_EXTRA_NAME_THIS_QUIZ_BASICS, thisQuizBasics);
-                intent.putExtra(QuizExtrasParser.INTENT_EXTRA_NAME_THIS_QUIZ_EXTRAS, quizExtras);
+                intent.putExtra(QuizExtras.INTENT_EXTRA_NAME_THIS_QUIZ_EXTRAS, quizExtras);
                 intent.putExtra(LoginEntity.INTENT_EXTRA_NAME_THIS_LOGIN_TYPE, LoginEntity.SELECTION_ORGANIZER);
                 startActivity(intent);
             }

@@ -5,6 +5,7 @@ import com.example.paperlessquiz.question.Question;
 import java.io.Serializable;
 
 public class Round implements Serializable {
+    public static final String INTENT_EXTRA_NAME_THIS_ROUND = "thisRound";
     private String id, name, description;
     private int nrOfQuestions;
     private boolean acceptsAnswers,acceptsCorrections,corrected,closed;

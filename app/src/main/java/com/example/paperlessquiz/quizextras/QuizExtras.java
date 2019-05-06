@@ -3,6 +3,7 @@ package com.example.paperlessquiz.quizextras;
 import java.io.Serializable;
 
 public class QuizExtras implements Serializable {
+    public static final String INTENT_EXTRA_NAME_THIS_QUIZ_EXTRAS = "thisQuizExtras";
     private boolean open;
     private int nrOfRounds;
     private int nrOfParticipants;

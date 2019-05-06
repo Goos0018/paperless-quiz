@@ -14,12 +14,12 @@ import com.example.paperlessquiz.round.Round;
 
 import java.util.ArrayList;
 
-public class QuizOverviewAdapter extends ArrayAdapter<Round>
+public class QuizRoundsAdapter extends ArrayAdapter<Round>
 {
     private final Context context;
     //private final ArrayList<Round> values;
 
-    public QuizOverviewAdapter(Context context) {
+    public QuizRoundsAdapter(Context context) {
         super(context, R.layout.row_layout_dpa_show_quiz_overview, new ArrayList<Round>());
         this.context = context;
     }
@@ -41,8 +41,8 @@ public class QuizOverviewAdapter extends ArrayAdapter<Round>
         tvName.setText(getItem(position).getName());
         tvDescription.setText(getItem(position).getDescription());
 
-        tvNrOfQuestions.setText(getItem(position).getNrOfQuestions()+"");
-        tvAcceptsAnswers.setText(this.getItem(position).AcceptsAnswers() + "");
+        tvNrOfQuestions.setText(getItem(position).getNrOfQuestions()+" questions");
+        tvAcceptsAnswers.setText("Open: " + this.getItem(position).AcceptsAnswers());
         ivleft.setImageResource(R.mipmap.placeholder);
         return rowView;
     }

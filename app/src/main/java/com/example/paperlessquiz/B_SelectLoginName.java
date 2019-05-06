@@ -16,7 +16,6 @@ import com.example.paperlessquiz.loginentity.LoginEntity;
 import com.example.paperlessquiz.loginentity.LoginEntityParser;
 import com.example.paperlessquiz.quizbasics.QuizBasics;
 import com.example.paperlessquiz.quizextras.QuizExtras;
-import com.example.paperlessquiz.quizextras.QuizExtrasParser;
 
 /* Select your login name from a list.
     Depending on your role (participant or organizer, this list contains teams or organizers
@@ -41,7 +40,7 @@ public class B_SelectLoginName extends AppCompatActivity {
         lv_NamesList = (ListView) findViewById(R.id.lv_names_list);
         adapter = new ParticipantsAdapter(this);
         QuizBasics thisQuizBasics = (QuizBasics) getIntent().getSerializableExtra(QuizBasics.INTENT_EXTRA_NAME_THIS_QUIZ_BASICS);
-        QuizExtras thisQuizExtras = (QuizExtras) getIntent().getSerializableExtra(QuizExtrasParser.INTENT_EXTRA_NAME_THIS_QUIZ_EXTRAS);
+        QuizExtras thisQuizExtras = (QuizExtras) getIntent().getSerializableExtra(QuizExtras.INTENT_EXTRA_NAME_THIS_QUIZ_EXTRAS);
         loginType=getIntent().getStringExtra(LoginEntity.INTENT_EXTRA_NAME_THIS_LOGIN_TYPE);
         if (loginType.equals(LoginEntity.SELECTION_PARTICIPANT))
         {
@@ -63,7 +62,7 @@ public class B_SelectLoginName extends AppCompatActivity {
                 // Pass the thisLoginEntity object so the receiving screen can get the rest of the details
                 Intent intent = new Intent(B_SelectLoginName.this, C_LogInToQuiz.class);
                 intent.putExtra(QuizBasics.INTENT_EXTRA_NAME_THIS_QUIZ_BASICS, thisQuizBasics);
-                intent.putExtra(QuizExtrasParser.INTENT_EXTRA_NAME_THIS_QUIZ_EXTRAS, thisQuizExtras);
+                intent.putExtra(QuizExtras.INTENT_EXTRA_NAME_THIS_QUIZ_EXTRAS, thisQuizExtras);
                 intent.putExtra(LoginEntity.INTENT_EXTRA_NAME_THIS_LOGIN_ENTITY,adapter.getItem(position));
                 startActivity(intent);
 

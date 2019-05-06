@@ -12,7 +12,6 @@ public class QuizExtrasParser implements JsonParser<QuizExtras>
     public static final String QUIZ_NR_OF_ROUNDS = "QuizNrOfRounds";
     public static final String QUIZ_NR_OF_PARTICIPANTS = "QuizNrOfParticipants";
     public static final String QUIZ_EXTRAS_SHEETNAME = "QuizData";
-    public static final String INTENT_EXTRA_NAME_THIS_QUIZ_EXTRAS = "thisQuizExtras";
 
     public QuizExtras parse(JSONObject jo) throws JSONException {
         return new QuizExtras(jo.getBoolean(QUIZ_OPEN),

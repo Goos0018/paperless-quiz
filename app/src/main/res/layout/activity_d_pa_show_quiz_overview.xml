@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".DPA_ShowQuizOverview">
+    tools:context=".D_PA_ShowRounds">
 
     <ListView
         android:id="@+id/lv_display_rounds"

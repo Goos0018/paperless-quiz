@@ -17,6 +17,7 @@ import java.util.ArrayList;
 public class QuizOverviewAdapter extends ArrayAdapter<Round>
 {
     private final Context context;
+    //private final ArrayList<Round> values;
 
     public QuizOverviewAdapter(Context context) {
         super(context, R.layout.row_layout_dpa_show_quiz_overview, new ArrayList<Round>());
@@ -38,10 +39,11 @@ public class QuizOverviewAdapter extends ArrayAdapter<Round>
         ImageView ivleft = (ImageView) rowView.findViewById(R.id.iv_left);
 
         tvName.setText(getItem(position).getName());
-        tvDescription.setText(this.getItem(position).getDescription());
-        tvNrOfQuestions.setText(this.getItem(position).getNrOfQuestions());
+        tvDescription.setText(getItem(position).getDescription());
+
+        tvNrOfQuestions.setText(getItem(position).getNrOfQuestions()+"");
         tvAcceptsAnswers.setText(this.getItem(position).AcceptsAnswers() + "");
-          ivleft.setImageResource(R.mipmap.placeholder);
+        ivleft.setImageResource(R.mipmap.placeholder);
         return rowView;
     }
 }

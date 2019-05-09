@@ -6,6 +6,7 @@ public class Question {
     private String hint;
     private String question;
     private String correctAnswer;
+    private String thisAnswer;
     private int maxScore;
 
     public Question(String id, String roundID, String hint, String question, String correctAnswer, int maxScore) {
@@ -15,6 +16,7 @@ public class Question {
         this.question = question;
         this.correctAnswer = correctAnswer;
         this.maxScore = maxScore;
+        this.thisAnswer="";
     }
 
     public String getId() {
@@ -39,5 +41,13 @@ public class Question {
 
     public int getMaxScore() {
         return maxScore;
+    }
+
+    public String getThisAnswer() {
+        return thisAnswer;
+    }
+
+    public void setThisAnswer(String thisAnswer) {
+        this.thisAnswer = thisAnswer;
     }
 }

@@ -8,6 +8,7 @@ import java.util.List;
 public class AddQuestionsToRoundQuestionsAdapterLPL implements ListParsedListener<Question> {
 
     private RoundQuestionsAdapter roundQuestionsAdapter;
+    private Question[] questionsList;
 
     public AddQuestionsToRoundQuestionsAdapterLPL(RoundQuestionsAdapter roundQuestionsAdapter){
         this.roundQuestionsAdapter=roundQuestionsAdapter;

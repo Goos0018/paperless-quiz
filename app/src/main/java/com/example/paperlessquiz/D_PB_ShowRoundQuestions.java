@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -29,6 +30,7 @@ public class D_PB_ShowRoundQuestions extends AppCompatActivity {
     Round thisRound;
     ListView lv_ShowRoundQuestions;
     RoundQuestionsAdapter adapter;
+    Button btnSubmit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +43,25 @@ public class D_PB_ShowRoundQuestions extends AppCompatActivity {
         String scriptParams = GoogleAccess.PARAMNAME_DOC_ID + thisQuizBasics.getSheetDocID() + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_SHEET + "Questions" + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_GETDATA;
+        btnSubmit=(Button) findViewById(R.id.btnSubmit);
+        btnSubmit.setOnClickListener(
+                new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        Intent intent = new Intent(D_PB_ShowRoundQuestions.this, D_PC_ConfirmSubmitAnswers.class);
+                        intent.putExtra(QuizBasics.INTENT_EXTRA_NAME_THIS_QUIZ_BASICS, thisQuizBasics);
+                        intent.putExtra(QuizExtras.INTENT_EXTRA_NAME_THIS_QUIZ_EXTRAS, thisQuizExtras);
+                        intent.putExtra(LoginEntity.INTENT_EXTRA_NAME_THIS_LOGIN_ENTITY, thisLoginEntity);
+                        intent.putExtra("thisRoundAnswers","tmp" );
+                        startActivity(intent);
+                    }
+                }
+            );
+
+
+
         lv_ShowRoundQuestions = (ListView) findViewById(R.id.lv_show_round_questions);
         adapter = new RoundQuestionsAdapter(this);
 

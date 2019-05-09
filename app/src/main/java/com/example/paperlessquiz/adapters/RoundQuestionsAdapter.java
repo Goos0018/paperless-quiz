@@ -10,10 +10,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.paperlessquiz.Answer;
 import com.example.paperlessquiz.R;
 import com.example.paperlessquiz.question.Question;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /*
 public View getView(int position, View convertView, ViewGroup parent) {
@@ -51,6 +53,11 @@ final EditText Caption = (EditText) v;
 
 public class RoundQuestionsAdapter extends ArrayAdapter<Question> {
     private final Context context;
+    private String [] myAnswers = new String[10];
+
+    public String[] getMyAnswers() {
+        return myAnswers;
+    }
 
     public RoundQuestionsAdapter(Context context ) {
         super(context, R.layout.row_layout_select_login_name, new ArrayList<Question>());
@@ -93,9 +100,11 @@ public class RoundQuestionsAdapter extends ArrayAdapter<Question> {
                     final int position = v.getId();
                     final EditText Answer = (EditText) v;
                     getItem(position).setThisAnswer(Answer.getText().toString());
+                    myAnswers[position] = Answer.getText().toString();
                 }
             }
         });
+
 
        /* LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.row_layout_question,parent,false);

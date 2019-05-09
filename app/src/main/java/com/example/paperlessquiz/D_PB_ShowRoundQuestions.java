@@ -18,15 +18,21 @@ import com.example.paperlessquiz.loginentity.LoginEntity;
 import com.example.paperlessquiz.question.AddQuestionsToRoundQuestionsAdapterLPL;
 import com.example.paperlessquiz.question.Question;
 import com.example.paperlessquiz.question.QuestionParser;
+import com.example.paperlessquiz.question.QuestionsList;
 import com.example.paperlessquiz.quizbasics.QuizBasics;
 import com.example.paperlessquiz.quizextras.QuizExtras;
+import com.example.paperlessquiz.round.AddRoundsToQuizRoundsAdapterLPL;
 import com.example.paperlessquiz.round.Round;
+
+import java.util.List;
 
 public class D_PB_ShowRoundQuestions extends AppCompatActivity {
 
     QuizExtras thisQuizExtras;
     QuizBasics thisQuizBasics;
     LoginEntity thisLoginEntity;
+    QuestionsList allQuestions;
+    String answer1;
     Round thisRound;
     ListView lv_ShowRoundQuestions;
     RoundQuestionsAdapter adapter;
@@ -36,6 +42,7 @@ public class D_PB_ShowRoundQuestions extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_d_pb_show_round_questions);
+
         thisQuizBasics = (QuizBasics)getIntent().getSerializableExtra(QuizBasics.INTENT_EXTRA_NAME_THIS_QUIZ_BASICS);
         thisQuizExtras = (QuizExtras)getIntent().getSerializableExtra(QuizExtras.INTENT_EXTRA_NAME_THIS_QUIZ_EXTRAS);
         thisLoginEntity = (LoginEntity)getIntent().getSerializableExtra(LoginEntity.INTENT_EXTRA_NAME_THIS_LOGIN_ENTITY);
@@ -44,28 +51,11 @@ public class D_PB_ShowRoundQuestions extends AppCompatActivity {
                 GoogleAccess.PARAMNAME_SHEET + "Questions" + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_GETDATA;
         btnSubmit=(Button) findViewById(R.id.btnSubmit);
-        btnSubmit.setOnClickListener(
-                new View.OnClickListener()
-                {
-                    @Override
-                    public void onClick(View v)
-                    {
-                        Intent intent = new Intent(D_PB_ShowRoundQuestions.this, D_PC_ConfirmSubmitAnswers.class);
-                        intent.putExtra(QuizBasics.INTENT_EXTRA_NAME_THIS_QUIZ_BASICS, thisQuizBasics);
-                        intent.putExtra(QuizExtras.INTENT_EXTRA_NAME_THIS_QUIZ_EXTRAS, thisQuizExtras);
-                        intent.putExtra(LoginEntity.INTENT_EXTRA_NAME_THIS_LOGIN_ENTITY, thisLoginEntity);
-                        intent.putExtra("thisRoundAnswers","tmp" );
-                        startActivity(intent);
-                    }
-                }
-            );
-
-
-
         lv_ShowRoundQuestions = (ListView) findViewById(R.id.lv_show_round_questions);
         adapter = new RoundQuestionsAdapter(this);
-
+        final AddQuestionsToRoundQuestionsAdapterLPL listParsedListener = new AddQuestionsToRoundQuestionsAdapterLPL(adapter, allQuestions,answer1);
         lv_ShowRoundQuestions.setAdapter(adapter);
+        //lv_ShowRoundQuestions.setOnFocusChangeListener();
         lv_ShowRoundQuestions.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             @Override
@@ -80,14 +70,29 @@ public class D_PB_ShowRoundQuestions extends AppCompatActivity {
                 intent.putExtra(Round.INTENT_EXTRA_NAME_THIS_ROUND,adapter.getItem(position));
                 startActivity(intent);
 */
-                Toast.makeText(D_PB_ShowRoundQuestions.this, "Loading question", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(D_PB_ShowRoundQuestions.this, "Loading question", Toast.LENGTH_SHORT).show();
 
             }
         });
+        btnSubmit.setOnClickListener(
+                new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        Intent intent = new Intent(D_PB_ShowRoundQuestions.this, D_PC_ConfirmSubmitAnswers.class);
+                        intent.putExtra(QuizBasics.INTENT_EXTRA_NAME_THIS_QUIZ_BASICS, thisQuizBasics);
+                        intent.putExtra(QuizExtras.INTENT_EXTRA_NAME_THIS_QUIZ_EXTRAS, thisQuizExtras);
+                        intent.putExtra(LoginEntity.INTENT_EXTRA_NAME_THIS_LOGIN_ENTITY, thisLoginEntity);
+                        //intent.putExtra(QuestionsList.INTENT_PUT_EXTRA_NAME_THIS_ROUND_ANSWERS, listParsedListener.getQuestionsList());
+                        intent.putExtra(QuestionsList.INTENT_PUT_EXTRA_NAME_THIS_ROUND_ANSWERS,adapter.getMyAnswers()[0]);
+                        startActivity(intent);
+                    }
+                }
+        );
 
-
-    GoogleAccessGet<Question> googleAccessGet = new GoogleAccessGet<Question>(this, scriptParams);
-        googleAccessGet.getItems(new QuestionParser(), new AddQuestionsToRoundQuestionsAdapterLPL(adapter),
+        GoogleAccessGet<Question> googleAccessGet = new GoogleAccessGet<Question>(this, scriptParams);
+        googleAccessGet.getItems(new QuestionParser(), listParsedListener,
                 new LoadingListenerImpl(this, "Please wait", "Loading questions", "Something went wrong: "));
     }
 }

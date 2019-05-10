@@ -4,18 +4,17 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewDebug;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.paperlessquiz.Answer;
 import com.example.paperlessquiz.R;
+import com.example.paperlessquiz.answer.Answer;
 import com.example.paperlessquiz.question.Question;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /*
 public View getView(int position, View convertView, ViewGroup parent) {
@@ -53,15 +52,24 @@ final EditText Caption = (EditText) v;
 
 public class RoundQuestionsAdapter extends ArrayAdapter<Question> {
     private final Context context;
-    private String [] myAnswers = new String[10];
+    private int nrOfQuestions;
+    private ArrayList<Answer> myAnswers;
 
-    public String[] getMyAnswers() {
+    public ArrayList<Answer> getMyAnswers() {
         return myAnswers;
     }
 
-    public RoundQuestionsAdapter(Context context ) {
+    //This adapter must know the number of questions in the round so it knows how many answers to expect
+    public RoundQuestionsAdapter(Context context,int nrOfQuestions ) {
         super(context, R.layout.row_layout_select_login_name, new ArrayList<Question>());
         this.context = context;
+        this.nrOfQuestions = nrOfQuestions;
+        //Initialize the Answers as blank
+        myAnswers = new ArrayList<Answer>();
+        for (int i= 0;i<nrOfQuestions;i++){
+            Answer answer = new Answer(i+1);
+            myAnswers.add(i,answer);
+        }
     }
 
     //Viewholder is an object that holds everything that is displayed in the ListView
@@ -102,7 +110,10 @@ public class RoundQuestionsAdapter extends ArrayAdapter<Question> {
                     final EditText Answer = (EditText) v;
                     getItem(position).setThisAnswer(Answer.getText().toString());
                     //This adds the answer to the array holding all answers, so we have access to them when submitting
-                    myAnswers[position] = Answer.getText().toString();
+                    Answer thisAnswer = new Answer(position+1,Answer.getText().toString(),"tmp");
+                    //myAnswers.remove(position);
+                    myAnswers.set(position,thisAnswer);
+
                 }
             }
         });

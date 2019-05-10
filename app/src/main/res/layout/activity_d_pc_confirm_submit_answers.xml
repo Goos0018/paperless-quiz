@@ -9,8 +9,19 @@
 
 
     <TextView
-        android:id="@+id/tvDisplayAnswers"
+        android:id="@+id/tvIntro"
         android:layout_width="match_parent"
-        android:layout_height="471dp"
-        android:text="TextView" />
+        android:layout_height="58dp"
+        android:text="Please review your answers before submitting them" />
+
+    <Button
+        android:id="@+id/btnSubmitAnswers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Submit answers" />
+
+    <ListView
+        android:id="@+id/lv_DisplayAnswers"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </LinearLayout>

@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.example.paperlessquiz.adapters.QuizRoundsAdapter;
 import com.example.paperlessquiz.adapters.RoundQuestionsAdapter;
+import com.example.paperlessquiz.answer.Answer;
 import com.example.paperlessquiz.google.access.GoogleAccess;
 import com.example.paperlessquiz.google.access.GoogleAccessGet;
 import com.example.paperlessquiz.google.access.LoadingListenerImpl;
@@ -24,6 +25,7 @@ import com.example.paperlessquiz.quizextras.QuizExtras;
 import com.example.paperlessquiz.round.AddRoundsToQuizRoundsAdapterLPL;
 import com.example.paperlessquiz.round.Round;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class D_PB_ShowRoundQuestions extends AppCompatActivity {
@@ -31,8 +33,8 @@ public class D_PB_ShowRoundQuestions extends AppCompatActivity {
     QuizExtras thisQuizExtras;
     QuizBasics thisQuizBasics;
     LoginEntity thisLoginEntity;
-    QuestionsList allQuestions;
-    String answer1;
+    ArrayList<Answer> answers;
+    //String answer1;
     Round thisRound;
     ListView lv_ShowRoundQuestions;
     RoundQuestionsAdapter adapter;
@@ -52,8 +54,9 @@ public class D_PB_ShowRoundQuestions extends AppCompatActivity {
                 GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_GETDATA;
         btnSubmit=(Button) findViewById(R.id.btnSubmit);
         lv_ShowRoundQuestions = (ListView) findViewById(R.id.lv_show_round_questions);
-        adapter = new RoundQuestionsAdapter(this);
-        final AddQuestionsToRoundQuestionsAdapterLPL listParsedListener = new AddQuestionsToRoundQuestionsAdapterLPL(adapter, allQuestions,answer1);
+        adapter = new RoundQuestionsAdapter(this,thisRound.getNrOfQuestions());
+        //final AddQuestionsToRoundQuestionsAdapterLPL listParsedListener = new AddQuestionsToRoundQuestionsAdapterLPL(adapter, allQuestions,answer1);
+        final AddQuestionsToRoundQuestionsAdapterLPL listParsedListener = new AddQuestionsToRoundQuestionsAdapterLPL(adapter);
         lv_ShowRoundQuestions.setAdapter(adapter);
         //lv_ShowRoundQuestions.setOnFocusChangeListener();
         lv_ShowRoundQuestions.setOnItemClickListener(new AdapterView.OnItemClickListener()
@@ -85,7 +88,7 @@ public class D_PB_ShowRoundQuestions extends AppCompatActivity {
                         intent.putExtra(QuizExtras.INTENT_EXTRA_NAME_THIS_QUIZ_EXTRAS, thisQuizExtras);
                         intent.putExtra(LoginEntity.INTENT_EXTRA_NAME_THIS_LOGIN_ENTITY, thisLoginEntity);
                         //intent.putExtra(QuestionsList.INTENT_PUT_EXTRA_NAME_THIS_ROUND_ANSWERS, listParsedListener.getQuestionsList());
-                        intent.putExtra(QuestionsList.INTENT_PUT_EXTRA_NAME_THIS_ROUND_ANSWERS,adapter.getMyAnswers()[0]);
+                        intent.putExtra(QuestionsList.INTENT_PUT_EXTRA_NAME_THIS_ROUND_ANSWERS,adapter.getMyAnswers());
                         startActivity(intent);
                     }
                 }

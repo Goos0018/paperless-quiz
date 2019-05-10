@@ -64,6 +64,7 @@ public class RoundQuestionsAdapter extends ArrayAdapter<Question> {
         this.context = context;
     }
 
+    //Viewholder is an object that holds everything that is displayed in the ListView
     class ViewHolder
     {
         TextView question;
@@ -100,19 +101,11 @@ public class RoundQuestionsAdapter extends ArrayAdapter<Question> {
                     final int position = v.getId();
                     final EditText Answer = (EditText) v;
                     getItem(position).setThisAnswer(Answer.getText().toString());
+                    //This adds the answer to the array holding all answers, so we have access to them when submitting
                     myAnswers[position] = Answer.getText().toString();
                 }
             }
         });
-
-
-       /* LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View rowView = inflater.inflate(R.layout.row_layout_question,parent,false);
-
-        TextView tvQuestion = (TextView) rowView.findViewById(R.id.tvQuestion);
-
-        tvQuestion.setText(getItem(position).getQuestion());
-        */
 
         return convertView;
     }

@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.paperlessquiz.google.access.EventLogger;
 import com.example.paperlessquiz.google.access.GoogleAccess;
 import com.example.paperlessquiz.google.access.GoogleAccessAddLine;
 import com.example.paperlessquiz.loginentity.LoginEntity;
@@ -96,14 +97,8 @@ public class C_LogInToQuiz extends AppCompatActivity {
     {
         //if you are exiting this screen without pressing submit, log this event
         if (!submitPressed && loginCompleted) {
-            Date now = new Date();
-            String strToday = now.toString();
-            String scriptParams = GoogleAccess.PARAMNAME_DOC_ID + thisQuizBasics.getSheetDocID() + GoogleAccess.PARAM_CONCATENATOR +
-                    GoogleAccess.PARAMNAME_SHEET + "TeamRegistration" + GoogleAccess.PARAM_CONCATENATOR +
-                    "LineToAdd=[\"" + strToday + "\",\"" + thisLoginEntity.getName() + "\",\"Exited!\"]" + GoogleAccess.PARAM_CONCATENATOR +
-                    GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_ADDLINE;
-            GoogleAccessAddLine teamExit = new GoogleAccessAddLine(C_LogInToQuiz.this, scriptParams);
-            teamExit.addLine();
+            EventLogger logger = new EventLogger(C_LogInToQuiz.this,thisQuizBasics.getSheetDocID(), GoogleAccess.SHEET_TEAMCONTROL);
+            logger.logEvent(thisLoginEntity.getName(),"Exited the app");
         }
         super.onPause();
         submitPressed=false; //reset this each time

@@ -1,7 +1,13 @@
 package com.example.paperlessquiz;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -9,6 +15,7 @@ import android.widget.ListView;
 
 import com.example.paperlessquiz.adapters.QuizBasicsAdapter;
 import com.example.paperlessquiz.google.access.GoogleAccess;
+import com.example.paperlessquiz.google.access.GoogleAccessAddLine;
 import com.example.paperlessquiz.google.access.GoogleAccessGet;
 import com.example.paperlessquiz.google.access.LoadingListenerImpl;
 import com.example.paperlessquiz.quizbasics.AddQuizBasicsToAdapterLPL;
@@ -57,4 +64,44 @@ public class MainActivity extends AppCompatActivity {
     googleAccessGet.getItems(new QuizBasicsParser(), new AddQuizBasicsToAdapterLPL(adapter),
             new LoadingListenerImpl(this, "Please wait", "Loading quizzes", "Something went wrong: "));
   }
+
+  //This part is used to log whenever the user exits the app when he is not supposed to do so
+    @Override
+    public void onPause()
+    {
+        //GoogleAccessAddLine logExit = new GoogleAccessAddLine(this,GoogleAccess.PARAMNAME_ACTION+GoogleAccess.PARAMVALUE_ADDLINE + );
+        //logExit.addLine();
+        super.onPause();
+    }
+        /*
+      try
+            {
+                AlertDialog.Builder dialog = new AlertDialog.Builder(super.getBaseContext());
+                dialog.setTitle( "Hello" )
+                        .setIcon(R.mipmap.placeholder)
+                        .setMessage("Do  you really want to exit the app?")
+                         .setNegativeButton("Cancel", new DialogInterface.OnClickListener()
+                         {
+                            public void onClick(DialogInterface dialoginterface, int i)
+                            {
+                                dialoginterface.cancel();
+                            }
+                         })
+                        .setPositiveButton("Ok", new DialogInterface.OnClickListener()
+                        {
+                            public void onClick(DialogInterface dialoginterface, int i) {
+                                confirmed=true;
+                            }
+                        }).show();
+                flag = false; //reset you flag
+            }
+            catch(Exception e){}
+
+        if (confirmed){super.onPause();} else{
+            super.onResume();}
+            */
+
+
+
 }
+

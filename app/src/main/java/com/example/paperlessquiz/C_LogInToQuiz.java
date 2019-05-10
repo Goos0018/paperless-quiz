@@ -9,9 +9,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.paperlessquiz.google.access.GoogleAccess;
+import com.example.paperlessquiz.google.access.GoogleAccessAddLine;
 import com.example.paperlessquiz.loginentity.LoginEntity;
 import com.example.paperlessquiz.quizbasics.QuizBasics;
 import com.example.paperlessquiz.quizextras.QuizExtras;
+
+import java.util.Date;
 
 
 public class C_LogInToQuiz extends AppCompatActivity {
@@ -19,6 +23,8 @@ public class C_LogInToQuiz extends AppCompatActivity {
     QuizExtras thisQuizExtras;
     QuizBasics thisQuizBasics;
     LoginEntity thisLoginEntity;
+    boolean submitPressed = false;
+    boolean loginCompleted = false;
 
     // TODO: pass quiz docID and load data from the real quiz (including logins and teams
     // TODO: update layout to be able to select a team or role and actually log in if the quiz allow this
@@ -52,7 +58,18 @@ public class C_LogInToQuiz extends AppCompatActivity {
                     {
                         if (thisLoginEntity.getType().equals(LoginEntity.SELECTION_PARTICIPANT)) {
                             //If it is a participant, start the Overview screen
-                            //Toast.makeText(C_LogInToQuiz.this, "Successful login", Toast.LENGTH_SHORT).show();
+                            //First log that the user is logging in
+                            //This part is used to log whenever the user exits the app when he is not supposed to do so
+                            Date now = new Date();
+                            String strToday = now.toString();
+                            String scriptParams= GoogleAccess.PARAMNAME_DOC_ID + thisQuizBasics.getSheetDocID() + GoogleAccess.PARAM_CONCATENATOR +
+                                    GoogleAccess.PARAMNAME_SHEET + "TeamRegistration" + GoogleAccess.PARAM_CONCATENATOR +
+                                    "LineToAdd=[\"" + strToday + "\",\"" + thisLoginEntity.getName() + "\",\"logged in\"]" +  GoogleAccess.PARAM_CONCATENATOR +
+                                    GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_ADDLINE;
+                            GoogleAccessAddLine teamLogIn = new GoogleAccessAddLine(C_LogInToQuiz.this, scriptParams );
+                            teamLogIn.addLine();
+                            submitPressed = true;
+                            loginCompleted=true;
                             Intent intent = new Intent(C_LogInToQuiz.this, D_PA_ShowRounds.class);
                             intent.putExtra(QuizBasics.INTENT_EXTRA_NAME_THIS_QUIZ_BASICS, thisQuizBasics);
                             intent.putExtra(QuizExtras.INTENT_EXTRA_NAME_THIS_QUIZ_EXTRAS, thisQuizExtras);
@@ -73,5 +90,22 @@ public class C_LogInToQuiz extends AppCompatActivity {
             }
         });
 
+    }
+    @Override
+    public void onPause()
+    {
+        //if you are exiting this screen without pressing submit, log this event
+        if (!submitPressed && loginCompleted) {
+            Date now = new Date();
+            String strToday = now.toString();
+            String scriptParams = GoogleAccess.PARAMNAME_DOC_ID + thisQuizBasics.getSheetDocID() + GoogleAccess.PARAM_CONCATENATOR +
+                    GoogleAccess.PARAMNAME_SHEET + "TeamRegistration" + GoogleAccess.PARAM_CONCATENATOR +
+                    "LineToAdd=[\"" + strToday + "\",\"" + thisLoginEntity.getName() + "\",\"Exited!\"]" + GoogleAccess.PARAM_CONCATENATOR +
+                    GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_ADDLINE;
+            GoogleAccessAddLine teamExit = new GoogleAccessAddLine(C_LogInToQuiz.this, scriptParams);
+            teamExit.addLine();
+        }
+        super.onPause();
+        submitPressed=false; //reset this each time
     }
 }

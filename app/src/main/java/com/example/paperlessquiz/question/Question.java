@@ -1,6 +1,8 @@
 package com.example.paperlessquiz.question;
 
-public class Question {
+import java.io.Serializable;
+
+public class Question implements Serializable {
     private int id;
     private int roundID;
     private String hint;

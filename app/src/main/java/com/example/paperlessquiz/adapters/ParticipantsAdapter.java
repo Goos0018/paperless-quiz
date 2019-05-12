@@ -13,13 +13,19 @@ import com.example.paperlessquiz.R;
 import com.example.paperlessquiz.loginentity.LoginEntity;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 
 public class ParticipantsAdapter extends ArrayAdapter<LoginEntity> {
 
     private final Context context;
 
-    public ParticipantsAdapter(Context context) {
-        super(context, R.layout.row_layout_select_login_name, new ArrayList<LoginEntity>());
+    public ParticipantsAdapter(Context context, ArrayList<LoginEntity> list) {
+        //Construct a list from the Hashmap
+        super(context, R.layout.row_layout_select_login_name, list);
         this.context = context;
     }
 

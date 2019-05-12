@@ -9,8 +9,9 @@ public class GetQuizExtrasLPL implements ListParsedListener<QuizExtras> {
 
     private QuizExtras quizExtras;
 
-    public GetQuizExtrasLPL(QuizExtras quizExtras) {
-        this.quizExtras = quizExtras;
+    public GetQuizExtrasLPL() {
+    //public GetQuizExtrasLPL(QuizExtras quizExtras) {
+        this.quizExtras = new QuizExtras();
 
     }
 

@@ -33,4 +33,8 @@ public class LoginEntity implements Serializable {
     public String getType() {
         return type;
     }
+
+    public String getId() {
+        return id;
+    }
 }

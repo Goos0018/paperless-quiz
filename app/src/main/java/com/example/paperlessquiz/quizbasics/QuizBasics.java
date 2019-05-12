@@ -30,6 +30,13 @@ public class QuizBasics implements Serializable
 
      */
 
+    public QuizBasics() {
+        this.id = "";
+        this.name = "";
+        this.description = "";
+        this.sheetDocID = "";
+    }
+
     public QuizBasics(String id, String name, String description, String sheetDocID) {
         this.id = id;
         this.name = name;

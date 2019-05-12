@@ -15,7 +15,9 @@ public class QuizExtras implements Serializable {
     }
 
     public QuizExtras(){
-
+        this.open = false;
+        this.nrOfRounds = 0;
+        this.nrOfParticipants = 0;
     }
 
 

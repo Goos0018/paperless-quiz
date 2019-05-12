@@ -11,6 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".D_ParticipantHome"></activity>
         <activity android:name=".D_PC_ConfirmSubmitAnswers" />
         <activity android:name=".D_PB_ShowRoundQuestions" />
         <activity android:name=".D_PA_ShowRounds" />

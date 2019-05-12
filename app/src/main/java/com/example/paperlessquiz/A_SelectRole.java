@@ -10,21 +10,23 @@ import android.widget.TextView;
 import com.example.paperlessquiz.google.access.GoogleAccess;
 import com.example.paperlessquiz.google.access.GoogleAccessGet;
 import com.example.paperlessquiz.google.access.LoadingListenerImpl;
+import com.example.paperlessquiz.loginentity.AddLoginEntitiesToParticipantsAdapterLPL;
 import com.example.paperlessquiz.loginentity.LoginEntity;
+import com.example.paperlessquiz.loginentity.LoginEntityParser;
 import com.example.paperlessquiz.quizextras.QuizExtras;
 import com.example.paperlessquiz.quizextras.QuizExtrasParser;
 import com.example.paperlessquiz.quizextras.GetQuizExtrasLPL;
 import com.example.paperlessquiz.quizbasics.QuizBasics;
 
 /* This screen allows you to select if you are an organizer or a participant.
-Additional details about the quiz are retrieved from the sheet that is passed in quizBasics
-These details are stored in thisQuizExtras.
+All data about the quiz is loaded and stored in a Quiz object
 TODO: string resources and constants
 TODO: layout
  */
 
 public class A_SelectRole extends AppCompatActivity {
 
+    Quiz thisQuiz = new Quiz();
     String quizSheetID, scriptParams;
     boolean quizIsOpen;
     Button btnParticipant;
@@ -40,28 +42,43 @@ public class A_SelectRole extends AppCompatActivity {
         btnOrganizer=findViewById(R.id.btn_organizer);
         tvWelcome=findViewById(R.id.tv_welcome);
         QuizBasics thisQuizBasics = (QuizBasics) getIntent().getSerializableExtra(QuizBasics.INTENT_EXTRA_NAME_THIS_QUIZ_BASICS);
-        QuizExtras quizExtras = new QuizExtras();
-        String scriptParams = GoogleAccess.PARAMNAME_DOC_ID + thisQuizBasics.getSheetDocID() + GoogleAccess.PARAM_CONCATENATOR +
+        //Get the additional data we don't have yet: nr of rounds, nr of participants, status,  ...
+        //QuizExtras quizExtras = new QuizExtras();
+        String scriptParamsForExtraData = GoogleAccess.PARAMNAME_DOC_ID + thisQuizBasics.getSheetDocID() + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_SHEET + QuizExtrasParser.QUIZ_EXTRAS_SHEETNAME + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_GETDATA;
-        GoogleAccessGet<QuizExtras> googleAccessGet = new GoogleAccessGet<QuizExtras>(this, scriptParams);
-        final GetQuizExtrasLPL getQuizExtrasLPL = new GetQuizExtrasLPL(quizExtras);
-        googleAccessGet.getItems(new QuizExtrasParser(), getQuizExtrasLPL,
-                new LoadingListenerImpl(this, "Please wait", "Loading quiz", "Something went wrong: "));
+        GoogleAccessGet<QuizExtras> googleAccessGetQuizExtraData = new GoogleAccessGet<QuizExtras>(this, scriptParamsForExtraData);
+        final GetQuizExtrasLPL getQuizExtrasLPL = new GetQuizExtrasLPL();
+        googleAccessGetQuizExtraData.getItems(new QuizExtrasParser(), getQuizExtrasLPL,
+                new LoadingListenerImpl(this, "Please wait", "Loading quiz data", "Something went wrong: "));
+        //Get the list of participating teams
+        String scriptParamsForTeams= GoogleAccess.PARAMNAME_DOC_ID + thisQuizBasics.getSheetDocID() + GoogleAccess.PARAM_CONCATENATOR +
+                GoogleAccess.PARAMNAME_SHEET + "Teams" + GoogleAccess.PARAM_CONCATENATOR +
+                GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_GETDATA;
+        GoogleAccessGet<LoginEntity> googleAccessGetTeams = new GoogleAccessGet<LoginEntity>(this, scriptParamsForTeams);
+        final AddLoginEntitiesToParticipantsAdapterLPL teamsLPL = new AddLoginEntitiesToParticipantsAdapterLPL();
+        googleAccessGetTeams.getItems(new LoginEntityParser(), teamsLPL,
+                new LoadingListenerImpl(this, "Please wait", "Loading quiz participants...", "Something went wrong: "));
+
 
         btnParticipant.setOnClickListener(new View.OnClickListener() {
                   @Override
             public void onClick(View view){
                       if (getQuizExtrasLPL.getQuizExtras().isOpen()){
-                          tvWelcome.setText("Welcome to" + thisQuizBasics.getName() + " QuizDetails open is " + quizExtras.isOpen());
+                          //if we are here, all ooading actions should be finished, so we can set the result in the Quiz object
+                          //tvWelcome.setText("Welcome to" + thisQuizBasics.getName() + " QuizDetails open is " + quizExtras.isOpen());
+                          thisQuiz.setListData(thisQuizBasics);
+                          thisQuiz.setAdditionalData(getQuizExtrasLPL.getQuizExtras());
+                          thisQuiz.setTeams(teamsLPL.getLoginEntities());
                           Intent intent = new Intent(A_SelectRole.this, B_SelectLoginName.class);
-                          intent.putExtra(QuizBasics.INTENT_EXTRA_NAME_THIS_QUIZ_BASICS, thisQuizBasics);
-                          intent.putExtra(QuizExtras.INTENT_EXTRA_NAME_THIS_QUIZ_EXTRAS, quizExtras);
+                          intent.putExtra("ThisQuiz", thisQuiz);
+                          //intent.putExtra(QuizBasics.INTENT_EXTRA_NAME_THIS_QUIZ_BASICS, thisQuizBasics);
+                          //intent.putExtra(QuizExtras.INTENT_EXTRA_NAME_THIS_QUIZ_EXTRAS, quizExtras);
                           intent.putExtra(LoginEntity.INTENT_EXTRA_NAME_THIS_LOGIN_TYPE, LoginEntity.SELECTION_PARTICIPANT);
                           startActivity(intent);
                       }
                       else {
-                          tvWelcome.setText("QuizDetails " + thisQuizBasics.getName() + " is not open yet: " + quizExtras.isOpen());
+                          tvWelcome.setText("QuizDetails " + thisQuizBasics.getName() + " is not open yet");
                       }
 
                   }
@@ -71,11 +88,11 @@ public class A_SelectRole extends AppCompatActivity {
         btnOrganizer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view){
-                Intent intent = new Intent(A_SelectRole.this, B_SelectLoginName.class);
-                intent.putExtra(QuizBasics.INTENT_EXTRA_NAME_THIS_QUIZ_BASICS, thisQuizBasics);
-                intent.putExtra(QuizExtras.INTENT_EXTRA_NAME_THIS_QUIZ_EXTRAS, quizExtras);
-                intent.putExtra(LoginEntity.INTENT_EXTRA_NAME_THIS_LOGIN_TYPE, LoginEntity.SELECTION_ORGANIZER);
-                startActivity(intent);
+                //Intent intent = new Intent(A_SelectRole.this, B_SelectLoginName.class);
+                //intent.putExtra(QuizBasics.INTENT_EXTRA_NAME_THIS_QUIZ_BASICS, thisQuizBasics);
+                //intent.putExtra(QuizExtras.INTENT_EXTRA_NAME_THIS_QUIZ_EXTRAS, quizExtras);
+                //intent.putExtra(LoginEntity.INTENT_EXTRA_NAME_THIS_LOGIN_TYPE, LoginEntity.SELECTION_ORGANIZER);
+                //startActivity(intent);
             }
 
         });

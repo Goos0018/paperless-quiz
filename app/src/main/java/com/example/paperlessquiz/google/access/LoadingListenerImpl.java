@@ -21,7 +21,7 @@ public class LoadingListenerImpl implements LoadingListener {
 
     @Override
     public void loadingStarted() {
-        loading =  ProgressDialog.show(context,loadingTitle,loadingMessage,false,true);
+        loading = ProgressDialog.show(context, loadingTitle, loadingMessage, false, true);
     }
 
     @Override
@@ -31,7 +31,7 @@ public class LoadingListenerImpl implements LoadingListener {
 
     @Override
     public void loadingError(String error) {
-        Toast.makeText(context,errorMessage+error,Toast.LENGTH_LONG).show();
+        Toast.makeText(context, errorMessage + error, Toast.LENGTH_LONG).show();
     }
 
 }

@@ -1,16 +1,32 @@
 package com.example.paperlessquiz.round;
 
 import com.example.paperlessquiz.question.Question;
+import com.example.paperlessquiz.question.QuestionsList;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Round implements Serializable {
     public static final String INTENT_EXTRA_NAME_THIS_ROUND = "thisRound";
-    private String id, name, description;
+    private int id;
+    private String name, description;
     private int nrOfQuestions;
-    private boolean acceptsAnswers,acceptsCorrections,corrected,closed;
+    private boolean acceptsAnswers, acceptsCorrections, corrected, closed;
+    //private QuestionsList questions;
 
-    public Round(String id, String name, String description, int nrOfQuestions,
+    public Round() {
+        this.id = 0;
+        this.name = "";
+        this.description = "";
+        this.nrOfQuestions = 0;
+        this.acceptsAnswers = false;
+        this.acceptsCorrections = false;
+        this.corrected = false;
+        this.closed = false;
+        //this.questions = new QuestionsList();
+    }
+
+    public Round(int id, String name, String description, int nrOfQuestions,
                  boolean acceptsAnswers, boolean acceptsCorrections, boolean corrected, boolean closed) {
         this.id = id;
         this.name = name;
@@ -20,6 +36,7 @@ public class Round implements Serializable {
         this.acceptsCorrections = acceptsCorrections;
         this.corrected = corrected;
         this.closed = closed;
+
     }
 
     public String getName() {

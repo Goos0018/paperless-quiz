@@ -3,6 +3,7 @@ package com.example.paperlessquiz;
 import android.util.Log;
 
 import com.example.paperlessquiz.loginentity.LoginEntity;
+import com.example.paperlessquiz.question.QuestionsList;
 import com.example.paperlessquiz.quizbasics.QuizBasics;
 import com.example.paperlessquiz.quizextras.QuizExtras;
 import com.example.paperlessquiz.round.Round;
@@ -17,6 +18,7 @@ public class Quiz implements Serializable {
     private HashMap<String, LoginEntity> teams;
     private HashMap<String, LoginEntity> organizers;
     private ArrayList<Round> rounds;
+    private ArrayList<QuestionsList> questions;
 
     public Quiz() {
         this.listData = new QuizBasics();
@@ -65,5 +67,13 @@ public class Quiz implements Serializable {
 
     public void setRounds(ArrayList<Round> rounds) {
         this.rounds = rounds;
+    }
+
+    public ArrayList<QuestionsList> getQuestions() {
+        return questions;
+    }
+
+    public void setQuestions(ArrayList<QuestionsList> questions) {
+        this.questions = questions;
     }
 }

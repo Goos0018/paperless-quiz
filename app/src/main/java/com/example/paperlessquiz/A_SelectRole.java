@@ -10,9 +10,12 @@ import android.widget.TextView;
 import com.example.paperlessquiz.google.access.GoogleAccess;
 import com.example.paperlessquiz.google.access.GoogleAccessGet;
 import com.example.paperlessquiz.google.access.LoadingListenerImpl;
-import com.example.paperlessquiz.loginentity.AddLoginEntitiesToParticipantsAdapterLPL;
+import com.example.paperlessquiz.loginentity.GetLoginEntriesLPL;
 import com.example.paperlessquiz.loginentity.LoginEntity;
 import com.example.paperlessquiz.loginentity.LoginEntityParser;
+import com.example.paperlessquiz.question.AddQuestionsToRoundQuestionsAdapterLPL;
+import com.example.paperlessquiz.question.Question;
+import com.example.paperlessquiz.question.QuestionParser;
 import com.example.paperlessquiz.quizextras.QuizExtras;
 import com.example.paperlessquiz.quizextras.QuizExtrasParser;
 import com.example.paperlessquiz.quizextras.GetQuizExtrasLPL;
@@ -45,7 +48,7 @@ public class A_SelectRole extends AppCompatActivity {
         //Get the additional data we don't have yet: nr of rounds, nr of participants, status,  ...
         //QuizExtras quizExtras = new QuizExtras();
         String scriptParamsForExtraData = GoogleAccess.PARAMNAME_DOC_ID + thisQuizBasics.getSheetDocID() + GoogleAccess.PARAM_CONCATENATOR +
-                GoogleAccess.PARAMNAME_SHEET + QuizExtrasParser.QUIZ_EXTRAS_SHEETNAME + GoogleAccess.PARAM_CONCATENATOR +
+                GoogleAccess.PARAMNAME_SHEET + GoogleAccess.SHEEET_QUIZDATA + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_GETDATA;
         GoogleAccessGet<QuizExtras> googleAccessGetQuizExtraData = new GoogleAccessGet<QuizExtras>(this, scriptParamsForExtraData);
         final GetQuizExtrasLPL getQuizExtrasLPL = new GetQuizExtrasLPL();
@@ -53,13 +56,28 @@ public class A_SelectRole extends AppCompatActivity {
                 new LoadingListenerImpl(this, "Please wait", "Loading quiz data", "Something went wrong: "));
         //Get the list of participating teams
         String scriptParamsForTeams= GoogleAccess.PARAMNAME_DOC_ID + thisQuizBasics.getSheetDocID() + GoogleAccess.PARAM_CONCATENATOR +
-                GoogleAccess.PARAMNAME_SHEET + "Teams" + GoogleAccess.PARAM_CONCATENATOR +
+                GoogleAccess.PARAMNAME_SHEET + GoogleAccess.SHEET_TEAMS + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_GETDATA;
         GoogleAccessGet<LoginEntity> googleAccessGetTeams = new GoogleAccessGet<LoginEntity>(this, scriptParamsForTeams);
-        final AddLoginEntitiesToParticipantsAdapterLPL teamsLPL = new AddLoginEntitiesToParticipantsAdapterLPL();
+        final GetLoginEntriesLPL teamsLPL = new GetLoginEntriesLPL();
         googleAccessGetTeams.getItems(new LoginEntityParser(), teamsLPL,
                 new LoadingListenerImpl(this, "Please wait", "Loading quiz participants...", "Something went wrong: "));
-
+        //Get the list of organizers
+        String scriptParamsForOrganizers= GoogleAccess.PARAMNAME_DOC_ID + thisQuizBasics.getSheetDocID() + GoogleAccess.PARAM_CONCATENATOR +
+                GoogleAccess.PARAMNAME_SHEET + GoogleAccess.SHEET_ORGANIZERS + GoogleAccess.PARAM_CONCATENATOR +
+                GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_GETDATA;
+        GoogleAccessGet<LoginEntity> googleAccessGetOreganizers = new GoogleAccessGet<LoginEntity>(this, scriptParamsForOrganizers);
+        final GetLoginEntriesLPL organizersLPL = new GetLoginEntriesLPL();
+        googleAccessGetTeams.getItems(new LoginEntityParser(), organizersLPL,
+                new LoadingListenerImpl(this, "Please wait", "Loading quiz participants...", "Something went wrong: "));
+        //Get the list of questions
+        final AddQuestionsToRoundQuestionsAdapterLPL questionsLPL = new AddQuestionsToRoundQuestionsAdapterLPL();
+        String scriptParamsForQuestions = GoogleAccess.PARAMNAME_DOC_ID + thisQuizBasics.getSheetDocID() + GoogleAccess.PARAM_CONCATENATOR +
+                GoogleAccess.PARAMNAME_SHEET + GoogleAccess.SHEET_QUESTIONS + GoogleAccess.PARAM_CONCATENATOR +
+                GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_GETDATA;
+        GoogleAccessGet<Question> googleAccessGetQuestions = new GoogleAccessGet<Question>(this, scriptParamsForQuestions);
+        googleAccessGetQuestions.getItems(new QuestionParser(), questionsLPL,
+                new LoadingListenerImpl(this, "Please wait", "Loading questions", "Something went wrong: "));
 
         btnParticipant.setOnClickListener(new View.OnClickListener() {
                   @Override
@@ -70,6 +88,8 @@ public class A_SelectRole extends AppCompatActivity {
                           thisQuiz.setListData(thisQuizBasics);
                           thisQuiz.setAdditionalData(getQuizExtrasLPL.getQuizExtras());
                           thisQuiz.setTeams(teamsLPL.getLoginEntities());
+                          thisQuiz.setOrganizers(organizersLPL.getLoginEntities());
+                          thisQuiz.setQuestions(questionsLPL.getAllQuestionsPerRound());
                           Intent intent = new Intent(A_SelectRole.this, B_SelectLoginName.class);
                           intent.putExtra("ThisQuiz", thisQuiz);
                           //intent.putExtra(QuizBasics.INTENT_EXTRA_NAME_THIS_QUIZ_BASICS, thisQuizBasics);

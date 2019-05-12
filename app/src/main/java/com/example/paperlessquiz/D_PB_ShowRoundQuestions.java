@@ -56,7 +56,8 @@ public class D_PB_ShowRoundQuestions extends AppCompatActivity {
         lv_ShowRoundQuestions = (ListView) findViewById(R.id.lv_show_round_questions);
         adapter = new RoundQuestionsAdapter(this,thisRound.getNrOfQuestions());
         //final AddQuestionsToRoundQuestionsAdapterLPL listParsedListener = new AddQuestionsToRoundQuestionsAdapterLPL(adapter, allQuestions,answer1);
-        final AddQuestionsToRoundQuestionsAdapterLPL listParsedListener = new AddQuestionsToRoundQuestionsAdapterLPL(adapter);
+        //final AddQuestionsToRoundQuestionsAdapterLPL listParsedListener = new AddQuestionsToRoundQuestionsAdapterLPL(adapter);
+        final AddQuestionsToRoundQuestionsAdapterLPL listParsedListener = new AddQuestionsToRoundQuestionsAdapterLPL();
         lv_ShowRoundQuestions.setAdapter(adapter);
         //lv_ShowRoundQuestions.setOnFocusChangeListener();
         lv_ShowRoundQuestions.setOnItemClickListener(new AdapterView.OnItemClickListener()

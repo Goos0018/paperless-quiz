@@ -21,7 +21,7 @@ public class RoundParser implements JsonParser<Round> {
 
     @Override
     public Round parse(JSONObject jo) throws JSONException {
-        return new Round(jo.getString(ROUND_ID), jo.getString(ROUND_NAME),
+        return new Round(jo.getInt(ROUND_ID), jo.getString(ROUND_NAME),
                 jo.getString(ROUND_DESCRIPTION), jo.getInt(ROUND_NR_OF_QUESTIONS),
                 jo.getBoolean(ROUND_ACCEPTS_ANSWERS),jo.getBoolean(ROUND_ACCEPTS_CORRECTIONS),
                 jo.getBoolean(ROUND_IS_CORRECTED),jo.getBoolean(ROUND_IS_CLOSED)

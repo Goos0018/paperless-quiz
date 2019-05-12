@@ -1,24 +1,15 @@
 package com.example.paperlessquiz;
 
-import android.content.Entity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.paperlessquiz.adapters.ParticipantsAdapter;
-import com.example.paperlessquiz.google.access.GoogleAccess;
-import com.example.paperlessquiz.google.access.GoogleAccessGet;
-import com.example.paperlessquiz.google.access.LoadingListenerImpl;
-import com.example.paperlessquiz.loginentity.AddLoginEntitiesToParticipantsAdapterLPL;
 import com.example.paperlessquiz.loginentity.LoginEntity;
-import com.example.paperlessquiz.loginentity.LoginEntityParser;
-import com.example.paperlessquiz.quizbasics.QuizBasics;
-import com.example.paperlessquiz.quizextras.QuizExtras;
 
 import java.util.ArrayList;
 
@@ -91,8 +82,8 @@ public class B_SelectLoginName extends AppCompatActivity {
 
         /*
         GoogleAccessGet<LoginEntity> googleAccessGet = new GoogleAccessGet<LoginEntity>(this, scriptParams);
-        googleAccessGet.getItems(new LoginEntityParser(), new AddLoginEntitiesToParticipantsAdapterLPL(),
-                //googleAccessGet.getItems(new LoginEntityParser(), new AddLoginEntitiesToParticipantsAdapterLPL(adapter),
+        googleAccessGet.getItems(new LoginEntityParser(), new GetLoginEntriesLPL(),
+                //googleAccessGet.getItems(new LoginEntityParser(), new GetLoginEntriesLPL(adapter),
                 new LoadingListenerImpl(this, "Please wait", "Loading participants...", "Something went wrong: "));
         */
 

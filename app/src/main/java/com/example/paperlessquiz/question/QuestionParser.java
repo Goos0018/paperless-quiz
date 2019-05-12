@@ -17,7 +17,7 @@ public class QuestionParser implements JsonParser<Question> {
 
     @Override
     public Question parse(JSONObject jo) throws JSONException {
-        return new Question(jo.getString(ID),jo.getString(ROUND_ID), jo.getString(HINT),
+        return new Question(jo.getInt(ID),jo.getInt(ROUND_ID), jo.getString(HINT),
                 jo.getString(QUESTION),jo.getString(CORRECT_ANSWER),jo.getInt(MAX_SCORE));
     }
 }

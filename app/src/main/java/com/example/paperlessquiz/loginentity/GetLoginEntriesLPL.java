@@ -5,13 +5,13 @@ import com.example.paperlessquiz.google.access.ListParsedListener;
 import java.util.HashMap;
 import java.util.List;
 
-public class AddLoginEntitiesToParticipantsAdapterLPL implements ListParsedListener<LoginEntity> {
+public class GetLoginEntriesLPL implements ListParsedListener<LoginEntity> {
 
     //private ParticipantsAdapter participantsAdapter;
     private HashMap<String, LoginEntity> loginEntities;
 
-    //public AddLoginEntitiesToParticipantsAdapterLPL(ParticipantsAdapter participantsAdapter) {
-    public AddLoginEntitiesToParticipantsAdapterLPL() {
+    //public GetLoginEntriesLPL(ParticipantsAdapter participantsAdapter) {
+    public GetLoginEntriesLPL() {
         //this.participantsAdapter = participantsAdapter;
         this.loginEntities = new HashMap<String, LoginEntity>();
     }

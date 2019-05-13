@@ -1,30 +1,30 @@
-package com.example.paperlessquiz.quizextras;
+package com.example.paperlessquiz.quizextradata;
 
 import java.io.Serializable;
 
-public class QuizExtras implements Serializable {
+public class QuizExtraData implements Serializable {
     public static final String INTENT_EXTRA_NAME_THIS_QUIZ_EXTRAS = "thisQuizExtras";
     private boolean open;
     private int nrOfRounds;
     private int nrOfParticipants;
 
-    public QuizExtras(boolean open, int nrOfRounds, int nrOfParticipants) {
+    public QuizExtraData(boolean open, int nrOfRounds, int nrOfParticipants) {
         this.open = open;
         this.nrOfRounds = nrOfRounds;
         this.nrOfParticipants = nrOfParticipants;
     }
 
-    public QuizExtras(){
+    public QuizExtraData(){
         this.open = false;
         this.nrOfRounds = 0;
         this.nrOfParticipants = 0;
     }
 
 
-    public QuizExtras(QuizExtras quizExtras) {
-        this.open = quizExtras.open;
-        this.nrOfRounds = quizExtras.nrOfRounds;
-        this.nrOfParticipants = quizExtras.nrOfParticipants;
+    public QuizExtraData(QuizExtraData quizExtraData) {
+        this.open = quizExtraData.open;
+        this.nrOfRounds = quizExtraData.nrOfRounds;
+        this.nrOfParticipants = quizExtraData.nrOfParticipants;
     }
 
 

@@ -13,16 +13,16 @@ import com.example.paperlessquiz.google.access.EventLogger;
 import com.example.paperlessquiz.google.access.GoogleAccess;
 import com.example.paperlessquiz.google.access.GoogleAccessAddLine;
 import com.example.paperlessquiz.loginentity.LoginEntity;
-import com.example.paperlessquiz.quizbasics.QuizBasics;
-import com.example.paperlessquiz.quizextras.QuizExtras;
+import com.example.paperlessquiz.quizlistdata.QuizListData;
+import com.example.paperlessquiz.quizextradata.QuizExtraData;
 
 import java.util.Date;
 
 
 public class C_LogInToQuiz extends AppCompatActivity {
 
-    QuizExtras thisQuizExtras;
-    QuizBasics thisQuizBasics;
+    QuizExtraData thisQuizExtraData;
+    QuizListData thisQuizListData;
     LoginEntity thisLoginEntity;
     boolean submitPressed = false;
     boolean loginCompleted = false;
@@ -35,10 +35,10 @@ public class C_LogInToQuiz extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_c_log_in_to_quiz);
 
-        thisQuizBasics = (QuizBasics)getIntent().getSerializableExtra(QuizBasics.INTENT_EXTRA_NAME_THIS_QUIZ_BASICS);
-        thisQuizExtras = (QuizExtras)getIntent().getSerializableExtra(QuizExtras.INTENT_EXTRA_NAME_THIS_QUIZ_EXTRAS);
+        thisQuizListData = (QuizListData)getIntent().getSerializableExtra(QuizListData.INTENT_EXTRA_NAME_THIS_QUIZ_BASICS);
+        thisQuizExtraData = (QuizExtraData)getIntent().getSerializableExtra(QuizExtraData.INTENT_EXTRA_NAME_THIS_QUIZ_EXTRAS);
         thisLoginEntity = (LoginEntity)getIntent().getSerializableExtra(LoginEntity.INTENT_EXTRA_NAME_THIS_LOGIN_ENTITY);
-        String LoginString = "Welcome " + thisLoginEntity.getName() + " to our quiz " + thisQuizBasics.getName() +
+        String LoginString = "Welcome " + thisLoginEntity.getName() + " to our quiz " + thisQuizListData.getName() +
                 ". Please enter your passkey" + "(Name: " + thisLoginEntity.getName() + ". Passkey: " + thisLoginEntity.getPasskey() + ")";
         TextView tv_Name = findViewById(R.id.tv_name) ;
         TextView tv_LoginPrompt = findViewById(R.id.tv_login_prompt) ;
@@ -63,7 +63,7 @@ public class C_LogInToQuiz extends AppCompatActivity {
                             //This part is used to log whenever the user exits the app when he is not supposed to do so
                             Date now = new Date();
                             String strToday = now.toString();
-                            String scriptParams= GoogleAccess.PARAMNAME_DOC_ID + thisQuizBasics.getSheetDocID() + GoogleAccess.PARAM_CONCATENATOR +
+                            String scriptParams= GoogleAccess.PARAMNAME_DOC_ID + thisQuizListData.getSheetDocID() + GoogleAccess.PARAM_CONCATENATOR +
                                     GoogleAccess.PARAMNAME_SHEET + "TeamRegistration" + GoogleAccess.PARAM_CONCATENATOR +
                                     "LineToAdd=[\"" + strToday + "\",\"" + thisLoginEntity.getName() + "\",\"logged in\"]" +  GoogleAccess.PARAM_CONCATENATOR +
                                     GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_ADDLINE;
@@ -72,8 +72,8 @@ public class C_LogInToQuiz extends AppCompatActivity {
                             submitPressed = true;
                             loginCompleted=true;
                             Intent intent = new Intent(C_LogInToQuiz.this, D_PA_ShowRounds.class);
-                            intent.putExtra(QuizBasics.INTENT_EXTRA_NAME_THIS_QUIZ_BASICS, thisQuizBasics);
-                            intent.putExtra(QuizExtras.INTENT_EXTRA_NAME_THIS_QUIZ_EXTRAS, thisQuizExtras);
+                            intent.putExtra(QuizListData.INTENT_EXTRA_NAME_THIS_QUIZ_BASICS, thisQuizListData);
+                            intent.putExtra(QuizExtraData.INTENT_EXTRA_NAME_THIS_QUIZ_EXTRAS, thisQuizExtraData);
                             intent.putExtra(LoginEntity.INTENT_EXTRA_NAME_THIS_LOGIN_ENTITY, thisLoginEntity);
                             startActivity(intent);
                         }
@@ -97,7 +97,7 @@ public class C_LogInToQuiz extends AppCompatActivity {
     {
         //if you are exiting this screen without pressing submit, log this event
         if (!submitPressed && loginCompleted) {
-            EventLogger logger = new EventLogger(C_LogInToQuiz.this,thisQuizBasics.getSheetDocID(), GoogleAccess.SHEET_TEAMCONTROL);
+            EventLogger logger = new EventLogger(C_LogInToQuiz.this, thisQuizListData.getSheetDocID(), GoogleAccess.SHEET_TEAMCONTROL);
             logger.logEvent(thisLoginEntity.getName(),"Exited the app");
         }
         super.onPause();

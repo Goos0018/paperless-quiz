@@ -10,16 +10,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.paperlessquiz.R;
-import com.example.paperlessquiz.quizbasics.QuizBasics;
+import com.example.paperlessquiz.quizlistdata.QuizListData;
 
 import java.util.ArrayList;
 
-public class QuizBasicsAdapter extends ArrayAdapter<QuizBasics>
+public class QuizBasicsAdapter extends ArrayAdapter<QuizListData>
 {
     private final Context context;
 
     public QuizBasicsAdapter(Context context) {
-        super(context, R.layout.row_layout_select_quiz, new ArrayList<QuizBasics>());
+        super(context, R.layout.row_layout_select_quiz, new ArrayList<QuizListData>());
         this.context = context;
     }
 

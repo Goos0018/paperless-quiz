@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class AddQuestionsToRoundQuestionsAdapterLPL implements ListParsedListener<Question> {
+public class GetQuestionsLPL implements ListParsedListener<Question> {
 
     //private RoundQuestionsAdapter roundQuestionsAdapter;
     private ArrayList<QuestionsList> allQuestionsPerRound;
@@ -21,9 +21,9 @@ public class AddQuestionsToRoundQuestionsAdapterLPL implements ListParsedListene
         return allQuestionsPerRound;
     }
 
-    public AddQuestionsToRoundQuestionsAdapterLPL(){
-    //public AddQuestionsToRoundQuestionsAdapterLPL(RoundQuestionsAdapter roundQuestionsAdapter){
-        //public AddQuestionsToRoundQuestionsAdapterLPL(RoundQuestionsAdapter roundQuestionsAdapter, QuestionsList questionsList, String answer1){
+    public GetQuestionsLPL(){
+    //public GetQuestionsLPL(RoundQuestionsAdapter roundQuestionsAdapter){
+        //public GetQuestionsLPL(RoundQuestionsAdapter roundQuestionsAdapter, QuestionsList questionsList, String answer1){
         //this.roundQuestionsAdapter=roundQuestionsAdapter;
         this.allQuestionsPerRound=new ArrayList<QuestionsList>();
     }
@@ -45,8 +45,9 @@ public class AddQuestionsToRoundQuestionsAdapterLPL implements ListParsedListene
     {
         //List contains a list of all questions in the quiz with a QuestionID and a RoundID.
         //Loop over each element in the list and add them to Round<RoundID>[] in the order in which they are found
-        for (Question q:list)
+        for (int i = 0;i< list.size();i++)
         {
+            Question q = list.get(i);
             int rndId = q.getRoundID();
             int qId = q.getId();
             //add (empty questionslists until you are sue you have one at position rndId - 1
@@ -59,8 +60,8 @@ public class AddQuestionsToRoundQuestionsAdapterLPL implements ListParsedListene
             {
                 allQuestionsPerRound.get(rndId-1).addQuestion(new Question());
             }
-            //Now we are sure we can do this: question will be added in round rndId on poistion qId (takingintoa account array indics start at 0
-            allQuestionsPerRound.get(rndId-1).addQuestion(q);
+            //Now we are sure we can do this: question will be added in round rndId on poistion qId (taking into account array indices start at 0)
+            allQuestionsPerRound.get(rndId-1).addQuestion(qId-1,q);
             /*add the questionslist for rnd if it does not exist already
             if (!(allQuestionsPerRound.containsKey(rnd)))
             {

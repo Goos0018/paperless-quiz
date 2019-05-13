@@ -24,4 +24,8 @@ public class QuestionsList implements Serializable {
     {
         questionsList.add(q);
     }
+    public void addQuestion(int i,Question q)
+    {
+        questionsList.add(i,q);
+    }
 }

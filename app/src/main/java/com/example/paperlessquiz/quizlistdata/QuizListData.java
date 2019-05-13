@@ -1,11 +1,9 @@
-package com.example.paperlessquiz.quizbasics;
-
-import com.example.paperlessquiz.google.access.GoogleAccess;
+package com.example.paperlessquiz.quizlistdata;
 
 import java.io.Serializable;
 import java.util.Date;
 
-public class QuizBasics implements Serializable
+public class QuizListData implements Serializable
 {
     public static final String QUIZLIST_DOC_ID = "1A4CGyeZZk2LW-xvh_P1dyeufZhV0qpBgCIQdrNEIDgk";
     public static final String QUIZLIST_TABNAME = "QuizList";
@@ -16,9 +14,9 @@ public class QuizBasics implements Serializable
     private String sheetDocID;
     private Date date;
 
-//TODO : QuizDetails as an extention (QuizBasics + Teamlist + RoundList +...
+//TODO : QuizDetails as an extention (QuizListData + Teamlist + RoundList +...
 //TODO: define different constructors for use with GetterParser, QuizPArser, ...
-//Logic: Generate a list of QuizBasics objects from the QuizList + ask user to select one
+//Logic: Generate a list of QuizListData objects from the QuizList + ask user to select one
 //After selection, load remaining basic data (nrOfRounds and IsOpen) from the QuizData in QuizSheet
 // Then ask user to log in as Participant or Organizer
 //Participant: if isOpen, load Participants list and ask user to select + enter code. If valid, load and display Rounds.
@@ -30,26 +28,26 @@ public class QuizBasics implements Serializable
 
      */
 
-    public QuizBasics() {
+    public QuizListData() {
         this.id = "";
         this.name = "";
         this.description = "";
         this.sheetDocID = "";
     }
 
-    public QuizBasics(String id, String name, String description, String sheetDocID) {
+    public QuizListData(String id, String name, String description, String sheetDocID) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.sheetDocID = sheetDocID;
     }
 
-    public QuizBasics(QuizBasics quizBasics) {
-        this.id = quizBasics.id;
-        this.name = quizBasics.name;
-        this.description = quizBasics.description;
-        this.sheetDocID = quizBasics.sheetDocID;
-        this.date = quizBasics.date;
+    public QuizListData(QuizListData quizListData) {
+        this.id = quizListData.id;
+        this.name = quizListData.name;
+        this.description = quizListData.description;
+        this.sheetDocID = quizListData.sheetDocID;
+        this.date = quizListData.date;
 
     }
 

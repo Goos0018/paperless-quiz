@@ -1,13 +1,7 @@
 package com.example.paperlessquiz;
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -15,12 +9,11 @@ import android.widget.ListView;
 
 import com.example.paperlessquiz.adapters.QuizBasicsAdapter;
 import com.example.paperlessquiz.google.access.GoogleAccess;
-import com.example.paperlessquiz.google.access.GoogleAccessAddLine;
 import com.example.paperlessquiz.google.access.GoogleAccessGet;
 import com.example.paperlessquiz.google.access.LoadingListenerImpl;
-import com.example.paperlessquiz.quizbasics.AddQuizBasicsToAdapterLPL;
-import com.example.paperlessquiz.quizbasics.QuizBasics;
-import com.example.paperlessquiz.quizbasics.QuizBasicsParser;
+import com.example.paperlessquiz.quizlistdata.GetQuizListDataLPL;
+import com.example.paperlessquiz.quizlistdata.QuizListData;
+import com.example.paperlessquiz.quizlistdata.QuizListDataParser;
 
 /*
 This class/screen is the first screen of the app. It allows users to select a quiz from a list of available quiz'es.
@@ -33,9 +26,9 @@ TODO: layout
 public class MainActivity extends AppCompatActivity {
     ListView lv_QuizList;
     QuizBasicsAdapter adapter;
-    String sheetName = QuizBasics.QUIZLIST_TABNAME;
-    String scriptParams = GoogleAccess.PARAMNAME_DOC_ID + QuizBasics.QUIZLIST_DOC_ID + GoogleAccess.PARAM_CONCATENATOR +
-            GoogleAccess.PARAMNAME_SHEET + QuizBasics.QUIZLIST_TABNAME + GoogleAccess.PARAM_CONCATENATOR +
+    String sheetName = QuizListData.QUIZLIST_TABNAME;
+    String scriptParams = GoogleAccess.PARAMNAME_DOC_ID + QuizListData.QUIZLIST_DOC_ID + GoogleAccess.PARAM_CONCATENATOR +
+            GoogleAccess.PARAMNAME_SHEET + QuizListData.QUIZLIST_TABNAME + GoogleAccess.PARAM_CONCATENATOR +
             GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_GETDATA;
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -52,16 +45,16 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
             // When clicked, go to the A_SelectRole screen to allow the user to select the role for this quiz.
-            // Pass the QuizBasics object so the receiving screen can get the rest of the details
+            // Pass the QuizListData object so the receiving screen can get the rest of the details
             Intent intent = new Intent(MainActivity.this, A_SelectRole.class);
-            intent.putExtra(QuizBasics.INTENT_EXTRA_NAME_THIS_QUIZ_BASICS,adapter.getItem(position));
+            intent.putExtra(QuizListData.INTENT_EXTRA_NAME_THIS_QUIZ_BASICS,adapter.getItem(position));
             startActivity(intent);
 
         }
     });
 
-    GoogleAccessGet<QuizBasics> googleAccessGet = new GoogleAccessGet<QuizBasics>(this, scriptParams);
-    googleAccessGet.getItems(new QuizBasicsParser(), new AddQuizBasicsToAdapterLPL(adapter),
+    GoogleAccessGet<QuizListData> googleAccessGet = new GoogleAccessGet<QuizListData>(this, scriptParams);
+    googleAccessGet.getItems(new QuizListDataParser(), new GetQuizListDataLPL(adapter),
             new LoadingListenerImpl(this, "Please wait", "Loading quizzes", "Something went wrong: "));
   }
 

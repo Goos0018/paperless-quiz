@@ -12,7 +12,7 @@ public class Round implements Serializable {
     private String name, description;
     private int nrOfQuestions;
     private boolean acceptsAnswers, acceptsCorrections, corrected, closed;
-    //private QuestionsList questions;
+    private QuestionsList questions;
 
     public Round() {
         this.id = 0;
@@ -23,7 +23,7 @@ public class Round implements Serializable {
         this.acceptsCorrections = false;
         this.corrected = false;
         this.closed = false;
-        //this.questions = new QuestionsList();
+        this.questions = new QuestionsList();
     }
 
     public Round(int id, String name, String description, int nrOfQuestions,
@@ -36,6 +36,11 @@ public class Round implements Serializable {
         this.acceptsCorrections = acceptsCorrections;
         this.corrected = corrected;
         this.closed = closed;
+        this.questions = new QuestionsList();
+        for (int i=0;i < nrOfQuestions;i++)
+        {
+            questions.addQuestion(i,new Question());
+        }
 
     }
 
@@ -65,5 +70,13 @@ public class Round implements Serializable {
 
     public boolean isClosed() {
         return closed;
+    }
+
+    public QuestionsList getQuestions() {
+        return questions;
+    }
+
+    public void setQuestions(QuestionsList questions) {
+        this.questions = questions;
     }
 }

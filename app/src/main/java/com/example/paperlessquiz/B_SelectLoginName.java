@@ -28,6 +28,7 @@ public class B_SelectLoginName extends AppCompatActivity {
     String loginType;
     String scriptParams;
     TextView tvTest;
+    Quiz thisQuiz;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +37,7 @@ public class B_SelectLoginName extends AppCompatActivity {
 
         lv_NamesList = (ListView) findViewById(R.id.lv_names_list);
 
-        Quiz thisQuiz = (Quiz) getIntent().getSerializableExtra("ThisQuiz");
+        thisQuiz = (Quiz) getIntent().getSerializableExtra(Quiz.INTENT_PUTEXTRANAME_THIS_QUIZ);
         //Convert HAshmap to Arraylist to pass it to the adapter
         ArrayList<LoginEntity> list = new ArrayList<LoginEntity>();
         int i=0;
@@ -49,8 +50,8 @@ public class B_SelectLoginName extends AppCompatActivity {
         //String test = thisQuiz.toString();
         //tvTest.setText(test);
 
-        //QuizBasics thisQuizBasics = (QuizBasics) getIntent().getSerializableExtra(QuizBasics.INTENT_EXTRA_NAME_THIS_QUIZ_BASICS);
-        //QuizExtras thisQuizExtras = (QuizExtras) getIntent().getSerializableExtra(QuizExtras.INTENT_EXTRA_NAME_THIS_QUIZ_EXTRAS);
+        //QuizListData thisQuizListData = (QuizListData) getIntent().getSerializableExtra(QuizListData.INTENT_EXTRA_NAME_THIS_QUIZ_BASICS);
+        //QuizExtraData thisQuizExtraData = (QuizExtraData) getIntent().getSerializableExtra(QuizExtraData.INTENT_EXTRA_NAME_THIS_QUIZ_EXTRAS);
         loginType=getIntent().getStringExtra(LoginEntity.INTENT_EXTRA_NAME_THIS_LOGIN_TYPE);
         if (loginType.equals(LoginEntity.SELECTION_PARTICIPANT))
         {
@@ -60,7 +61,7 @@ public class B_SelectLoginName extends AppCompatActivity {
         {
             sheetName="Organizers";
         }
-        /*scriptParams= GoogleAccess.PARAMNAME_DOC_ID + thisQuizBasics.getSheetDocID() + GoogleAccess.PARAM_CONCATENATOR +
+        /*scriptParams= GoogleAccess.PARAMNAME_DOC_ID + thisQuizListData.getSheetDocID() + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_SHEET + sheetName + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_GETDATA;
                 */
@@ -72,8 +73,8 @@ public class B_SelectLoginName extends AppCompatActivity {
                 // When clicked, go to the LogIn screen where the user enters his passkey.
                 // Pass the thisLoginEntity object so the receiving screen can get the rest of the details
                 Intent intent = new Intent(B_SelectLoginName.this, C_LogInToQuiz.class);
-                //intent.putExtra(QuizBasics.INTENT_EXTRA_NAME_THIS_QUIZ_BASICS, thisQuizBasics);
-                //intent.putExtra(QuizExtras.INTENT_EXTRA_NAME_THIS_QUIZ_EXTRAS, thisQuizExtras);
+                intent.putExtra(Quiz.INTENT_PUTEXTRANAME_THIS_QUIZ, thisQuiz);
+                //intent.putExtra(QuizExtraData.INTENT_EXTRA_NAME_THIS_QUIZ_EXTRAS, thisQuizExtraData);
                 //intent.putExtra(LoginEntity.INTENT_EXTRA_NAME_THIS_LOGIN_ENTITY,adapter.getItem(position));
                 startActivity(intent);
 

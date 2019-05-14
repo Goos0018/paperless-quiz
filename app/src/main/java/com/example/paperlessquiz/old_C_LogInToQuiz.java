@@ -19,7 +19,7 @@ import com.example.paperlessquiz.quizextradata.QuizExtraData;
 import java.util.Date;
 
 
-public class C_LogInToQuiz extends AppCompatActivity {
+public class old_C_LogInToQuiz extends AppCompatActivity {
 
     QuizExtraData thisQuizExtraData;
     QuizListData thisQuizListData;
@@ -51,7 +51,7 @@ public class C_LogInToQuiz extends AppCompatActivity {
                 String input = et_Passkey.getText().toString().trim();
                 if (input.isEmpty())
                 {
-                    Toast.makeText(C_LogInToQuiz.this, "Please enter the passkey provided by the organizers", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(old_C_LogInToQuiz.this, "Please enter the passkey provided by the organizers", Toast.LENGTH_SHORT).show();
                 }
                 else
                 {
@@ -67,11 +67,11 @@ public class C_LogInToQuiz extends AppCompatActivity {
                                     GoogleAccess.PARAMNAME_SHEET + "TeamRegistration" + GoogleAccess.PARAM_CONCATENATOR +
                                     "LineToAdd=[\"" + strToday + "\",\"" + thisLoginEntity.getName() + "\",\"logged in\"]" +  GoogleAccess.PARAM_CONCATENATOR +
                                     GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_ADDLINE;
-                            GoogleAccessAddLine teamLogIn = new GoogleAccessAddLine(C_LogInToQuiz.this, scriptParams );
+                            GoogleAccessAddLine teamLogIn = new GoogleAccessAddLine(old_C_LogInToQuiz.this, scriptParams );
                             teamLogIn.addLine();
                             submitPressed = true;
                             loginCompleted=true;
-                            Intent intent = new Intent(C_LogInToQuiz.this, D_PA_ShowRounds.class);
+                            Intent intent = new Intent(old_C_LogInToQuiz.this, D_PA_ShowRounds.class);
                             intent.putExtra(QuizListData.INTENT_EXTRA_NAME_THIS_QUIZ_BASICS, thisQuizListData);
                             intent.putExtra(QuizExtraData.INTENT_EXTRA_NAME_THIS_QUIZ_EXTRAS, thisQuizExtraData);
                             intent.putExtra(LoginEntity.INTENT_EXTRA_NAME_THIS_LOGIN_ENTITY, thisLoginEntity);
@@ -80,12 +80,12 @@ public class C_LogInToQuiz extends AppCompatActivity {
                         else
                         {
                             //TODO implement other options
-                            Toast.makeText(C_LogInToQuiz.this, thisLoginEntity.getType() + " still to implement", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(old_C_LogInToQuiz.this, thisLoginEntity.getType() + " still to implement", Toast.LENGTH_SHORT).show();
                         }
                     }
                     else
                     {
-                        Toast.makeText(C_LogInToQuiz.this, "Passkey " + input + " is incorrect - please enter the passkey provided by the organizers", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(old_C_LogInToQuiz.this, "Passkey " + input + " is incorrect - please enter the passkey provided by the organizers", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -97,7 +97,7 @@ public class C_LogInToQuiz extends AppCompatActivity {
     {
         //if you are exiting this screen without pressing submit, log this event
         if (!submitPressed && loginCompleted) {
-            EventLogger logger = new EventLogger(C_LogInToQuiz.this, thisQuizListData.getSheetDocID(), GoogleAccess.SHEET_TEAMCONTROL);
+            EventLogger logger = new EventLogger(old_C_LogInToQuiz.this, thisQuizListData.getSheetDocID(), GoogleAccess.SHEET_TEAMCONTROL);
             logger.logEvent(thisLoginEntity.getName(),"Exited the app");
         }
         super.onPause();

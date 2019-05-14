@@ -21,7 +21,7 @@ public class LoadingListenerImpl implements LoadingListener {
 
     @Override
     public void loadingStarted() {
-        loading = ProgressDialog.show(context, loadingTitle, loadingMessage, false, true);
+        loading = ProgressDialog.show(context, loadingTitle, loadingMessage, false, false);
     }
 
     @Override

@@ -42,14 +42,14 @@ public class A_SelectRole extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_a_select_role);
+        setContentView(R.layout.a_act_select_role);
 
         btnParticipant=findViewById(R.id.btn_participant);
         btnOrganizer=findViewById(R.id.btn_organizer);
         tvWelcome=findViewById(R.id.tv_welcome);
         QuizListData thisQuizListData = (QuizListData) getIntent().getSerializableExtra(QuizListData.INTENT_EXTRA_NAME_THIS_QUIZ_BASICS);
         //Get the additional data we don't have yet: nr of rounds, nr of participants, status,  ...
-        //QuizExtraData quizExtras = new QuizExtraData();
+        //Get extra data from the quiz
         String scriptParamsForExtraData = GoogleAccess.PARAMNAME_DOC_ID + thisQuizListData.getSheetDocID() + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_SHEET + GoogleAccess.SHEEET_QUIZDATA + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_GETDATA;
@@ -112,10 +112,8 @@ public class A_SelectRole extends AppCompatActivity {
                               //TODO: log error
                           }
                           //thisQuiz.setQuestions(questionsLPL.getAllQuestionsPerRound());
-                          Intent intent = new Intent(A_SelectRole.this, B_SelectLoginName.class);
+                          Intent intent = new Intent(A_SelectRole.this, B_LoginMain.class);
                           intent.putExtra(Quiz.INTENT_PUTEXTRANAME_THIS_QUIZ, thisQuiz);
-                          //intent.putExtra(QuizListData.INTENT_EXTRA_NAME_THIS_QUIZ_BASICS, thisQuizListData);
-                          //intent.putExtra(QuizExtraData.INTENT_EXTRA_NAME_THIS_QUIZ_EXTRAS, quizExtras);
                           intent.putExtra(LoginEntity.INTENT_EXTRA_NAME_THIS_LOGIN_TYPE, LoginEntity.SELECTION_PARTICIPANT);
                           startActivity(intent);
                       }
@@ -130,7 +128,7 @@ public class A_SelectRole extends AppCompatActivity {
         btnOrganizer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view){
-                //Intent intent = new Intent(A_SelectRole.this, B_SelectLoginName.class);
+                //Intent intent = new Intent(A_SelectRole.this, old_B_SelectLoginName.class);
                 //intent.putExtra(QuizListData.INTENT_EXTRA_NAME_THIS_QUIZ_BASICS, thisQuizListData);
                 //intent.putExtra(QuizExtraData.INTENT_EXTRA_NAME_THIS_QUIZ_EXTRAS, quizExtras);
                 //intent.putExtra(LoginEntity.INTENT_EXTRA_NAME_THIS_LOGIN_TYPE, LoginEntity.SELECTION_ORGANIZER);

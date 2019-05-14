@@ -20,7 +20,7 @@ import java.util.ArrayList;
     TODO: layout
      */
 
-public class B_SelectLoginName extends AppCompatActivity {
+public class old_B_SelectLoginName extends AppCompatActivity {
     ListView lv_NamesList;
     ParticipantsAdapter adapter;
     String thisQuizDocID;
@@ -72,7 +72,7 @@ public class B_SelectLoginName extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // When clicked, go to the LogIn screen where the user enters his passkey.
                 // Pass the thisLoginEntity object so the receiving screen can get the rest of the details
-                Intent intent = new Intent(B_SelectLoginName.this, C_LogInToQuiz.class);
+                Intent intent = new Intent(old_B_SelectLoginName.this, old_C_LogInToQuiz.class);
                 intent.putExtra(Quiz.INTENT_PUTEXTRANAME_THIS_QUIZ, thisQuiz);
                 //intent.putExtra(QuizExtraData.INTENT_EXTRA_NAME_THIS_QUIZ_EXTRAS, thisQuizExtraData);
                 //intent.putExtra(LoginEntity.INTENT_EXTRA_NAME_THIS_LOGIN_ENTITY,adapter.getItem(position));

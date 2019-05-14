@@ -31,6 +31,36 @@ public class Quiz implements Serializable {
         }
     }
 
+    //Return the team/organizer with the given ID
+    public LoginEntity getTeam(String id){
+        return teams.get(id);
+    }
+    //Return the team with the given ID
+    public LoginEntity getOrganizer(String id){
+        return organizers.get(id);
+    }
+
+
+    private ArrayList<LoginEntity> getArrayList(HashMap<String, LoginEntity> entities){
+        //Convert HAshmap to Arraylist to pass it to the adapter
+        ArrayList<LoginEntity> list = new ArrayList<LoginEntity>();
+        int i=0;
+        for (LoginEntity entity:entities.values()) {
+            list.add(i,entity);
+            i++;
+        }
+        return list;
+    }
+
+    public ArrayList<LoginEntity> getTeamsList()
+    {
+        return getArrayList(teams);
+    }
+
+    public ArrayList<LoginEntity> getOrganizersList()
+    {
+        return getArrayList(organizers);
+    }
     public QuizListData getListData() {
         return listData;
     }
@@ -81,4 +111,5 @@ public class Quiz implements Serializable {
     public void setQuestions(ArrayList<QuestionsList> questions) {
         this.questions = questions;
     }
+
 }

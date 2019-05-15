@@ -8,7 +8,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
-import com.example.paperlessquiz.adapters.RoundQuestionsAdapter;
+import com.example.paperlessquiz.adapters.QuestionsAdapter;
 import com.example.paperlessquiz.answer.Answer;
 import com.example.paperlessquiz.google.access.GoogleAccess;
 import com.example.paperlessquiz.google.access.GoogleAccessGet;
@@ -26,14 +26,13 @@ import java.util.ArrayList;
 
 public class D_PB_ShowRoundQuestions extends AppCompatActivity {
 
-    QuizExtraData thisQuizExtraData;
-    QuizListData thisQuizListData;
+    Quiz thisQuiz;
     LoginEntity thisLoginEntity;
     ArrayList<Answer> answers;
     //String answer1;
     Round thisRound;
     ListView lv_ShowRoundQuestions;
-    RoundQuestionsAdapter adapter;
+    QuestionsAdapter adapter;
     Button btnSubmit;
 
     @Override
@@ -41,19 +40,18 @@ public class D_PB_ShowRoundQuestions extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_d_pb_show_round_questions);
 
-        thisQuizListData = (QuizListData)getIntent().getSerializableExtra(QuizListData.INTENT_EXTRA_NAME_THIS_QUIZ_BASICS);
-        thisQuizExtraData = (QuizExtraData)getIntent().getSerializableExtra(QuizExtraData.INTENT_EXTRA_NAME_THIS_QUIZ_EXTRAS);
+        thisQuiz = (Quiz)getIntent().getSerializableExtra(Quiz.INTENT_EXTRANAME_THIS_QUIZ);
         thisLoginEntity = (LoginEntity)getIntent().getSerializableExtra(LoginEntity.INTENT_EXTRA_NAME_THIS_LOGIN_ENTITY);
         thisRound=(Round) getIntent().getSerializableExtra(Round.INTENT_EXTRA_NAME_THIS_ROUND);
-        String scriptParams = GoogleAccess.PARAMNAME_DOC_ID + thisQuizListData.getSheetDocID() + GoogleAccess.PARAM_CONCATENATOR +
+        String scriptParams = GoogleAccess.PARAMNAME_DOC_ID + thisQuiz.getListData().getSheetDocID() + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_SHEET + "Questions" + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_GETDATA;
         btnSubmit=(Button) findViewById(R.id.btnSubmit);
         lv_ShowRoundQuestions = (ListView) findViewById(R.id.lv_show_round_questions);
-        adapter = new RoundQuestionsAdapter(this,thisRound.getNrOfQuestions());
+        adapter = new QuestionsAdapter(this,thisRound);
         //final GetQuestionsLPL listParsedListener = new GetQuestionsLPL(adapter, allQuestions,answer1);
         //final GetQuestionsLPL listParsedListener = new GetQuestionsLPL(adapter);
-        final GetQuestionsLPL listParsedListener = new GetQuestionsLPL();
+        //final GetQuestionsLPL listParsedListener = new GetQuestionsLPL();
         lv_ShowRoundQuestions.setAdapter(adapter);
         //lv_ShowRoundQuestions.setOnFocusChangeListener();
         lv_ShowRoundQuestions.setOnItemClickListener(new AdapterView.OnItemClickListener()
@@ -62,16 +60,15 @@ public class D_PB_ShowRoundQuestions extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // When clicked, go to the A_SelectRole screen to allow the user to select the role for this quiz.
                 // Pass the QuizListData object so the receiving screen can get the rest of the details
-
-                /*Intent intent = new Intent(D_PA_ShowRounds.this, D_PB_ShowRoundQuestions.class);
-                intent.putExtra(QuizListData.INTENT_EXTRA_NAME_THIS_QUIZ_BASICS,thisQuizListData);
-                intent.putExtra(QuizExtraData.INTENT_EXTRA_NAME_THIS_QUIZ_EXTRAS,thisQuizExtraData);
+/*
+                Intent intent = new Intent(D_PB_ShowRoundQuestions.this, D_PC_ConfirmSubmitAnswers.class);
+                intent.putExtra(Quiz.INTENT_EXTRANAME_THIS_QUIZ,thisQuiz);
                 intent.putExtra(LoginEntity.INTENT_EXTRA_NAME_THIS_LOGIN_ENTITY,thisLoginEntity);
-                intent.putExtra(Round.INTENT_EXTRA_NAME_THIS_ROUND,adapter.getItem(position));
+                intent.putExtra("Question",adapter.getItem(position));
                 startActivity(intent);
-*/
-                //Toast.makeText(D_PB_ShowRoundQuestions.this, "Loading question", Toast.LENGTH_SHORT).show();
 
+                //Toast.makeText(D_PB_ShowRoundQuestions.this, "Loading question", Toast.LENGTH_SHORT).show();
+*/
             }
         });
         btnSubmit.setOnClickListener(
@@ -81,8 +78,7 @@ public class D_PB_ShowRoundQuestions extends AppCompatActivity {
                     public void onClick(View v)
                     {
                         Intent intent = new Intent(D_PB_ShowRoundQuestions.this, D_PC_ConfirmSubmitAnswers.class);
-                        intent.putExtra(QuizListData.INTENT_EXTRA_NAME_THIS_QUIZ_BASICS, thisQuizListData);
-                        intent.putExtra(QuizExtraData.INTENT_EXTRA_NAME_THIS_QUIZ_EXTRAS, thisQuizExtraData);
+                        intent.putExtra(Quiz.INTENT_EXTRANAME_THIS_QUIZ, thisQuiz);
                         intent.putExtra(LoginEntity.INTENT_EXTRA_NAME_THIS_LOGIN_ENTITY, thisLoginEntity);
                         //intent.putExtra(QuestionsList.INTENT_PUT_EXTRA_NAME_THIS_ROUND_ANSWERS, listParsedListener.getQuestionsList());
                         intent.putExtra(QuestionsList.INTENT_PUT_EXTRA_NAME_THIS_ROUND_ANSWERS,adapter.getMyAnswers());
@@ -91,8 +87,9 @@ public class D_PB_ShowRoundQuestions extends AppCompatActivity {
                 }
         );
 
-        GoogleAccessGet<Question> googleAccessGet = new GoogleAccessGet<Question>(this, scriptParams);
-        googleAccessGet.getItems(new QuestionParser(), listParsedListener,
-                new LoadingListenerImpl(this, "Please wait", "Loading questions", "Something went wrong: "));
+        //GoogleAccessGet<Question> googleAccessGet = new GoogleAccessGet<Question>(this, scriptParams);
+        //googleAccessGet.getItems(new QuestionParser(), listParsedListener,
+         //       new LoadingListenerImpl(this, "Please wait", "Loading questions", "Something went wrong: "));
+
     }
 }

@@ -17,10 +17,9 @@ import java.util.ArrayList;
 public class QuizRoundsAdapter extends ArrayAdapter<Round>
 {
     private final Context context;
-    //private final ArrayList<Round> values;
 
-    public QuizRoundsAdapter(Context context) {
-        super(context, R.layout.row_layout_dpa_show_quiz_overview, new ArrayList<Round>());
+    public QuizRoundsAdapter(Context context,ArrayList<Round> rounds) {
+        super(context, R.layout.row_layout_round, rounds);
         this.context = context;
     }
 
@@ -30,7 +29,7 @@ public class QuizRoundsAdapter extends ArrayAdapter<Round>
     public View getView(int position, View convertView, ViewGroup parent) {
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View rowView = inflater.inflate(R.layout.row_layout_dpa_show_quiz_overview,parent,false);
+        View rowView = inflater.inflate(R.layout.row_layout_round,parent,false);
         TextView tvName = (TextView) rowView.findViewById(R.id.tv_round_name);
         TextView tvDescription = (TextView) rowView.findViewById(R.id.tv_round_description);
         TextView tvNrOfQuestions = (TextView) rowView.findViewById(R.id.tv_round_nr_of_questions);

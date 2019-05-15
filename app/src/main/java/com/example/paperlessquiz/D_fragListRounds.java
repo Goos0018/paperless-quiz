@@ -9,44 +9,43 @@ import android.support.v4.app.ListFragment;
 import android.view.View;
 import android.widget.ListView;
 
-import com.example.paperlessquiz.adapters.ParticipantsAdapter;
+import com.example.paperlessquiz.adapters.QuizRoundsAdapter;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class B_frag_ListEntities extends ListFragment {
-    Quiz thisQuiz;
-    ParticipantsAdapter adapter;
+public class D_fragListRounds extends ListFragment {
+    //The below variable is used to access anything in the calling activity
+    D_ParticipantHome participantHome;
+    QuizRoundsAdapter adapter;
 
-    ItemSelected actLoginMain;
-    public interface  ItemSelected{
+    ItemSelected actParticipantHome;
+    public interface ItemSelected {
         void onItemSelected(int index);
     }
 
-    public B_frag_ListEntities() {
+
+    public D_fragListRounds() {
         // Required empty public constructor
     }
 
-
     @Override
-    //called when the fragment is associated with the activity
     public void onAttach(Context context) {
         super.onAttach(context);
-        actLoginMain = (ItemSelected) context;
-        thisQuiz = (Quiz) getActivity().getIntent().getSerializableExtra(Quiz.INTENT_EXTRANAME_THIS_QUIZ);
+        actParticipantHome = (ItemSelected) context;
+        participantHome = (D_ParticipantHome) getActivity();
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        adapter = new ParticipantsAdapter(getActivity(), thisQuiz.getTeamsList());
+        adapter = new QuizRoundsAdapter(getActivity(), participantHome.thisQuiz.getRounds());
         setListAdapter(adapter);
     }
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        //super.onListItemClick(l, v, position, id);
-        actLoginMain.onItemSelected(position);
+        actParticipantHome.onItemSelected(position);
     }
 }

@@ -37,7 +37,7 @@ public class old_B_SelectLoginName extends AppCompatActivity {
 
         lv_NamesList = (ListView) findViewById(R.id.lv_names_list);
 
-        thisQuiz = (Quiz) getIntent().getSerializableExtra(Quiz.INTENT_PUTEXTRANAME_THIS_QUIZ);
+        thisQuiz = (Quiz) getIntent().getSerializableExtra(Quiz.INTENT_EXTRANAME_THIS_QUIZ);
         //Convert HAshmap to Arraylist to pass it to the adapter
         ArrayList<LoginEntity> list = new ArrayList<LoginEntity>();
         int i=0;
@@ -73,7 +73,7 @@ public class old_B_SelectLoginName extends AppCompatActivity {
                 // When clicked, go to the LogIn screen where the user enters his passkey.
                 // Pass the thisLoginEntity object so the receiving screen can get the rest of the details
                 Intent intent = new Intent(old_B_SelectLoginName.this, old_C_LogInToQuiz.class);
-                intent.putExtra(Quiz.INTENT_PUTEXTRANAME_THIS_QUIZ, thisQuiz);
+                intent.putExtra(Quiz.INTENT_EXTRANAME_THIS_QUIZ, thisQuiz);
                 //intent.putExtra(QuizExtraData.INTENT_EXTRA_NAME_THIS_QUIZ_EXTRAS, thisQuizExtraData);
                 //intent.putExtra(LoginEntity.INTENT_EXTRA_NAME_THIS_LOGIN_ENTITY,adapter.getItem(position));
                 startActivity(intent);

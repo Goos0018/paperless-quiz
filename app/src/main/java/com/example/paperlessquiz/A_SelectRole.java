@@ -113,7 +113,7 @@ public class A_SelectRole extends AppCompatActivity {
                           }
                           //thisQuiz.setQuestions(questionsLPL.getAllQuestionsPerRound());
                           Intent intent = new Intent(A_SelectRole.this, B_LoginMain.class);
-                          intent.putExtra(Quiz.INTENT_PUTEXTRANAME_THIS_QUIZ, thisQuiz);
+                          intent.putExtra(Quiz.INTENT_EXTRANAME_THIS_QUIZ, thisQuiz);
                           intent.putExtra(LoginEntity.INTENT_EXTRA_NAME_THIS_LOGIN_TYPE, LoginEntity.SELECTION_PARTICIPANT);
                           startActivity(intent);
                       }

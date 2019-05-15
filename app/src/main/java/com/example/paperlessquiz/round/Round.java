@@ -39,7 +39,7 @@ public class Round implements Serializable {
         this.questions = new QuestionsList();
         for (int i=0;i < nrOfQuestions;i++)
         {
-            questions.addQuestion(i,new Question());
+            questions.add(i,new Question());
         }
 
     }

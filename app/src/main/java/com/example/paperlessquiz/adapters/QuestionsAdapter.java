@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.example.paperlessquiz.R;
 import com.example.paperlessquiz.answer.Answer;
 import com.example.paperlessquiz.question.Question;
+import com.example.paperlessquiz.round.Round;
 
 import java.util.ArrayList;
 
@@ -50,9 +51,10 @@ final EditText Caption = (EditText) v;
 
 
 
-public class RoundQuestionsAdapter extends ArrayAdapter<Question> {
+public class QuestionsAdapter extends ArrayAdapter<Question> {
     private final Context context;
-    private int nrOfQuestions;
+    private Round round;
+    //private int nrOfQuestions;
     private ArrayList<Answer> myAnswers;
 
     public ArrayList<Answer> getMyAnswers() {
@@ -60,15 +62,15 @@ public class RoundQuestionsAdapter extends ArrayAdapter<Question> {
     }
 
     //This adapter must know the number of questions in the round so it knows how many answers to expect
-    public RoundQuestionsAdapter(Context context,int nrOfQuestions ) {
-        super(context, R.layout.row_layout_select_login_name, new ArrayList<Question>());
+    public QuestionsAdapter(Context context, Round round ) {
+        super(context, R.layout.row_layout_select_login_name, (ArrayList<Question>)round.getQuestions());
         this.context = context;
-        this.nrOfQuestions = nrOfQuestions;
+        this.round = round;
         //Initialize the Answers as blank
-        myAnswers = new ArrayList<Answer>();
-        for (int i= 0;i<nrOfQuestions;i++){
+        this.myAnswers = new ArrayList<Answer>();
+        for (int i= 0;i<round.getNrOfQuestions();i++){
             Answer answer = new Answer(i+1);
-            myAnswers.add(i,answer);
+            this.myAnswers.add(i,answer);
         }
     }
 

@@ -24,7 +24,7 @@ import java.util.Date;
  */
 public class B_frag_LoginEntity extends Fragment {
 
-    Button btnSubmit;
+    //Button btnSubmit;
 
 
     public B_frag_LoginEntity() {

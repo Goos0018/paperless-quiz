@@ -12,18 +12,19 @@ import android.widget.Toast;
 import com.example.paperlessquiz.google.access.GoogleAccess;
 import com.example.paperlessquiz.google.access.GoogleAccessAddLine;
 import com.example.paperlessquiz.loginentity.LoginEntity;
-import com.example.paperlessquiz.quizextradata.QuizExtraData;
-import com.example.paperlessquiz.quizlistdata.QuizListData;
 
 import java.util.Date;
 
 public class B_LoginMain extends AppCompatActivity implements B_frag_ListEntities.ItemSelected {
+    //Extra objects from intent
+    Quiz thisQuiz;
+    LoginEntity thisLoginEntity;
+    //Local items in interface
     TextView tvDisplayName,tvDisplayID;
     EditText etPasskey;
     Button btnSubmit;
-    Quiz thisQuiz;
+    //other local variables needed
     String id;
-    LoginEntity thisLoginEntity;
     boolean submitPressed = false;
     boolean loginCompleted = false;
 
@@ -32,25 +33,27 @@ public class B_LoginMain extends AppCompatActivity implements B_frag_ListEntitie
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.b_act_login_main);
+
         tvDisplayName = findViewById(R.id.tvDisplayName);
         tvDisplayID = findViewById(R.id.tvDisplayID);
         btnSubmit = (Button) findViewById(R.id.btn_submit_login);
         etPasskey = (EditText) findViewById(R.id.et_passkey);
-        thisQuiz = (Quiz) getIntent().getSerializableExtra(Quiz.INTENT_PUTEXTRANAME_THIS_QUIZ);
-        id = tvDisplayID.getText().toString();
-        String type = "participant";
-        if (type== "participant"){
-            thisLoginEntity = thisQuiz.getTeam(id);
-        }
-        else
-        {
-            thisLoginEntity = thisQuiz.getOrganizer(id);
-        }
+        thisQuiz = (Quiz) getIntent().getSerializableExtra(Quiz.INTENT_EXTRANAME_THIS_QUIZ);
+        String type = (String) getIntent().getStringExtra(LoginEntity.INTENT_EXTRA_NAME_THIS_LOGIN_TYPE);
+
 
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                id = tvDisplayID.getText().toString();
                 String input = etPasskey.getText().toString().trim();
+                if (type.equals(LoginEntity.SELECTION_PARTICIPANT)){
+                    thisLoginEntity = thisQuiz.getTeam(id);
+                }
+                else
+                {
+                    thisLoginEntity = thisQuiz.getOrganizer(id);
+                }
                 if (input.isEmpty())
                 {
                     Toast.makeText(B_LoginMain.this, "Please enter the passkey provided by the organizers", Toast.LENGTH_SHORT).show();
@@ -74,7 +77,8 @@ public class B_LoginMain extends AppCompatActivity implements B_frag_ListEntitie
                             submitPressed = true;
                             loginCompleted=true;
                             Intent intent = new Intent(B_LoginMain.this, D_ParticipantHome.class);
-                            intent.putExtra(Quiz.INTENT_PUTEXTRANAME_THIS_QUIZ, thisQuiz);
+                            //Intent intent = new Intent(B_LoginMain.this, D_PA_ShowRounds.class);
+                            intent.putExtra(Quiz.INTENT_EXTRANAME_THIS_QUIZ, thisQuiz);
                             intent.putExtra(LoginEntity.INTENT_EXTRA_NAME_THIS_LOGIN_ENTITY, thisLoginEntity);
                             startActivity(intent);
                         }

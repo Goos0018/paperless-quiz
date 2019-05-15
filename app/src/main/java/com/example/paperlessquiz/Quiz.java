@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Quiz implements Serializable {
-    public static final String INTENT_PUTEXTRANAME_THIS_QUIZ = "ThisQuiz";
+    public static final String INTENT_EXTRANAME_THIS_QUIZ = "ThisQuiz";
     private QuizListData listData;
     private QuizExtraData additionalData;
     private HashMap<String, LoginEntity> teams;

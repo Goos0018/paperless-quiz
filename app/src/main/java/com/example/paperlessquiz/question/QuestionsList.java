@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class QuestionsList implements Serializable {
+public class QuestionsList extends ArrayList<Question> implements Serializable {
     public static final String INTENT_PUT_EXTRA_NAME_THIS_ROUND_ANSWERS = "thisRoundAnswers";
     private ArrayList<Question> questionsList;
 
@@ -20,12 +20,12 @@ public class QuestionsList implements Serializable {
         this.questionsList = questionsList;
     }
 
-    public void addQuestion(Question q)
+    /*public void addQuestion(Question q)
     {
         questionsList.add(q);
     }
     public void addQuestion(int i,Question q)
     {
         questionsList.add(i,q);
-    }
+    }*/
 }

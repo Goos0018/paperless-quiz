@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PagerSnapHelper;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SnapHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,19 +44,17 @@ public class D_fragRecycleRounds extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState)
     {
-
         super.onActivityCreated(savedInstanceState);
         participantHome = (D_ParticipantHome) getActivity();
         ArrayList<Round> rounds;
         rounds = participantHome.thisQuiz.getRounds();
         recyclerView = view.findViewById(R.id.rvRounds);
         recyclerView.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(this.getActivity());
+        layoutManager = new LinearLayoutManager(this.getActivity(), LinearLayoutManager.HORIZONTAL,false);
+        SnapHelper snapHelper = new PagerSnapHelper();
         recyclerView.setLayoutManager(layoutManager);
+        snapHelper.attachToRecyclerView(recyclerView);
         myAdapter = new RoundsAdapter(this.getActivity(),rounds);
         recyclerView.setAdapter(myAdapter);
-
-
-
     }
 }

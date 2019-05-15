@@ -40,19 +40,6 @@
                 android:layout_marginTop="5dp"
                 android:text="TextView" />
 
-            <TextView
-                android:id="@+id/tv_round_nr_of_questions"
-                android:layout_width="195dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="TextView" />
-
-            <TextView
-                android:id="@+id/tv_round_accepts_answers"
-                android:layout_width="195dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="TextView" />
         </LinearLayout>
 
     </LinearLayout>

@@ -17,7 +17,6 @@ public class D_ParticipantHome extends AppCompatActivity implements RoundsAdapte
     LoginEntity thisLoginEntity;
     //Local items in interface
     ListView lvQuestions;
-
     Button btnSubmit;
     //other local variables needed
     QuestionsAdapter adapter;
@@ -26,6 +25,7 @@ public class D_ParticipantHome extends AppCompatActivity implements RoundsAdapte
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.d_act_participant_home);
+
         lvQuestions=(ListView) findViewById(R.id.lv_show_round_questions);
 
         thisQuiz = (Quiz) getIntent().getSerializableExtra(Quiz.INTENT_EXTRANAME_THIS_QUIZ);

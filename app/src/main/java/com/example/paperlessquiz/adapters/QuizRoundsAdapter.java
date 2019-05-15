@@ -32,16 +32,16 @@ public class QuizRoundsAdapter extends ArrayAdapter<Round>
         View rowView = inflater.inflate(R.layout.row_layout_round,parent,false);
         TextView tvName = (TextView) rowView.findViewById(R.id.tv_round_name);
         TextView tvDescription = (TextView) rowView.findViewById(R.id.tv_round_description);
-        TextView tvNrOfQuestions = (TextView) rowView.findViewById(R.id.tv_round_nr_of_questions);
-        TextView tvAcceptsAnswers = (TextView) rowView.findViewById(R.id.tv_round_accepts_answers);
+        //TextView tvNrOfQuestions = (TextView) rowView.findViewById(R.id.tv_round_nr_of_questions);
+        //TextView tvAcceptsAnswers = (TextView) rowView.findViewById(R.id.tv_round_accepts_answers);
 
         ImageView ivleft = (ImageView) rowView.findViewById(R.id.iv_left);
 
         tvName.setText(getItem(position).getName());
         tvDescription.setText(getItem(position).getDescription());
 
-        tvNrOfQuestions.setText(getItem(position).getNrOfQuestions()+" questions");
-        tvAcceptsAnswers.setText("Open: " + this.getItem(position).AcceptsAnswers());
+        //tvNrOfQuestions.setText(getItem(position).getNrOfQuestions()+" questions");
+        //tvAcceptsAnswers.setText("Open: " + this.getItem(position).AcceptsAnswers());
         ivleft.setImageResource(R.mipmap.placeholder);
         return rowView;
     }

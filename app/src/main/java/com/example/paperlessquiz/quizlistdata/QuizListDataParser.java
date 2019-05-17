@@ -12,10 +12,12 @@ public class QuizListDataParser implements JsonParser<QuizListData> {
     public static final String QUIZ_NAME = "QuizName";
     public static final String QUIZ_DESCRIPTION = "QuizDescription";
     public static final String QUIZ_SHEET_DOC_ID = "QuizSheetDocID";
+    public static final String QUIZ_LOGO_URL = "QuizLogoURL";
+
 
     public QuizListData parse(JSONObject jo) throws JSONException {
 
         return new QuizListData(jo.getString(QUIZ_ID), jo.getString(QUIZ_NAME),
-                jo.getString(QUIZ_DESCRIPTION), jo.getString(QUIZ_SHEET_DOC_ID));
+                jo.getString(QUIZ_DESCRIPTION), jo.getString(QUIZ_SHEET_DOC_ID),jo.getString(QUIZ_LOGO_URL));
     }
 }

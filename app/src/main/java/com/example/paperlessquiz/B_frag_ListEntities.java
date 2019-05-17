@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.ListView;
 
 import com.example.paperlessquiz.adapters.ParticipantsAdapter;
+import com.example.paperlessquiz.quiz.Quiz;
 
 
 /**
@@ -49,4 +50,5 @@ public class B_frag_ListEntities extends ListFragment {
         //super.onListItemClick(l, v, position, id);
         actLoginMain.onItemSelected(position);
     }
+
 }

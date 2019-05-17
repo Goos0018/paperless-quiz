@@ -13,6 +13,7 @@ public class QuizListData implements Serializable
     private String description;
     private String sheetDocID;
     private Date date;
+    private String logoURL;
 
 //TODO : QuizDetails as an extention (QuizListData + Teamlist + RoundList +...
 //TODO: define different constructors for use with GetterParser, QuizPArser, ...
@@ -33,13 +34,15 @@ public class QuizListData implements Serializable
         this.name = "";
         this.description = "";
         this.sheetDocID = "";
+        this.logoURL="";
     }
 
-    public QuizListData(String id, String name, String description, String sheetDocID) {
+    public QuizListData(String id, String name, String description, String sheetDocID, String logoURL) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.sheetDocID = sheetDocID;
+        this.logoURL = logoURL;
     }
 
     public QuizListData(QuizListData quizListData) {
@@ -48,6 +51,7 @@ public class QuizListData implements Serializable
         this.description = quizListData.description;
         this.sheetDocID = quizListData.sheetDocID;
         this.date = quizListData.date;
+        this.logoURL=quizListData.logoURL;
 
     }
 
@@ -64,4 +68,7 @@ public class QuizListData implements Serializable
         return sheetDocID;
     }
 
+    public String getLogoURL() {
+        return logoURL;
+    }
 }

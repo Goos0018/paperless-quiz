@@ -32,7 +32,7 @@ public class RoundsAdapter extends RecyclerView.Adapter<RoundsAdapter.ViewHolder
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvRoundName = itemView.findViewById(R.id.tv_round_name);
-            ivLeft = itemView.findViewById(R.id.iv_left);
+            ivLeft = itemView.findViewById(R.id.ivQuizLogo);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v)

@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.example.paperlessquiz.google.access.GoogleAccess;
 import com.example.paperlessquiz.google.access.GoogleAccessAddLine;
 import com.example.paperlessquiz.loginentity.LoginEntity;
+import com.example.paperlessquiz.quiz.Quiz;
 
 import java.util.Date;
 
@@ -40,7 +41,7 @@ public class B_LoginMain extends AppCompatActivity implements B_frag_ListEntitie
         etPasskey = (EditText) findViewById(R.id.et_passkey);
         thisQuiz = (Quiz) getIntent().getSerializableExtra(Quiz.INTENT_EXTRANAME_THIS_QUIZ);
         String type = (String) getIntent().getStringExtra(LoginEntity.INTENT_EXTRA_NAME_THIS_LOGIN_TYPE);
-
+        onItemSelected(0);
 
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,7 +78,7 @@ public class B_LoginMain extends AppCompatActivity implements B_frag_ListEntitie
                             submitPressed = true;
                             loginCompleted=true;
                             Intent intent = new Intent(B_LoginMain.this, D_ParticipantHome.class);
-                            //Intent intent = new Intent(B_LoginMain.this, D_PA_ShowRounds.class);
+                            //Intent intent = new Intent(B_LoginMain.this, old_D_PA_ShowRounds.class);
                             intent.putExtra(Quiz.INTENT_EXTRANAME_THIS_QUIZ, thisQuiz);
                             intent.putExtra(LoginEntity.INTENT_EXTRA_NAME_THIS_LOGIN_ENTITY, thisLoginEntity);
                             startActivity(intent);

@@ -1,4 +1,4 @@
-package com.example.paperlessquiz;
+package com.example.paperlessquiz.quiz;
 
 import com.example.paperlessquiz.loginentity.LoginEntity;
 import com.example.paperlessquiz.question.QuestionsList;
@@ -12,6 +12,8 @@ import java.util.HashMap;
 
 public class Quiz implements Serializable {
     public static final String INTENT_EXTRANAME_THIS_QUIZ = "ThisQuiz";
+    public static final int TARGET_WIDTH = 200;
+    public static final int TARGET_HEIGHT = 200;
     private QuizListData listData;
     private QuizExtraData additionalData;
     private HashMap<String, LoginEntity> teams;

@@ -10,7 +10,7 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@+id/iv_left"
+            android:id="@+id/ivQuizLogo"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="left|center_vertical"

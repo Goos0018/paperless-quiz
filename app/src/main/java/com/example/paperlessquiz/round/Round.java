@@ -2,11 +2,12 @@ package com.example.paperlessquiz.round;
 
 import com.example.paperlessquiz.question.Question;
 import com.example.paperlessquiz.question.QuestionsList;
+import com.example.paperlessquiz.spinners.SpinnerData;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Round implements Serializable {
+public class Round implements Serializable, SpinnerData {
     public static final String INTENT_EXTRA_NAME_THIS_ROUND = "thisRound";
     private int id;
     private String name, description;

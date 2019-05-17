@@ -1,29 +1,17 @@
 package com.example.paperlessquiz;
 
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
 
-import com.example.paperlessquiz.adapters.QuizRoundsAdapter;
 import com.example.paperlessquiz.google.access.GoogleAccess;
-import com.example.paperlessquiz.google.access.GoogleAccessGet;
-import com.example.paperlessquiz.google.access.LoadingListenerImpl;
 import com.example.paperlessquiz.loginentity.LoginEntity;
-import com.example.paperlessquiz.quizlistdata.QuizListData;
-import com.example.paperlessquiz.quizextradata.QuizExtraData;
-import com.example.paperlessquiz.round.GetRoundsLPL;
-import com.example.paperlessquiz.round.Round;
+import com.example.paperlessquiz.quiz.Quiz;
 import com.example.paperlessquiz.round.RoundParser;
 
-import java.util.ArrayList;
-
-public class D_PA_ShowRounds extends AppCompatActivity {
+public class old_D_PA_ShowRounds extends AppCompatActivity {
 
     Quiz thisQuiz;
     LoginEntity thisLoginEntity;
@@ -70,13 +58,13 @@ public class D_PA_ShowRounds extends AppCompatActivity {
                 // When clicked, go to the A_SelectRole screen to allow the user to select the role for this quiz.
                 // Pass the QuizListData object so the receiving screen can get the rest of the details
 
-                Intent intent = new Intent(D_PA_ShowRounds.this, D_PB_ShowRoundQuestions.class);
+                Intent intent = new Intent(old_D_PA_ShowRounds.this, old_D_PB_ShowRoundQuestions.class);
                 intent.putExtra(Quiz.INTENT_EXTRANAME_THIS_QUIZ, thisQuiz);
                 intent.putExtra(LoginEntity.INTENT_EXTRA_NAME_THIS_LOGIN_ENTITY,thisLoginEntity);
                 intent.putExtra(Round.INTENT_EXTRA_NAME_THIS_ROUND,adapter.getItem(position));
                 startActivity(intent);
 
-                //Toast.makeText(D_PA_ShowRounds.this, "Loading round", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(old_D_PA_ShowRounds.this, "Loading round", Toast.LENGTH_SHORT).show();
 
             }
         });

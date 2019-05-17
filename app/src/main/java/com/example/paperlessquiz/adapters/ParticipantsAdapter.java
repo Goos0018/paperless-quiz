@@ -13,11 +13,6 @@ import com.example.paperlessquiz.R;
 import com.example.paperlessquiz.loginentity.LoginEntity;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
 
 public class ParticipantsAdapter extends ArrayAdapter<LoginEntity> {
 
@@ -38,7 +33,7 @@ public class ParticipantsAdapter extends ArrayAdapter<LoginEntity> {
         View rowView = inflater.inflate(R.layout.row_layout_select_login_name,parent,false);
         TextView tvName = (TextView) rowView.findViewById(R.id.tv_name);
         TextView tvType = (TextView) rowView.findViewById(R.id.tv_type);
-        ImageView ivleft = (ImageView) rowView.findViewById(R.id.iv_left);
+        ImageView ivleft = (ImageView) rowView.findViewById(R.id.ivQuizLogo);
 
         tvName.setText(getItem(position).getName());
         tvType.setText(this.getItem(position).getType());

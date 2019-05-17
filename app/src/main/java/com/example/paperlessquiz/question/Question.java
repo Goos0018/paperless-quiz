@@ -1,10 +1,13 @@
 package com.example.paperlessquiz.question;
 
+import com.example.paperlessquiz.spinners.SpinnerData;
+
 import java.io.Serializable;
 
-public class Question implements Serializable {
+public class Question implements Serializable, SpinnerData {
     private int id;
     private int roundID;
+    private String name;
     private String hint;
     private String question;
     private String correctAnswer;
@@ -14,6 +17,7 @@ public class Question implements Serializable {
     public Question() {
         this.id = 0;
         this.roundID = 0;
+        this.name="";
         this.hint = "";
         this.question = "";
         this.correctAnswer = "";
@@ -21,14 +25,19 @@ public class Question implements Serializable {
         this.thisAnswer = "";
     }
 
-    public Question(int id, int roundID, String hint, String question, String correctAnswer, int maxScore) {
+    public Question(int id, int roundID, String name, String hint, String question, String correctAnswer, int maxScore) {
         this.id = id;
         this.roundID = roundID;
+        this.name=name;
         this.hint = hint;
         this.question = question;
         this.correctAnswer = correctAnswer;
         this.maxScore = maxScore;
         this.thisAnswer = "";
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getId() {
@@ -85,5 +94,15 @@ public class Question implements Serializable {
 
     public void setMaxScore(int maxScore) {
         this.maxScore = maxScore;
+    }
+
+    @Override
+    public String getDescription() {
+        return hint;
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 }

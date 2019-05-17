@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.example.paperlessquiz.adapters.ParticipantsAdapter;
 import com.example.paperlessquiz.loginentity.LoginEntity;
+import com.example.paperlessquiz.quiz.Quiz;
 
 import java.util.ArrayList;
 

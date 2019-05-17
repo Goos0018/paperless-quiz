@@ -3,39 +3,73 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimaryLight"
     android:orientation="vertical"
     tools:context=".B_frag_LoginEntity">
 
     <TextView
         android:id="@+id/tv_login_prompt"
         android:layout_width="match_parent"
-        android:layout_height="90dp"
-        android:text="Please enter your passkey" />
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="15dp"
+        android:background="@color/colorPrimaryLight"
+        android:gravity="center"
+        android:text="Select your team in the list below and enter the passcode you  received from the organization"
+        android:textColor="@color/colorSecondaryText"
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/tvDisplayID"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="15dp"
+        android:background="@color/colorPrimaryLight"
+        android:gravity="center"
+        android:text="Team number"
+        android:textColor="@color/colorPrimaryText"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/tvDisplayName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="15dp"
+        android:background="@color/colorPrimaryLight"
+        android:gravity="center"
+        android:text="Team name"
+        android:textColor="@color/colorPrimaryText"
+        android:textStyle="bold" />
 
     <EditText
         android:id="@+id/et_passkey"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="15dp"
+        android:background="@color/colorPrimaryLight"
         android:ems="10"
-        android:hint="Please enter the passkey that was given to you"
-        android:inputType="textPersonName" />
+        android:gravity="center"
+        android:hint="Enter the passkey that was given to you"
+        android:imeOptions="actionDone"
+        android:inputType="textPersonName"
+        android:textColor="@color/colorPrimaryText"
+        android:textColorHint="@color/colorSecondaryText" />
 
     <Button
         android:id="@+id/btn_submit_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Button" />
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="15dp"
+        android:gravity="center"
+        android:text="Log in" />
 
 </LinearLayout>

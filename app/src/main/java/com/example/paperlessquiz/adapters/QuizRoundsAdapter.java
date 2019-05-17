@@ -35,7 +35,7 @@ public class QuizRoundsAdapter extends ArrayAdapter<Round>
         //TextView tvNrOfQuestions = (TextView) rowView.findViewById(R.id.tv_round_nr_of_questions);
         //TextView tvAcceptsAnswers = (TextView) rowView.findViewById(R.id.tv_round_accepts_answers);
 
-        ImageView ivleft = (ImageView) rowView.findViewById(R.id.iv_left);
+        ImageView ivleft = (ImageView) rowView.findViewById(R.id.ivQuizLogo);
 
         tvName.setText(getItem(position).getName());
         tvDescription.setText(getItem(position).getDescription());

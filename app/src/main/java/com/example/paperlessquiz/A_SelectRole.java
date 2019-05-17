@@ -16,6 +16,7 @@ import com.example.paperlessquiz.loginentity.LoginEntityParser;
 import com.example.paperlessquiz.question.GetQuestionsLPL;
 import com.example.paperlessquiz.question.Question;
 import com.example.paperlessquiz.question.QuestionParser;
+import com.example.paperlessquiz.quiz.Quiz;
 import com.example.paperlessquiz.quizextradata.GetQuizExtraDataLPL;
 import com.example.paperlessquiz.quizextradata.QuizExtraData;
 import com.example.paperlessquiz.quizlistdata.QuizListData;
@@ -48,6 +49,7 @@ public class A_SelectRole extends AppCompatActivity {
         btnOrganizer=findViewById(R.id.btn_organizer);
         tvWelcome=findViewById(R.id.tv_welcome);
         QuizListData thisQuizListData = (QuizListData) getIntent().getSerializableExtra(QuizListData.INTENT_EXTRA_NAME_THIS_QUIZ_BASICS);
+        tvWelcome.setText("Welcome to " + thisQuizListData.getName() + "\n" + thisQuizListData.getDescription());
         //Get the additional data we don't have yet: nr of rounds, nr of participants, status,  ...
         //Get extra data from the quiz
         String scriptParamsForExtraData = GoogleAccess.PARAMNAME_DOC_ID + thisQuizListData.getSheetDocID() + GoogleAccess.PARAM_CONCATENATOR +
@@ -118,7 +120,7 @@ public class A_SelectRole extends AppCompatActivity {
                           startActivity(intent);
                       }
                       else {
-                          tvWelcome.setText("QuizDetails " + thisQuizListData.getName() + " is not open yet");
+                          tvWelcome.setText("Quiz " + thisQuizListData.getName() + " is not open yet");
                       }
 
                   }

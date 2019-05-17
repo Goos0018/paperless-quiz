@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimaryLight"
     android:orientation="vertical"
     tools:context=".MainActivity">
 
@@ -14,12 +15,20 @@
         android:layout_marginLeft="15dp"
         android:layout_marginTop="10dp"
         android:layout_marginRight="15dp"
-        android:text="Please select the quiz to attend - select either participant or organizer" />
+        android:background="@color/colorPrimaryLight"
+        android:gravity="center"
+        android:text="@string/please_select_a_quiz"
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
     <ListView
         android:id="@+id/lvQuizList"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="513dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="15dp"
+        android:background="@color/colorPrimaryLight">
 
 
     </ListView>

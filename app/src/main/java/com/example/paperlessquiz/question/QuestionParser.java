@@ -10,14 +10,17 @@ public class QuestionParser implements JsonParser<Question> {
     //Strings here MUST match the headers in the Questions tab of the Quiz sheet
     public static final String ID = "ID";
     public static final String ROUND_ID = "RoundID";
+    public static final String NAME = "Name";
     public static final String HINT = "Hint";
     public static final String QUESTION = "Question";
     public static final String CORRECT_ANSWER = "CorrectAnswer";
     public static final String MAX_SCORE = "MaxScore";
 
+
     @Override
     public Question parse(JSONObject jo) throws JSONException {
-        return new Question(jo.getInt(ID),jo.getInt(ROUND_ID), jo.getString(HINT),
+        return new Question(jo.getInt(ID),jo.getInt(ROUND_ID), jo.getString(NAME),jo.getString(HINT),
                 jo.getString(QUESTION),jo.getString(CORRECT_ANSWER),jo.getInt(MAX_SCORE));
     }
 }
+

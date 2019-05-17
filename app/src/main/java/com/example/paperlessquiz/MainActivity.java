@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.example.paperlessquiz.adapters.QuizBasicsAdapter;
+import com.example.paperlessquiz.adapters.QuizListAdapter;
 import com.example.paperlessquiz.google.access.GoogleAccess;
 import com.example.paperlessquiz.google.access.GoogleAccessGet;
 import com.example.paperlessquiz.google.access.LoadingListenerImpl;
@@ -25,7 +25,7 @@ TODO: layout
 
 public class MainActivity extends AppCompatActivity {
     ListView lv_QuizList;
-    QuizBasicsAdapter adapter;
+    QuizListAdapter adapter;
     String sheetName = QuizListData.QUIZLIST_TABNAME;
     String scriptParams = GoogleAccess.PARAMNAME_DOC_ID + QuizListData.QUIZLIST_DOC_ID + GoogleAccess.PARAM_CONCATENATOR +
             GoogleAccess.PARAMNAME_SHEET + QuizListData.QUIZLIST_TABNAME + GoogleAccess.PARAM_CONCATENATOR +
@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
     lv_QuizList = (ListView) findViewById(R.id.lvQuizList);
-    adapter = new QuizBasicsAdapter(this);
+    adapter = new QuizListAdapter(this);
 
     lv_QuizList.setAdapter(adapter);
     lv_QuizList.setOnItemClickListener(new AdapterView.OnItemClickListener()

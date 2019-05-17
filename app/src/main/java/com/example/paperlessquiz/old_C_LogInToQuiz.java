@@ -71,7 +71,7 @@ public class old_C_LogInToQuiz extends AppCompatActivity {
                             teamLogIn.addLine();
                             submitPressed = true;
                             loginCompleted=true;
-                            Intent intent = new Intent(old_C_LogInToQuiz.this, D_PA_ShowRounds.class);
+                            Intent intent = new Intent(old_C_LogInToQuiz.this, old_D_PA_ShowRounds.class);
                             intent.putExtra(QuizListData.INTENT_EXTRA_NAME_THIS_QUIZ_BASICS, thisQuizListData);
                             intent.putExtra(QuizExtraData.INTENT_EXTRA_NAME_THIS_QUIZ_EXTRAS, thisQuizExtraData);
                             intent.putExtra(LoginEntity.INTENT_EXTRA_NAME_THIS_LOGIN_ENTITY, thisLoginEntity);

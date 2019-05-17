@@ -55,6 +55,7 @@ public class RoundSpinner {
         } else {
             position++;
         }
+        positionChanged();
     }
 
     public void moveDown() {
@@ -64,6 +65,7 @@ public class RoundSpinner {
         } else {
             position--;
         }
+        positionChanged();
     }
 
     public void setArrayList(ArrayList<Round> roundsList) {

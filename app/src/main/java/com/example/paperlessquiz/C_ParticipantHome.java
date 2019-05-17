@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.paperlessquiz.question.Question;
 import com.example.paperlessquiz.quiz.Quiz;
 import com.example.paperlessquiz.spinners.QuestionSpinner;
 import com.example.paperlessquiz.spinners.RoundSpinner;
@@ -29,6 +30,7 @@ public class C_ParticipantHome extends AppCompatActivity {
         tvQuestionDescription = findViewById(R.id.tvQuestionDescription);
         tvRoundName = findViewById(R.id.tvRoundName);
         tvRoundDescription = findViewById(R.id.tvRoundDescription);
+        etAnswer = findViewById(R.id.etAnswer);
         btnQuestionDown = findViewById(R.id.btnQuestionDown);
         btnQuestionUp = findViewById(R.id.btnQuestionUp);
         btnRndDown = findViewById(R.id.btnRndDown);
@@ -36,6 +38,8 @@ public class C_ParticipantHome extends AppCompatActivity {
         questionSpinner = new QuestionSpinner(thisQuiz.getRound(0).getQuestions(), tvQuestionName, tvQuestionDescription,
                 thisQuiz.getMyAnswers().get(0), etAnswer);
         roundSpinner = new RoundSpinner(thisQuiz.getRounds(), tvRoundName, tvRoundDescription, questionSpinner, thisQuiz);
+        roundSpinner.positionChanged();
+        questionSpinner.positionChanged();
 
         btnRndDown.setOnClickListener(new View.OnClickListener() {
             @Override

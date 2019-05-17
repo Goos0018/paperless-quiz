@@ -32,6 +32,8 @@ public class Quiz implements Serializable {
         this.teams = new HashMap<String, LoginEntity>();
         this.organizers = new HashMap<String,LoginEntity>();
         this.rounds = new ArrayList<Round>();
+        //ArrayList<Answer> tmp = new ArrayList<>();
+        this.myAnswers = new ArrayList<ArrayList<Answer>>();
         for (int i=0;i<this.additionalData.getNrOfRounds();i++)
         {
             rounds.add(i,new Round());

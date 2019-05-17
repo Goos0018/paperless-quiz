@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.paperlessquiz.answer.Answer;
 import com.example.paperlessquiz.google.access.GoogleAccess;
 import com.example.paperlessquiz.google.access.GoogleAccessGet;
 import com.example.paperlessquiz.google.access.LoadingListenerImpl;
@@ -24,6 +25,8 @@ import com.example.paperlessquiz.quizextradata.QuizExtraDataParser;
 import com.example.paperlessquiz.round.GetRoundsLPL;
 import com.example.paperlessquiz.round.Round;
 import com.example.paperlessquiz.round.RoundParser;
+
+import java.util.ArrayList;
 
 /* This screen allows you to select if you are an organizer or a participant.
 All data about the quiz is loaded and stored in a Quiz object
@@ -107,6 +110,13 @@ public class A_SelectRole extends AppCompatActivity {
                               for (int i = 0; i < thisQuiz.getAdditionalData().getNrOfRounds(); i++) {
 
                                   thisQuiz.getRounds().get(i).setQuestions(questionsLPL.getAllQuestionsPerRound().get(i));
+                                  thisQuiz.getMyAnswers().add(i,new ArrayList<>());
+                                  ArrayList<Answer> answers = new ArrayList<>();
+                                  for (int j=0;j< thisQuiz.getRound(i).getNrOfQuestions();j++)
+                                  {
+                                      answers.add(j,new Answer(j,""));
+                                  }
+                                  thisQuiz.setAnswersForRound(i,answers);
                               }
                           }
                           else

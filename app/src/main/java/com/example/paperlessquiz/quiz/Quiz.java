@@ -1,6 +1,9 @@
 package com.example.paperlessquiz.quiz;
 
+import com.example.paperlessquiz.answer.Answer;
+import com.example.paperlessquiz.answer.RoundAnswers;
 import com.example.paperlessquiz.loginentity.LoginEntity;
+import com.example.paperlessquiz.question.Question;
 import com.example.paperlessquiz.question.QuestionsList;
 import com.example.paperlessquiz.quizextradata.QuizExtraData;
 import com.example.paperlessquiz.quizlistdata.QuizListData;
@@ -19,7 +22,9 @@ public class Quiz implements Serializable {
     private HashMap<String, LoginEntity> teams;
     private HashMap<String, LoginEntity> organizers;
     private ArrayList<Round> rounds;
-    private ArrayList<QuestionsList> questions;
+    //private ArrayList<QuestionsList> questions;
+    private ArrayList<ArrayList<Question>> questions;
+    private ArrayList<ArrayList<Answer>> myAnswers;
 
     public Quiz() {
         this.listData = new QuizListData();
@@ -106,12 +111,27 @@ public class Quiz implements Serializable {
         this.rounds = rounds;
     }
 
-    public ArrayList<QuestionsList> getQuestions() {
+    public ArrayList<ArrayList<Question>> getQuestions() {
         return questions;
     }
 
-    public void setQuestions(ArrayList<QuestionsList> questions) {
+    public void setQuestions(ArrayList<ArrayList<Question>> questions) {
         this.questions = questions;
     }
 
+    public ArrayList<ArrayList<Answer>> getMyAnswers() {
+        return myAnswers;
+    }
+
+    public void setMyAnswers(ArrayList<ArrayList<Answer>> myAnswers) {
+        this.myAnswers = myAnswers;
+    }
+
+    public void setAnswersForRound(int rndId,ArrayList<Answer> answerList) {
+        for(int i=0;i<answerList.size();i++)
+        {
+                myAnswers.get(rndId).add(i,answerList.get(i));
+        }
+
+    }
 }

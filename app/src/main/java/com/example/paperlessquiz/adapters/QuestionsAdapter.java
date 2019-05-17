@@ -112,7 +112,7 @@ public class QuestionsAdapter extends ArrayAdapter<Question> {
                     final EditText Answer = (EditText) v;
                     getItem(position).setThisAnswer(Answer.getText().toString());
                     //This adds the answer to the array holding all answers, so we have access to them when submitting
-                    Answer thisAnswer = new Answer(position+1,Answer.getText().toString(),"tmp");
+                    Answer thisAnswer = new Answer(position+1,Answer.getText().toString());
                     //myAnswers.remove(position);
                     myAnswers.set(position,thisAnswer);
 

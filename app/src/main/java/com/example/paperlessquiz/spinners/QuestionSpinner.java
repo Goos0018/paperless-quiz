@@ -23,6 +23,7 @@ public class QuestionSpinner {
         this.tvSub = tvSub;
         this.position =0;
         this.oldPosition = questionsList.size()-1;
+        //this.roundAnswers will in practice be a link to the myAnswers(rndId)
         this.roundAnswers = roundAnswers;
         this.answerField = answerField;
     }
@@ -43,26 +44,30 @@ public class QuestionSpinner {
 
     public void moveUp(){
         oldPosition=position;
-        if(position == questionsList.size()){
+        if(position == questionsList.size()-1){
             position =0;
         }
         else {
             position++;
         }
+        positionChanged();
     }
     public void moveDown(){
         oldPosition=position;
         if(position == 0){
-            position =questionsList.size();
+            position =questionsList.size()-1;
         }
         else {
             position--;
         }
+        positionChanged();
     }
 
     public void setArrayList(ArrayList<Question> questionsList) {
         this.questionsList = questionsList;
     }
+
+
 
     public ArrayList<Question> getQuestionsList() {
         return questionsList;

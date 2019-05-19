@@ -39,7 +39,7 @@ public class C_ParticipantHome extends AppCompatActivity {
                 thisQuiz.getMyAnswers().get(0), etAnswer);
         roundSpinner = new RoundSpinner(thisQuiz.getRounds(), tvRoundName, tvRoundDescription, questionSpinner, thisQuiz);
         roundSpinner.positionChanged();
-        questionSpinner.positionChanged();
+        //questionSpinner.positionChanged();
 
         btnRndDown.setOnClickListener(new View.OnClickListener() {
             @Override

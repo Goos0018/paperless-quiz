@@ -40,17 +40,21 @@ public class RoundSpinner {
     }
 
     public void positionChanged() {
+        //Move up the questionspinner in case it contains an answer that was not saved yet
+        questionSpinner.moveUp();
+        questionSpinner.moveDown();
+        //thisQuiz.setAnswersForRound(oldPosition,questionSpinner.getRoundAnswers());
         tvMain.setText(roundsList.get(position).getName());
         tvSub.setText(roundsList.get(position).getDescription());
-        questionSpinner.positionChanged();
-        thisQuiz.setAnswersForRound(oldPosition,questionSpinner.getRoundAnswers());
+        //Set the questons and answers of the questionspinner to those of the next round
         questionSpinner.setArrayList(thisQuiz.getRound(position).getQuestions());
+        questionSpinner.setRoundAnswers(thisQuiz.getMyAnswers().get(position));
 
     }
 
     public void moveUp() {
         oldPosition=position;
-        if (position == roundsList.size()) {
+        if (position == roundsList.size()-1) {
             position = 0;
         } else {
             position++;
@@ -61,7 +65,7 @@ public class RoundSpinner {
     public void moveDown() {
         oldPosition=position;
         if (position == 0) {
-            position = roundsList.size();
+            position = roundsList.size()-1;
         } else {
             position--;
         }

@@ -132,7 +132,9 @@ public class Quiz implements Serializable {
     public void setAnswersForRound(int rndId,ArrayList<Answer> answerList) {
         for(int i=0;i<answerList.size();i++)
         {
-                myAnswers.get(rndId).add(i,answerList.get(i));
+                ArrayList<Answer> tmp = myAnswers.get(rndId);
+                Answer curAnswer = answerList.get(i);
+                tmp.add(i,curAnswer);
         }
 
     }

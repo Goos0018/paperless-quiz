@@ -10,13 +10,14 @@ import java.util.List;
 public class GetQuestionsLPL implements ListParsedListener<Question> {
 
     //private QuestionsAdapter roundQuestionsAdapter;
-    private ArrayList<QuestionsList> allQuestionsPerRound;
+    private ArrayList<ArrayList<Question>> allQuestionsPerRound;
+    private ArrayList<Question> allQuestions;
     //private ArrayList<Round>
     //private QuestionsList questionsList;
     //private String answer1;
 
 
-    public ArrayList<QuestionsList> getAllQuestionsPerRound() {
+    public ArrayList<ArrayList<Question>> getAllQuestionsPerRound() {
         return allQuestionsPerRound;
     }
 
@@ -24,21 +25,8 @@ public class GetQuestionsLPL implements ListParsedListener<Question> {
     //public GetQuestionsLPL(QuestionsAdapter roundQuestionsAdapter){
         //public GetQuestionsLPL(QuestionsAdapter roundQuestionsAdapter, QuestionsList questionsList, String answer1){
         //this.roundQuestionsAdapter=roundQuestionsAdapter;
-        this.allQuestionsPerRound=new ArrayList<QuestionsList>();
+        this.allQuestionsPerRound=new ArrayList<ArrayList<Question>>();
     }
-/*
-    public QuestionsList getQuestionsList() {
-        return questionsList;
-    }
-
-    public String getAnswer1() {
-        return answer1;
-    }
-
-    public void setAnswer1(String answer1) {
-        this.answer1 = answer1;
-    }
-*/
     @Override
     public void listParsed(List<Question> list)
     {
@@ -51,9 +39,9 @@ public class GetQuestionsLPL implements ListParsedListener<Question> {
             //add (empty questionslists until you are sue you have one at position rndId - 1
             while (allQuestionsPerRound.size() < rndId)
             {
-                allQuestionsPerRound.add(new QuestionsList());
+                allQuestionsPerRound.add(new ArrayList<Question>());
             }
-            QuestionsList qList = allQuestionsPerRound.get(rndId-1);
+            ArrayList<Question> qList = allQuestionsPerRound.get(rndId-1);
             int qId = q.getId();
             //add (empty) questions to qList until you are sure you have one at position qId - -2
             //while (allQuestionsPerRound.get(rndId-1).getQuestionsList().size() < qId-1)
@@ -71,6 +59,11 @@ public class GetQuestionsLPL implements ListParsedListener<Question> {
             allQuestionsPerRound.get(rnd).addQuestion(q);
             */
         }
-        //roundQuestionsAdapter.addAll(list);
+        allQuestions = (ArrayList)list;
+    }
+
+    //@Override
+    public ArrayList<Question> getData() {
+        return allQuestions;
     }
 }

@@ -105,6 +105,7 @@ public class A_SelectRole extends AppCompatActivity {
                           thisQuiz.setTeams(teamsLPL.getLoginEntities());
                           thisQuiz.setOrganizers(organizersLPL.getLoginEntities());
                           thisQuiz.setRounds(getRoundsLPL.getRounds());
+                          thisQuiz.setAllQuestionsPerRound(questionsLPL.getAllQuestionsPerRound());
                           //What we got from the questionslist should match what was given in the nrOfRounds and NrOfQuestions
                           if (questionsLPL.getAllQuestionsPerRound().size() == thisQuiz.getAdditionalData().getNrOfRounds() ) {
                               for (int i = 0; i < thisQuiz.getAdditionalData().getNrOfRounds(); i++) {
@@ -123,7 +124,7 @@ public class A_SelectRole extends AppCompatActivity {
                           {
                               //TODO: log error
                           }
-                          //thisQuiz.setQuestions(questionsLPL.getAllQuestionsPerRound());
+                          //thisQuiz.setAllQuestionsPerRound(questionsLPL.getAllQuestionsPerRound());
                           Intent intent = new Intent(A_SelectRole.this, B_LoginMain.class);
                           intent.putExtra(Quiz.INTENT_EXTRANAME_THIS_QUIZ, thisQuiz);
                           intent.putExtra(LoginEntity.INTENT_EXTRA_NAME_THIS_LOGIN_TYPE, LoginEntity.SELECTION_PARTICIPANT);

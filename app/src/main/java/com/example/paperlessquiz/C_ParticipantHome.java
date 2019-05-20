@@ -35,10 +35,10 @@ public class C_ParticipantHome extends AppCompatActivity {
         btnQuestionUp = findViewById(R.id.btnQuestionUp);
         btnRndDown = findViewById(R.id.btnRndDown);
         btnRndUp = findViewById(R.id.btnRndUp);
-        questionSpinner = new QuestionSpinner(thisQuiz.getRound(0).getQuestions(), tvQuestionName, tvQuestionDescription,
-                thisQuiz.getMyAnswers().get(0), etAnswer);
-        roundSpinner = new RoundSpinner(thisQuiz.getRounds(), tvRoundName, tvRoundDescription, questionSpinner, thisQuiz);
-        roundSpinner.positionChanged();
+        questionSpinner = new QuestionSpinner(thisQuiz.getAllQuestionsPerRound(), tvQuestionName, tvQuestionDescription,
+                thisQuiz.getMyAnswers(), etAnswer,0);
+        roundSpinner = new RoundSpinner(thisQuiz.getRounds(), tvRoundName, tvRoundDescription, questionSpinner);
+        roundSpinner.moveTo(0);
         //questionSpinner.positionChanged();
 
         btnRndDown.setOnClickListener(new View.OnClickListener() {

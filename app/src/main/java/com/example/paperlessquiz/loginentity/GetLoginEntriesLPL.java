@@ -27,4 +27,8 @@ public class GetLoginEntriesLPL implements ListParsedListener<LoginEntity> {
         }
     }
 
+    //@Override
+    public List<LoginEntity> getData() {
+        return null;
+    }
 }

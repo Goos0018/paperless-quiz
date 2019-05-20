@@ -12,11 +12,11 @@ public class RoundSpinner {
     private ArrayList<Round> roundsList;
     private int position;
     private int oldPosition;
-    private int curPosition;
+    //private int curPosition;
     private TextView tvMain;
     private TextView tvSub;
     private QuestionSpinner questionSpinner;
-    private Quiz thisQuiz;
+    //private Quiz thisQuiz;
 
     /*Question q;
     SpinnerData s;
@@ -24,7 +24,7 @@ public class RoundSpinner {
     ArrayList<SpinnerData> sList;
     */
 
-    public RoundSpinner(ArrayList<Round> roundsList, TextView tvMain, TextView tvSub, QuestionSpinner questionSpinner, Quiz thisQuiz) {
+    public RoundSpinner(ArrayList<Round> roundsList, TextView tvMain, TextView tvSub, QuestionSpinner questionSpinner) {
         this.roundsList = roundsList;
         this.tvMain = tvMain;
         this.tvSub = tvSub;
@@ -32,7 +32,7 @@ public class RoundSpinner {
         this.oldPosition = roundsList.size()-1;
         //this.curPosition = 0;
         this.questionSpinner = questionSpinner;
-        this.thisQuiz = thisQuiz;
+        //this.thisQuiz = thisQuiz;
 
 
         //s = q; // Okay because q implements interface s
@@ -41,15 +41,30 @@ public class RoundSpinner {
 
     public void positionChanged() {
         //Move up the questionspinner in case it contains an answer that was not saved yet
-        questionSpinner.moveUp();
-        questionSpinner.moveDown();
-        //thisQuiz.setAnswersForRound(oldPosition,questionSpinner.getRoundAnswers());
+        questionSpinner.moveTo(0);
+        //questionSpinner.clearAnswer();
+        //questionSpinner.moveDown();
+        //thisQuiz.setAnswersForRound(oldPosition,questionSpinner.getMyAnswers());
         tvMain.setText(roundsList.get(position).getName());
         tvSub.setText(roundsList.get(position).getDescription());
-        //Set the questons and answers of the questionspinner to those of the next round
-        questionSpinner.setArrayList(thisQuiz.getRound(position).getQuestions());
-        questionSpinner.setRoundAnswers(thisQuiz.getMyAnswers().get(position));
+        //Tell the questionspinner the round has changed and go the the first question of this new round
+        questionSpinner.setRndId(position);
+        questionSpinner.initialize(0);
+        //Set the questions and answers of the questionspinner to those of the next round
+        //questionSpinner.setArrayList(thisQuiz.getRound(position).getQuestions());
+        //questionSpinner.setMyAnswers(thisQuiz.getMyAnswers().get(position));
 
+    }
+
+    public void moveTo(int newPosition){
+        oldPosition=position;
+        if(newPosition < roundsList.size()){
+            position =newPosition;
+        }
+        else {
+            position = 1;
+        }
+        positionChanged();
     }
 
     public void moveUp() {

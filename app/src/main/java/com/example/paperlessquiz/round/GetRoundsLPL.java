@@ -23,9 +23,16 @@ public class GetRoundsLPL implements ListParsedListener<Round> {
     public void listParsed(List<Round> list)
     {
         //AddRoundsRoQuizRoundsAdapterLPL.addAll(list);
-        for (int i=0;i < list.size();i++)
+        /*for (int i=0;i < list.size();i++)
         {
             rounds.add(i,list.get(i));
         }
+        */
+        rounds = (ArrayList)list;
+    }
+
+    //@Override
+    public List<Round> getData() {
+        return rounds;
     }
 }

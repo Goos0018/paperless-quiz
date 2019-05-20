@@ -5,4 +5,5 @@ import java.util.List;
 public interface ListParsedListener<T> {
 
     void listParsed(List<T> list);
+    //List<T> getData();
 }

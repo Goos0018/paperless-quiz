@@ -24,16 +24,23 @@ import java.util.ArrayList;
 public class QuizLoader {
     private Context context;
     private String sheetDocID;
+    private Quiz quiz;
     public GetQuizExtraDataLPL quizExtraDataLPL = new GetQuizExtraDataLPL();
-    public GetRoundsLPL quizRoundsLPL = new GetRoundsLPL();
-    public GetQuestionsLPL quizQuestionsLPL = new GetQuestionsLPL();
-    public GetLoginEntriesLPL quizTeamsLPL = new GetLoginEntriesLPL(), quizOrganizersLPL = new GetLoginEntriesLPL();
+    public GetRoundsLPL quizRoundsLPL;
+    public GetQuestionsLPL quizQuestionsLPL;
+    public GetLoginEntriesLPL quizTeamsLPL, quizOrganizersLPL;
     public ArrayList<ArrayList<Answer>> myAnswers;
 
-    public QuizLoader(Context context, String sheetDocID) {
+    public QuizLoader(Context context, String sheetDocID, Quiz quiz) {
         this.context = context;
         this.sheetDocID = sheetDocID;
         myAnswers = new ArrayList<>();
+        this.quiz = quiz;
+        quizExtraDataLPL = new GetQuizExtraDataLPL();
+        quizRoundsLPL = new GetRoundsLPL(quiz);
+        quizQuestionsLPL = new GetQuestionsLPL();
+        quizTeamsLPL = new GetLoginEntriesLPL(quiz);
+        quizOrganizersLPL = new GetLoginEntriesLPL();
     }
 
     public String generateParams(String sheet) {
@@ -51,7 +58,7 @@ public class QuizLoader {
         loadQuestions();
     }
 
-    public boolean allChecksOK(){
+    public boolean allChecksOK() {
         return (teamsOK() && organizersOK() && questionsOK());
     }
 
@@ -139,7 +146,7 @@ public class QuizLoader {
             //Create an array with the correct nr of answers
             for (int j = 0; j < quizQuestionsLPL.getAllQuestionsPerRound().get(i).size(); j++) {
                 //answers.add(j, new Answer(j, ""));
-                myAnswers.get(i).add(j,new Answer(j,""));
+                myAnswers.get(i).add(j, new Answer(j, ""));
             }
         }
 

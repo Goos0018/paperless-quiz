@@ -11,6 +11,9 @@
         android:id="@+id/llRndSpinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="5dp"
         android:orientation="horizontal">
 
         <Button
@@ -28,6 +31,7 @@
                 android:id="@+id/tvRoundName"
                 android:layout_width="350dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="TextView" />
@@ -36,6 +40,7 @@
                 android:id="@+id/tvRoundDescription"
                 android:layout_width="350dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="TextView" />
@@ -52,6 +57,9 @@
         android:id="@+id/llQuestionSpinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="15dp"
         android:orientation="horizontal">
 
         <Button
@@ -77,8 +85,8 @@
                 android:id="@+id/tvQuestionDescription"
                 android:layout_width="350dp"
                 android:layout_height="wrap_content"
-                android:text="TextView"
-                android:gravity="center" />
+                android:gravity="center"
+                android:text="TextView" />
         </LinearLayout>
 
         <Button
@@ -93,29 +101,46 @@
         android:id="@+id/llAnswers"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="30dp"
+        android:orientation="vertical">
 
         <EditText
             android:id="@+id/etAnswer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:gravity="center"
             android:hint="answer"
             android:inputType="text" />
+
+        <Button
+            android:id="@+id/btnSubmit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Submit Answers" />
 
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/llCorrections"
+        android:id="@+id/llDisplay"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="30dp"
+        android:orientation="vertical">
 
         <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
+            android:id="@+id/tvDisplayAnswers"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Should not be visible" />
+            android:layout_gravity="center"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:text="TextView" />
+
     </LinearLayout>
 </LinearLayout>

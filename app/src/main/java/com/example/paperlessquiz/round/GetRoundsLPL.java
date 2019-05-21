@@ -2,37 +2,31 @@ package com.example.paperlessquiz.round;
 
 import com.example.paperlessquiz.adapters.QuizRoundsAdapter;
 import com.example.paperlessquiz.google.access.ListParsedListener;
+import com.example.paperlessquiz.quiz.Quiz;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class GetRoundsLPL implements ListParsedListener<Round> {
 
-    //private QuizRoundsAdapter AddRoundsRoQuizRoundsAdapterLPL;
+    private Quiz quiz;
     private ArrayList<Round> rounds;
 
-    public GetRoundsLPL() {
-        //this.AddRoundsRoQuizRoundsAdapterLPL = quizRoundsAdapter;
+    public GetRoundsLPL(Quiz quiz) {
         rounds = new ArrayList<Round>();
+        this.quiz = quiz;
+
     }
 
     public ArrayList<Round> getRounds() {
         return rounds;
     }
 
-    public void listParsed(List<Round> list)
-    {
-        //AddRoundsRoQuizRoundsAdapterLPL.addAll(list);
-        /*for (int i=0;i < list.size();i++)
-        {
-            rounds.add(i,list.get(i));
+    public void listParsed(List<Round> list) {
+        rounds = (ArrayList) list;
+        if (!(quiz == null)) {
+            quiz.setRounds((ArrayList) list);
         }
-        */
-        rounds = (ArrayList)list;
     }
 
-    //@Override
-    public List<Round> getData() {
-        return rounds;
-    }
 }

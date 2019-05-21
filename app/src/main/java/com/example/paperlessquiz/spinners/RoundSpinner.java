@@ -91,4 +91,8 @@ public class RoundSpinner {
     public void setArrayList(ArrayList<Round> roundsList) {
         this.roundsList = roundsList;
     }
+
+    public int getPosition() {
+        return position;
+    }
 }

@@ -1,20 +1,24 @@
 package com.example.paperlessquiz.loginentity;
 
+import com.example.paperlessquiz.google.access.GoogleAccess;
 import com.example.paperlessquiz.google.access.ListParsedListener;
+import com.example.paperlessquiz.quiz.Quiz;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class GetLoginEntriesLPL implements ListParsedListener<LoginEntity> {
-
-    //private ParticipantsAdapter participantsAdapter;
+    private Quiz quiz;
     private ArrayList<LoginEntity> loginEntities;
 
-    //public GetLoginEntriesLPL(ParticipantsAdapter participantsAdapter) {
+
     public GetLoginEntriesLPL() {
-        //this.participantsAdapter = participantsAdapter;
         this.loginEntities = new ArrayList<LoginEntity>();
+    }
+    public GetLoginEntriesLPL(Quiz quiz) {
+        this.loginEntities = new ArrayList<LoginEntity>();
+        this.quiz = quiz;
     }
 
     public ArrayList<LoginEntity> getLoginEntities() {
@@ -22,11 +26,13 @@ public class GetLoginEntriesLPL implements ListParsedListener<LoginEntity> {
     }
 
     public void listParsed(List<LoginEntity> list) {
-        loginEntities = (ArrayList)list;
-    }
-
-    //@Override
-    public List<LoginEntity> getData() {
-        return null;
+        loginEntities = (ArrayList) list;
+        if (!(quiz == null)) {
+            if (loginEntities.get(0).getType().equals(LoginEntity.SELECTION_PARTICIPANT)) {
+                quiz.setTeams((ArrayList) list);
+            } else {
+                quiz.setOrganizers((ArrayList) list);
+            }
+        }
     }
 }

@@ -38,7 +38,7 @@ public class Round implements Serializable, SpinnerData {
         this.acceptsCorrections = acceptsCorrections;
         this.corrected = corrected;
         this.closed = closed;
-        //this.questions = new QuestionsList();
+        this.questions = new QuestionsList();
         this.questions = new ArrayList<Question>();
         for (int i=0;i < nrOfQuestions;i++)
         {
@@ -59,6 +59,7 @@ public class Round implements Serializable, SpinnerData {
         return nrOfQuestions;
     }
 
+
     public boolean AcceptsAnswers() {
         return acceptsAnswers;
     }
@@ -75,6 +76,7 @@ public class Round implements Serializable, SpinnerData {
         return closed;
     }
 
+
     public ArrayList<Question> getQuestions() {
         return questions;
     }
@@ -82,4 +84,5 @@ public class Round implements Serializable, SpinnerData {
     public void setQuestions(ArrayList<Question> questions) {
         this.questions = questions;
     }
+
 }

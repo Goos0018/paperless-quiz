@@ -42,7 +42,7 @@ public class old_B_SelectLoginName extends AppCompatActivity {
         //Convert HAshmap to Arraylist to pass it to the adapter
         ArrayList<LoginEntity> list = new ArrayList<LoginEntity>();
         int i=0;
-        for (LoginEntity entity:thisQuiz.getTeams().values()) {
+        for (LoginEntity entity:thisQuiz.getTeams()) {
             list.add(i,entity);
             i++;
         }

@@ -2,29 +2,27 @@ package com.example.paperlessquiz.loginentity;
 
 import com.example.paperlessquiz.google.access.ListParsedListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class GetLoginEntriesLPL implements ListParsedListener<LoginEntity> {
 
     //private ParticipantsAdapter participantsAdapter;
-    private HashMap<String, LoginEntity> loginEntities;
+    private ArrayList<LoginEntity> loginEntities;
 
     //public GetLoginEntriesLPL(ParticipantsAdapter participantsAdapter) {
     public GetLoginEntriesLPL() {
         //this.participantsAdapter = participantsAdapter;
-        this.loginEntities = new HashMap<String, LoginEntity>();
+        this.loginEntities = new ArrayList<LoginEntity>();
     }
 
-    public HashMap<String, LoginEntity> getLoginEntities() {
+    public ArrayList<LoginEntity> getLoginEntities() {
         return loginEntities;
     }
 
     public void listParsed(List<LoginEntity> list) {
-        //participantsAdapter.addAll(list);
-        for (LoginEntity entry : list) {
-            loginEntities.put(entry.getId(), entry);
-        }
+        loginEntities = (ArrayList)list;
     }
 
     //@Override

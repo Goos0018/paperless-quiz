@@ -12,7 +12,7 @@ public class GoogleAccess {
     public static final String PARAMNAME_LINE_TO_ADD = "LineToAdd=";
 
     public static final String SHEET_QUIZLIST = "QuizList";
-    public static final String SHEEET_QUIZDATA = "QuizData";
+    public static final String SHEET_QUIZDATA = "QuizData";
     public static final String SHEET_ROUNDS = "Rounds";
     public static final String SHEET_QUESTIONS = "Questions";
     public static final String SHEET_TEAMS = "Teams";

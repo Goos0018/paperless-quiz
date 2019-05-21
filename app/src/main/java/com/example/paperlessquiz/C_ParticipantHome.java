@@ -2,9 +2,11 @@ package com.example.paperlessquiz;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Layout;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.paperlessquiz.question.Question;
@@ -19,6 +21,7 @@ public class C_ParticipantHome extends AppCompatActivity {
     TextView tvRoundName, tvRoundDescription, tvQuestionName, tvQuestionDescription;
     EditText etAnswer;
     Button btnRndUp, btnRndDown, btnQuestionUp, btnQuestionDown;
+    LinearLayout testLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,16 +38,20 @@ public class C_ParticipantHome extends AppCompatActivity {
         btnQuestionUp = findViewById(R.id.btnQuestionUp);
         btnRndDown = findViewById(R.id.btnRndDown);
         btnRndUp = findViewById(R.id.btnRndUp);
+        testLayout = findViewById(R.id.llCorrections);
+
         questionSpinner = new QuestionSpinner(thisQuiz.getAllQuestionsPerRound(), tvQuestionName, tvQuestionDescription,
                 thisQuiz.getMyAnswers(), etAnswer,0);
         roundSpinner = new RoundSpinner(thisQuiz.getRounds(), tvRoundName, tvRoundDescription, questionSpinner);
-        roundSpinner.moveTo(0);
+
+        testLayout.setVisibility(LinearLayout.INVISIBLE);
         //questionSpinner.positionChanged();
 
         btnRndDown.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 roundSpinner.moveDown();
+                testLayout.setVisibility(LinearLayout.VISIBLE);
             }
         });
 
@@ -52,6 +59,7 @@ public class C_ParticipantHome extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 roundSpinner.moveUp();
+                testLayout.setVisibility(LinearLayout.INVISIBLE);
 
             }
         });

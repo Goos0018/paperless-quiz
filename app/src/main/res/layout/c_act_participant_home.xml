@@ -8,17 +8,15 @@
     tools:context=".C_ParticipantHome">
 
     <LinearLayout
+        android:id="@+id/llRndSpinner"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <Button
             android:id="@+id/btnRndDown"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Button" />
+            android:layout_width="25dp"
+            android:layout_height="wrap_content" />
 
         <LinearLayout
             android:id="@+id/roundSpinner"
@@ -28,40 +26,39 @@
 
             <TextView
                 android:id="@+id/tvRoundName"
-                android:layout_width="wrap_content"
+                android:layout_width="350dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:gravity="center"
                 android:text="TextView" />
 
             <TextView
                 android:id="@+id/tvRoundDescription"
-                android:layout_width="wrap_content"
+                android:layout_width="350dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:gravity="center"
                 android:text="TextView" />
         </LinearLayout>
 
         <Button
             android:id="@+id/btnRndUp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Button" />
+            android:layout_width="25dp"
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/llQuestionSpinner"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <Button
             android:id="@+id/btnQuestionDown"
-            android:layout_width="wrap_content"
+            android:layout_width="25dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Button" />
+            android:layout_weight="1" />
 
         <LinearLayout
             android:id="@+id/questionSpinner"
@@ -71,43 +68,54 @@
 
             <TextView
                 android:id="@+id/tvQuestionName"
-                android:layout_width="wrap_content"
+                android:layout_width="350dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:gravity="center"
                 android:text="TextView" />
 
             <TextView
                 android:id="@+id/tvQuestionDescription"
-                android:layout_width="wrap_content"
+                android:layout_width="350dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="TextView" />
+                android:text="TextView"
+                android:gravity="center" />
         </LinearLayout>
 
         <Button
             android:id="@+id/btnQuestionUp"
-            android:layout_width="wrap_content"
+            android:layout_width="25dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Button" />
+            android:layout_weight="1" />
 
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/answers"
+        android:id="@+id/llAnswers"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="5"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <EditText
             android:id="@+id/etAnswer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:ems="10"
             android:hint="answer"
             android:inputType="text" />
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llCorrections"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Should not be visible" />
     </LinearLayout>
 </LinearLayout>

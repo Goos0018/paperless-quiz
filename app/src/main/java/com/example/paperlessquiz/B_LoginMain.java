@@ -25,7 +25,7 @@ public class B_LoginMain extends AppCompatActivity implements B_frag_ListEntitie
     EditText etPasskey;
     Button btnSubmit;
     //other local variables needed
-    String id;
+    int id;
     boolean submitPressed = false;
     boolean loginCompleted = false;
 
@@ -46,14 +46,14 @@ public class B_LoginMain extends AppCompatActivity implements B_frag_ListEntitie
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                id = tvDisplayID.getText().toString();
+                id = Integer.valueOf(tvDisplayID.getText().toString());
                 String input = etPasskey.getText().toString().trim();
                 if (type.equals(LoginEntity.SELECTION_PARTICIPANT)){
-                    thisLoginEntity = thisQuiz.getTeam(id);
+                    thisLoginEntity = thisQuiz.getTeam(id-1);
                 }
                 else
                 {
-                    thisLoginEntity = thisQuiz.getOrganizer(id);
+                    thisLoginEntity = thisQuiz.getOrganizer(id-1);
                 }
                 if (input.isEmpty())
                 {
@@ -100,7 +100,7 @@ public class B_LoginMain extends AppCompatActivity implements B_frag_ListEntitie
 
     @Override
     public void onItemSelected(int index) {
-        tvDisplayName.setText(thisQuiz.getTeamsList().get(index).getName());
-        tvDisplayID.setText(thisQuiz.getTeamsList().get(index).getId());
+        tvDisplayName.setText(thisQuiz.getTeams().get(index).getName());
+        tvDisplayID.setText(Integer.toString(thisQuiz.getTeams().get(index).getId()));
     }
 }

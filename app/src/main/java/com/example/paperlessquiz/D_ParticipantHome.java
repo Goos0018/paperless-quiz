@@ -35,8 +35,8 @@ public class D_ParticipantHome extends AppCompatActivity implements RoundsAdapte
     /*
     @Override
     public void onItemSelected(int index) {
-        //tvDisplayName.setText(thisQuiz.getTeamsList().get(index).getName());
-        //tvDisplayID.setText(thisQuiz.getTeamsList().get(index).getId());
+        //tvDisplayName.setText(thisQuiz.getTeams().get(index).getName());
+        //tvDisplayID.setText(thisQuiz.getTeams().get(index).getId());
         adapter = new QuestionsAdapter(this, thisQuiz.getRounds().get(index));
         lvQuestions.setAdapter(adapter);
     }

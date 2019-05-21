@@ -10,12 +10,12 @@ public class LoginEntity implements Serializable {
     public static final String SELECTION_PARTICIPANT = "Participant";
     public static final String SELECTION_ORGANIZER = "Organizer";
     public static final String INTENT_EXTRA_NAME_THIS_LOGIN_ENTITY = "thisLoginEntity";
-    private String id;
+    private int id;
     private String name;
     private String passkey;
     private String type;
 
-    public LoginEntity(String id, String type, String name, String passkey) {
+    public LoginEntity(int id, String type, String name, String passkey) {
         this.id = id;
         this.type = type;
         this.name = name;
@@ -34,7 +34,7 @@ public class LoginEntity implements Serializable {
         return type;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 }

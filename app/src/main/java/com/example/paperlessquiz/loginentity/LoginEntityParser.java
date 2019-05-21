@@ -14,7 +14,7 @@ public class LoginEntityParser implements JsonParser<LoginEntity> {
     public static final String PASSKEY = "Passkey";
 
     public LoginEntity parse(JSONObject jo) throws JSONException {
-        return new LoginEntity(jo.getString(ID), jo.getString(TYPE),
+        return new LoginEntity(jo.getInt(ID), jo.getString(TYPE),
                 jo.getString(NAME), jo.getString(PASSKEY));
     }
 }

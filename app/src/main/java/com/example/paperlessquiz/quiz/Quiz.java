@@ -1,17 +1,9 @@
 package com.example.paperlessquiz.quiz;
 
-import android.content.Context;
-
 import com.example.paperlessquiz.answer.Answer;
-import com.example.paperlessquiz.google.access.GoogleAccess;
-import com.example.paperlessquiz.google.access.GoogleAccessGet;
-import com.example.paperlessquiz.google.access.GoogleAccessGetSheetData;
-import com.example.paperlessquiz.google.access.LoadingListenerImpl;
 import com.example.paperlessquiz.loginentity.LoginEntity;
 import com.example.paperlessquiz.question.Question;
-import com.example.paperlessquiz.quizextradata.GetQuizExtraDataLPL;
 import com.example.paperlessquiz.quizextradata.QuizExtraData;
-import com.example.paperlessquiz.quizextradata.QuizExtraDataParser;
 import com.example.paperlessquiz.quizlistdata.QuizListData;
 import com.example.paperlessquiz.round.Round;
 
@@ -25,8 +17,8 @@ public class Quiz implements Serializable {
     public static final int TARGET_HEIGHT = 200;
     private QuizListData listData;
     private QuizExtraData additionalData;
-    private HashMap<String, LoginEntity> teams;
-    private HashMap<String, LoginEntity> organizers;
+    private ArrayList<LoginEntity> teams;
+    private ArrayList<LoginEntity> organizers;
     private ArrayList<Round> rounds;
     private ArrayList<ArrayList<Question>> allQuestionsPerRound;
     private ArrayList<ArrayList<Answer>> myAnswers;
@@ -34,72 +26,81 @@ public class Quiz implements Serializable {
     public Quiz() {
         this.listData = new QuizListData();
         this.additionalData = new QuizExtraData();
-        this.teams = new HashMap<String, LoginEntity>();
-        this.organizers = new HashMap<String,LoginEntity>();
-        this.rounds = new ArrayList<Round>();
+        this.teams = new ArrayList<>();
+        this.organizers = new ArrayList<>();
+        this.rounds = new ArrayList<>();
         //ArrayList<Answer> tmp = new ArrayList<>();
-        this.myAnswers = new ArrayList<ArrayList<Answer>>();
-        for (int i=0;i<this.additionalData.getNrOfRounds();i++)
+        this.myAnswers = new ArrayList<>();
+        for (int i = 0; i < this.additionalData.getNrOfRounds(); i++) {
+            rounds.add(i, new Round());
+        }
+    }
+
+
+    public void setAnswersForRound(int rndId, ArrayList<Answer> answerList) {
+        myAnswers.add(rndId, answerList);
+        /*
+        for(int i=0;i<answerList.size();i++)
         {
-            rounds.add(i,new Round());
+                ArrayList<Answer> tmp = myAnswers.get(rndId);
+                Answer curAnswer = answerList.get(i);
+                tmp.add(i,curAnswer);
+        }
+        */
+    }
+
+    public void initializeAnswers() {
+        //for each round
+        for (int i = 0; i < this.getAdditionalData().getNrOfRounds(); i++) {
+            this.getMyAnswers().add(i, new ArrayList<>());
+            ArrayList<Answer> answers = new ArrayList<>();
+            //Create an array with the correct nr of answers
+            for (int j = 0; j < this.getRound(i).getNrOfQuestions(); j++) {
+                answers.add(j, new Answer(j, ""));
+            }
+            this.setAnswersForRound(i, answers);
         }
     }
-
-    public Quiz(QuizListData quizListData){
-        this.listData = new QuizListData();
-    }
-
-    public void loadAdditionalData(Context context){
-        GoogleAccessGetSheetData getSheetData = new GoogleAccessGetSheetData(context,listData.getSheetDocID(),GoogleAccess.SHEEET_QUIZDATA);
-        getSheetData.getItems(new QuizExtraDataParser());
-        while (!getSheetData.isLoadingFinished() || !getSheetData.isLoadingFailed()){
-
-        }
-        //If we are here, loading is finished
-
-
-    }
-
-
-
-
-
-
-
-
-
-
 
     //Return the team/organizer with the given ID
-    public LoginEntity getTeam(String id){
+    public LoginEntity getTeam(int id) {
         return teams.get(id);
     }
+
     //Return the team with the given ID
-    public LoginEntity getOrganizer(String id){
+    public LoginEntity getOrganizer(int id) {
         return organizers.get(id);
     }
 
-
-    private ArrayList<LoginEntity> getArrayList(HashMap<String, LoginEntity> entities){
+    /*
+    private ArrayList<LoginEntity> getArrayList(HashMap<String, LoginEntity> entities) {
         //Convert HAshmap to Arraylist to pass it to the adapter
         ArrayList<LoginEntity> list = new ArrayList<LoginEntity>();
-        int i=0;
-        for (LoginEntity entity:entities.values()) {
-            list.add(i,entity);
+        int i = 0;
+        for (LoginEntity entity : entities.values()) {
+            list.add(i, entity);
             i++;
         }
         return list;
     }
+    */
 
-    public ArrayList<LoginEntity> getTeamsList()
-    {
-        return getArrayList(teams);
+    public ArrayList<LoginEntity> getTeams() {
+        return teams;
     }
 
-    public ArrayList<LoginEntity> getOrganizersList()
-    {
-        return getArrayList(organizers);
+    public ArrayList<LoginEntity> getOrganizers() {
+        return organizers;
     }
+
+    public void setTeams(ArrayList<LoginEntity> teams) {
+        this.teams = teams;
+    }
+
+    public void setOrganizers(ArrayList<LoginEntity> organizers) {
+        this.organizers = organizers;
+    }
+
     public QuizListData getListData() {
         return listData;
     }
@@ -116,25 +117,10 @@ public class Quiz implements Serializable {
         this.additionalData = additionalData;
     }
 
-    public HashMap<String, LoginEntity> getTeams() {
-        return teams;
-    }
-
-    public void setTeams(HashMap<String, LoginEntity> teams) {
-        this.teams = teams;
-    }
-
-    public HashMap<String, LoginEntity> getOrganizers() {
-        return organizers;
-    }
-
-    public void setOrganizers(HashMap<String, LoginEntity> organizers) {
-        this.organizers = organizers;
-    }
-
     public ArrayList<Round> getRounds() {
         return rounds;
     }
+
     public Round getRound(int i) {
         return rounds.get(i);
     }
@@ -151,11 +137,11 @@ public class Quiz implements Serializable {
         this.allQuestionsPerRound = allQuestionsPerRound;
     }
 
-    public Question getQuestion(int rndId, int questionId){
+    public Question getQuestion(int rndId, int questionId) {
         return allQuestionsPerRound.get(rndId).get(questionId);
     }
 
-    public void setAnswer(int rndId,int questionId, String answer){
+    public void setAnswer(int rndId, int questionId, String answer) {
         myAnswers.get(rndId).get(questionId).setAnswer(answer);
     }
 
@@ -167,13 +153,4 @@ public class Quiz implements Serializable {
         this.myAnswers = myAnswers;
     }
 
-    public void setAnswersForRound(int rndId,ArrayList<Answer> answerList) {
-        for(int i=0;i<answerList.size();i++)
-        {
-                ArrayList<Answer> tmp = myAnswers.get(rndId);
-                Answer curAnswer = answerList.get(i);
-                tmp.add(i,curAnswer);
-        }
-
-    }
 }

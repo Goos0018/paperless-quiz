@@ -6,8 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.example.paperlessquiz.answer.Answer;
 import com.example.paperlessquiz.google.access.GoogleAccess;
 import com.example.paperlessquiz.google.access.GoogleAccessGet;
 import com.example.paperlessquiz.google.access.LoadingListenerImpl;
@@ -18,6 +18,7 @@ import com.example.paperlessquiz.question.GetQuestionsLPL;
 import com.example.paperlessquiz.question.Question;
 import com.example.paperlessquiz.question.QuestionParser;
 import com.example.paperlessquiz.quiz.Quiz;
+import com.example.paperlessquiz.quiz.QuizLoader;
 import com.example.paperlessquiz.quizextradata.GetQuizExtraDataLPL;
 import com.example.paperlessquiz.quizextradata.QuizExtraData;
 import com.example.paperlessquiz.quizlistdata.QuizListData;
@@ -25,8 +26,6 @@ import com.example.paperlessquiz.quizextradata.QuizExtraDataParser;
 import com.example.paperlessquiz.round.GetRoundsLPL;
 import com.example.paperlessquiz.round.Round;
 import com.example.paperlessquiz.round.RoundParser;
-
-import java.util.ArrayList;
 
 /* This screen allows you to select if you are an organizer or a participant.
 All data about the quiz is loaded and stored in a Quiz object
@@ -48,22 +47,28 @@ public class A_SelectRole extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.a_act_select_role);
 
-        btnParticipant=findViewById(R.id.btn_participant);
-        btnOrganizer=findViewById(R.id.btn_organizer);
-        tvWelcome=findViewById(R.id.tv_welcome);
+        btnParticipant = findViewById(R.id.btn_participant);
+        btnOrganizer = findViewById(R.id.btn_organizer);
+        tvWelcome = findViewById(R.id.tv_welcome);
         QuizListData thisQuizListData = (QuizListData) getIntent().getSerializableExtra(QuizListData.INTENT_EXTRA_NAME_THIS_QUIZ_BASICS);
         tvWelcome.setText("Welcome to " + thisQuizListData.getName() + "\n" + thisQuizListData.getDescription());
+        thisQuiz.setListData(thisQuizListData);
+        QuizLoader quizLoader = new QuizLoader(this, thisQuiz.getListData().getSheetDocID());
+        quizLoader.loadAll();
+        /*
         //Get the additional data we don't have yet: nr of rounds, nr of participants, status,  ...
         //Get extra data from the quiz
         String scriptParamsForExtraData = GoogleAccess.PARAMNAME_DOC_ID + thisQuizListData.getSheetDocID() + GoogleAccess.PARAM_CONCATENATOR +
-                GoogleAccess.PARAMNAME_SHEET + GoogleAccess.SHEEET_QUIZDATA + GoogleAccess.PARAM_CONCATENATOR +
+                GoogleAccess.PARAMNAME_SHEET + GoogleAccess.SHEET_QUIZDATA + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_GETDATA;
         GoogleAccessGet<QuizExtraData> googleAccessGetQuizExtraData = new GoogleAccessGet<QuizExtraData>(this, scriptParamsForExtraData);
+
         final GetQuizExtraDataLPL getQuizExtraDataLPL = new GetQuizExtraDataLPL();
         googleAccessGetQuizExtraData.getItems(new QuizExtraDataParser(), getQuizExtraDataLPL,
                 new LoadingListenerImpl(this, "Please wait", "Loading quiz data", "Something went wrong: "));
+
         //Get the list of participating teams
-        String scriptParamsForTeams= GoogleAccess.PARAMNAME_DOC_ID + thisQuizListData.getSheetDocID() + GoogleAccess.PARAM_CONCATENATOR +
+        String scriptParamsForTeams = GoogleAccess.PARAMNAME_DOC_ID + thisQuizListData.getSheetDocID() + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_SHEET + GoogleAccess.SHEET_TEAMS + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_GETDATA;
         GoogleAccessGet<LoginEntity> googleAccessGetTeams = new GoogleAccessGet<LoginEntity>(this, scriptParamsForTeams);
@@ -71,7 +76,7 @@ public class A_SelectRole extends AppCompatActivity {
         googleAccessGetTeams.getItems(new LoginEntityParser(), teamsLPL,
                 new LoadingListenerImpl(this, "Please wait", "Loading quiz participants...", "Something went wrong: "));
         //Get the list of organizers
-        String scriptParamsForOrganizers= GoogleAccess.PARAMNAME_DOC_ID + thisQuizListData.getSheetDocID() + GoogleAccess.PARAM_CONCATENATOR +
+        String scriptParamsForOrganizers = GoogleAccess.PARAMNAME_DOC_ID + thisQuizListData.getSheetDocID() + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_SHEET + GoogleAccess.SHEET_ORGANIZERS + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_GETDATA;
         GoogleAccessGet<LoginEntity> googleAccessGetOrganizers = new GoogleAccessGet<LoginEntity>(this, scriptParamsForOrganizers);
@@ -94,53 +99,41 @@ public class A_SelectRole extends AppCompatActivity {
         GoogleAccessGet<Question> googleAccessGetQuestions = new GoogleAccessGet<Question>(this, scriptParamsForQuestions);
         googleAccessGetQuestions.getItems(new QuestionParser(), questionsLPL,
                 new LoadingListenerImpl(this, "Please wait", "Loading questions", "Something went wrong: "));
-
+*/
         btnParticipant.setOnClickListener(new View.OnClickListener() {
-                  @Override
-            public void onClick(View view){
-                      if (getQuizExtraDataLPL.getQuizExtraData().isOpen()){
-                          //if we are here, all loading actions should be finished, so we can set the result in the Quiz object
-                          thisQuiz.setListData(thisQuizListData);
-                          thisQuiz.setAdditionalData(getQuizExtraDataLPL.getQuizExtraData());
-                          thisQuiz.setTeams(teamsLPL.getLoginEntities());
-                          thisQuiz.setOrganizers(organizersLPL.getLoginEntities());
-                          thisQuiz.setRounds(getRoundsLPL.getRounds());
-                          thisQuiz.setAllQuestionsPerRound(questionsLPL.getAllQuestionsPerRound());
-                          //What we got from the questionslist should match what was given in the nrOfRounds and NrOfQuestions
-                          if (questionsLPL.getAllQuestionsPerRound().size() == thisQuiz.getAdditionalData().getNrOfRounds() ) {
-                              for (int i = 0; i < thisQuiz.getAdditionalData().getNrOfRounds(); i++) {
+            @Override
+            public void onClick(View view) {
+                if (quizLoader.quizExtraDataLPL.getQuizExtraData().isOpen()) {
+                    //if we are here, all loading actions should be finished, so we can set the result in the Quiz object
+                    //First check that all reqults are OK
+                    if (!(quizLoader.allChecksOK())) {
+                        Toast.makeText(A_SelectRole.this, "Attention organizers, " +
+                                "something is wrong with your quiz", Toast.LENGTH_LONG).show();
+                    }
+                    thisQuiz.setListData(thisQuizListData);
+                    thisQuiz.setAdditionalData(quizLoader.quizExtraDataLPL.getQuizExtraData());
+                    thisQuiz.setTeams(quizLoader.quizTeamsLPL.getLoginEntities());
+                    thisQuiz.setOrganizers(quizLoader.quizOrganizersLPL.getLoginEntities());
+                    thisQuiz.setRounds(quizLoader.quizRoundsLPL.getRounds());
+                    thisQuiz.setAllQuestionsPerRound(quizLoader.quizQuestionsLPL.getAllQuestionsPerRound());
+                    quizLoader.loadAnswers();
+                    thisQuiz.setMyAnswers(quizLoader.myAnswers);
+                    //thisQuiz.setAllQuestionsPerRound(questionsLPL.getAllQuestionsPerRound());
+                    Intent intent = new Intent(A_SelectRole.this, B_LoginMain.class);
+                    intent.putExtra(Quiz.INTENT_EXTRANAME_THIS_QUIZ, thisQuiz);
+                    intent.putExtra(LoginEntity.INTENT_EXTRA_NAME_THIS_LOGIN_TYPE, LoginEntity.SELECTION_PARTICIPANT);
+                    startActivity(intent);
+                } else {
+                    tvWelcome.setText("Quiz " + thisQuizListData.getName() + " is not open yet");
+                }
 
-                                  thisQuiz.getRounds().get(i).setQuestions(questionsLPL.getAllQuestionsPerRound().get(i));
-                                  thisQuiz.getMyAnswers().add(i,new ArrayList<>());
-                                  ArrayList<Answer> answers = new ArrayList<>();
-                                  for (int j=0;j< thisQuiz.getRound(i).getNrOfQuestions();j++)
-                                  {
-                                      answers.add(j,new Answer(j,""));
-                                  }
-                                  thisQuiz.setAnswersForRound(i,answers);
-                              }
-                          }
-                          else
-                          {
-                              //TODO: log error
-                          }
-                          //thisQuiz.setAllQuestionsPerRound(questionsLPL.getAllQuestionsPerRound());
-                          Intent intent = new Intent(A_SelectRole.this, B_LoginMain.class);
-                          intent.putExtra(Quiz.INTENT_EXTRANAME_THIS_QUIZ, thisQuiz);
-                          intent.putExtra(LoginEntity.INTENT_EXTRA_NAME_THIS_LOGIN_TYPE, LoginEntity.SELECTION_PARTICIPANT);
-                          startActivity(intent);
-                      }
-                      else {
-                          tvWelcome.setText("Quiz " + thisQuizListData.getName() + " is not open yet");
-                      }
-
-                  }
+            }
 
         });
 
         btnOrganizer.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view){
+            public void onClick(View view) {
                 //Intent intent = new Intent(A_SelectRole.this, old_B_SelectLoginName.class);
                 //intent.putExtra(QuizListData.INTENT_EXTRA_NAME_THIS_QUIZ_BASICS, thisQuizListData);
                 //intent.putExtra(QuizExtraData.INTENT_EXTRA_NAME_THIS_QUIZ_EXTRAS, quizExtras);
@@ -149,8 +142,6 @@ public class A_SelectRole extends AppCompatActivity {
             }
 
         });
-
-
 
 
     }

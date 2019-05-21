@@ -41,7 +41,7 @@ public class B_frag_ListEntities extends ListFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        adapter = new ParticipantsAdapter(getActivity(), thisQuiz.getTeamsList());
+        adapter = new ParticipantsAdapter(getActivity(), thisQuiz.getTeams());
         setListAdapter(adapter);
     }
 

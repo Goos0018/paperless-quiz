@@ -30,8 +30,9 @@ public class RoundSpinner {
         this.tvSub = tvSub;
         this.position = 0;
         this.oldPosition = roundsList.size()-1;
-        //this.curPosition = 0;
         this.questionSpinner = questionSpinner;
+        //When creating a roundspinner, always start with Round 0
+        moveTo(0);
         //this.thisQuiz = thisQuiz;
 
 

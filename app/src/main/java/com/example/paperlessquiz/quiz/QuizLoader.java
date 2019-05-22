@@ -41,6 +41,7 @@ public class QuizLoader {
         quizQuestionsLPL = new GetQuestionsLPL();
         quizTeamsLPL = new GetLoginEntriesLPL(quiz);
         quizOrganizersLPL = new GetLoginEntriesLPL();
+
     }
 
     public String generateParams(String sheet) {

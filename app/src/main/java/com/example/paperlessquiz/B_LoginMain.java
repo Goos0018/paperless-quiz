@@ -79,8 +79,9 @@ public class B_LoginMain extends AppCompatActivity implements B_frag_ListEntitie
                             loginCompleted=true;
                             Intent intent = new Intent(B_LoginMain.this, C_ParticipantHome.class);
                             //Intent intent = new Intent(B_LoginMain.this, old_D_PA_ShowRounds.class);
+                            thisQuiz.setMyLoginentity(thisLoginEntity);
                             intent.putExtra(Quiz.INTENT_EXTRANAME_THIS_QUIZ, thisQuiz);
-                            intent.putExtra(LoginEntity.INTENT_EXTRA_NAME_THIS_LOGIN_ENTITY, thisLoginEntity);
+                            //intent.putExtra(LoginEntity.INTENT_EXTRA_NAME_THIS_LOGIN_ENTITY, thisLoginEntity);
                             startActivity(intent);
                         }
                         else

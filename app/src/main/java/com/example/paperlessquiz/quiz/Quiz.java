@@ -22,6 +22,7 @@ public class Quiz implements Serializable {
     private ArrayList<Round> rounds;
     private ArrayList<ArrayList<Question>> allQuestionsPerRound;
     private ArrayList<ArrayList<Answer>> myAnswers;
+    private LoginEntity myLoginentity;
 
     public Quiz() {
         this.listData = new QuizListData();
@@ -153,4 +154,11 @@ public class Quiz implements Serializable {
         this.myAnswers = myAnswers;
     }
 
+    public LoginEntity getMyLoginentity() {
+        return myLoginentity;
+    }
+
+    public void setMyLoginentity(LoginEntity myLoginentity) {
+        this.myLoginentity = myLoginentity;
+    }
 }

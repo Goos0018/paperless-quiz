@@ -1,23 +1,28 @@
 package com.example.paperlessquiz.answer;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Answer implements Serializable{
+
     private int questionNr;
-    private String answer;
+    private String myAnswer;
+
     //private String teamID;
     private boolean correct=false;
 
+
+
     public Answer(int questionNr){
         this.questionNr=questionNr;
-        this.answer = "";
+        this.myAnswer = "";
 
     }
 
 
-    public Answer(int questionNr, String answer) {
+    public Answer(int questionNr, String myAnswer) {
         this.questionNr = questionNr;
-        this.answer = answer;
+        this.myAnswer = myAnswer;
         //this.teamID = teamID;
     }
 
@@ -25,11 +30,13 @@ public class Answer implements Serializable{
         return questionNr;
     }
 
-    public String getAnswer() {
-        return answer;
+    public String getMyAnswer() {
+        return myAnswer;
     }
 
-    public void setAnswer(String answer) {
-        this.answer = answer;
+    public void setMyAnswer(String myAnswer) {
+        this.myAnswer = myAnswer;
     }
+
+
 }

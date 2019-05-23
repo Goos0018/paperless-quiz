@@ -1,4 +1,4 @@
-package com.example.paperlessquiz;
+package com.example.paperlessquiz.xxxObsolete;
 
 
 import android.os.Bundle;
@@ -11,8 +11,8 @@ import android.support.v7.widget.SnapHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
+import com.example.paperlessquiz.R;
 import com.example.paperlessquiz.adapters.recycler.RoundsAdapter;
 import com.example.paperlessquiz.round.Round;
 
@@ -22,6 +22,7 @@ import java.util.ArrayList;
  * A simple {@link Fragment} subclass.
  */
 public class D_fragRecycleRounds extends Fragment {
+    /*
 
     RecyclerView recyclerView;
     RecyclerView.Adapter myAdapter;
@@ -57,4 +58,5 @@ public class D_fragRecycleRounds extends Fragment {
         myAdapter = new RoundsAdapter(this.getActivity(),rounds);
         recyclerView.setAdapter(myAdapter);
     }
+    */
 }

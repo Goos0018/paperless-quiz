@@ -1,4 +1,4 @@
-package com.example.paperlessquiz;
+package com.example.paperlessquiz.xxxObsolete;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +8,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.paperlessquiz.R;
 import com.example.paperlessquiz.adapters.ParticipantsAdapter;
 import com.example.paperlessquiz.loginentity.LoginEntity;
 import com.example.paperlessquiz.quiz.Quiz;
@@ -22,6 +23,9 @@ import java.util.ArrayList;
      */
 
 public class old_B_SelectLoginName extends AppCompatActivity {
+
+    /*
+
     ListView lv_NamesList;
     ParticipantsAdapter adapter;
     String thisQuizDocID;
@@ -66,6 +70,7 @@ public class old_B_SelectLoginName extends AppCompatActivity {
                 GoogleAccess.PARAMNAME_SHEET + sheetName + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_GETDATA;
                 */
+    /*
         lv_NamesList.setAdapter(adapter);
         lv_NamesList.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
@@ -90,5 +95,6 @@ public class old_B_SelectLoginName extends AppCompatActivity {
         */
 
 
-    }
+//  }
+
 }

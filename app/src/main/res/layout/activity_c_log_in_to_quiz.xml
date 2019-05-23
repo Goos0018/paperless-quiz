@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".old_C_LogInToQuiz">
+    tools:context=".xxxObsolete.old_C_LogInToQuiz">
 
     <TextView
         android:id="@+id/tv_login_prompt"

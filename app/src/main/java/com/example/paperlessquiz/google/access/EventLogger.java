@@ -22,8 +22,8 @@ public class EventLogger {
                 GoogleAccess.PARAMNAME_SHEET + sheet + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_LINE_TO_ADD + "[\"" + strToday + "\",\"" + team + "\",\"" + message+ "\"]" + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_ADDLINE;
-        GoogleAccessAddLine logger = new GoogleAccessAddLine(context, scriptParams);
-        logger.addLine();
+        GoogleAccessSet logger = new GoogleAccessSet(context, scriptParams);
+        logger.setData();
     }
 
 }

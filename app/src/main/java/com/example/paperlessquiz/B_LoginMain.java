@@ -10,7 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.paperlessquiz.google.access.GoogleAccess;
-import com.example.paperlessquiz.google.access.GoogleAccessAddLine;
+import com.example.paperlessquiz.google.access.GoogleAccessSet;
 import com.example.paperlessquiz.loginentity.LoginEntity;
 import com.example.paperlessquiz.quiz.Quiz;
 
@@ -73,8 +73,8 @@ public class B_LoginMain extends AppCompatActivity implements B_frag_ListEntitie
                                     GoogleAccess.PARAMNAME_SHEET + GoogleAccess.SHEET_TEAMCONTROL + GoogleAccess.PARAM_CONCATENATOR +
                                     "LineToAdd=[\"" + strToday + "\",\"" + thisLoginEntity.getName() + "\",\"logged in\"]" +  GoogleAccess.PARAM_CONCATENATOR +
                                     GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_ADDLINE;
-                            GoogleAccessAddLine teamLogIn = new GoogleAccessAddLine(B_LoginMain.this, scriptParams );
-                            teamLogIn.addLine();
+                            GoogleAccessSet teamLogIn = new GoogleAccessSet(B_LoginMain.this, scriptParams );
+                            teamLogIn.setData();
                             submitPressed = true;
                             loginCompleted=true;
                             Intent intent = new Intent(B_LoginMain.this, C_ParticipantHome.class);
@@ -87,7 +87,7 @@ public class B_LoginMain extends AppCompatActivity implements B_frag_ListEntitie
                         else
                         {
                             //TODO implement other options
-                            Toast.makeText(B_LoginMain.this, thisLoginEntity.getType() + " still to implement", Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(B_LoginMain.this, thisLoginEntity.getType() + " still to implement", Toast.LENGTH_SHORT).show();
                         }
                     }
                     else

@@ -43,27 +43,10 @@ public class GetQuestionsLPL implements ListParsedListener<Question> {
             }
             ArrayList<Question> qList = allQuestionsPerRound.get(rndId-1);
             int qId = q.getId();
-            //add (empty) questions to qList until you are sure you have one at position qId - -2
-            //while (allQuestionsPerRound.get(rndId-1).getQuestionsList().size() < qId-1)
-            //{
-            //    allQuestionsPerRound.get(rndId-1).addQuestion(new Question());
-            //}
-            //Now we are sure we can do this: question will be added in round rndId on poistion qId (taking into account array indices start at 0)
             qList.add(qId-1,q);
             int qId1 = q.getId();
-            /*add the questionslist for rnd if it does not exist already
-            if (!(allQuestionsPerRound.containsKey(rnd)))
-            {
-                allQuestionsPerRound.put(rnd,new QuestionsList());
-            }
-            allQuestionsPerRound.get(rnd).addQuestion(q);
-            */
         }
         allQuestions = (ArrayList)list;
     }
 
-    //@Override
-    public ArrayList<Question> getData() {
-        return allQuestions;
-    }
 }

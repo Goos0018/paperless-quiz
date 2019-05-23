@@ -1,4 +1,4 @@
-package com.example.paperlessquiz;
+package com.example.paperlessquiz.xxxObsolete;
 
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -6,12 +6,14 @@ import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
+import com.example.paperlessquiz.R;
 import com.example.paperlessquiz.google.access.GoogleAccess;
 import com.example.paperlessquiz.loginentity.LoginEntity;
 import com.example.paperlessquiz.quiz.Quiz;
 import com.example.paperlessquiz.round.RoundParser;
 
 public class old_D_PA_ShowRounds extends AppCompatActivity {
+    /*
 
     Quiz thisQuiz;
     LoginEntity thisLoginEntity;
@@ -69,11 +71,11 @@ public class old_D_PA_ShowRounds extends AppCompatActivity {
             }
         });
         */
-
+/*
         //GoogleAccessGet<Round> googleAccessGet = new GoogleAccessGet<Round>(this, scriptParams);
         //googleAccessGet.getItems(new RoundParser(), new GetRoundsLPL(),
         //        new LoadingListenerImpl(this, "Please wait", "Loading rounds", "Something went wrong: "));
     }
-
+*/
 
 }

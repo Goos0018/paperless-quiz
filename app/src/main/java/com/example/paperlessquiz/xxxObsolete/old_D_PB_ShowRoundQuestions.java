@@ -1,4 +1,4 @@
-package com.example.paperlessquiz;
+package com.example.paperlessquiz.xxxObsolete;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +8,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
+import com.example.paperlessquiz.R;
 import com.example.paperlessquiz.adapters.QuestionsAdapter;
 import com.example.paperlessquiz.answer.Answer;
 import com.example.paperlessquiz.google.access.GoogleAccess;
@@ -19,7 +20,7 @@ import com.example.paperlessquiz.round.Round;
 import java.util.ArrayList;
 
 public class old_D_PB_ShowRoundQuestions extends AppCompatActivity {
-
+/*
     Quiz thisQuiz;
     LoginEntity thisLoginEntity;
     ArrayList<Answer> answers;
@@ -63,6 +64,7 @@ public class old_D_PB_ShowRoundQuestions extends AppCompatActivity {
 
                 //Toast.makeText(old_D_PB_ShowRoundQuestions.this, "Loading question", Toast.LENGTH_SHORT).show();
 */
+/*
             }
         });
         btnSubmit.setOnClickListener(
@@ -86,4 +88,5 @@ public class old_D_PB_ShowRoundQuestions extends AppCompatActivity {
          //       new LoadingListenerImpl(this, "Please wait", "Loading questions", "Something went wrong: "));
 
     }
+    */
 }

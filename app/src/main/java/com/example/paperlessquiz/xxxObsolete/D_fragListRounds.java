@@ -1,4 +1,4 @@
-package com.example.paperlessquiz;
+package com.example.paperlessquiz.xxxObsolete;
 
 
 import android.content.Context;
@@ -16,6 +16,7 @@ import com.example.paperlessquiz.adapters.QuizRoundsAdapter;
  * A simple {@link Fragment} subclass.
  */
 public class D_fragListRounds extends ListFragment {
+    /*
     //The below variable is used to access anything in the calling activity
     D_ParticipantHome participantHome;
     QuizRoundsAdapter adapter;
@@ -48,4 +49,5 @@ public class D_fragListRounds extends ListFragment {
     public void onListItemClick(ListView l, View v, int position, long id) {
         actParticipantHome.onItemSelected(position);
     }
+    */
 }

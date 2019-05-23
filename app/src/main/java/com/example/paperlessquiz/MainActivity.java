@@ -62,8 +62,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onPause()
     {
-        //GoogleAccessAddLine logExit = new GoogleAccessAddLine(this,GoogleAccess.PARAMNAME_ACTION+GoogleAccess.PARAMVALUE_ADDLINE + );
-        //logExit.addLine();
+        //GoogleAccessSet logExit = new GoogleAccessSet(this,GoogleAccess.PARAMNAME_ACTION+GoogleAccess.PARAMVALUE_ADDLINE + );
+        //logExit.setData();
         super.onPause();
     }
         /*

@@ -1,6 +1,7 @@
 package com.example.paperlessquiz.quiz;
 
 import com.example.paperlessquiz.answer.Answer;
+import com.example.paperlessquiz.answerslist.AnswersList;
 import com.example.paperlessquiz.loginentity.LoginEntity;
 import com.example.paperlessquiz.question.Question;
 import com.example.paperlessquiz.quizextradata.QuizExtraData;
@@ -9,7 +10,6 @@ import com.example.paperlessquiz.round.Round;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Quiz implements Serializable {
     public static final String INTENT_EXTRANAME_THIS_QUIZ = "ThisQuiz";
@@ -22,6 +22,7 @@ public class Quiz implements Serializable {
     private ArrayList<Round> rounds;
     private ArrayList<ArrayList<Question>> allQuestionsPerRound;
     private ArrayList<ArrayList<Answer>> myAnswers;
+    private ArrayList<ArrayList<AnswersList>> allAnswers;
     private LoginEntity myLoginentity;
 
     public Quiz() {
@@ -143,7 +144,7 @@ public class Quiz implements Serializable {
     }
 
     public void setAnswer(int rndId, int questionId, String answer) {
-        myAnswers.get(rndId).get(questionId).setAnswer(answer);
+        myAnswers.get(rndId).get(questionId).setMyAnswer(answer);
     }
 
     public ArrayList<ArrayList<Answer>> getMyAnswers() {
@@ -160,5 +161,13 @@ public class Quiz implements Serializable {
 
     public void setMyLoginentity(LoginEntity myLoginentity) {
         this.myLoginentity = myLoginentity;
+    }
+
+    public void setAllAnswers(ArrayList<ArrayList<AnswersList>> allAnswers) {
+        this.allAnswers = allAnswers;
+    }
+
+    public ArrayList<ArrayList<AnswersList>> getAllAnswers() {
+        return allAnswers;
     }
 }

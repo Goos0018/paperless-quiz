@@ -1,4 +1,4 @@
-package com.example.paperlessquiz;
+package com.example.paperlessquiz.xxxObsolete;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -9,9 +9,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.paperlessquiz.R;
 import com.example.paperlessquiz.google.access.EventLogger;
 import com.example.paperlessquiz.google.access.GoogleAccess;
-import com.example.paperlessquiz.google.access.GoogleAccessAddLine;
+import com.example.paperlessquiz.google.access.GoogleAccessSet;
 import com.example.paperlessquiz.loginentity.LoginEntity;
 import com.example.paperlessquiz.quizlistdata.QuizListData;
 import com.example.paperlessquiz.quizextradata.QuizExtraData;
@@ -20,6 +21,7 @@ import java.util.Date;
 
 
 public class old_C_LogInToQuiz extends AppCompatActivity {
+    /*
 
     QuizExtraData thisQuizExtraData;
     QuizListData thisQuizListData;
@@ -67,8 +69,8 @@ public class old_C_LogInToQuiz extends AppCompatActivity {
                                     GoogleAccess.PARAMNAME_SHEET + "TeamRegistration" + GoogleAccess.PARAM_CONCATENATOR +
                                     "LineToAdd=[\"" + strToday + "\",\"" + thisLoginEntity.getName() + "\",\"logged in\"]" +  GoogleAccess.PARAM_CONCATENATOR +
                                     GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_ADDLINE;
-                            GoogleAccessAddLine teamLogIn = new GoogleAccessAddLine(old_C_LogInToQuiz.this, scriptParams );
-                            teamLogIn.addLine();
+                            GoogleAccessSet teamLogIn = new GoogleAccessSet(old_C_LogInToQuiz.this, scriptParams );
+                            teamLogIn.setData();
                             submitPressed = true;
                             loginCompleted=true;
                             Intent intent = new Intent(old_C_LogInToQuiz.this, old_D_PA_ShowRounds.class);
@@ -103,4 +105,5 @@ public class old_C_LogInToQuiz extends AppCompatActivity {
         super.onPause();
         submitPressed=false; //reset this each time
     }
+    */
 }

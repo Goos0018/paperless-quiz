@@ -13,17 +13,17 @@ import com.android.volley.toolbox.Volley;
 
 import java.util.List;
 
-public class GoogleAccessAddLine {
+public class GoogleAccessSet {
     private Context context;
     private String parameters;
 
-    public GoogleAccessAddLine(Context context, String parameters) {
+    public GoogleAccessSet(Context context, String parameters) {
         this.context = context;
         this.parameters = parameters;
     }
 
     //This method will add a line at the bottom of the sheet that was passed via parameters, using the other fields that were given
-    public void addLine(){
+    public void setData(){
         StringRequest stringRequest = new StringRequest(Request.Method.POST, GoogleAccess.SCRIPT_URL+parameters,
                 new Response.Listener<String>() {
                     @Override

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".old_B_SelectLoginName">
+    tools:context=".xxxObsolete.old_B_SelectLoginName">
 
     <TextView
         android:id="@+id/tv_select_name_prompt"

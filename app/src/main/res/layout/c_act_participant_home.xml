@@ -112,7 +112,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:gravity="center"
-            android:hint="answer"
+            android:hint="myAnswer"
             android:inputType="text" />
 
         <Button
@@ -134,7 +134,7 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/tvDisplayAnswers"
+            android:id="@+id/tvDisplayRound"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

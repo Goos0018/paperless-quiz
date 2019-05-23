@@ -1,4 +1,4 @@
-package com.example.paperlessquiz;
+package com.example.paperlessquiz.xxxObsolete;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 
+import com.example.paperlessquiz.R;
 import com.example.paperlessquiz.adapters.ReviewAnswersAdapter;
 import com.example.paperlessquiz.answer.Answer;
 import com.example.paperlessquiz.loginentity.LoginEntity;
@@ -16,6 +17,9 @@ import com.example.paperlessquiz.quizlistdata.QuizListData;
 import java.util.ArrayList;
 
 public class D_PC_ConfirmSubmitAnswers extends AppCompatActivity {
+
+    /*
+
 
     QuizExtraData thisQuizExtraData;
     QuizListData thisQuizListData;
@@ -56,4 +60,5 @@ public class D_PC_ConfirmSubmitAnswers extends AppCompatActivity {
         );
 
     }
+    */
 }

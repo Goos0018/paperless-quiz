@@ -138,7 +138,7 @@ public class QuizLoader {
         return true;
     }
 
-    public void loadAnswers() {
+    public void generateBlankAnswers() {
 
         //for each round
         for (int i = 0; i < quizQuestionsLPL.getAllQuestionsPerRound().size(); i++) {

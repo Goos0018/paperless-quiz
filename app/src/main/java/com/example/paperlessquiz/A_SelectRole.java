@@ -8,24 +8,10 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.paperlessquiz.google.access.GoogleAccess;
-import com.example.paperlessquiz.google.access.GoogleAccessGet;
-import com.example.paperlessquiz.google.access.LoadingListenerImpl;
-import com.example.paperlessquiz.loginentity.GetLoginEntriesLPL;
 import com.example.paperlessquiz.loginentity.LoginEntity;
-import com.example.paperlessquiz.loginentity.LoginEntityParser;
-import com.example.paperlessquiz.question.GetQuestionsLPL;
-import com.example.paperlessquiz.question.Question;
-import com.example.paperlessquiz.question.QuestionParser;
 import com.example.paperlessquiz.quiz.Quiz;
 import com.example.paperlessquiz.quiz.QuizLoader;
-import com.example.paperlessquiz.quizextradata.GetQuizExtraDataLPL;
-import com.example.paperlessquiz.quizextradata.QuizExtraData;
 import com.example.paperlessquiz.quizlistdata.QuizListData;
-import com.example.paperlessquiz.quizextradata.QuizExtraDataParser;
-import com.example.paperlessquiz.round.GetRoundsLPL;
-import com.example.paperlessquiz.round.Round;
-import com.example.paperlessquiz.round.RoundParser;
 
 /* This screen allows you to select if you are an organizer or a participant.
 All data about the quiz is loaded and stored in a Quiz object
@@ -72,7 +58,7 @@ public class A_SelectRole extends AppCompatActivity {
                     thisQuiz.setOrganizers(quizLoader.quizOrganizersLPL.getLoginEntities());
                     thisQuiz.setRounds(quizLoader.quizRoundsLPL.getRounds());
                     thisQuiz.setAllQuestionsPerRound(quizLoader.quizQuestionsLPL.getAllQuestionsPerRound());
-                    quizLoader.loadAnswers();
+                    quizLoader.generateBlankAnswers();
                     thisQuiz.setMyAnswers(quizLoader.myAnswers);
                     //thisQuiz.setAllQuestionsPerRound(questionsLPL.getAllQuestionsPerRound());
                     Intent intent = new Intent(A_SelectRole.this, B_LoginMain.class);
@@ -100,5 +86,7 @@ public class A_SelectRole extends AppCompatActivity {
         });
 
 
+
     }
+
 }

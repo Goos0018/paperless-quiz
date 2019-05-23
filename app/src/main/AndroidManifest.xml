@@ -13,13 +13,13 @@
         android:theme="@style/AppTheme">
         <activity android:name=".C_ParticipantHome"></activity>
         <activity android:name=".B_LoginMain" />
-        <activity android:name=".D_ParticipantHome" />
-        <activity android:name=".D_PC_ConfirmSubmitAnswers" />
-        <activity android:name=".old_D_PB_ShowRoundQuestions" />
-        <activity android:name=".old_D_PA_ShowRounds" />
-        <activity android:name=".old_B_SelectLoginName" />
+        <activity android:name=".xxxObsolete.D_ParticipantHome" />
+        <activity android:name=".xxxObsolete.D_PC_ConfirmSubmitAnswers" />
+        <activity android:name=".xxxObsolete.old_D_PB_ShowRoundQuestions" />
+        <activity android:name=".xxxObsolete.old_D_PA_ShowRounds" />
+        <activity android:name=".xxxObsolete.old_B_SelectLoginName" />
         <activity android:name=".A_SelectRole" />
-        <activity android:name=".old_C_LogInToQuiz" />
+        <activity android:name=".xxxObsolete.old_C_LogInToQuiz" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

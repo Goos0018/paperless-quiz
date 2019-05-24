@@ -139,7 +139,7 @@ public class C_ParticipantHome extends AppCompatActivity {
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                questionSpinner.moveDown();
                 ArrayList<Answer> answerList = thisQuiz.getMyAnswers().get(roundSpinner.getPosition());
                 String tmp = "[";
                 for (int i = 0; i < answerList.size(); i++) {

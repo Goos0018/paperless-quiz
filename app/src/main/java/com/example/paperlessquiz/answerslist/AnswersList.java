@@ -1,8 +1,9 @@
 package com.example.paperlessquiz.answerslist;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class AnswersList {
+public class AnswersList implements Serializable {
     private String questionID;
     private int roundNr;
     private int questionNr;

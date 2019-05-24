@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.ListView;
 
 import com.example.paperlessquiz.adapters.ParticipantsAdapter;
+import com.example.paperlessquiz.loginentity.LoginEntity;
 import com.example.paperlessquiz.quiz.Quiz;
 
 
@@ -19,6 +20,7 @@ import com.example.paperlessquiz.quiz.Quiz;
 public class B_frag_ListEntities extends ListFragment {
     Quiz thisQuiz;
     ParticipantsAdapter adapter;
+    String loginType;
 
     ItemSelected actLoginMain;
     public interface  ItemSelected{
@@ -36,12 +38,19 @@ public class B_frag_ListEntities extends ListFragment {
         super.onAttach(context);
         actLoginMain = (ItemSelected) context;
         thisQuiz = (Quiz) getActivity().getIntent().getSerializableExtra(Quiz.INTENT_EXTRANAME_THIS_QUIZ);
+        loginType = getActivity().getIntent().getStringExtra(LoginEntity.INTENT_EXTRA_NAME_THIS_LOGIN_TYPE);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        adapter = new ParticipantsAdapter(getActivity(), thisQuiz.getTeams());
+        if (loginType.equals(LoginEntity.SELECTION_PARTICIPANT)){
+            adapter = new ParticipantsAdapter(getActivity(), thisQuiz.getTeams());
+        }
+        else
+        {
+            adapter = new ParticipantsAdapter(getActivity(), thisQuiz.getOrganizers());
+        }
         setListAdapter(adapter);
     }
 

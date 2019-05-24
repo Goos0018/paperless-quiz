@@ -3,6 +3,9 @@ package com.example.paperlessquiz.quiz;
 import android.content.Context;
 
 import com.example.paperlessquiz.answer.Answer;
+import com.example.paperlessquiz.answerslist.AnswersList;
+import com.example.paperlessquiz.answerslist.AnswersListParser;
+import com.example.paperlessquiz.answerslist.GetAnswersListLPL;
 import com.example.paperlessquiz.google.access.GoogleAccess;
 import com.example.paperlessquiz.google.access.GoogleAccessGet;
 import com.example.paperlessquiz.google.access.LoadingListenerImpl;
@@ -28,6 +31,7 @@ public class QuizLoader {
     public GetQuizExtraDataLPL quizExtraDataLPL = new GetQuizExtraDataLPL();
     public GetRoundsLPL quizRoundsLPL;
     public GetQuestionsLPL quizQuestionsLPL;
+    public GetAnswersListLPL quizAnswersLPL;
     public GetLoginEntriesLPL quizTeamsLPL, quizOrganizersLPL;
     public ArrayList<ArrayList<Answer>> myAnswers;
 
@@ -41,6 +45,8 @@ public class QuizLoader {
         quizQuestionsLPL = new GetQuestionsLPL();
         quizTeamsLPL = new GetLoginEntriesLPL(quiz);
         quizOrganizersLPL = new GetLoginEntriesLPL();
+        quizAnswersLPL = new GetAnswersListLPL(quiz);
+        //Add quiz argument as argument for all constructors/LPL's
 
     }
 
@@ -57,6 +63,7 @@ public class QuizLoader {
         loadOrganizers();
         loadRounds();
         loadQuestions();
+        loadAllAnswers();
     }
 
     public boolean allChecksOK() {
@@ -136,6 +143,14 @@ public class QuizLoader {
             }
         }
         return true;
+    }
+
+    public void loadAllAnswers() {
+        //Get the list of questions
+        String scriptParams = generateParams(GoogleAccess.SHEET_ANSWERS);
+        GoogleAccessGet<AnswersList> googleAccessGetAnswers = new GoogleAccessGet<AnswersList>(context, scriptParams);
+        googleAccessGetAnswers.getItems(new AnswersListParser(), quizAnswersLPL,
+                new LoadingListenerImpl(context, "Please wait", "Loading answers", "Something went wrong: "));
     }
 
     public void generateBlankAnswers() {

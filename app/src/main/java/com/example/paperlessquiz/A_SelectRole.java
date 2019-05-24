@@ -22,6 +22,9 @@ TODO: layout
 public class A_SelectRole extends AppCompatActivity {
 
     Quiz thisQuiz = new Quiz();
+    QuizLoader quizLoader;
+    QuizListData thisQuizListData;
+    Intent intent;
     String quizSheetID, scriptParams;
     boolean quizIsOpen;
     Button btnParticipant;
@@ -36,57 +39,52 @@ public class A_SelectRole extends AppCompatActivity {
         btnParticipant = findViewById(R.id.btn_participant);
         btnOrganizer = findViewById(R.id.btn_organizer);
         tvWelcome = findViewById(R.id.tv_welcome);
-        QuizListData thisQuizListData = (QuizListData) getIntent().getSerializableExtra(QuizListData.INTENT_EXTRA_NAME_THIS_QUIZ_BASICS);
-        tvWelcome.setText("Welcome to " + thisQuizListData.getName() + "\n" + thisQuizListData.getDescription());
+        thisQuizListData = (QuizListData) getIntent().getSerializableExtra(QuizListData.INTENT_EXTRA_NAME_THIS_QUIZ_BASICS);
+        tvWelcome.setText("Welcome to the " + thisQuizListData.getName() + "\n" + thisQuizListData.getDescription());
         thisQuiz.setListData(thisQuizListData);
-        QuizLoader quizLoader = new QuizLoader(this, thisQuiz.getListData().getSheetDocID(),thisQuiz);
+        quizLoader = new QuizLoader(this, thisQuiz.getListData().getSheetDocID(), thisQuiz);
         quizLoader.loadAll();
 
         btnParticipant.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (quizLoader.quizExtraDataLPL.getQuizExtraData().isOpen()) {
-                    //if we are here, all loading actions should be finished, so we can set the result in the Quiz object
-                    //First check that all results are OK
-                    if (!(quizLoader.allChecksOK())) {
-                        Toast.makeText(A_SelectRole.this, "Attention organizers, " +
-                                "something is wrong with your quiz", Toast.LENGTH_LONG).show();
-                    }
-                    thisQuiz.setListData(thisQuizListData);
-                    thisQuiz.setAdditionalData(quizLoader.quizExtraDataLPL.getQuizExtraData());
-                    thisQuiz.setTeams(quizLoader.quizTeamsLPL.getLoginEntities());
-                    thisQuiz.setOrganizers(quizLoader.quizOrganizersLPL.getLoginEntities());
-                    thisQuiz.setRounds(quizLoader.quizRoundsLPL.getRounds());
-                    thisQuiz.setAllQuestionsPerRound(quizLoader.quizQuestionsLPL.getAllQuestionsPerRound());
-                    quizLoader.generateBlankAnswers();
-                    thisQuiz.setMyAnswers(quizLoader.myAnswers);
-                    //thisQuiz.setAllQuestionsPerRound(questionsLPL.getAllQuestionsPerRound());
-                    Intent intent = new Intent(A_SelectRole.this, B_LoginMain.class);
-                    intent.putExtra(Quiz.INTENT_EXTRANAME_THIS_QUIZ, thisQuiz);
-                    intent.putExtra(LoginEntity.INTENT_EXTRA_NAME_THIS_LOGIN_TYPE, LoginEntity.SELECTION_PARTICIPANT);
-                    startActivity(intent);
+                    commonActions(LoginEntity.SELECTION_PARTICIPANT);
                 } else {
-                    tvWelcome.setText("Quiz " + thisQuizListData.getName() + " is not open yet");
+                    Toast.makeText(A_SelectRole.this, "This quiz has not been opened yet. " +
+                            "Please wait for the quizmaster to open it", Toast.LENGTH_LONG).show();
                 }
-
             }
-
         });
 
         btnOrganizer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Intent intent = new Intent(A_SelectRole.this, old_B_SelectLoginName.class);
-                //intent.putExtra(QuizListData.INTENT_EXTRA_NAME_THIS_QUIZ_BASICS, thisQuizListData);
-                //intent.putExtra(QuizExtraData.INTENT_EXTRA_NAME_THIS_QUIZ_EXTRAS, quizExtras);
-                //intent.putExtra(LoginEntity.INTENT_EXTRA_NAME_THIS_LOGIN_TYPE, LoginEntity.SELECTION_ORGANIZER);
-                //startActivity(intent);
+                commonActions(LoginEntity.SELECTION_ORGANIZER);
             }
 
         });
+    }
 
-
-
+    public void commonActions(String selection) {
+        //if we are here, all loading actions should be finished, so we can set the result in the Quiz object
+        //First check that all results are OK
+        if (!(quizLoader.allChecksOK())) {
+            Toast.makeText(A_SelectRole.this, "Attention organizers, " +
+                    "something is wrong with your quiz", Toast.LENGTH_LONG).show();
+        }
+        thisQuiz.setListData(thisQuizListData);
+        thisQuiz.setAdditionalData(quizLoader.quizExtraDataLPL.getQuizExtraData());
+        thisQuiz.setTeams(quizLoader.quizTeamsLPL.getLoginEntities());
+        thisQuiz.setOrganizers(quizLoader.quizOrganizersLPL.getLoginEntities());
+        thisQuiz.setRounds(quizLoader.quizRoundsLPL.getRounds());
+        thisQuiz.setAllQuestionsPerRound(quizLoader.quizQuestionsLPL.getAllQuestionsPerRound());
+        quizLoader.generateBlankAnswers();
+        thisQuiz.setMyAnswers(quizLoader.myAnswers);
+        intent = new Intent(A_SelectRole.this, B_LoginMain.class);
+        intent.putExtra(Quiz.INTENT_EXTRANAME_THIS_QUIZ, thisQuiz);
+        intent.putExtra(LoginEntity.INTENT_EXTRA_NAME_THIS_LOGIN_TYPE, selection);
+        startActivity(intent);
     }
 
 }

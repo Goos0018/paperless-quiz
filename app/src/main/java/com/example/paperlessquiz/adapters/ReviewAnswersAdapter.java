@@ -31,7 +31,7 @@ public class ReviewAnswersAdapter  extends ArrayAdapter<Answer> {
         TextView tvDisplayQuestion = (TextView) rowView.findViewById(R.id.tvDisplayQuestionID);
         TextView tvDisplayAnswer = (TextView) rowView.findViewById(R.id.tvDisplayAnswer);
         tvDisplayQuestion.setText("Question " + answers.get(position).getQuestionNr());
-        tvDisplayAnswer.setText("Your answer: " + answers.get(position).getMyAnswer());
+        tvDisplayAnswer.setText("Your answer: " + answers.get(position).getThisAnswer());
         return rowView;
     }
 }

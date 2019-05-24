@@ -17,9 +17,9 @@ public class AnswersListParser implements JsonParser<AnswersList> {
     @Override
     public AnswersList parse(JSONObject jo) throws JSONException {
         AnswersList answersList = new AnswersList(jo.getString(QUESTION_ID),jo.getInt(ROUND_NR), jo.getInt(QUESTION_NR));
-        ArrayList<String> allAnswers = new ArrayList<>();
+        ArrayList<Answer> allAnswers = new ArrayList<>();
         for (int i = 3; i < jo.length(); i++) {
-            allAnswers.add(i-3,jo.getString("" + (i-2)));
+            allAnswers.add(i-3,new Answer(jo.getString("" + (i-2))));
         }
         answersList.setAllAnswers(allAnswers);
         return answersList;

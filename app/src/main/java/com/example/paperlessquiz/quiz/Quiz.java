@@ -144,7 +144,7 @@ public class Quiz implements Serializable {
     }
 
     public void setAnswer(int rndId, int questionId, String answer) {
-        myAnswers.get(rndId).get(questionId).setMyAnswer(answer);
+        myAnswers.get(rndId).get(questionId).setThisAnswer(answer);
     }
 
     public ArrayList<ArrayList<Answer>> getMyAnswers() {

@@ -34,7 +34,7 @@ public class QuestionSpinner {
     public String displayAnswers() {
         String tmp = "";
         for (int i = 0; i < questionsList.get(rndId).size(); i++) {
-            tmp = tmp + (i+1) + ". " + myAnswers.get(rndId).get(i).getMyAnswer() + "\n";
+            tmp = tmp + (i+1) + ". " + myAnswers.get(rndId).get(i).getThisAnswer() + "\n";
         }
         return tmp;
 
@@ -106,11 +106,11 @@ public class QuestionSpinner {
     }
 
     public void setAnswer(int rndId, int questionId, String answer) {
-        myAnswers.get(rndId).get(questionId).setMyAnswer(answer);
+        myAnswers.get(rndId).get(questionId).setThisAnswer(answer);
     }
 
     public String getAnswer(int rndId, int questionId) {
-        return myAnswers.get(rndId).get(questionId).getMyAnswer();
+        return myAnswers.get(rndId).get(questionId).getThisAnswer();
     }
 
     public ArrayList<ArrayList<Question>> getQuestionsList() {
@@ -127,5 +127,9 @@ public class QuestionSpinner {
 
     public void clearAnswer() {
         answerField.setText("");
+    }
+
+    public int getPosition() {
+        return position;
     }
 }

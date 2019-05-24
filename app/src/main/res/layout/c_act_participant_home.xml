@@ -133,6 +133,7 @@
         android:layout_marginRight="30dp"
         android:orientation="vertical">
 
+
         <TextView
             android:id="@+id/tvDisplayRound"
             android:layout_width="match_parent"
@@ -141,6 +142,33 @@
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
             android:text="TextView" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/llCorrectQuestions"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="30dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvCorrectAnswer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:gravity="center"
+            android:text="TextView" />
+
+        <ListView
+            android:id="@+id/lvCorrectQuestions"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
     </LinearLayout>
 </LinearLayout>

@@ -2,6 +2,7 @@ package com.example.paperlessquiz.question;
 
 import com.example.paperlessquiz.adapters.QuestionsAdapter;
 import com.example.paperlessquiz.google.access.ListParsedListener;
+import com.example.paperlessquiz.quiz.Quiz;
 import com.example.paperlessquiz.round.Round;
 
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import java.util.List;
 public class GetQuestionsLPL implements ListParsedListener<Question> {
 
     //private QuestionsAdapter roundQuestionsAdapter;
+    Quiz quiz;
     private ArrayList<ArrayList<Question>> allQuestionsPerRound;
     private ArrayList<Question> allQuestions;
     //private ArrayList<Round>
@@ -21,11 +23,12 @@ public class GetQuestionsLPL implements ListParsedListener<Question> {
         return allQuestionsPerRound;
     }
 
-    public GetQuestionsLPL(){
+    public GetQuestionsLPL(Quiz quiz){
     //public GetQuestionsLPL(QuestionsAdapter roundQuestionsAdapter){
         //public GetQuestionsLPL(QuestionsAdapter roundQuestionsAdapter, QuestionsList questionsList, String answer1){
         //this.roundQuestionsAdapter=roundQuestionsAdapter;
         this.allQuestionsPerRound=new ArrayList<ArrayList<Question>>();
+        this.quiz=quiz;
     }
     @Override
     public void listParsed(List<Question> list)
@@ -52,6 +55,9 @@ public class GetQuestionsLPL implements ListParsedListener<Question> {
             qList.set(qId-1,q);
         }
         allQuestions = (ArrayList)list;
+        if (!(quiz == null)) {
+            quiz.setAllQuestionsPerRound(allQuestionsPerRound);
+        }
     }
 
 }

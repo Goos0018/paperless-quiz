@@ -25,6 +25,7 @@ public class Quiz implements Serializable {
     private ArrayList<ArrayList<AnswersList>> allAnswers;
     private LoginEntity myLoginentity;
 
+    //We only need an empty constructor, the QuizLoader class will populate all fields of the quiz
     public Quiz() {
         this.listData = new QuizListData();
         this.additionalData = new QuizExtraData();
@@ -41,14 +42,6 @@ public class Quiz implements Serializable {
 
     public void setAnswersForRound(int rndId, ArrayList<Answer> answerList) {
         myAnswers.add(rndId, answerList);
-        /*
-        for(int i=0;i<answerList.size();i++)
-        {
-                ArrayList<Answer> tmp = myAnswers.get(rndId);
-                Answer curAnswer = answerList.get(i);
-                tmp.add(i,curAnswer);
-        }
-        */
     }
 
     public void initializeAnswers() {
@@ -170,4 +163,5 @@ public class Quiz implements Serializable {
     public ArrayList<ArrayList<AnswersList>> getAllAnswers() {
         return allAnswers;
     }
+
 }

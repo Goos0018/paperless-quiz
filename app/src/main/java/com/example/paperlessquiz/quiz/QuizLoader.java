@@ -28,7 +28,7 @@ public class QuizLoader {
     private Context context;
     private String sheetDocID;
     private Quiz quiz;
-    public GetQuizExtraDataLPL quizExtraDataLPL = new GetQuizExtraDataLPL();
+    public GetQuizExtraDataLPL quizExtraDataLPL;
     public GetRoundsLPL quizRoundsLPL;
     public GetQuestionsLPL quizQuestionsLPL;
     public GetAnswersListLPL quizAnswersLPL;
@@ -40,11 +40,11 @@ public class QuizLoader {
         this.sheetDocID = sheetDocID;
         myAnswers = new ArrayList<>();
         this.quiz = quiz;
-        quizExtraDataLPL = new GetQuizExtraDataLPL();
+        quizExtraDataLPL = new GetQuizExtraDataLPL(quiz);
         quizRoundsLPL = new GetRoundsLPL(quiz);
-        quizQuestionsLPL = new GetQuestionsLPL();
+        quizQuestionsLPL = new GetQuestionsLPL(quiz);
         quizTeamsLPL = new GetLoginEntriesLPL(quiz);
-        quizOrganizersLPL = new GetLoginEntriesLPL();
+        quizOrganizersLPL = new GetLoginEntriesLPL(quiz);
         quizAnswersLPL = new GetAnswersListLPL(quiz);
         //Add quiz argument as argument for all constructors/LPL's
 

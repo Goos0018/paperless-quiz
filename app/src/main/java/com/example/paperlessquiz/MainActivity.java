@@ -11,6 +11,8 @@ import com.example.paperlessquiz.adapters.QuizListAdapter;
 import com.example.paperlessquiz.google.access.GoogleAccess;
 import com.example.paperlessquiz.google.access.GoogleAccessGet;
 import com.example.paperlessquiz.google.access.LoadingListenerImpl;
+import com.example.paperlessquiz.quiz.Quiz;
+import com.example.paperlessquiz.quiz.QuizLoader;
 import com.example.paperlessquiz.quizlistdata.GetQuizListDataLPL;
 import com.example.paperlessquiz.quizlistdata.QuizListData;
 import com.example.paperlessquiz.quizlistdata.QuizListDataParser;
@@ -24,44 +26,43 @@ TODO: layout
  */
 
 public class MainActivity extends AppCompatActivity {
+    Quiz thisQuiz = new Quiz();
     ListView lv_QuizList;
     QuizListAdapter adapter;
     String sheetName = QuizListData.QUIZLIST_TABNAME;
     String scriptParams = GoogleAccess.PARAMNAME_DOC_ID + QuizListData.QUIZLIST_DOC_ID + GoogleAccess.PARAM_CONCATENATOR +
             GoogleAccess.PARAMNAME_SHEET + QuizListData.QUIZLIST_TABNAME + GoogleAccess.PARAM_CONCATENATOR +
             GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_GETDATA;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-    lv_QuizList = (ListView) findViewById(R.id.lvQuizList);
-    adapter = new QuizListAdapter(this);
+        lv_QuizList = (ListView) findViewById(R.id.lvQuizList);
+        adapter = new QuizListAdapter(this);
 
-    lv_QuizList.setAdapter(adapter);
-    lv_QuizList.setOnItemClickListener(new AdapterView.OnItemClickListener()
-    {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
-            // When clicked, go to the A_SelectRole screen to allow the user to select the role for this quiz.
-            // Pass the QuizListData object so the receiving screen can get the rest of the details
-            Intent intent = new Intent(MainActivity.this, A_SelectRole.class);
-            intent.putExtra(QuizListData.INTENT_EXTRA_NAME_THIS_QUIZ_BASICS,adapter.getItem(position));
-            startActivity(intent);
+        lv_QuizList.setAdapter(adapter);
+        lv_QuizList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // When clicked, go to the A_SelectRole screen to allow the user to select the role for this quiz.
+                // Pass the QuizListData object so the receiving screen can get the rest of the details
+                Intent intent = new Intent(MainActivity.this, A_SelectRole.class);
+                intent.putExtra(QuizListData.INTENT_EXTRA_NAME_THIS_QUIZ_BASICS, adapter.getItem(position));
+                startActivity(intent);
 
-        }
-    });
+            }
+        });
+        //QuizLoader loadQuizList = new QuizLoader(thisQuiz)
+        GoogleAccessGet<QuizListData> googleAccessGet = new GoogleAccessGet<QuizListData>(this, scriptParams);
+        googleAccessGet.getItems(new QuizListDataParser(), new GetQuizListDataLPL(adapter),
+                new LoadingListenerImpl(this, "Please wait", "Loading quizzes", "Something went wrong: "));
+    }
 
-    GoogleAccessGet<QuizListData> googleAccessGet = new GoogleAccessGet<QuizListData>(this, scriptParams);
-    googleAccessGet.getItems(new QuizListDataParser(), new GetQuizListDataLPL(adapter),
-            new LoadingListenerImpl(this, "Please wait", "Loading quizzes", "Something went wrong: "));
-  }
-
-  //This part is used to log whenever the user exits the app when he is not supposed to do so
+    //This part is used to log whenever the user exits the app when he is not supposed to do so
     @Override
-    public void onPause()
-    {
+    public void onPause() {
         //GoogleAccessSet logExit = new GoogleAccessSet(this,GoogleAccess.PARAMNAME_ACTION+GoogleAccess.PARAMVALUE_ADDLINE + );
         //logExit.setData();
         super.onPause();
@@ -93,7 +94,6 @@ public class MainActivity extends AppCompatActivity {
         if (confirmed){super.onPause();} else{
             super.onResume();}
             */
-
 
 
 }

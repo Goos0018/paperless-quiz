@@ -3,11 +3,15 @@ package com.example.paperlessquiz.google.access;
 public class GoogleAccess {
 
     static final String SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxF4oneivWH9QUnOyEJRWWDNIfdaSft5idzfNWgz7USI0ZzKw_o/exec?";
+    public static final String PARAM_CONCATENATOR = "&";
+
     public static final String PARAMNAME_DOC_ID = "DocID=";
     public static final String PARAMNAME_SHEET = "Sheet=";
     public static final String PARAMNAME_ACTION = "action=";
-    public static final String PARAM_CONCATENATOR = "&";
-    public static final String PARAMNAME_LINE_TO_ADD = "LineToAdd";
+    public static final String PARAMNAME_LINE_TO_ADD = "LineToAdd=";
+    public static final String PARAMNAME_NEWVALUES = "NewValues=";
+    public static final String PARAMNAME_RECORDID = "RecordID=";
+    public static final String PARAMNAME_FIELDNAME = "Fieldname=";
     public static final String PARAMNAME_USERID = "userID=";
     public static final String PARAMNAME_ROUNDID = "roundID=";
     public static final String PARAMNAME_ANSWERS = "answers=";
@@ -15,6 +19,7 @@ public class GoogleAccess {
     public static final String PARAMNAME_FIRSTQUESTION = "FirstQuestion=";
 
     public static final String PARAMVALUE_GETDATA = "getdata";
+    public static final String PARAMVALUE_SETDATA = "setdata";
     public static final String PARAMVALUE_SUBMITANSWERS = "submitAnswers";
     public static final String PARAMVALUE_ADDLINE = "addline";
 
@@ -26,4 +31,5 @@ public class GoogleAccess {
     public static final String SHEET_ORGANIZERS = "Organizers";
     public static final String SHEET_TEAMCONTROL = "TeamRegistration";
     public static final String SHEET_ANSWERS = "Answers";
+    public static final String SHEET_SCORES = "Scores";
 }

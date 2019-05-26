@@ -1,5 +1,6 @@
 package com.example.paperlessquiz;
 
+import android.content.Context;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,9 +8,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PagerSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SnapHelper;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -47,21 +51,35 @@ public class C_ParticipantHome extends AppCompatActivity {
     QuestionSpinner questionSpinner;
     TextView tvRoundName, tvRoundDescription, tvQuestionName, tvQuestionDescription, tvDisplayRoundResults, tvCorrectAnswer;
     EditText etAnswer;
-    Button btnRndUp, btnRndDown, btnQuestionUp, btnQuestionDown, btnSubmit;
-    LinearLayout displayLayout, answerLayout,correctorLayout;
+    Button btnRndUp, btnRndDown, btnQuestionUp, btnQuestionDown, btnSubmit,btnSubmitCorrections;
+    LinearLayout displayLayout, answerLayout, correctorLayout;
     ListView lvCorrectQuestions;
     ShowAllAnswersAdapter myAdapter;
 
 
     private void refresh() {
-        if (thisQuiz.getRound(roundSpinner.getPosition()).AcceptsAnswers()) {
-            answerLayout.setVisibility(View.VISIBLE);
-        } else {
-            answerLayout.setVisibility((View.GONE));
+        //this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        //If this is a participant
+        if (thisQuiz.getMyLoginentity().getType().equals(LoginEntity.SELECTION_PARTICIPANT)) {
+            if (thisQuiz.getRound(roundSpinner.getPosition()).AcceptsAnswers()) {
+                answerLayout.setVisibility(View.VISIBLE);
+                //etAnswer is by default invisible to avoid seeing the keyboard when you shouldn't
+                etAnswer.setVisibility(View.VISIBLE);
+            } else {
+                answerLayout.setVisibility((View.GONE));
+            }
+            correctorLayout.setVisibility((View.GONE));
         }
-        if (!(thisQuiz.getMyLoginentity().getType().equals(LoginEntity.SELECTION_PARTICIPANT))){
+        //If this is a questionscorrector
+        if (!(thisQuiz.getMyLoginentity().getType().equals(LoginEntity.SELECTION_PARTICIPANT))) {
             answerLayout.setVisibility((View.GONE));
             displayLayout.setVisibility(View.GONE);
+            //correctorLayout.findFocus();
+            ArrayList<Answer> allAnswers;
+            allAnswers = thisQuiz.getAllAnswers().get(roundSpinner.getPosition()).get(questionSpinner.getPosition()).getAllAnswers();
+            myAdapter = new ShowAllAnswersAdapter(this, allAnswers);
+            lvCorrectQuestions.setAdapter(myAdapter);
+            //myAdapter.notifyDataSetChanged();
         }
 
     }
@@ -74,10 +92,9 @@ public class C_ParticipantHome extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId())
-        {
+        switch (item.getItemId()) {
             case R.id.refresh:
-                QuizLoader quizLoader =new QuizLoader(C_ParticipantHome.this,thisQuiz.getListData().getSheetDocID(),thisQuiz);
+                QuizLoader quizLoader = new QuizLoader(C_ParticipantHome.this, thisQuiz.getListData().getSheetDocID(), thisQuiz);
                 quizLoader.loadRounds();
                 refresh();
                 break;
@@ -107,24 +124,22 @@ public class C_ParticipantHome extends AppCompatActivity {
         tvRoundName = findViewById(R.id.tvRoundName);
         tvRoundDescription = findViewById(R.id.tvRoundDescription);
         tvDisplayRoundResults = findViewById(R.id.tvDisplayRound);
-        tvCorrectAnswer=findViewById(R.id.tvCorrectAnswer);
+        tvCorrectAnswer = findViewById(R.id.tvCorrectAnswer);
         etAnswer = findViewById(R.id.etAnswer);
         btnQuestionDown = findViewById(R.id.btnQuestionDown);
         btnQuestionUp = findViewById(R.id.btnQuestionUp);
         btnRndDown = findViewById(R.id.btnRndDown);
         btnRndUp = findViewById(R.id.btnRndUp);
         btnSubmit = findViewById(R.id.btnSubmit);
-        lvCorrectQuestions=findViewById(R.id.lvCorrectQuestions);
+        btnSubmitCorrections = findViewById(R.id.btnSubmitCorrections);
+        lvCorrectQuestions = findViewById(R.id.lvCorrectQuestions);
         actionBar.setTitle(thisQuiz.getMyLoginentity().getName());
 
         questionSpinner = new QuestionSpinner(thisQuiz.getAllQuestionsPerRound(), tvQuestionName, tvQuestionDescription, tvDisplayRoundResults,
                 thisQuiz.getMyAnswers(), etAnswer, 0);
         roundSpinner = new RoundSpinner(thisQuiz.getRounds(), tvRoundName, tvRoundDescription, questionSpinner);
-
-        ArrayList<Answer> allAnswers;
-        allAnswers = thisQuiz.getAllAnswers().get(roundSpinner.getPosition()).get(questionSpinner.getPosition()).getAllAnswers();
-        myAdapter = new ShowAllAnswersAdapter(this,allAnswers);
-        lvCorrectQuestions.setAdapter(myAdapter);
+        //Refresh does all actions that are dependent on the position of the question spinner and the roundspinner
+        refresh();
 
 
         btnRndDown.setOnClickListener(new View.OnClickListener() {
@@ -148,7 +163,7 @@ public class C_ParticipantHome extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 questionSpinner.moveDown();
-
+                refresh();
             }
         });
 
@@ -156,6 +171,7 @@ public class C_ParticipantHome extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 questionSpinner.moveUp();
+                refresh();
             }
         });
 
@@ -163,6 +179,7 @@ public class C_ParticipantHome extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 questionSpinner.moveDown();
+                questionSpinner.moveUp();
                 ArrayList<Answer> answerList = thisQuiz.getMyAnswers().get(roundSpinner.getPosition());
                 String tmp = "[";
                 for (int i = 0; i < answerList.size(); i++) {
@@ -176,8 +193,8 @@ public class C_ParticipantHome extends AppCompatActivity {
                 String answers = answerArray.toString();
                 String scriptParams = GoogleAccess.PARAMNAME_DOC_ID + thisQuiz.getListData().getSheetDocID() + GoogleAccess.PARAM_CONCATENATOR +
                         GoogleAccess.PARAMNAME_USERID + "Rupert" + GoogleAccess.PARAM_CONCATENATOR +
-                        GoogleAccess.PARAMNAME_ROUNDID + (roundSpinner.getPosition()+1) + GoogleAccess.PARAM_CONCATENATOR +
-                        GoogleAccess.PARAMNAME_FIRSTQUESTION + (roundSpinner.getPosition()+1) + ".1" + GoogleAccess.PARAM_CONCATENATOR +
+                        GoogleAccess.PARAMNAME_ROUNDID + (roundSpinner.getPosition() + 1) + GoogleAccess.PARAM_CONCATENATOR +
+                        GoogleAccess.PARAMNAME_FIRSTQUESTION + (roundSpinner.getPosition() + 1) + ".1" + GoogleAccess.PARAM_CONCATENATOR +
                         GoogleAccess.PARAMNAME_TEAMID + thisQuiz.getMyLoginentity().getId() + GoogleAccess.PARAM_CONCATENATOR +
                         GoogleAccess.PARAMNAME_ANSWERS + tmp + GoogleAccess.PARAM_CONCATENATOR +
                         GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_SUBMITANSWERS;
@@ -186,5 +203,32 @@ public class C_ParticipantHome extends AppCompatActivity {
             }
         });
 
+        btnSubmitCorrections.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //questionSpinner.moveDown();
+                //questionSpinner.moveUp();
+                ArrayList<Answer> answerList = thisQuiz.getAllAnswers().get(roundSpinner.getPosition()).get(questionSpinner.getPosition()).getAllAnswers();
+                String tmp = "[[";
+                for (int i = 0; i < answerList.size(); i++) {
+                    tmp = tmp + "\"" + answerList.get(i).isCorrect() + "\"";
+                    if (i < answerList.size() - 1) {
+                        tmp = tmp + ",";
+                    }
+                }
+                tmp = tmp + "]]";
+                //JSONArray answerArray = new JSONArray(answerList);
+                //String answers = answerArray.toString();
+                String scriptParams = GoogleAccess.PARAMNAME_DOC_ID + thisQuiz.getListData().getSheetDocID() + GoogleAccess.PARAM_CONCATENATOR +
+                        GoogleAccess.PARAMNAME_USERID + "Rupert" + GoogleAccess.PARAM_CONCATENATOR +
+                        GoogleAccess.PARAMNAME_SHEET + GoogleAccess.SHEET_SCORES + GoogleAccess.PARAM_CONCATENATOR +
+                        GoogleAccess.PARAMNAME_RECORDID + (roundSpinner.getPosition() + 1) + "." + (questionSpinner.getPosition() + 1) + GoogleAccess.PARAM_CONCATENATOR +
+                        GoogleAccess.PARAMNAME_FIELDNAME + "T1" + GoogleAccess.PARAM_CONCATENATOR +
+                        GoogleAccess.PARAMNAME_NEWVALUES + tmp + GoogleAccess.PARAM_CONCATENATOR +
+                        GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_SETDATA;
+                GoogleAccessSet submitScores = new GoogleAccessSet(C_ParticipantHome.this, scriptParams);
+                submitScores.setData();
+            }
+        });
     }
 }

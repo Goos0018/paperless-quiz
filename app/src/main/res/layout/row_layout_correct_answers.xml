@@ -21,13 +21,6 @@
         android:text="TextView" />
 
     <Button
-        android:id="@+id/btnFalse"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="F" />
-
-    <Button
         android:id="@+id/btnTrue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

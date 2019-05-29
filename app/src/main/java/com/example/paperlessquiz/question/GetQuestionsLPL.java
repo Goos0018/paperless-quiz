@@ -1,9 +1,7 @@
 package com.example.paperlessquiz.question;
 
-import com.example.paperlessquiz.adapters.QuestionsAdapter;
 import com.example.paperlessquiz.google.access.ListParsedListener;
 import com.example.paperlessquiz.quiz.Quiz;
-import com.example.paperlessquiz.round.Round;
 
 import java.util.ArrayList;
 import java.util.List;

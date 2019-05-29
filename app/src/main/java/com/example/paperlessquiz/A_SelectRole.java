@@ -21,7 +21,7 @@ TODO: layout
 
 public class A_SelectRole extends AppCompatActivity {
 
-    Quiz thisQuiz = new Quiz();
+    Quiz thisQuiz;
     QuizLoader quizLoader;
     QuizListData thisQuizListData;
     Intent intent;
@@ -39,9 +39,9 @@ public class A_SelectRole extends AppCompatActivity {
         btnParticipant = findViewById(R.id.btn_participant);
         btnOrganizer = findViewById(R.id.btn_organizer);
         tvWelcome = findViewById(R.id.tv_welcome);
-        thisQuizListData = (QuizListData) getIntent().getSerializableExtra(QuizListData.INTENT_EXTRA_NAME_THIS_QUIZ_BASICS);
-        tvWelcome.setText("Welcome to the " + thisQuizListData.getName() + "\n" + thisQuizListData.getDescription());
-        thisQuiz.setListData(thisQuizListData);
+        thisQuiz = (Quiz) getIntent().getSerializableExtra(Quiz.INTENT_EXTRANAME_THIS_QUIZ);
+        tvWelcome.setText("Welcome to the " + thisQuiz.getListData().getName() + "\n" + thisQuiz.getListData().getDescription());
+        //thisQuiz.setListData(thisQuizListData);
         quizLoader = new QuizLoader(this, thisQuiz.getListData().getSheetDocID(), thisQuiz);
         quizLoader.loadAll();
 
@@ -73,7 +73,7 @@ public class A_SelectRole extends AppCompatActivity {
             Toast.makeText(A_SelectRole.this, "Attention organizers, " +
                     "something is wrong with your quiz", Toast.LENGTH_LONG).show();
         }
-        thisQuiz.setListData(thisQuizListData);
+        //thisQuiz.setListData(thisQuizListData);
         thisQuiz.setAdditionalData(quizLoader.quizExtraDataLPL.getQuizExtraData());
         thisQuiz.setTeams(quizLoader.quizTeamsLPL.getLoginEntities());
         thisQuiz.setOrganizers(quizLoader.quizOrganizersLPL.getLoginEntities());

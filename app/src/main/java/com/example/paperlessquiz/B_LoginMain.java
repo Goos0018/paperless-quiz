@@ -9,8 +9,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.paperlessquiz.answer.Answer;
 import com.example.paperlessquiz.google.access.GoogleAccess;
 import com.example.paperlessquiz.google.access.GoogleAccessSet;
+import com.example.paperlessquiz.google.access.LoadingListenerSilent;
 import com.example.paperlessquiz.loginentity.LoginEntity;
 import com.example.paperlessquiz.quiz.Quiz;
 
@@ -25,11 +27,8 @@ public class B_LoginMain extends AppCompatActivity implements B_frag_ListEntitie
     EditText etPasskey;
     Button btnSubmit;
     String loginType;
-    //Intent intent;
     //other local variables needed
     int id;
-    boolean submitPressed = false;
-    boolean loginCompleted = false;
 
 
     @Override
@@ -52,6 +51,15 @@ public class B_LoginMain extends AppCompatActivity implements B_frag_ListEntitie
                 String input = etPasskey.getText().toString().trim();
                 if (loginType.equals(LoginEntity.SELECTION_PARTICIPANT)) {
                     thisLoginEntity = thisQuiz.getTeam(id - 1);
+                    //Get the answers for this participant
+                    //For each round
+                    for (int i = 0; i < thisQuiz.getAllAnswers().size(); i++) {
+                        //For each question
+                        for (int j = 0; j < thisQuiz.getAllAnswers().get(i).size(); j++) {
+                            Answer tmp = thisQuiz.getAllAnswers().get(i).get(j).getAllAnswers().get(thisLoginEntity.getId()-1);
+                            thisQuiz.getMyAnswers().get(i).set(j,tmp );
+                        }
+                    }
                 } else {
                     thisLoginEntity = thisQuiz.getOrganizer(id - 1);
                 }
@@ -60,19 +68,6 @@ public class B_LoginMain extends AppCompatActivity implements B_frag_ListEntitie
                 } else {
                     if (input.equals(thisLoginEntity.getPasskey())) {
                         if (thisLoginEntity.getType().equals(LoginEntity.SELECTION_PARTICIPANT)) {
-                            //If it is a participant, start the Overview screen
-                            //First log that the user is logging in
-                            //This part is used to log whenever the user exits the app when he is not supposed to do so
-                            Date now = new Date();
-                            String strToday = now.toString();
-                            String scriptParams = GoogleAccess.PARAMNAME_DOC_ID + thisQuiz.getListData().getSheetDocID() + GoogleAccess.PARAM_CONCATENATOR +
-                                    GoogleAccess.PARAMNAME_SHEET + GoogleAccess.SHEET_TEAMCONTROL + GoogleAccess.PARAM_CONCATENATOR +
-                                    "LineToAdd=[\"" + strToday + "\",\"" + thisLoginEntity.getName() + "\",\"logged in\"]" + GoogleAccess.PARAM_CONCATENATOR +
-                                    GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_ADDLINE;
-                            GoogleAccessSet teamLogIn = new GoogleAccessSet(B_LoginMain.this, scriptParams);
-                            teamLogIn.setData();
-                            submitPressed = true;
-                            loginCompleted = true;
                             Intent intent = new Intent(B_LoginMain.this, C_ParticipantHome.class);
                             thisQuiz.setMyLoginentity(thisLoginEntity);
                             intent.putExtra(Quiz.INTENT_EXTRANAME_THIS_QUIZ, thisQuiz);

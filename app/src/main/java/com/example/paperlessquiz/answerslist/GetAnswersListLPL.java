@@ -3,6 +3,7 @@ package com.example.paperlessquiz.answerslist;
 import com.example.paperlessquiz.answer.Answer;
 import com.example.paperlessquiz.answerslist.AnswersList;
 import com.example.paperlessquiz.google.access.ListParsedListener;
+import com.example.paperlessquiz.loginentity.LoginEntity;
 import com.example.paperlessquiz.quiz.Quiz;
 
 import java.util.ArrayList;
@@ -13,10 +14,12 @@ public class GetAnswersListLPL implements ListParsedListener<AnswersList> {
     private Quiz quiz;
     private ArrayList<AnswersList> allAnswers;
     private ArrayList<ArrayList<AnswersList>> allAnswersPerRound;
+    private ArrayList<ArrayList<Answer>> myAnswersPerRound;
 
     public GetAnswersListLPL(Quiz quiz) {
         allAnswers = new ArrayList<AnswersList>();
         allAnswersPerRound = new ArrayList<>();
+        myAnswersPerRound = new ArrayList<>();
         this.quiz = quiz;
 
     }
@@ -38,11 +41,13 @@ public class GetAnswersListLPL implements ListParsedListener<AnswersList> {
             while (allAnswersPerRound.size() < rndId)
             {
                 allAnswersPerRound.add(new ArrayList<AnswersList>());
+                myAnswersPerRound.add(new ArrayList<>());
             }
             //Add empty questions until you are sure you have one at the requested position
             while (allAnswersPerRound.get(rndId-1).size() < qID)
             {
                 allAnswersPerRound.get(rndId-1).add(new AnswersList("",0,0));
+                myAnswersPerRound.get(rndId-1).add(new Answer(""));
             }
             //Now we are sure that this will work
             allAnswersPerRound.get(rndId-1).set(answersList.getQuestionNr()-1,answersList);
@@ -50,6 +55,7 @@ public class GetAnswersListLPL implements ListParsedListener<AnswersList> {
 
         if (!(quiz == null)) {
             quiz.setAllAnswers(allAnswersPerRound);
+            quiz.setMyAnswers(myAnswersPerRound);
         }
     }
 

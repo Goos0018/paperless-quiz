@@ -1,19 +1,11 @@
 package com.example.paperlessquiz;
 
-import android.content.Context;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.PagerSnapHelper;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SnapHelper;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -21,10 +13,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.paperlessquiz.adapters.ShowAllAnswersAdapter;
-import com.example.paperlessquiz.adapters.recycler.RoundsAdapter;
 import com.example.paperlessquiz.answer.Answer;
 import com.example.paperlessquiz.google.access.GoogleAccess;
 import com.example.paperlessquiz.google.access.GoogleAccessSet;
+import com.example.paperlessquiz.google.access.LoadingListenerNotify;
+import com.example.paperlessquiz.google.access.LoadingListenerShowProgress;
 import com.example.paperlessquiz.loginentity.LoginEntity;
 import com.example.paperlessquiz.quiz.Quiz;
 import com.example.paperlessquiz.quiz.QuizLoader;
@@ -51,7 +44,7 @@ public class C_ParticipantHome extends AppCompatActivity {
     QuestionSpinner questionSpinner;
     TextView tvRoundName, tvRoundDescription, tvQuestionName, tvQuestionDescription, tvDisplayRoundResults, tvCorrectAnswer;
     EditText etAnswer;
-    Button btnRndUp, btnRndDown, btnQuestionUp, btnQuestionDown, btnSubmit,btnSubmitCorrections;
+    Button btnRndUp, btnRndDown, btnQuestionUp, btnQuestionDown, btnSubmit, btnSubmitCorrections;
     LinearLayout displayLayout, answerLayout, correctorLayout;
     ListView lvCorrectQuestions;
     ShowAllAnswersAdapter myAdapter;
@@ -115,7 +108,8 @@ public class C_ParticipantHome extends AppCompatActivity {
         //actionBar.setDisplayUseLogoEnabled(true);
 
         thisQuiz = (Quiz) getIntent().getSerializableExtra(Quiz.INTENT_EXTRANAME_THIS_QUIZ);
-
+        //Log that the user logged in
+        MyApplication.eventLogger.logEvent(thisQuiz.getMyLoginentity().getName(), "Logged in");
         displayLayout = findViewById(R.id.llDisplay);
         answerLayout = findViewById(R.id.llAnswers);
         correctorLayout = findViewById(R.id.llCorrectQuestions);
@@ -135,6 +129,7 @@ public class C_ParticipantHome extends AppCompatActivity {
         lvCorrectQuestions = findViewById(R.id.lvCorrectQuestions);
         actionBar.setTitle(thisQuiz.getMyLoginentity().getName());
 
+        etAnswer.setText(thisQuiz.getMyAnswers().get(0).get(0).getThisAnswer());
         questionSpinner = new QuestionSpinner(thisQuiz.getAllQuestionsPerRound(), tvQuestionName, tvQuestionDescription, tvDisplayRoundResults,
                 thisQuiz.getMyAnswers(), etAnswer, 0);
         roundSpinner = new RoundSpinner(thisQuiz.getRounds(), tvRoundName, tvRoundDescription, questionSpinner);
@@ -199,7 +194,8 @@ public class C_ParticipantHome extends AppCompatActivity {
                         GoogleAccess.PARAMNAME_ANSWERS + tmp + GoogleAccess.PARAM_CONCATENATOR +
                         GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_SUBMITANSWERS;
                 GoogleAccessSet submitAnswers = new GoogleAccessSet(C_ParticipantHome.this, scriptParams);
-                submitAnswers.setData();
+                submitAnswers.setData(new LoadingListenerNotify(C_ParticipantHome.this, thisQuiz.getMyLoginentity().getName(),
+                        "Submit answers for round " + (roundSpinner.getPosition() + 1)));
             }
         });
 
@@ -227,8 +223,21 @@ public class C_ParticipantHome extends AppCompatActivity {
                         GoogleAccess.PARAMNAME_NEWVALUES + tmp + GoogleAccess.PARAM_CONCATENATOR +
                         GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_SETDATA;
                 GoogleAccessSet submitScores = new GoogleAccessSet(C_ParticipantHome.this, scriptParams);
-                submitScores.setData();
+                submitScores.setData(new LoadingListenerNotify(C_ParticipantHome.this, thisQuiz.getMyLoginentity().getName(),
+                        "Submit scores for question " + (questionSpinner.getPosition() + 1)));
             }
         });
+    }
+
+    @Override
+    protected void onPause() {
+        MyApplication.eventLogger.logEvent(thisQuiz.getMyLoginentity().getName(), "WARNING: Paused the app");
+        super.onPause();
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        MyApplication.eventLogger.logEvent(thisQuiz.getMyLoginentity().getName(), "WARNING: Resumed the app");
     }
 }

@@ -29,9 +29,6 @@ public class GoogleAccessGet<T> {
         this.parameters = parameters;
     }
 
-    //This method will return
-    //  - either a list of objects T (in that case objectToUpdate is Null
-    //  - or a list containing one single object T that is based on objectToUpdate
     //For each type of object/specific use, you need to create an implementation of JsonParser and ListParsedListener
     public void getItems(JsonParser<T> parser, final ListParsedListener<T> listParsedListener, LoadingListener loadingListener) {
 

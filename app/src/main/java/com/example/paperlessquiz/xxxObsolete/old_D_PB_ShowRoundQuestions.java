@@ -85,7 +85,7 @@ public class old_D_PB_ShowRoundQuestions extends AppCompatActivity {
 
         //GoogleAccessGet<Question> googleAccessGet = new GoogleAccessGet<Question>(this, scriptParams);
         //googleAccessGet.getItems(new QuestionParser(), listParsedListener,
-         //       new LoadingListenerImpl(this, "Please wait", "Loading questions", "Something went wrong: "));
+         //       new LoadingListenerShowProgress(this, "Please wait", "Loading questions", "Something went wrong: "));
 
     }
     */

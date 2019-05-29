@@ -23,7 +23,10 @@ public class EventLogger {
                 GoogleAccess.PARAMNAME_LINE_TO_ADD + "[\"" + strToday + "\",\"" + team + "\",\"" + message+ "\"]" + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_ADDLINE;
         GoogleAccessSet logger = new GoogleAccessSet(context, scriptParams);
-        logger.setData();
+        logger.setData(new LoadingListenerSilent());
     }
 
+    public void setDocID(String docID) {
+        this.docID = docID;
+    }
 }

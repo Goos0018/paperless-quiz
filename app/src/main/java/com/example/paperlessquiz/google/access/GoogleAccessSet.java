@@ -23,22 +23,21 @@ public class GoogleAccessSet {
     }
 
     //This method will add a line at the bottom of the sheet that was passed via parameters, using the other fields that were given
-    public void setData(){
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, GoogleAccess.SCRIPT_URL+parameters,
+    public void setData(LoadingListener loadingListener) {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, GoogleAccess.SCRIPT_URL + parameters,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
 
                         //TODO: add response listener for this + logging/messages
-
+                        loadingListener.loadingEnded();
                     }
                 },
 
                 new Response.ErrorListener() {
                     @Override
-                    public void onErrorResponse(VolleyError error)
-                    {
-
+                    public void onErrorResponse(VolleyError error) {
+                        loadingListener.loadingError("Error posting data: " + parameters);
                     }
                 }
         );
@@ -50,6 +49,7 @@ public class GoogleAccessSet {
 
         RequestQueue queue = Volley.newRequestQueue(context);
         queue.add(stringRequest);
+        loadingListener.loadingStarted();
     }
 
 

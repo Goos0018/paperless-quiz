@@ -74,7 +74,7 @@ public class old_D_PA_ShowRounds extends AppCompatActivity {
 /*
         //GoogleAccessGet<Round> googleAccessGet = new GoogleAccessGet<Round>(this, scriptParams);
         //googleAccessGet.getItems(new RoundParser(), new GetRoundsLPL(),
-        //        new LoadingListenerImpl(this, "Please wait", "Loading rounds", "Something went wrong: "));
+        //        new LoadingListenerShowProgress(this, "Please wait", "Loading rounds", "Something went wrong: "));
     }
 */
 

@@ -1,6 +1,5 @@
 package com.example.paperlessquiz.round;
 
-import com.example.paperlessquiz.adapters.QuizRoundsAdapter;
 import com.example.paperlessquiz.google.access.ListParsedListener;
 import com.example.paperlessquiz.quiz.Quiz;
 

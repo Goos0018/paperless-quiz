@@ -6,6 +6,7 @@ public class Answer implements Serializable{
 
     private int questionNr;
     private String thisAnswer;
+    private boolean corrected;
 
     //private String teamID;
     private boolean correct=false;
@@ -17,7 +18,7 @@ public class Answer implements Serializable{
     public Answer(int questionNr){
         this.questionNr=questionNr;
         this.thisAnswer = "";
-
+        this.corrected = false;
     }
 
 
@@ -25,6 +26,14 @@ public class Answer implements Serializable{
         this.questionNr = questionNr;
         this.thisAnswer = myAnswer;
         //this.teamID = teamID;
+    }
+
+    public boolean isCorrected() {
+        return corrected;
+    }
+
+    public void setCorrected(boolean corrected) {
+        this.corrected = corrected;
     }
 
     public int getQuestionNr() {

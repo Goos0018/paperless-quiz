@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.paperlessquiz.R;
@@ -30,8 +30,8 @@ public class ShowAllAnswersAdapter extends ArrayAdapter<Answer> {
     //Viewholder is an object that holds everything that is displayed in the ListView
     class ViewHolder
     {
-        TextView tvAnswer, tvResult;
-        Button btnToggle;
+        TextView tvAnswer;//, tvResult;
+        ImageView ivToggle;
         //ImageView score;
     }
 
@@ -46,7 +46,7 @@ public class ShowAllAnswersAdapter extends ArrayAdapter<Answer> {
         View rowView = inflater.inflate(R.layout.row_layout_correct_answers,parent,false);
         TextView tvAnswer = (TextView) rowView.findViewById(R.id.tvAnswer);
         TextView tvResult = (TextView) rowView.findViewById(R.id.tvResult);
-        Button btnIsCorrect = (Button) rowView.findViewById(R.id.btnToggle);
+        Button btnIsCorrect = (Button) rowView.findViewById(R.id.ivToggle);
         Button btnIsFalse = (Button) rowView.findViewById(R.id.btnFalse);
 
 
@@ -79,10 +79,10 @@ public class ShowAllAnswersAdapter extends ArrayAdapter<Answer> {
             convertView = inflater.inflate(R.layout.row_layout_correct_answers, null);
             holder=new ViewHolder();
             holder.tvAnswer = (TextView) convertView.findViewById(R.id.tvAnswer);
-            holder.tvResult = (TextView) convertView.findViewById(R.id.tvResult);
+            //holder.tvResult = (TextView) convertView.findViewById(R.id.tvResult);
             //holder.score=(ImageView) convertView.findViewById(R.id.ivShowScore);
             //holder.btnFalse = (Button) convertView.findViewById(R.id.btnFalse);
-            holder.btnToggle = (Button) convertView.findViewById(R.id.btnTrue);
+            holder.ivToggle = (ImageView) convertView.findViewById(R.id.ivToggle);
             convertView.setTag(holder);
         }
         else
@@ -91,17 +91,33 @@ public class ShowAllAnswersAdapter extends ArrayAdapter<Answer> {
         }
         //holder.question.setText(getItem(position).getQuestion());
         holder.tvAnswer.setText(getItem(position).getThisAnswer());
-        holder.tvResult.setText(getItem(position).isCorrect() + " ");
-        holder.btnToggle.setId(position);
+        boolean isCorrect = getItem(position).isCorrect();
+        boolean isCorrected = getItem(position).isCorrected();
+        if (isCorrected){
+        if (isCorrect){
+            holder.ivToggle.setImageResource(R.drawable.answer_ok);
+        }
+        else
+        {
+            holder.ivToggle.setImageResource(R.drawable.answer_nok);
+        }}
+        else{
+            holder.ivToggle.setImageResource(R.drawable.answer_notcorrected);
+        }
+        //holder.tvResult.setText(getItem(position).isCorrect() + " ");
+        holder.ivToggle.setId(position);
 
-        holder.btnToggle.setOnClickListener(new View.OnClickListener()
+        holder.ivToggle.setOnClickListener(new View.OnClickListener()
+            //Toggle isCorrect from true to false
         {
             @Override
             public void onClick(View view) {
                 final int position = view.getId();
                 //final ImageView Answer = (EditText) v;
-                getItem(position).setCorrect(!getItem(position).isCorrect());
-                holder.tvResult.setText(getItem(position).isCorrect() + " ");
+                getItem(position).setCorrect(!isCorrect);
+                getItem(position).setCorrected(true);
+                //holder.tvResult.setText(getItem(position).isCorrect() + " ");
+                //holder.ivToggle.setImageResource(R.drawable.answer_ok);
                 //This adds the answer to the array holding all answers, so we have access to them when submitting
                 //Answer thisAnswer = new Answer(position+1,Answer.getText().toString());
                 //myAnswers.remove(position);
@@ -109,6 +125,7 @@ public class ShowAllAnswersAdapter extends ArrayAdapter<Answer> {
                 for (int i = 0; i < answers.size(); i++) {
                     if (answers.get(i).getThisAnswer().equals(getItem(position).getThisAnswer())){
                         answers.get(i).setCorrect(getItem(position).isCorrect());
+                        answers.get(i).setCorrected(true);
                     }
                 }
                 adapter.notifyDataSetChanged();

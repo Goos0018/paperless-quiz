@@ -17,13 +17,13 @@
         <Button
             android:id="@+id/btnRndDown"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="40dp"
             android:layout_gravity="center"
             android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp" />
+            android:layout_marginLeft="@dimen/margin_medium"
+            android:layout_marginTop="@dimen/margin_medium"
+            android:layout_marginBottom="@dimen/margin_medium"
+            android:layout_weight="1" />
 
 
         <LinearLayout
@@ -67,13 +67,12 @@
         <Button
             android:id="@+id/btnRndUp"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="40dp"
             android:layout_gravity="center"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginBottom="8dp" />
+            android:layout_marginTop="@dimen/margin_medium"
+            android:layout_marginRight="@dimen/margin_medium"
+            android:layout_marginBottom="@dimen/margin_medium"
+            android:layout_weight="1" />
 
     </LinearLayout>
 
@@ -81,42 +80,56 @@
         android:id="@+id/llQuestionSpinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginRight="15dp"
+        android:layout_marginLeft="@dimen/margin_large"
+        android:layout_marginTop="@dimen/margin_tiny"
+        android:layout_marginRight="@dimen/margin_large"
         android:orientation="horizontal">
 
         <Button
             android:id="@+id/btnQuestionDown"
-            android:layout_width="25dp"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/margin_medium"
+            android:layout_marginRight="@dimen/margin_medium"
+            android:layout_marginBottom="@dimen/margin_medium"
             android:layout_weight="1" />
 
         <LinearLayout
             android:id="@+id/questionSpinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="6"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/tvQuestionName"
-                android:layout_width="350dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_tiny"
                 android:gravity="center"
-                android:text="Questionname" />
+                android:text="Questionname"
+                android:textSize="@dimen/text_size_medium" />
 
             <TextView
                 android:id="@+id/tvQuestionDescription"
-                android:layout_width="350dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_tiny"
+                android:layout_marginBottom="@dimen/margin_tiny"
                 android:gravity="center"
+                android:textSize="@dimen/text_size_small"
                 android:text="Questionhint" />
         </LinearLayout>
 
         <Button
             android:id="@+id/btnQuestionUp"
-            android:layout_width="25dp"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/margin_medium"
+            android:layout_marginRight="@dimen/margin_medium"
+            android:layout_marginBottom="@dimen/margin_medium"
             android:layout_weight="1" />
 
     </LinearLayout>
@@ -125,9 +138,9 @@
         android:id="@+id/llAnswers"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginRight="30dp"
+        android:layout_marginLeft="@dimen/margin_huge"
+        android:layout_marginTop="@dimen/margin_tiny"
+        android:layout_marginRight="@dimen/margin_huge"
         android:orientation="vertical">
 
         <EditText
@@ -154,9 +167,9 @@
         android:id="@+id/llDisplay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginRight="30dp"
+        android:layout_marginLeft="@dimen/margin_huge"
+        android:layout_marginTop="@dimen/margin_tiny"
+        android:layout_marginRight="@dimen/margin_huge"
         android:orientation="vertical">
 
 
@@ -165,16 +178,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:text="TextView" />
+            android:layout_marginLeft="@dimen/margin_medium"
+            android:layout_marginRight="@dimen/margin_medium"
+            android:text="Your answers:" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rvDisplayAnswers"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp" />
+            android:layout_marginLeft="@dimen/margin_large"
+            android:layout_marginTop="@dimen/margin_tiny"
+            android:layout_marginRight="@dimen/margin_large" />
 
     </LinearLayout>
 
@@ -183,9 +197,9 @@
         android:id="@+id/llCorrectQuestions"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="30dp"
+        android:layout_marginLeft="@dimen/margin_huge"
         android:layout_marginTop="5dp"
-        android:layout_marginRight="30dp"
+        android:layout_marginRight="@dimen/margin_huge"
         android:orientation="vertical">
 
         <TextView
@@ -193,10 +207,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
+            android:layout_marginLeft="@dimen/margin_medium"
+            android:layout_marginRight="@dimen/margin_medium"
             android:gravity="center"
-            android:text="TextView" />
+            android:text="Correct answers"
+            android:textColor="@color/correctGreen" />
 
         <Button
             android:id="@+id/btnSubmitCorrections"
@@ -207,7 +222,10 @@
         <ListView
             android:id="@+id/lvCorrectQuestions"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/margin_large"
+            android:layout_marginTop="@dimen/margin_tiny"
+            android:layout_marginRight="@dimen/margin_large" />
 
     </LinearLayout>
 </LinearLayout>

@@ -31,13 +31,13 @@ public class ParticipantsAdapter extends ArrayAdapter<LoginEntity> {
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.row_layout_select_login_name,parent,false);
-        TextView tvName = (TextView) rowView.findViewById(R.id.tv_name);
-        TextView tvType = (TextView) rowView.findViewById(R.id.tv_type);
-        ImageView ivleft = (ImageView) rowView.findViewById(R.id.ivQuizLogo);
+        TextView tvName = (TextView) rowView.findViewById(R.id.tvName);
+        TextView tvType = (TextView) rowView.findViewById(R.id.tvType);
+        //ImageView ivleft = (ImageView) rowView.findViewById(R.id.ivQuizLogo);
 
         tvName.setText(getItem(position).getName());
         tvType.setText(this.getItem(position).getType());
-        ivleft.setImageResource(R.mipmap.placeholder);
+        //ivleft.setImageResource(R.mipmap.placeholder);
         return rowView;
     }
 

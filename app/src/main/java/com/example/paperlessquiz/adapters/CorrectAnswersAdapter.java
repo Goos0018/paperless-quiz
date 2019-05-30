@@ -14,13 +14,14 @@ import com.example.paperlessquiz.answer.Answer;
 
 import java.util.ArrayList;
 
-public class ShowAllAnswersAdapter extends ArrayAdapter<Answer> {
+//This class is used to correct he answersq given by the participating teams
+public class CorrectAnswersAdapter extends ArrayAdapter<Answer> {
 
     public final Context context;
     private final ArrayList<Answer> answers;
-    private ShowAllAnswersAdapter adapter;
+    private CorrectAnswersAdapter adapter;
 
-    public ShowAllAnswersAdapter(Context context, ArrayList<Answer> answers) {
+    public CorrectAnswersAdapter(Context context, ArrayList<Answer> answers) {
         super(context, R.layout.row_layout_correct_answers,answers);
         this.context = context;
         this.answers = answers;
@@ -34,39 +35,6 @@ public class ShowAllAnswersAdapter extends ArrayAdapter<Answer> {
         ImageView ivToggle;
         //ImageView score;
     }
-
-/*
-    @NonNull
-    @Override
-    // This runs for every item in the view
-
-    public View getView(int position, View convertView, ViewGroup parent) {
-
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View rowView = inflater.inflate(R.layout.row_layout_correct_answers,parent,false);
-        TextView tvAnswer = (TextView) rowView.findViewById(R.id.tvAnswer);
-        TextView tvResult = (TextView) rowView.findViewById(R.id.tvResult);
-        Button btnIsCorrect = (Button) rowView.findViewById(R.id.ivToggle);
-        Button btnIsFalse = (Button) rowView.findViewById(R.id.btnFalse);
-
-
-        tvAnswer.setText(getItem(position).getThisAnswer());
-        tvResult.setText(getItem(position).isCorrect()+"");
-        btnIsCorrect.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getItem(position).setCorrect(true);
-            }
-        });
-        btnIsFalse.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getItem(position).setCorrect(false);
-            }
-        });
-        return rowView;
-    }
-*/
 
     @NonNull
     @Override

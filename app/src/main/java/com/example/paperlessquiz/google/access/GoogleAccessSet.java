@@ -24,7 +24,8 @@ public class GoogleAccessSet {
 
     //This method will add a line at the bottom of the sheet that was passed via parameters, using the other fields that were given
     public void setData(LoadingListener loadingListener) {
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, GoogleAccess.SCRIPT_URL + parameters,
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, GoogleAccess.SCRIPT_URL + parameters
+                + GoogleAccess.PARAM_CONCATENATOR + GoogleAccess.PARAMNAME_DEBUGLEVEL + GoogleAccess.PARAMVALUE_DEBUGLEVEL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {

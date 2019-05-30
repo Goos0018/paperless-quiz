@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -11,45 +12,68 @@
         android:id="@+id/llRndSpinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginRight="5dp"
         android:orientation="horizontal">
 
         <Button
             android:id="@+id/btnRndDown"
-            android:layout_width="25dp"
-            android:layout_height="wrap_content" />
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp" />
+
 
         <LinearLayout
-            android:id="@+id/roundSpinner"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="6"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/tvRoundName"
-                android:layout_width="350dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_weight="1"
+                android:layout_marginTop="@dimen/margin_tiny"
                 android:gravity="center"
-                android:text="TextView" />
+                android:text="Roundname"
+                android:textSize="@dimen/text_size_medium"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvRoundDescription"
-                android:layout_width="350dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_weight="1"
+                android:layout_marginTop="@dimen/margin_tiny"
                 android:gravity="center"
-                android:text="TextView" />
+                android:text="Rounddescription"
+                android:textSize="@dimen/text_size_small" />
         </LinearLayout>
+
+
+        <ImageView
+            android:id="@+id/ivRndStatus"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:layout_marginRight="@dimen/margin_tiny"
+            android:clickable="false" />
 
         <Button
             android:id="@+id/btnRndUp"
-            android:layout_width="25dp"
-            android:layout_height="wrap_content" />
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp" />
 
     </LinearLayout>
 
@@ -79,14 +103,14 @@
                 android:layout_width="350dp"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="TextView" />
+                android:text="Questionname" />
 
             <TextView
                 android:id="@+id/tvQuestionDescription"
                 android:layout_width="350dp"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="TextView" />
+                android:text="Questionhint" />
         </LinearLayout>
 
         <Button
@@ -144,6 +168,13 @@
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
             android:text="TextView" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvDisplayAnswers"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp" />
 
     </LinearLayout>
 

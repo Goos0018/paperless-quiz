@@ -8,6 +8,7 @@ public class GoogleAccess {
     static final String SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxF4oneivWH9QUnOyEJRWWDNIfdaSft5idzfNWgz7USI0ZzKw_o/exec?";
     public static final String PARAM_CONCATENATOR = "&";
     //Paramater names
+    public static final String PARAMNAME_DEBUGLEVEL = "debuglevel";
     public static final String PARAMNAME_DOC_ID = "DocID=";
     public static final String PARAMNAME_SHEET = "Sheet=";
     public static final String PARAMNAME_ACTION = "action=";
@@ -25,6 +26,7 @@ public class GoogleAccess {
     public static final String PARAMVALUE_SETDATA = "setdata";
     public static final String PARAMVALUE_SUBMITANSWERS = "submitAnswers";
     public static final String PARAMVALUE_ADDLINE = "addline";
+    public static final String PARAMVALUE_DEBUGLEVEL = "0";
     //Tabs in the Quiz sheet
     //public static final String SHEET_QUIZLIST = "QuizList";
     public static final String SHEET_QUIZDATA = "QuizData";

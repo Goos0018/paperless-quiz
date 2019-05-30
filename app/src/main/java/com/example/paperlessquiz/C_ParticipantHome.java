@@ -3,6 +3,8 @@ package com.example.paperlessquiz;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,12 +14,12 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.paperlessquiz.adapters.ShowAllAnswersAdapter;
+import com.example.paperlessquiz.adapters.CorrectAnswersAdapter;
+import com.example.paperlessquiz.adapters.DisplayAnswersAdapter;
 import com.example.paperlessquiz.answer.Answer;
 import com.example.paperlessquiz.google.access.GoogleAccess;
 import com.example.paperlessquiz.google.access.GoogleAccessSet;
 import com.example.paperlessquiz.google.access.LoadingListenerNotify;
-import com.example.paperlessquiz.google.access.LoadingListenerShowProgress;
 import com.example.paperlessquiz.loginentity.LoginEntity;
 import com.example.paperlessquiz.quiz.Quiz;
 import com.example.paperlessquiz.quiz.QuizLoader;
@@ -37,6 +39,9 @@ Display is as follows:
 - Round is corrected: display answers + scores + correct answers if available
  */
 
+//TODO: Show Icon displaying round status
+//TODO: Correct Question ID's
+//TODO: Hide icon while filling out a round
 
 public class C_ParticipantHome extends AppCompatActivity {
     Quiz thisQuiz;
@@ -47,7 +52,10 @@ public class C_ParticipantHome extends AppCompatActivity {
     Button btnRndUp, btnRndDown, btnQuestionUp, btnQuestionDown, btnSubmit, btnSubmitCorrections;
     LinearLayout displayLayout, answerLayout, correctorLayout;
     ListView lvCorrectQuestions;
-    ShowAllAnswersAdapter myAdapter;
+    RecyclerView rvDisplayAnswers;
+    DisplayAnswersAdapter displayAnswersAdapter;
+    RecyclerView.LayoutManager layoutManager;
+    CorrectAnswersAdapter myAdapter;
 
 
     private void refresh() {
@@ -62,6 +70,12 @@ public class C_ParticipantHome extends AppCompatActivity {
                 answerLayout.setVisibility((View.GONE));
             }
             correctorLayout.setVisibility((View.GONE));
+            //correctorLayout.findFocus();
+            ArrayList<Answer> myAnswers;
+            myAnswers = thisQuiz.getMyAnswers().get(roundSpinner.getPosition());
+            displayAnswersAdapter.setAnswers(myAnswers);
+            rvDisplayAnswers.setAdapter(displayAnswersAdapter);
+
         }
         //If this is a questionscorrector
         if (!(thisQuiz.getMyLoginentity().getType().equals(LoginEntity.SELECTION_PARTICIPANT))) {
@@ -70,7 +84,7 @@ public class C_ParticipantHome extends AppCompatActivity {
             //correctorLayout.findFocus();
             ArrayList<Answer> allAnswers;
             allAnswers = thisQuiz.getAllAnswers().get(roundSpinner.getPosition()).get(questionSpinner.getPosition()).getAllAnswers();
-            myAdapter = new ShowAllAnswersAdapter(this, allAnswers);
+            myAdapter = new CorrectAnswersAdapter(this, allAnswers);
             lvCorrectQuestions.setAdapter(myAdapter);
             //myAdapter.notifyDataSetChanged();
         }
@@ -127,6 +141,13 @@ public class C_ParticipantHome extends AppCompatActivity {
         btnSubmit = findViewById(R.id.btnSubmit);
         btnSubmitCorrections = findViewById(R.id.btnSubmitCorrections);
         lvCorrectQuestions = findViewById(R.id.lvCorrectQuestions);
+        rvDisplayAnswers = findViewById(R.id.rvDisplayAnswers);
+        rvDisplayAnswers.setHasFixedSize(true);
+        layoutManager = new LinearLayoutManager(this);
+        rvDisplayAnswers.setLayoutManager(layoutManager);
+        displayAnswersAdapter = new DisplayAnswersAdapter(this,thisQuiz.getMyAnswers().get(0));
+        //rvDisplayAnswers.setAdapter(displayAnswersAdapter);
+
         actionBar.setTitle(thisQuiz.getMyLoginentity().getName());
 
         etAnswer.setText(thisQuiz.getMyAnswers().get(0).get(0).getThisAnswer());

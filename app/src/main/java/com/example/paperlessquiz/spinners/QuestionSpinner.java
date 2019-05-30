@@ -3,6 +3,7 @@ package com.example.paperlessquiz.spinners;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.paperlessquiz.adapters.DisplayAnswersAdapter;
 import com.example.paperlessquiz.answer.Answer;
 import com.example.paperlessquiz.question.Question;
 
@@ -16,9 +17,11 @@ public class QuestionSpinner {
     private TextView tvMain, tvSub, tvDisplayAnswers;
     private ArrayList<ArrayList<Answer>> myAnswers;
     private EditText answerField;
+    //private DisplayAnswersAdapter answersAdapter;
 
     public QuestionSpinner(ArrayList<ArrayList<Question>> questionsList, TextView tvMain, TextView tvSub,TextView tvDisplayAnswers,
                            ArrayList<ArrayList<Answer>> myAnswers, EditText answerField, int rndId) {
+        //ArrayList<ArrayList<Answer>> myAnswers, DisplayAnswersAdapter answersAdapter,EditText answerField, int rndId) {
         this.questionsList = questionsList;
         this.tvMain = tvMain;
         this.tvSub = tvSub;
@@ -27,6 +30,7 @@ public class QuestionSpinner {
         this.oldPosition = questionsList.size() - 1;
         //this.myAnswers will in practice be a link to the myAnswers
         this.myAnswers = myAnswers;
+        //this.answersAdapter = answersAdapter;
         this.answerField = answerField;
         this.rndId = rndId;
     }
@@ -42,7 +46,9 @@ public class QuestionSpinner {
     public void refreshDisplay(){
         tvMain.setText(questionsList.get(rndId).get(position).getName());
         tvSub.setText(questionsList.get(rndId).get(position).getDescription());
-        tvDisplayAnswers.setText(displayAnswers());
+        //tvDisplayAnswers.setText(displayAnswers());
+        //answersAdapter.setAnswers(myAnswers.get(rndId));
+
     }
 
     public void positionChanged() {

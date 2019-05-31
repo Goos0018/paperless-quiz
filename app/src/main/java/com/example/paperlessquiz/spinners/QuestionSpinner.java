@@ -15,12 +15,13 @@ public class QuestionSpinner {
     private int position;
     private int oldPosition;
     private int roundNr;
+    private int teamNr;
     private TextView tvMain, tvSub, tvDisplayAnswers;
     //private ArrayList<ArrayList<Answer>> myAnswers;
     private EditText answerField;
     //private DisplayAnswersAdapter answersAdapter;
 
-    public QuestionSpinner(Quiz quiz, TextView tvMain, TextView tvSub,TextView tvDisplayAnswers, EditText answerField, int roundNr) {
+    public QuestionSpinner(Quiz quiz, TextView tvMain, TextView tvSub,TextView tvDisplayAnswers, EditText answerField, int roundNr,int teamNr) {
         //ArrayList<ArrayList<Answer>> myAnswers, DisplayAnswersAdapter answersAdapter,EditText answerField, int roundNr) {
         this.quiz = quiz;
         this.tvMain = tvMain;
@@ -28,6 +29,7 @@ public class QuestionSpinner {
         this.tvDisplayAnswers = tvDisplayAnswers;
         this.position = 0;
         this.roundNr = roundNr;
+        this.teamNr=teamNr;
         this.oldPosition = quiz.getRound(roundNr).getQuestions().size() - 1;
         this.answerField = answerField;
     }
@@ -48,9 +50,9 @@ public class QuestionSpinner {
 
     public void positionChanged() {
         //Save the answer that was given into Quiz
-        setAnswer(roundNr, oldPosition, answerField.getText().toString().trim());
+        setAnswer(roundNr, oldPosition, teamNr,answerField.getText().toString().trim());
         //Set the value of the answer for the new question to what we have in the array
-        answerField.setText(getAnswer(roundNr, position));
+        answerField.setText(getAnswer(roundNr, position,teamNr));
         //Show that the question has changed
         refreshDisplay();
     }
@@ -59,7 +61,7 @@ public class QuestionSpinner {
         //This is called when a round changes
         //We don't want to save the answer that is currently in answerField in that case, because it belongs to a previous round
         //So just set the value of the answer for the new question to what we have in the array and refresh
-        answerField.setText(getAnswer(roundNr, pos));
+        answerField.setText(getAnswer(roundNr, pos,teamNr));
         position = pos;
         refreshDisplay();
     }
@@ -102,12 +104,12 @@ public class QuestionSpinner {
         return questionsList.get(rndId).get(questionId);
     }
 */
-    public void setAnswer(int rndNr, int questionNr, String answer) {
-        quiz.getQuestion(rndNr,questionNr).getThisAnswer().setTheAnswer(answer);
+    public void setAnswer(int rndNr, int questionNr, int teamNr, String answer) {
+        quiz.getQuestion(rndNr,questionNr).getAnswerForTeam(teamNr).setTheAnswer(answer);
     }
 
-    public String getAnswer(int rndNr, int questionNr) {
-        return quiz.getQuestion(rndNr,questionNr).getThisAnswer().getTheAnswer();
+    public String getAnswer(int rndNr, int questionNr,int teamNr) {
+        return quiz.getQuestion(rndNr,questionNr).getAnswerForTeam(teamNr).getTheAnswer();
     }
 
     public void setRoundNr(int roundNr) {

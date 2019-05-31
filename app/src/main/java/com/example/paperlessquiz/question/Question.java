@@ -19,7 +19,7 @@ public class Question implements Serializable, SpinnerData {
     private String hint;
     private String question;
     private String correctAnswer;
-    private Answer thisAnswer;
+    //private Answer thisAnswer;
     private ArrayList<Answer> allAnswers;
     private int maxScore;
 
@@ -32,7 +32,7 @@ public class Question implements Serializable, SpinnerData {
         this.question = "";
         this.correctAnswer = "";
         this.maxScore = 0;
-        this.thisAnswer = new Answer("");
+        //this.thisAnswer = new Answer("");
         this.allAnswers=new ArrayList<>();
     }
 
@@ -45,7 +45,7 @@ public class Question implements Serializable, SpinnerData {
         this.question = question;
         this.correctAnswer = correctAnswer;
         this.maxScore = maxScore;
-        this.thisAnswer =  new Answer("");
+        //this.thisAnswer =  new Answer("");
         this.allAnswers=new ArrayList<>();
     }
 
@@ -93,14 +93,6 @@ public class Question implements Serializable, SpinnerData {
         this.correctAnswer = correctAnswer;
     }
 
-    public Answer getThisAnswer() {
-        return thisAnswer;
-    }
-
-    public void setThisAnswer(Answer thisAnswer) {
-        this.thisAnswer = thisAnswer;
-    }
-
     public int getMaxScore() {
         return maxScore;
     }
@@ -133,5 +125,9 @@ public class Question implements Serializable, SpinnerData {
 
     public void setAllAnswers(ArrayList<Answer> allAnswers) {
         this.allAnswers = allAnswers;
+    }
+
+    public Answer getAnswerForTeam(int teamNr){
+        return allAnswers.get(teamNr);
     }
 }

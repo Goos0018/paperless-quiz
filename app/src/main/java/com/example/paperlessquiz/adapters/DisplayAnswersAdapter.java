@@ -18,9 +18,11 @@ import java.util.ArrayList;
 
 public class DisplayAnswersAdapter extends RecyclerView.Adapter<DisplayAnswersAdapter.ViewHolder> {
     private ArrayList<Question> questions;
+private int teamNr;
 
-    public DisplayAnswersAdapter(Context context, ArrayList<Question> questions) {
+    public DisplayAnswersAdapter(Context context, ArrayList<Question> questions,int teamNr) {
         this.questions = questions;
+        this.teamNr=teamNr;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -49,9 +51,9 @@ public class DisplayAnswersAdapter extends RecyclerView.Adapter<DisplayAnswersAd
     public void onBindViewHolder(@NonNull DisplayAnswersAdapter.ViewHolder viewHolder, int i) {
         viewHolder.itemView.setTag(questions.get(i));
         viewHolder.tvQuestionID.setText(questions.get(i).getQuestionID());
-        viewHolder.tvDisplayAnswer.setText(questions.get(i).getThisAnswer().getTheAnswer());
-        boolean isCorrect = questions.get(i).getThisAnswer().isCorrect();
-        boolean isCorrected = questions.get(i).getThisAnswer().isCorrected();
+        viewHolder.tvDisplayAnswer.setText(questions.get(i).getAnswerForTeam(teamNr).getTheAnswer());
+        boolean isCorrect = questions.get(i).getAnswerForTeam(teamNr).isCorrect();
+        boolean isCorrected = questions.get(i).getAnswerForTeam(teamNr).isCorrected();
         if (isCorrected){
             if (isCorrect){
                 viewHolder.ivIsCorrect.setImageResource(R.drawable.answer_ok);
@@ -61,7 +63,7 @@ public class DisplayAnswersAdapter extends RecyclerView.Adapter<DisplayAnswersAd
                 viewHolder.ivIsCorrect.setImageResource(R.drawable.answer_nok);
             }}
         else{
-            //viewHolder.ivIsCorrect.setImageResource(R.drawable.answer_notcorrected);
+            viewHolder.ivIsCorrect.setVisibility(View.INVISIBLE);
         }
     }
 

@@ -36,8 +36,8 @@ public class GetQuestionsLPL implements ListParsedListener<Question> {
         for (int i = 0;i< list.size();i++)
         {
             Question q = list.get(i);
-            int rndId = q.getRoundNr();
-            int questionNr = q.getQuestionNr();
+            int rndId = q.getRoundNr()-1;
+            int questionNr = q.getQuestionNr()-1;
             quiz.getRound(rndId).getQuestions().set(questionNr,q);
             /*
             //add (empty questionslists until you are sue you have one at position rndId - 1

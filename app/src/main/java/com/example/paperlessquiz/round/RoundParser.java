@@ -8,7 +8,7 @@ import org.json.JSONObject;
 public class RoundParser implements JsonParser<Round> {
 
     //Strings here MUST match the headers in the Rounds tab of the Quiz sheet
-    public static final String ROUND_NR = "RoundID";
+    public static final String ROUND_NR = "RoundNr";
     public static final String ROUND_NAME = "RoundName";
     public static final String ROUND_DESCRIPTION = "RoundDescription";
     public static final String ROUND_NR_OF_QUESTIONS = "RoundNrOfQuestions";

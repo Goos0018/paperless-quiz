@@ -13,19 +13,15 @@ public class GetAnswersListLPL implements ListParsedListener<AnswersList> {
 
     private Quiz quiz;
     private ArrayList<AnswersList> allAnswers;
-    private ArrayList<ArrayList<AnswersList>> allAnswersPerRound;
-    private ArrayList<ArrayList<Answer>> myAnswersPerRound;
 
     public GetAnswersListLPL(Quiz quiz) {
         allAnswers = new ArrayList<AnswersList>();
-        allAnswersPerRound = new ArrayList<>();
-        myAnswersPerRound = new ArrayList<>();
         this.quiz = quiz;
 
     }
 
     public ArrayList<AnswersList> getAnswers() {
-        return allAnswers;
+       return allAnswers;
     }
 
     public void listParsed(List<AnswersList> list) {
@@ -35,8 +31,8 @@ public class GetAnswersListLPL implements ListParsedListener<AnswersList> {
         for (int i = 0;i< list.size();i++)
         {
             AnswersList answersList = list.get(i);
-            int rndId = answersList.getRoundNr();
-            int qID = answersList.getQuestionNr();
+            int rndId = answersList.getRoundNr()-1;
+            int qID = answersList.getQuestionNr()-1;
             quiz.getQuestion(rndId,qID).setAllAnswers(answersList.getAllAnswers());
             //add (empty questionslists until you are sure you have one at the required position (rndId - 1)
             /*

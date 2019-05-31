@@ -69,17 +69,17 @@ public class A_SelectRole extends AppCompatActivity {
     public void commonActions(String selection) {
         //if we are here, all loading actions should be finished, so we can set the result in the Quiz object
         //First check that all results are OK
-        if (!(quizLoader.allChecksOK())) {
-            Toast.makeText(A_SelectRole.this, "Attention organizers, " +
-                    "something is wrong with your quiz", Toast.LENGTH_LONG).show();
-        }
+        //if (!(quizLoader.allChecksOK())) {
+        //    Toast.makeText(A_SelectRole.this, "Attention organizers, " +
+        //            "something is wrong with your quiz", Toast.LENGTH_LONG).show();
+        //}
         //thisQuiz.setListData(thisQuizListData);
-        thisQuiz.setAdditionalData(quizLoader.quizExtraDataLPL.getQuizExtraData());
-        thisQuiz.setTeams(quizLoader.quizTeamsLPL.getLoginEntities());
-        thisQuiz.setOrganizers(quizLoader.quizOrganizersLPL.getLoginEntities());
-        thisQuiz.setRounds(quizLoader.quizRoundsLPL.getRounds());
+        //thisQuiz.setAdditionalData(quizLoader.quizExtraDataLPL.getQuizExtraData());
+        //thisQuiz.setTeams(quizLoader.quizTeamsLPL.getLoginEntities());
+        //thisQuiz.setOrganizers(quizLoader.quizOrganizersLPL.getLoginEntities());
+        //thisQuiz.setRounds(quizLoader.quizRoundsLPL.getRounds());
         //thisQuiz.setAllQuestionsPerRound(quizLoader.quizQuestionsLPL.getAllQuestionsPerRound());
-        quizLoader.generateBlankAnswers();
+        //quizLoader.generateBlankAnswers();
         //thisQuiz.setMyAnswers(quizLoader.myAnswers);
         intent = new Intent(A_SelectRole.this, B_LoginMain.class);
         intent.putExtra(Quiz.INTENT_EXTRANAME_THIS_QUIZ, thisQuiz);

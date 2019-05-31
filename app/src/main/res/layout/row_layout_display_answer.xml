@@ -41,5 +41,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tvDisplayAnswer"
         app:layout_constraintTop_toTopOf="@+id/tvDisplayAnswer"
-        app:srcCompat="@drawable/answer_notcorrected" />
+        tools:srcCompat="@drawable/answer_notcorrected"/>
 </android.support.constraint.ConstraintLayout>

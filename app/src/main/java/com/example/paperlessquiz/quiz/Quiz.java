@@ -20,9 +20,6 @@ public class Quiz implements Serializable {
     private ArrayList<LoginEntity> teams;
     private ArrayList<LoginEntity> organizers;
     private ArrayList<Round> rounds;
-    //private ArrayList<ArrayList<Question>> allQuestionsPerRound;
-    //private ArrayList<ArrayList<Answer>> myAnswers;
-    //private ArrayList<ArrayList<AnswersList>> allAnswers;
     private LoginEntity myLoginentity;
 
     //We only need an empty constructor, the QuizLoader class will populate all fields of the quiz
@@ -32,31 +29,10 @@ public class Quiz implements Serializable {
         this.teams = new ArrayList<>();
         this.organizers = new ArrayList<>();
         this.rounds = new ArrayList<>();
-        //ArrayList<Answer> tmp = new ArrayList<>();
-        //this.myAnswers = new ArrayList<>();
         for (int i = 0; i < this.additionalData.getNrOfRounds(); i++) {
             rounds.add(i, new Round());
         }
     }
-
-/*
-    public void setAnswersForRound(int rndId, ArrayList<Answer> answerList) {
-        myAnswers.add(rndId, answerList);
-    }
-
-    public void initializeAnswers() {
-        //for each round
-        for (int i = 0; i < this.getAdditionalData().getNrOfRounds(); i++) {
-            this.getMyAnswers().add(i, new ArrayList<>());
-            ArrayList<Answer> answers = new ArrayList<>();
-            //Create an array with the correct nr of answers
-            for (int j = 0; j < this.getRound(i).getNrOfQuestions(); j++) {
-                answers.add(j, new Answer(j, ""));
-            }
-            this.setAnswersForRound(i, answers);
-        }
-    }
-*/
     //Return the team/organizer with the given ID
     public LoginEntity getTeam(int id) {
         return teams.get(id);
@@ -66,19 +42,6 @@ public class Quiz implements Serializable {
     public LoginEntity getOrganizer(int id) {
         return organizers.get(id);
     }
-
-    /*
-    private ArrayList<LoginEntity> getArrayList(HashMap<String, LoginEntity> entities) {
-        //Convert HAshmap to Arraylist to pass it to the adapter
-        ArrayList<LoginEntity> list = new ArrayList<LoginEntity>();
-        int i = 0;
-        for (LoginEntity entity : entities.values()) {
-            list.add(i, entity);
-            i++;
-        }
-        return list;
-    }
-    */
 
     public ArrayList<LoginEntity> getTeams() {
         return teams;
@@ -125,7 +88,7 @@ public class Quiz implements Serializable {
     }
 
     public Answer getAnswer(int rndNr, int questionNr,int teamNr){
-        return getQuestion(rndNr,questionNr).getAllAnswers().get(teamNr-1);
+        return getQuestion(rndNr,questionNr).getAllAnswers().get(teamNr);
     }
 
     public void setRounds(ArrayList<Round> rounds) {
@@ -145,33 +108,6 @@ public class Quiz implements Serializable {
         return getQuestion(rndNr,questionNr).getAllAnswers();
     }
 
-    /*
-    public ArrayList<ArrayList<Question>> getAllQuestionsPerRound() {
-        return allQuestionsPerRound;
-    }
-
-    public void setAllQuestionsPerRound(ArrayList<ArrayList<Question>> allQuestionsPerRound) {
-        this.allQuestionsPerRound = allQuestionsPerRound;
-    }
-
-    public Question getQuestion(int rndId, int questionId) {
-        return allQuestionsPerRound.get(rndId).get(questionId);
-    }
-
-    public void setAnswer(int rndId, int questionId, String answer) {
-        myAnswers.get(rndId).get(questionId).setTheAnswer(answer);
-    }
-
-    public ArrayList<ArrayList<Answer>> getMyAnswers() {
-        return myAnswers;
-    }
-
-    public void setMyAnswers(ArrayList<ArrayList<Answer>> myAnswers) {
-        this.myAnswers = myAnswers;
-    }
-
-    */
-
     public LoginEntity getMyLoginentity() {
         return myLoginentity;
     }
@@ -179,14 +115,5 @@ public class Quiz implements Serializable {
     public void setMyLoginentity(LoginEntity myLoginentity) {
         this.myLoginentity = myLoginentity;
     }
-
-    /*
-    public void setAllAnswers(ArrayList<ArrayList<AnswersList>> allAnswers) {
-        this.allAnswers = allAnswers;
-    }
-
-    public ArrayList<ArrayList<AnswersList>> getAllAnswers() {
-        return allAnswers;
-    }
-*/
+    
 }

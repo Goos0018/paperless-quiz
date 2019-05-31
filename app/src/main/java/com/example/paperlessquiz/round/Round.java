@@ -41,9 +41,8 @@ public class Round implements Serializable, SpinnerData {
         this.acceptsAnswers = acceptsAnswers;
         this.acceptsCorrections = acceptsCorrections;
         this.corrected = corrected;
-        //this.closed = closed;
         this.questions = new QuestionsList();
-        this.questions = new ArrayList<Question>();
+        this.questions = new ArrayList<>();
         for (int i=0;i < nrOfQuestions;i++)
         {
             questions.add(i,new Question());

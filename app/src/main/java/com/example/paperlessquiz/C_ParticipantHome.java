@@ -85,7 +85,7 @@ public class C_ParticipantHome extends AppCompatActivity {
             displayLayout.setVisibility(View.GONE);
             //correctorLayout.findFocus();
             ArrayList<Answer> allAnswers;
-            allAnswers = thisQuiz.getRounds().get(roundSpinner.getPosition()).getQuestions().get(questionSpinner.getPosition()).getAllAnswers();
+            allAnswers = thisQuiz.getQuestion(roundSpinner.getPosition(),questionSpinner.getPosition()).getAllAnswers();
             myAdapter = new CorrectAnswersAdapter(this, allAnswers);
             lvCorrectQuestions.setAdapter(myAdapter);
             //myAdapter.notifyDataSetChanged();
@@ -148,13 +148,13 @@ public class C_ParticipantHome extends AppCompatActivity {
         rvDisplayAnswers.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         rvDisplayAnswers.setLayoutManager(layoutManager);
-        displayAnswersAdapter = new DisplayAnswersAdapter(this,thisQuiz.getRounds().get(0).getQuestions());
+        displayAnswersAdapter = new DisplayAnswersAdapter(this,thisQuiz.getRounds().get(0).getQuestions(),thisTeamNr);
         //rvDisplayAnswers.setAdapter(displayAnswersAdapter);
 
         actionBar.setTitle(thisQuiz.getMyLoginentity().getName());
 
-        etAnswer.setText(thisQuiz.getRounds().get(0).getQuestions().get(0).getThisAnswer().getTheAnswer());
-        questionSpinner = new QuestionSpinner(thisQuiz, tvQuestionName, tvQuestionDescription, tvDisplayRoundResults, etAnswer, 0);
+        etAnswer.setText(thisQuiz.getQuestion(0,0).getAnswerForTeam(thisTeamNr).getTheAnswer());
+        questionSpinner = new QuestionSpinner(thisQuiz, tvQuestionName, tvQuestionDescription, tvDisplayRoundResults, etAnswer, 0,thisTeamNr);
         roundSpinner = new RoundSpinner(thisQuiz.getRounds(), tvRoundName, tvRoundDescription, questionSpinner);
         //Refresh does all actions that are dependent on the position of the question spinner and the roundspinner
         refresh();

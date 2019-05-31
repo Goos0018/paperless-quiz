@@ -3,59 +3,54 @@ package com.example.paperlessquiz.spinners;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.paperlessquiz.adapters.DisplayAnswersAdapter;
 import com.example.paperlessquiz.answer.Answer;
 import com.example.paperlessquiz.question.Question;
+import com.example.paperlessquiz.quiz.Quiz;
 
 import java.util.ArrayList;
 
 public class QuestionSpinner {
-    private ArrayList<ArrayList<Question>> questionsList;
+    private Quiz quiz;
+    //private ArrayList<ArrayList<Question>> questionsList;
     private int position;
     private int oldPosition;
-    private int rndId;
+    private int roundNr;
     private TextView tvMain, tvSub, tvDisplayAnswers;
-    private ArrayList<ArrayList<Answer>> myAnswers;
+    //private ArrayList<ArrayList<Answer>> myAnswers;
     private EditText answerField;
     //private DisplayAnswersAdapter answersAdapter;
 
-    public QuestionSpinner(ArrayList<ArrayList<Question>> questionsList, TextView tvMain, TextView tvSub,TextView tvDisplayAnswers,
-                           ArrayList<ArrayList<Answer>> myAnswers, EditText answerField, int rndId) {
-        //ArrayList<ArrayList<Answer>> myAnswers, DisplayAnswersAdapter answersAdapter,EditText answerField, int rndId) {
-        this.questionsList = questionsList;
+    public QuestionSpinner(Quiz quiz, TextView tvMain, TextView tvSub,TextView tvDisplayAnswers, EditText answerField, int roundNr) {
+        //ArrayList<ArrayList<Answer>> myAnswers, DisplayAnswersAdapter answersAdapter,EditText answerField, int roundNr) {
+        this.quiz = quiz;
         this.tvMain = tvMain;
         this.tvSub = tvSub;
         this.tvDisplayAnswers = tvDisplayAnswers;
         this.position = 0;
-        this.oldPosition = questionsList.size() - 1;
-        //this.myAnswers will in practice be a link to the myAnswers
-        this.myAnswers = myAnswers;
-        //this.answersAdapter = answersAdapter;
+        this.roundNr = roundNr;
+        this.oldPosition = quiz.getRound(roundNr).getQuestions().size() - 1;
         this.answerField = answerField;
-        this.rndId = rndId;
     }
-
+/*
     public String displayAnswers() {
         String tmp = "";
-        for (int i = 0; i < questionsList.get(rndId).size(); i++) {
-            tmp = tmp + (i+1) + ". " + myAnswers.get(rndId).get(i).getThisAnswer() + "\n";
+        for (int i = 0; i < questionsList.get(roundNr).size(); i++) {
+            tmp = tmp + (i+1) + ". " + myAnswers.get(roundNr).get(i).getTheAnswer() + "\n";
         }
         return tmp;
 
     }
+    */
     public void refreshDisplay(){
-        tvMain.setText(questionsList.get(rndId).get(position).getName());
-        tvSub.setText(questionsList.get(rndId).get(position).getDescription());
-        //tvDisplayAnswers.setText(displayAnswers());
-        //answersAdapter.setAnswers(myAnswers.get(rndId));
-
+        tvMain.setText(quiz.getRound(roundNr).getQuestions().get(position).getName());
+        tvSub.setText(quiz.getRound(roundNr).getQuestions().get(position).getDescription());
     }
 
     public void positionChanged() {
-        //Save the answer that was given in the correct position of the myAnswers array
-        setAnswer(rndId, oldPosition, answerField.getText().toString().trim());
+        //Save the answer that was given into Quiz
+        setAnswer(roundNr, oldPosition, answerField.getText().toString().trim());
         //Set the value of the answer for the new question to what we have in the array
-        answerField.setText(getAnswer(rndId, position));
+        answerField.setText(getAnswer(roundNr, position));
         //Show that the question has changed
         refreshDisplay();
     }
@@ -64,18 +59,14 @@ public class QuestionSpinner {
         //This is called when a round changes
         //We don't want to save the answer that is currently in answerField in that case, because it belongs to a previous round
         //So just set the value of the answer for the new question to what we have in the array and refresh
-        answerField.setText(getAnswer(rndId, pos));
+        answerField.setText(getAnswer(roundNr, pos));
         position = pos;
         refreshDisplay();
     }
 
-    public void setMyAnswers(ArrayList<ArrayList<Answer>> myAnswers) {
-        this.myAnswers = myAnswers;
-    }
-
     public void moveTo(int newPosition) {
         oldPosition = position;
-        if (newPosition < questionsList.get(rndId).size()) {
+        if (newPosition < quiz.getRound(roundNr).getQuestions().size()) {
             position = newPosition;
         } else {
             position = 1;
@@ -85,7 +76,7 @@ public class QuestionSpinner {
 
     public void moveUp() {
         oldPosition = position;
-        if (position == questionsList.get(rndId).size() - 1) {
+        if (position == quiz.getRound(roundNr).getQuestions().size() - 1) {
             position = 0;
         } else {
             position++;
@@ -96,13 +87,13 @@ public class QuestionSpinner {
     public void moveDown() {
         oldPosition = position;
         if (position == 0) {
-            position = questionsList.get(rndId).size() - 1;
+            position = quiz.getRound(roundNr).getQuestions().size() - 1;
         } else {
             position--;
         }
         positionChanged();
     }
-
+/*
     public void setArrayList(ArrayList<ArrayList<Question>> questionsList) {
         this.questionsList = questionsList;
     }
@@ -110,25 +101,17 @@ public class QuestionSpinner {
     public Question getQuestion(int rndId, int questionId) {
         return questionsList.get(rndId).get(questionId);
     }
-
-    public void setAnswer(int rndId, int questionId, String answer) {
-        myAnswers.get(rndId).get(questionId).setThisAnswer(answer);
+*/
+    public void setAnswer(int rndNr, int questionNr, String answer) {
+        quiz.getQuestion(rndNr,questionNr).getThisAnswer().setTheAnswer(answer);
     }
 
-    public String getAnswer(int rndId, int questionId) {
-        return myAnswers.get(rndId).get(questionId).getThisAnswer();
+    public String getAnswer(int rndNr, int questionNr) {
+        return quiz.getQuestion(rndNr,questionNr).getThisAnswer().getTheAnswer();
     }
 
-    public ArrayList<ArrayList<Question>> getQuestionsList() {
-        return questionsList;
-    }
-
-    public ArrayList<ArrayList<Answer>> getMyAnswers() {
-        return myAnswers;
-    }
-
-    public void setRndId(int rndId) {
-        this.rndId = rndId;
+    public void setRoundNr(int roundNr) {
+        this.roundNr = roundNr;
     }
 
     public void clearAnswer() {

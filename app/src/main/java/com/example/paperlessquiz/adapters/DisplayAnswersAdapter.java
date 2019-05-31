@@ -12,14 +12,15 @@ import android.widget.TextView;
 
 import com.example.paperlessquiz.R;
 import com.example.paperlessquiz.answer.Answer;
+import com.example.paperlessquiz.question.Question;
 
 import java.util.ArrayList;
 
 public class DisplayAnswersAdapter extends RecyclerView.Adapter<DisplayAnswersAdapter.ViewHolder> {
-    private ArrayList<Answer> answers;
+    private ArrayList<Question> questions;
 
-    public DisplayAnswersAdapter(Context context, ArrayList<Answer> answers) {
-        this.answers = answers;
+    public DisplayAnswersAdapter(Context context, ArrayList<Question> questions) {
+        this.questions = questions;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -46,11 +47,11 @@ public class DisplayAnswersAdapter extends RecyclerView.Adapter<DisplayAnswersAd
     //This runs for every item in your list
     @Override
     public void onBindViewHolder(@NonNull DisplayAnswersAdapter.ViewHolder viewHolder, int i) {
-        viewHolder.itemView.setTag(answers.get(i));
-        viewHolder.tvQuestionID.setText(answers.get(i).getQuestionNr()+"");
-        viewHolder.tvDisplayAnswer.setText(answers.get(i).getThisAnswer());
-        boolean isCorrect = answers.get(i).isCorrect();
-        boolean isCorrected = answers.get(i).isCorrected();
+        viewHolder.itemView.setTag(questions.get(i));
+        viewHolder.tvQuestionID.setText(questions.get(i).getQuestionID());
+        viewHolder.tvDisplayAnswer.setText(questions.get(i).getThisAnswer().getTheAnswer());
+        boolean isCorrect = questions.get(i).getThisAnswer().isCorrect();
+        boolean isCorrected = questions.get(i).getThisAnswer().isCorrected();
         if (isCorrected){
             if (isCorrect){
                 viewHolder.ivIsCorrect.setImageResource(R.drawable.answer_ok);
@@ -60,16 +61,16 @@ public class DisplayAnswersAdapter extends RecyclerView.Adapter<DisplayAnswersAd
                 viewHolder.ivIsCorrect.setImageResource(R.drawable.answer_nok);
             }}
         else{
-            viewHolder.ivIsCorrect.setImageResource(R.drawable.answer_notcorrected);
+            //viewHolder.ivIsCorrect.setImageResource(R.drawable.answer_notcorrected);
         }
     }
 
     @Override
     public int getItemCount() {
-        return answers.size();
+        return questions.size();
     }
 
-    public void setAnswers(ArrayList<Answer> answers) {
-        this.answers = answers;
+    public void setAnswers(ArrayList<Question> questions) {
+        this.questions = questions;
     }
 }

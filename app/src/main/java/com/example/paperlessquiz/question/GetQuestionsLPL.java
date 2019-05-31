@@ -36,8 +36,10 @@ public class GetQuestionsLPL implements ListParsedListener<Question> {
         for (int i = 0;i< list.size();i++)
         {
             Question q = list.get(i);
-            int rndId = q.getRoundID();
-            int qId = q.getId();
+            int rndId = q.getRoundNr();
+            int questionNr = q.getQuestionNr();
+            quiz.getRound(rndId).getQuestions().set(questionNr,q);
+            /*
             //add (empty questionslists until you are sue you have one at position rndId - 1
             while (allQuestionsPerRound.size() < rndId)
             {
@@ -45,17 +47,20 @@ public class GetQuestionsLPL implements ListParsedListener<Question> {
             }
             //Now add questions until you are sure you have one at the position you need
             ArrayList<Question> qList = allQuestionsPerRound.get(rndId-1);
-            while (qList.size() < qId)
+            while (qList.size() < questionNr)
             {
                 qList.add(new Question());
             }
             //Replace the (blank) question at the correct position with the one yo have here
-            qList.set(qId-1,q);
+            qList.set(questionNr-1,q);
+            */
         }
+        /*
         allQuestions = (ArrayList)list;
         if (!(quiz == null)) {
             quiz.setAllQuestionsPerRound(allQuestionsPerRound);
         }
+        */
     }
 
 }

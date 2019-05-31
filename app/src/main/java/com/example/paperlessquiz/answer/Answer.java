@@ -5,26 +5,25 @@ import java.io.Serializable;
 public class Answer implements Serializable{
 
     private int questionNr;
-    private String thisAnswer;
+    private String theAnswer;
     private boolean corrected;
-
-    //private String teamID;
-    private boolean correct=false;
+    private boolean correct;
 
     public Answer(String myAnswer) {
-        this.thisAnswer = myAnswer;
+        this.theAnswer = myAnswer;
     }
 
     public Answer(int questionNr){
         this.questionNr=questionNr;
-        this.thisAnswer = "";
+        this.theAnswer = "";
+        this.correct=false;
         this.corrected = false;
     }
 
 
     public Answer(int questionNr, String myAnswer) {
         this.questionNr = questionNr;
-        this.thisAnswer = myAnswer;
+        this.theAnswer = myAnswer;
         //this.teamID = teamID;
     }
 
@@ -40,12 +39,12 @@ public class Answer implements Serializable{
         return questionNr;
     }
 
-    public String getThisAnswer() {
-        return thisAnswer;
+    public String getTheAnswer() {
+        return theAnswer;
     }
 
-    public void setThisAnswer(String myAnswer) {
-        this.thisAnswer = myAnswer;
+    public void setTheAnswer(String myAnswer) {
+        this.theAnswer = myAnswer;
     }
 
     public boolean isCorrect() {

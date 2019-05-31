@@ -20,9 +20,9 @@ public class Quiz implements Serializable {
     private ArrayList<LoginEntity> teams;
     private ArrayList<LoginEntity> organizers;
     private ArrayList<Round> rounds;
-    private ArrayList<ArrayList<Question>> allQuestionsPerRound;
-    private ArrayList<ArrayList<Answer>> myAnswers;
-    private ArrayList<ArrayList<AnswersList>> allAnswers;
+    //private ArrayList<ArrayList<Question>> allQuestionsPerRound;
+    //private ArrayList<ArrayList<Answer>> myAnswers;
+    //private ArrayList<ArrayList<AnswersList>> allAnswers;
     private LoginEntity myLoginentity;
 
     //We only need an empty constructor, the QuizLoader class will populate all fields of the quiz
@@ -33,13 +33,13 @@ public class Quiz implements Serializable {
         this.organizers = new ArrayList<>();
         this.rounds = new ArrayList<>();
         //ArrayList<Answer> tmp = new ArrayList<>();
-        this.myAnswers = new ArrayList<>();
+        //this.myAnswers = new ArrayList<>();
         for (int i = 0; i < this.additionalData.getNrOfRounds(); i++) {
             rounds.add(i, new Round());
         }
     }
 
-
+/*
     public void setAnswersForRound(int rndId, ArrayList<Answer> answerList) {
         myAnswers.add(rndId, answerList);
     }
@@ -56,7 +56,7 @@ public class Quiz implements Serializable {
             this.setAnswersForRound(i, answers);
         }
     }
-
+*/
     //Return the team/organizer with the given ID
     public LoginEntity getTeam(int id) {
         return teams.get(id);
@@ -120,10 +120,32 @@ public class Quiz implements Serializable {
         return rounds.get(i);
     }
 
+    public Question getQuestion(int rndNr,int questionNr) {
+        return getRound(rndNr).getQuestion(questionNr);
+    }
+
+    public Answer getAnswer(int rndNr, int questionNr,int teamNr){
+        return getQuestion(rndNr,questionNr).getAllAnswers().get(teamNr-1);
+    }
+
     public void setRounds(ArrayList<Round> rounds) {
         this.rounds = rounds;
     }
 
+    public ArrayList<Answer> getAnswersForRound(int rndNr, int teamNr){
+        ArrayList<Answer> answersList = new ArrayList<>();
+        for (int i = 0; i < getRound(rndNr).getQuestions().size(); i++) {
+            answersList.add(i,getAnswer(rndNr,i,teamNr));
+        }
+        return answersList;
+
+    }
+
+    public ArrayList<Answer> getAllAnswersForQuestion(int rndNr, int questionNr){
+        return getQuestion(rndNr,questionNr).getAllAnswers();
+    }
+
+    /*
     public ArrayList<ArrayList<Question>> getAllQuestionsPerRound() {
         return allQuestionsPerRound;
     }
@@ -137,7 +159,7 @@ public class Quiz implements Serializable {
     }
 
     public void setAnswer(int rndId, int questionId, String answer) {
-        myAnswers.get(rndId).get(questionId).setThisAnswer(answer);
+        myAnswers.get(rndId).get(questionId).setTheAnswer(answer);
     }
 
     public ArrayList<ArrayList<Answer>> getMyAnswers() {
@@ -148,6 +170,8 @@ public class Quiz implements Serializable {
         this.myAnswers = myAnswers;
     }
 
+    */
+
     public LoginEntity getMyLoginentity() {
         return myLoginentity;
     }
@@ -156,6 +180,7 @@ public class Quiz implements Serializable {
         this.myLoginentity = myLoginentity;
     }
 
+    /*
     public void setAllAnswers(ArrayList<ArrayList<AnswersList>> allAnswers) {
         this.allAnswers = allAnswers;
     }
@@ -163,5 +188,5 @@ public class Quiz implements Serializable {
     public ArrayList<ArrayList<AnswersList>> getAllAnswers() {
         return allAnswers;
     }
-
+*/
 }

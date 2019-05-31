@@ -14,7 +14,7 @@ import com.example.paperlessquiz.answer.Answer;
 
 import java.util.ArrayList;
 
-//This class is used to correct he answersq given by the participating teams
+//This class is used to correct all answers given by the participating teams for a specific question
 public class CorrectAnswersAdapter extends ArrayAdapter<Answer> {
 
     public final Context context;
@@ -31,9 +31,8 @@ public class CorrectAnswersAdapter extends ArrayAdapter<Answer> {
     //Viewholder is an object that holds everything that is displayed in the ListView
     class ViewHolder
     {
-        TextView tvAnswer;//, tvResult;
+        TextView tvAnswer;
         ImageView ivToggle;
-        //ImageView score;
     }
 
     @NonNull
@@ -47,9 +46,6 @@ public class CorrectAnswersAdapter extends ArrayAdapter<Answer> {
             convertView = inflater.inflate(R.layout.row_layout_correct_answers, null);
             holder=new ViewHolder();
             holder.tvAnswer = (TextView) convertView.findViewById(R.id.tvAnswer);
-            //holder.tvResult = (TextView) convertView.findViewById(R.id.tvResult);
-            //holder.score=(ImageView) convertView.findViewById(R.id.ivShowScore);
-            //holder.btnFalse = (Button) convertView.findViewById(R.id.btnFalse);
             holder.ivToggle = (ImageView) convertView.findViewById(R.id.ivToggle);
             convertView.setTag(holder);
         }
@@ -57,8 +53,7 @@ public class CorrectAnswersAdapter extends ArrayAdapter<Answer> {
         {
             holder=(ViewHolder)convertView.getTag();
         }
-        //holder.question.setText(getItem(position).getQuestion());
-        holder.tvAnswer.setText(getItem(position).getThisAnswer());
+        holder.tvAnswer.setText(getItem(position).getTheAnswer());
         boolean isCorrect = getItem(position).isCorrect();
         boolean isCorrected = getItem(position).isCorrected();
         if (isCorrected){
@@ -72,7 +67,6 @@ public class CorrectAnswersAdapter extends ArrayAdapter<Answer> {
         else{
             holder.ivToggle.setImageResource(R.drawable.answer_notcorrected);
         }
-        //holder.tvResult.setText(getItem(position).isCorrect() + " ");
         holder.ivToggle.setId(position);
 
         holder.ivToggle.setOnClickListener(new View.OnClickListener()
@@ -81,17 +75,11 @@ public class CorrectAnswersAdapter extends ArrayAdapter<Answer> {
             @Override
             public void onClick(View view) {
                 final int position = view.getId();
-                //final ImageView Answer = (EditText) v;
                 getItem(position).setCorrect(!isCorrect);
                 getItem(position).setCorrected(true);
-                //holder.tvResult.setText(getItem(position).isCorrect() + " ");
-                //holder.ivToggle.setImageResource(R.drawable.answer_ok);
-                //This adds the answer to the array holding all answers, so we have access to them when submitting
-                //Answer thisAnswer = new Answer(position+1,Answer.getText().toString());
-                //myAnswers.remove(position);
-                //answers.set(position,thisAnswer);
+                //Loop over all answers and set the score for identical answers to the same score as this answer
                 for (int i = 0; i < answers.size(); i++) {
-                    if (answers.get(i).getThisAnswer().equals(getItem(position).getThisAnswer())){
+                    if (answers.get(i).getTheAnswer().equals(getItem(position).getTheAnswer())){
                         answers.get(i).setCorrect(getItem(position).isCorrect());
                         answers.get(i).setCorrected(true);
                     }

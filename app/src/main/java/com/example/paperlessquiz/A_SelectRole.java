@@ -78,9 +78,9 @@ public class A_SelectRole extends AppCompatActivity {
         thisQuiz.setTeams(quizLoader.quizTeamsLPL.getLoginEntities());
         thisQuiz.setOrganizers(quizLoader.quizOrganizersLPL.getLoginEntities());
         thisQuiz.setRounds(quizLoader.quizRoundsLPL.getRounds());
-        thisQuiz.setAllQuestionsPerRound(quizLoader.quizQuestionsLPL.getAllQuestionsPerRound());
+        //thisQuiz.setAllQuestionsPerRound(quizLoader.quizQuestionsLPL.getAllQuestionsPerRound());
         quizLoader.generateBlankAnswers();
-        thisQuiz.setMyAnswers(quizLoader.myAnswers);
+        //thisQuiz.setMyAnswers(quizLoader.myAnswers);
         intent = new Intent(A_SelectRole.this, B_LoginMain.class);
         intent.putExtra(Quiz.INTENT_EXTRANAME_THIS_QUIZ, thisQuiz);
         intent.putExtra(LoginEntity.INTENT_EXTRA_NAME_THIS_LOGIN_TYPE, selection);

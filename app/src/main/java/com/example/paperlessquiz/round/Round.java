@@ -7,37 +7,41 @@ import com.example.paperlessquiz.spinners.SpinnerData;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ * Round statuses (acceptsAnswers/AcceptsCorrections/Corrected can be one of the following:
+ * false, false, false: round has not been opened yet (initial status)
+ * true, false, false: answers can be submitted
+ * false,true,false: answers are assumed to be available an dcan be corrected
+ * false, false,true: round is assumed to be corrected (final status)
+ */
 public class Round implements Serializable, SpinnerData {
-    public static final String INTENT_EXTRA_NAME_THIS_ROUND = "thisRound";
-    private int id;
-    private String name, description;
+    private int roundNr;
+    private String id, name, description;
     private int nrOfQuestions;
-    private boolean acceptsAnswers, acceptsCorrections, corrected, closed;
-    //private QuestionsList questions;
+    private boolean acceptsAnswers, acceptsCorrections, corrected;
     private ArrayList<Question> questions;
 
     public Round() {
-        this.id = 0;
+        this.roundNr = 0;
         this.name = "";
         this.description = "";
         this.nrOfQuestions = 0;
         this.acceptsAnswers = false;
         this.acceptsCorrections = false;
         this.corrected = false;
-        this.closed = false;
         this.questions = new ArrayList<Question>();
     }
 
     public Round(int id, String name, String description, int nrOfQuestions,
-                 boolean acceptsAnswers, boolean acceptsCorrections, boolean corrected, boolean closed) {
-        this.id = id;
+                 boolean acceptsAnswers, boolean acceptsCorrections, boolean corrected) {
+        this.roundNr = id;
         this.name = name;
         this.description = description;
         this.nrOfQuestions = nrOfQuestions;
         this.acceptsAnswers = acceptsAnswers;
         this.acceptsCorrections = acceptsCorrections;
         this.corrected = corrected;
-        this.closed = closed;
+        //this.closed = closed;
         this.questions = new QuestionsList();
         this.questions = new ArrayList<Question>();
         for (int i=0;i < nrOfQuestions;i++)
@@ -72,15 +76,13 @@ public class Round implements Serializable, SpinnerData {
         return corrected;
     }
 
-    public boolean isClosed() {
-        return closed;
-    }
-
-
     public ArrayList<Question> getQuestions() {
         return questions;
     }
 
+    public Question getQuestion(int i) {
+        return questions.get(i);
+    }
     public void setQuestions(ArrayList<Question> questions) {
         this.questions = questions;
     }

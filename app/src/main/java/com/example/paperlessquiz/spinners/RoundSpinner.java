@@ -2,8 +2,6 @@ package com.example.paperlessquiz.spinners;
 
 import android.widget.TextView;
 
-import com.example.paperlessquiz.adapters.DisplayAnswersAdapter;
-import com.example.paperlessquiz.quiz.Quiz;
 import com.example.paperlessquiz.round.Round;
 
 import java.util.ArrayList;
@@ -50,7 +48,7 @@ public class RoundSpinner {
         tvMain.setText(roundsList.get(position).getName());
         tvSub.setText(roundsList.get(position).getDescription());
         //Tell the questionspinner the round has changed and go the the first question of this new round
-        questionSpinner.setRndId(position);
+        questionSpinner.setRoundNr(position);
         questionSpinner.initialize(0);
         //Set the questions and answers of the questionspinner to those of the next round
         //questionSpinner.setArrayList(thisQuiz.getRound(position).getQuestions());

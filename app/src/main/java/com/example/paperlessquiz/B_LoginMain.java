@@ -53,6 +53,7 @@ public class B_LoginMain extends AppCompatActivity implements B_frag_ListEntitie
                     thisLoginEntity = thisQuiz.getTeam(id - 1);
                     //Get the answers for this participant
                     //For each round
+                    /*
                     for (int i = 0; i < thisQuiz.getAllAnswers().size(); i++) {
                         //For each question
                         for (int j = 0; j < thisQuiz.getAllAnswers().get(i).size(); j++) {
@@ -60,6 +61,7 @@ public class B_LoginMain extends AppCompatActivity implements B_frag_ListEntitie
                             thisQuiz.getMyAnswers().get(i).set(j,tmp );
                         }
                     }
+                    */
                 } else {
                     thisLoginEntity = thisQuiz.getOrganizer(id - 1);
                 }

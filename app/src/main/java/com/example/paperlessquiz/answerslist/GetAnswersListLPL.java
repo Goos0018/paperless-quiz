@@ -37,7 +37,9 @@ public class GetAnswersListLPL implements ListParsedListener<AnswersList> {
             AnswersList answersList = list.get(i);
             int rndId = answersList.getRoundNr();
             int qID = answersList.getQuestionNr();
+            quiz.getQuestion(rndId,qID).setAllAnswers(answersList.getAllAnswers());
             //add (empty questionslists until you are sure you have one at the required position (rndId - 1)
+            /*
             while (allAnswersPerRound.size() < rndId)
             {
                 allAnswersPerRound.add(new ArrayList<AnswersList>());
@@ -51,12 +53,14 @@ public class GetAnswersListLPL implements ListParsedListener<AnswersList> {
             }
             //Now we are sure that this will work
             allAnswersPerRound.get(rndId-1).set(answersList.getQuestionNr()-1,answersList);
+            */
         }
-
+/*
         if (!(quiz == null)) {
             quiz.setAllAnswers(allAnswersPerRound);
             quiz.setMyAnswers(myAnswersPerRound);
         }
+        */
     }
 
 }

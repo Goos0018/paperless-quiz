@@ -23,10 +23,10 @@ public class A_SelectRole extends AppCompatActivity {
 
     Quiz thisQuiz;
     QuizLoader quizLoader;
-    QuizListData thisQuizListData;
+    //QuizListData thisQuizListData;
     Intent intent;
-    String quizSheetID, scriptParams;
-    boolean quizIsOpen;
+    //String quizSheetID, scriptParams;
+    //boolean quizIsOpen;
     Button btnParticipant;
     Button btnOrganizer;
     TextView tvWelcome;
@@ -39,10 +39,10 @@ public class A_SelectRole extends AppCompatActivity {
         btnParticipant = findViewById(R.id.btn_participant);
         btnOrganizer = findViewById(R.id.btn_organizer);
         tvWelcome = findViewById(R.id.tv_welcome);
-        thisQuiz = (Quiz) getIntent().getSerializableExtra(Quiz.INTENT_EXTRANAME_THIS_QUIZ);
+        //thisQuiz = (Quiz) getIntent().getSerializableExtra(Quiz.INTENT_EXTRANAME_THIS_QUIZ);
+        thisQuiz=MyApplication.theQuiz;
         tvWelcome.setText("Welcome to the " + thisQuiz.getListData().getName() + "\n" + thisQuiz.getListData().getDescription());
-        //thisQuiz.setListData(thisQuizListData);
-        quizLoader = new QuizLoader(this, thisQuiz.getListData().getSheetDocID(), thisQuiz);
+        quizLoader = new QuizLoader(this, thisQuiz.getListData().getSheetDocID());
         quizLoader.loadAll();
 
         btnParticipant.setOnClickListener(new View.OnClickListener() {
@@ -62,27 +62,25 @@ public class A_SelectRole extends AppCompatActivity {
             public void onClick(View view) {
                 commonActions(LoginEntity.SELECTION_ORGANIZER);
             }
-
         });
     }
 
     public void commonActions(String selection) {
-        //if we are here, all loading actions should be finished, so we can set the result in the Quiz object
+        //if we are here, all loading actions should be finished, so we can set the result in the central Quiz object
         //First check that all results are OK
         //if (!(quizLoader.allChecksOK())) {
         //    Toast.makeText(A_SelectRole.this, "Attention organizers, " +
         //            "something is wrong with your quiz", Toast.LENGTH_LONG).show();
         //}
-        //thisQuiz.setListData(thisQuizListData);
-        //thisQuiz.setAdditionalData(quizLoader.quizExtraDataLPL.getQuizExtraData());
-        //thisQuiz.setTeams(quizLoader.quizTeamsLPL.getLoginEntities());
-        //thisQuiz.setOrganizers(quizLoader.quizOrganizersLPL.getLoginEntities());
-        //thisQuiz.setRounds(quizLoader.quizRoundsLPL.getRounds());
-        //thisQuiz.setAllQuestionsPerRound(quizLoader.quizQuestionsLPL.getAllQuestionsPerRound());
-        //quizLoader.generateBlankAnswers();
-        //thisQuiz.setMyAnswers(quizLoader.myAnswers);
+        //thisQuiz.setListData(thisQuizListData); => Already done in the main activity
+        thisQuiz.setAdditionalData(quizLoader.quizExtraDataLPL.getQuizExtraData());
+        thisQuiz.setTeams(quizLoader.quizTeamsLPL.getLoginEntities());
+        thisQuiz.setOrganizers(quizLoader.quizOrganizersLPL.getLoginEntities());
+        thisQuiz.setRounds(quizLoader.quizRoundsLPL.getRounds()); //=> not necessary, always done inside the LPL when retrieving rounds info
+        thisQuiz.setAllQuestionsPerRound(quizLoader.quizQuestionsLPL.getAllQuestionsPerRound()); //this will work because the Quiz should have all rounds initialized
+        thisQuiz.setAllAnswersPerQuestion(quizLoader.quizAnswersLPL.getAllAnswersPerRound());    //this will work because the Quiz should have all questions for each round initialized
         intent = new Intent(A_SelectRole.this, B_LoginMain.class);
-        intent.putExtra(Quiz.INTENT_EXTRANAME_THIS_QUIZ, thisQuiz);
+        //intent.putExtra(Quiz.INTENT_EXTRANAME_THIS_QUIZ, thisQuiz);
         intent.putExtra(LoginEntity.INTENT_EXTRA_NAME_THIS_LOGIN_TYPE, selection);
         startActivity(intent);
     }

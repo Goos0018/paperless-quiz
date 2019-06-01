@@ -33,14 +33,37 @@ public class Quiz implements Serializable {
             rounds.add(i, new Round());
         }
     }
+
+    //Add the questions information we have from an array of array of questions.
+    public void setAllQuestionsPerRound(ArrayList<ArrayList<Question>> allQuestionsPerRound){
+        //For each entry in the allQuestionsPerRound array (=for each round)
+        for (int i = 0; i < allQuestionsPerRound.size(); i++) {
+            this.getRounds().get(i).setQuestions(allQuestionsPerRound.get(i));
+        }
+    }
+
+    //Add the answers for each question from an array of array of AnswersLists
+    public void setAllAnswersPerQuestion(ArrayList<ArrayList<AnswersList>> allAnswersPerRound){
+        //For each entry in the allAnswersPerRound array (=for each round)
+        for (int i = 0; i < allAnswersPerRound.size(); i++) {
+            ArrayList<AnswersList> allAnswersForThisRound = allAnswersPerRound.get(i);
+            //For each question in this round
+            for (int j = 0; j < allAnswersForThisRound.size(); j++) {
+                AnswersList allAnswersForThisQuestion = allAnswersForThisRound.get(j);
+                this.getRounds().get(i).getQuestions().get(j).setAllAnswers(allAnswersForThisQuestion.getAllAnswers());
+            }
+
+        }
+    }
+
     //Return the team/organizer with the given ID
-    public LoginEntity getTeam(int id) {
-        return teams.get(id);
+    public LoginEntity getTeam(int teamNr) {
+        return teams.get(teamNr-1);
     }
 
     //Return the team with the given ID
-    public LoginEntity getOrganizer(int id) {
-        return organizers.get(id);
+    public LoginEntity getOrganizer(int organizerNr) {
+        return organizers.get(organizerNr-1);
     }
 
     public ArrayList<LoginEntity> getTeams() {
@@ -79,17 +102,23 @@ public class Quiz implements Serializable {
         return rounds;
     }
 
-    public Round getRound(int i) {
-        return rounds.get(i);
+    public Round getRound(int rndNr) {
+        return rounds.get(rndNr-1);
     }
 
     public Question getQuestion(int rndNr,int questionNr) {
         return getRound(rndNr).getQuestion(questionNr);
     }
 
-    public Answer getAnswer(int rndNr, int questionNr,int teamNr){
-        return getQuestion(rndNr,questionNr).getAllAnswers().get(teamNr);
+    public Answer getAnswerForTeam(int rndNr, int questionNr, int teamNr){
+        return getQuestion(rndNr,questionNr).getAnswerForTeam(teamNr);
     }
+
+    public void setAnswerForTeam(int rndNr, int questionNr, int teamNr, String answer){
+        getQuestion(rndNr,questionNr).setAnswerForTeam(teamNr,answer);
+    }
+
+
 
     public void setRounds(ArrayList<Round> rounds) {
         this.rounds = rounds;
@@ -98,7 +127,7 @@ public class Quiz implements Serializable {
     public ArrayList<Answer> getAnswersForRound(int rndNr, int teamNr){
         ArrayList<Answer> answersList = new ArrayList<>();
         for (int i = 0; i < getRound(rndNr).getQuestions().size(); i++) {
-            answersList.add(i,getAnswer(rndNr,i,teamNr));
+            answersList.add(i, getAnswerForTeam(rndNr,i+1,teamNr)); //The
         }
         return answersList;
 

@@ -26,7 +26,8 @@ public class GoogleAccess {
     public static final String PARAMVALUE_SETDATA = "setdata";
     public static final String PARAMVALUE_SUBMITANSWERS = "submitAnswers";
     public static final String PARAMVALUE_ADDLINE = "addline";
-    public static final String PARAMVALUE_DEBUGLEVEL = "0";
+    public static final String PARAMVALUE_DEBUGLEVEL = "10";
+    public static final String PARAMVALUE_FIRST_TEAM_NR = "1";
     //Tabs in the Quiz sheet
     //public static final String SHEET_QUIZLIST = "QuizList";
     public static final String SHEET_QUIZDATA = "QuizData";
@@ -38,4 +39,5 @@ public class GoogleAccess {
     public static final String SHEET_ANSWERS = "Answers";
     public static final String SHEET_SCORES = "Scores";
     public static final String SHEET_EVENTLOG = "EventLog";
+
 }

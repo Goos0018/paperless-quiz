@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -24,6 +25,7 @@ import com.example.paperlessquiz.loginentity.LoginEntity;
 import com.example.paperlessquiz.question.Question;
 import com.example.paperlessquiz.quiz.Quiz;
 import com.example.paperlessquiz.quiz.QuizLoader;
+import com.example.paperlessquiz.round.Round;
 import com.example.paperlessquiz.spinners.QuestionSpinner;
 import com.example.paperlessquiz.spinners.RoundSpinner;
 
@@ -44,6 +46,7 @@ Display is as follows:
 //TODO: Correct Question ID's
 //TODO: Hide icon while filling out a round
 //TODO: Make sure answers are loaded from sheet when restarting
+//TODO: fix bug with loading rounds not done when loading questions/answers + refresh rounds.
 
 public class C_ParticipantHome extends AppCompatActivity {
     Quiz thisQuiz;
@@ -51,9 +54,10 @@ public class C_ParticipantHome extends AppCompatActivity {
     RoundSpinner roundSpinner;
     QuestionSpinner questionSpinner;
     TextView tvRoundName, tvRoundDescription, tvQuestionName, tvQuestionDescription, tvDisplayRoundResults, tvCorrectAnswer;
+    ImageView ivRoundStatus;
     EditText etAnswer;
     Button btnRndUp, btnRndDown, btnQuestionUp, btnQuestionDown, btnSubmit, btnSubmitCorrections;
-    LinearLayout displayLayout, answerLayout, correctorLayout;
+    LinearLayout displayLayout, answerLayout, correctorLayout,questionSpinnerLayout;
     ListView lvCorrectQuestions;
     RecyclerView rvDisplayAnswers;
     DisplayAnswersAdapter displayAnswersAdapter;
@@ -62,33 +66,37 @@ public class C_ParticipantHome extends AppCompatActivity {
 
 
     private void refresh() {
+        Round thisRound = thisQuiz.getRound(roundSpinner.getRoundNr());
+        Question thisQuestion = thisQuiz.getQuestion(roundSpinner.getRoundNr(),questionSpinner.getQuestionNr());
+        String thisLoginEntityType = thisQuiz.getMyLoginentity().getType();
         //If this is a participant
-        if (thisQuiz.getMyLoginentity().getType().equals(LoginEntity.SELECTION_PARTICIPANT)) {
-            if (thisQuiz.getRound(roundSpinner.getPosition()).AcceptsAnswers()) {
+        if (thisLoginEntityType.equals(LoginEntity.SELECTION_PARTICIPANT)) {
+            if (thisRound.getAcceptsAnswers()) {
+                questionSpinnerLayout.setVisibility(View.VISIBLE);
                 answerLayout.setVisibility(View.VISIBLE);
                 //etAnswer is by default invisible to avoid seeing the keyboard when you shouldn't
                 etAnswer.setVisibility(View.VISIBLE);
             } else {
+                questionSpinnerLayout.setVisibility(View.GONE);
                 answerLayout.setVisibility((View.GONE));
             }
             correctorLayout.setVisibility((View.GONE));
             //correctorLayout.findFocus();
             ArrayList<Question> questions;
-            questions = thisQuiz.getRound(roundSpinner.getPosition()).getQuestions();
-            displayAnswersAdapter.setAnswers(questions);
+            displayAnswersAdapter.setAnswers(thisQuiz.getRound(roundSpinner.getRoundNr()).getQuestions());
             rvDisplayAnswers.setAdapter(displayAnswersAdapter);
 
         }
         //If this is a questionscorrector
-        if (!(thisQuiz.getMyLoginentity().getType().equals(LoginEntity.SELECTION_PARTICIPANT))) {
+        if (!(thisLoginEntityType.equals(LoginEntity.SELECTION_PARTICIPANT))) {
             answerLayout.setVisibility((View.GONE));
             displayLayout.setVisibility(View.GONE);
             //correctorLayout.findFocus();
             ArrayList<Answer> allAnswers;
-            allAnswers = thisQuiz.getQuestion(roundSpinner.getPosition(),questionSpinner.getPosition()).getAllAnswers();
+            allAnswers = thisQuiz.getQuestion(roundSpinner.getRoundNr(),questionSpinner.getQuestionNr()).getAllAnswers();
             myAdapter = new CorrectAnswersAdapter(this, allAnswers);
             lvCorrectQuestions.setAdapter(myAdapter);
-            //myAdapter.notifyDataSetChanged();
+            tvCorrectAnswer.setText(thisQuiz.getQuestion(roundSpinner.getRoundNr(),questionSpinner.getQuestionNr()).getCorrectAnswer());
         }
 
     }
@@ -103,7 +111,7 @@ public class C_ParticipantHome extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.refresh:
-                QuizLoader quizLoader = new QuizLoader(C_ParticipantHome.this, thisQuiz.getListData().getSheetDocID(), thisQuiz);
+                QuizLoader quizLoader = new QuizLoader(C_ParticipantHome.this, thisQuiz.getListData().getSheetDocID());
                 quizLoader.loadRounds();
                 refresh();
                 break;
@@ -123,13 +131,15 @@ public class C_ParticipantHome extends AppCompatActivity {
         //actionBar.setDisplayHomeAsUpEnabled(true);
         //actionBar.setDisplayUseLogoEnabled(true);
 
-        thisQuiz = (Quiz) getIntent().getSerializableExtra(Quiz.INTENT_EXTRANAME_THIS_QUIZ);
-        thisTeamNr = thisQuiz.getMyLoginentity().getId() - 1;
+        //thisQuiz = (Quiz) getIntent().getSerializableExtra(Quiz.INTENT_EXTRANAME_THIS_QUIZ);
+        thisQuiz=MyApplication.theQuiz;
+        thisTeamNr = thisQuiz.getMyLoginentity().getId();
         //Log that the user logged in
         MyApplication.eventLogger.logEvent(thisQuiz.getMyLoginentity().getName(), "Logged in");
         displayLayout = findViewById(R.id.llDisplay);
         answerLayout = findViewById(R.id.llAnswers);
         correctorLayout = findViewById(R.id.llCorrectQuestions);
+        questionSpinnerLayout = findViewById(R.id.llQuestionSpinner);
         tvQuestionName = findViewById(R.id.tvQuestionName);
         tvQuestionDescription = findViewById(R.id.tvQuestionDescription);
         tvRoundName = findViewById(R.id.tvRoundName);
@@ -148,14 +158,15 @@ public class C_ParticipantHome extends AppCompatActivity {
         rvDisplayAnswers.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         rvDisplayAnswers.setLayoutManager(layoutManager);
-        displayAnswersAdapter = new DisplayAnswersAdapter(this,thisQuiz.getRounds().get(0).getQuestions(),thisTeamNr);
+        displayAnswersAdapter = new DisplayAnswersAdapter(this,thisQuiz.getRound(1).getQuestions(),thisTeamNr);
         //rvDisplayAnswers.setAdapter(displayAnswersAdapter);
 
         actionBar.setTitle(thisQuiz.getMyLoginentity().getName());
 
-        etAnswer.setText(thisQuiz.getQuestion(0,0).getAnswerForTeam(thisTeamNr).getTheAnswer());
-        questionSpinner = new QuestionSpinner(thisQuiz, tvQuestionName, tvQuestionDescription, tvDisplayRoundResults, etAnswer, 0,thisTeamNr);
-        roundSpinner = new RoundSpinner(thisQuiz.getRounds(), tvRoundName, tvRoundDescription, questionSpinner);
+        //Initially, we start with question 1 of round 1, so set the text of the editText to this answer
+        etAnswer.setText(thisQuiz.getQuestion(1,1).getAnswerForTeam(thisTeamNr).getTheAnswer());
+        questionSpinner = new QuestionSpinner(thisQuiz, tvQuestionName, tvQuestionDescription, etAnswer, 1,thisTeamNr);
+        roundSpinner = new RoundSpinner(thisQuiz, tvRoundName, tvRoundDescription, questionSpinner);
         //Refresh does all actions that are dependent on the position of the question spinner and the roundspinner
         refresh();
 
@@ -198,7 +209,8 @@ public class C_ParticipantHome extends AppCompatActivity {
             public void onClick(View view) {
                 questionSpinner.moveDown();
                 questionSpinner.moveUp();
-                ArrayList<Answer> answerList = thisQuiz.getAnswersForRound(roundSpinner.getPosition(),thisTeamNr);
+                refresh();
+                ArrayList<Answer> answerList = thisQuiz.getAnswersForRound(roundSpinner.getRoundNr(),thisTeamNr);
                 String tmp = "[";
                 for (int i = 0; i < answerList.size(); i++) {
                     tmp = tmp + "[\"" + answerList.get(i).getTheAnswer() + "\"]";
@@ -211,23 +223,21 @@ public class C_ParticipantHome extends AppCompatActivity {
                 String answers = answerArray.toString();
                 String scriptParams = GoogleAccess.PARAMNAME_DOC_ID + thisQuiz.getListData().getSheetDocID() + GoogleAccess.PARAM_CONCATENATOR +
                         GoogleAccess.PARAMNAME_USERID + "Rupert" + GoogleAccess.PARAM_CONCATENATOR +
-                        GoogleAccess.PARAMNAME_ROUNDID + (roundSpinner.getPosition() + 1) + GoogleAccess.PARAM_CONCATENATOR +
-                        GoogleAccess.PARAMNAME_FIRSTQUESTION + (roundSpinner.getPosition() + 1) + ".1" + GoogleAccess.PARAM_CONCATENATOR +
+                        GoogleAccess.PARAMNAME_ROUNDID + roundSpinner.getRoundNr() + GoogleAccess.PARAM_CONCATENATOR +
+                        GoogleAccess.PARAMNAME_FIRSTQUESTION + thisQuiz.getRound(roundSpinner.getRoundNr()).getQuestion(1).getQuestionID() + GoogleAccess.PARAM_CONCATENATOR +
                         GoogleAccess.PARAMNAME_TEAMID + thisQuiz.getMyLoginentity().getId() + GoogleAccess.PARAM_CONCATENATOR +
                         GoogleAccess.PARAMNAME_ANSWERS + tmp + GoogleAccess.PARAM_CONCATENATOR +
                         GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_SUBMITANSWERS;
                 GoogleAccessSet submitAnswers = new GoogleAccessSet(C_ParticipantHome.this, scriptParams);
                 submitAnswers.setData(new LoadingListenerNotify(C_ParticipantHome.this, thisQuiz.getMyLoginentity().getName(),
-                        "Submit answers for round " + (roundSpinner.getPosition() + 1)));
+                        "Submitting answers for round " + (roundSpinner.getRoundNr() + 1)));
             }
         });
 
         btnSubmitCorrections.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //questionSpinner.moveDown();
-                //questionSpinner.moveUp();
-                ArrayList<Answer> answerList = thisQuiz.getAllAnswersForQuestion(roundSpinner.getPosition(), questionSpinner.getPosition());
+                ArrayList<Answer> answerList = thisQuiz.getAllAnswersForQuestion(roundSpinner.getRoundNr(), questionSpinner.getQuestionNr());
                 String tmp = "[[";
                 for (int i = 0; i < answerList.size(); i++) {
                     tmp = tmp + "\"" + answerList.get(i).isCorrect() + "\"";
@@ -241,13 +251,13 @@ public class C_ParticipantHome extends AppCompatActivity {
                 String scriptParams = GoogleAccess.PARAMNAME_DOC_ID + thisQuiz.getListData().getSheetDocID() + GoogleAccess.PARAM_CONCATENATOR +
                         GoogleAccess.PARAMNAME_USERID + "Rupert" + GoogleAccess.PARAM_CONCATENATOR +
                         GoogleAccess.PARAMNAME_SHEET + GoogleAccess.SHEET_SCORES + GoogleAccess.PARAM_CONCATENATOR +
-                        GoogleAccess.PARAMNAME_RECORDID + (roundSpinner.getPosition() + 1) + "." + (questionSpinner.getPosition() + 1) + GoogleAccess.PARAM_CONCATENATOR +
-                        GoogleAccess.PARAMNAME_FIELDNAME + "T1" + GoogleAccess.PARAM_CONCATENATOR +
+                        GoogleAccess.PARAMNAME_RECORDID + thisQuiz.getQuestion(roundSpinner.getRoundNr(), questionSpinner.getQuestionNr()).getQuestionID() + GoogleAccess.PARAM_CONCATENATOR +
+                        GoogleAccess.PARAMNAME_FIELDNAME + GoogleAccess.PARAMVALUE_FIRST_TEAM_NR + GoogleAccess.PARAM_CONCATENATOR + //We write score starting from the first team which should have id 1
                         GoogleAccess.PARAMNAME_NEWVALUES + tmp + GoogleAccess.PARAM_CONCATENATOR +
                         GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_SETDATA;
                 GoogleAccessSet submitScores = new GoogleAccessSet(C_ParticipantHome.this, scriptParams);
                 submitScores.setData(new LoadingListenerNotify(C_ParticipantHome.this, thisQuiz.getMyLoginentity().getName(),
-                        "Submit scores for question " + (questionSpinner.getPosition() + 1)));
+                        "Submitting scores for question " + thisQuiz.getQuestion(roundSpinner.getRoundNr(), questionSpinner.getQuestionNr()).getQuestionID()));
             }
         });
     }

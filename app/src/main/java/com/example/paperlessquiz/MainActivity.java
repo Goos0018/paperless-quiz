@@ -25,7 +25,7 @@ TODO: layout
  */
 
 public class MainActivity extends AppCompatActivity {
-    Quiz thisQuiz = new Quiz();
+    Quiz thisQuiz;// = new Quiz();
     ListView lv_QuizList;
     QuizListAdapter adapter;
     String scriptParams;
@@ -51,9 +51,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //Load the data from the selected Quiz into the thisQuiz object
-                thisQuiz.setListData(adapter.getItem(position));
+                //thisQuiz.setListData(adapter.getItem(position));
+                MyApplication.theQuiz.setListData(adapter.getItem(position));
+                thisQuiz=MyApplication.theQuiz;
                 Intent intent = new Intent(MainActivity.this, A_SelectRole.class);
-                intent.putExtra(Quiz.INTENT_EXTRANAME_THIS_QUIZ, thisQuiz);
+                //intent.putExtra(Quiz.INTENT_EXTRANAME_THIS_QUIZ, thisQuiz);
                 MyApplication.eventLogger.setDocID(adapter.getItem(position).getSheetDocID());
                 startActivity(intent);
             }

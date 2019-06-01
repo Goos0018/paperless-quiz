@@ -37,7 +37,8 @@ public class B_frag_ListEntities extends ListFragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         actLoginMain = (ItemSelected) context;
-        thisQuiz = (Quiz) getActivity().getIntent().getSerializableExtra(Quiz.INTENT_EXTRANAME_THIS_QUIZ);
+        //thisQuiz = (Quiz) getActivity().getIntent().getSerializableExtra(Quiz.INTENT_EXTRANAME_THIS_QUIZ);
+        thisQuiz=MyApplication.theQuiz;
         loginType = getActivity().getIntent().getStringExtra(LoginEntity.INTENT_EXTRA_NAME_THIS_LOGIN_TYPE);
     }
 

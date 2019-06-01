@@ -8,6 +8,7 @@ import android.os.Bundle;
 
 import com.example.paperlessquiz.google.access.EventLogger;
 import com.example.paperlessquiz.google.access.GoogleAccess;
+import com.example.paperlessquiz.quiz.Quiz;
 
 import java.util.UUID;
 
@@ -15,6 +16,7 @@ public class MyApplication extends Application {
     public static String logDocID;
     public static EventLogger eventLogger;
     public static String deviceID;
+    public static Quiz theQuiz;
 
     @Override
     public void onCreate() {
@@ -23,6 +25,7 @@ public class MyApplication extends Application {
         eventLogger = new EventLogger(this, logDocID, GoogleAccess.SHEET_EVENTLOG);
         deviceID = getUniquePsuedoID();
         eventLogger.logEvent(deviceID, "Starting application");
+        theQuiz=new Quiz();
 
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
             @Override

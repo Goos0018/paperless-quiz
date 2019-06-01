@@ -1,18 +1,18 @@
 package com.example.paperlessquiz.round;
 
 import com.example.paperlessquiz.question.Question;
-import com.example.paperlessquiz.question.QuestionsList;
 import com.example.paperlessquiz.spinners.SpinnerData;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
- * Round statuses (acceptsAnswers/AcceptsCorrections/Corrected can be one of the following:
+ * Round statuses (acceptsAnswers/getAcceptsCorrections/Corrected can be one of the following:
  * false, false, false: round has not been opened yet (initial status)
  * true, false, false: answers can be submitted
  * false,true,false: answers are assumed to be available an dcan be corrected
  * false, false,true: round is assumed to be corrected (final status)
+ * The questions Array is  initialized by the GetQuestionsLPL, the rest comes from the GetRoundsLPL
  */
 public class Round implements Serializable, SpinnerData {
     private int roundNr;
@@ -41,13 +41,24 @@ public class Round implements Serializable, SpinnerData {
         this.acceptsAnswers = acceptsAnswers;
         this.acceptsCorrections = acceptsCorrections;
         this.corrected = corrected;
+        /*
         this.questions = new QuestionsList();
         this.questions = new ArrayList<>();
         for (int i=0;i < nrOfQuestions;i++)
         {
             questions.add(i,new Question());
         }
+        */
+    }
 
+    public void UpdateRoundBasics(Round rnd) {
+        this.roundNr = rnd.getRoundNr();
+        this.name = rnd.getName();
+        this.description = rnd.getDescription();
+        this.nrOfQuestions = rnd.getNrOfQuestions();
+        this.acceptsAnswers = rnd.getAcceptsAnswers();
+        this.acceptsCorrections = rnd.getAcceptsCorrections();
+        this.corrected = rnd.isCorrected();
     }
 
     public String getName() {
@@ -63,11 +74,11 @@ public class Round implements Serializable, SpinnerData {
     }
 
 
-    public boolean AcceptsAnswers() {
+    public boolean getAcceptsAnswers() {
         return acceptsAnswers;
     }
 
-    public boolean AcceptsCorrections() {
+    public boolean getAcceptsCorrections() {
         return acceptsCorrections;
     }
 
@@ -79,11 +90,14 @@ public class Round implements Serializable, SpinnerData {
         return questions;
     }
 
-    public Question getQuestion(int i) {
-        return questions.get(i);
+    public Question getQuestion(int questionNr) {
+        return questions.get(questionNr-1);
     }
     public void setQuestions(ArrayList<Question> questions) {
         this.questions = questions;
     }
 
+    public int getRoundNr() {
+        return roundNr;
+    }
 }

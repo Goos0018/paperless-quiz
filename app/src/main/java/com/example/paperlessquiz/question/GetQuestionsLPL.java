@@ -1,32 +1,23 @@
 package com.example.paperlessquiz.question;
 
 import com.example.paperlessquiz.google.access.ListParsedListener;
-import com.example.paperlessquiz.quiz.Quiz;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * This LPL receives an array of Questions (one for each question in the entire Quiz)
+ * We structure them here per round in the allQuestionsPerRound variable.
+ */
 public class GetQuestionsLPL implements ListParsedListener<Question> {
 
-    //private QuestionsAdapter roundQuestionsAdapter;
-    Quiz quiz;
     private ArrayList<ArrayList<Question>> allQuestionsPerRound;
-    private ArrayList<Question> allQuestions;
-    //private ArrayList<Round>
-    //private QuestionsList questionsList;
-    //private String answer1;
-
 
     public ArrayList<ArrayList<Question>> getAllQuestionsPerRound() {
         return allQuestionsPerRound;
     }
 
-    public GetQuestionsLPL(Quiz quiz){
-    //public GetQuestionsLPL(QuestionsAdapter roundQuestionsAdapter){
-        //public GetQuestionsLPL(QuestionsAdapter roundQuestionsAdapter, QuestionsList questionsList, String answer1){
-        //this.roundQuestionsAdapter=roundQuestionsAdapter;
+    public GetQuestionsLPL(){
         this.allQuestionsPerRound=new ArrayList<ArrayList<Question>>();
-        this.quiz=quiz;
     }
     @Override
     public void listParsed(List<Question> list)
@@ -36,31 +27,21 @@ public class GetQuestionsLPL implements ListParsedListener<Question> {
         for (int i = 0;i< list.size();i++)
         {
             Question q = list.get(i);
-            int rndId = q.getRoundNr()-1;
-            int questionNr = q.getQuestionNr()-1;
-            quiz.getRound(rndId).getQuestions().set(questionNr,q);
-            /*
-            //add (empty questionslists until you are sue you have one at position rndId - 1
-            while (allQuestionsPerRound.size() < rndId)
+            int rndNumber = q.getRoundNr();
+            int qNumber = q.getQuestionNr();
+            //add (empty) questionslists until you are sue you have one at position rndNumber
+            while (allQuestionsPerRound.size() < rndNumber)
             {
                 allQuestionsPerRound.add(new ArrayList<Question>());
             }
+            ArrayList<Question> qList = allQuestionsPerRound.get(rndNumber-1);
             //Now add questions until you are sure you have one at the position you need
-            ArrayList<Question> qList = allQuestionsPerRound.get(rndId-1);
-            while (qList.size() < questionNr)
+            while (qList.size() < qNumber)
             {
                 qList.add(new Question());
             }
-            //Replace the (blank) question at the correct position with the one yo have here
-            qList.set(questionNr-1,q);
-            */
+            //Replace the (blank) question at the correct position with the one you have here
+            qList.set(qNumber-1,q);
         }
-        /*
-        allQuestions = (ArrayList)list;
-        if (!(quiz == null)) {
-            quiz.setAllQuestionsPerRound(allQuestionsPerRound);
-        }
-        */
     }
-
 }

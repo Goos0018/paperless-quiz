@@ -7,9 +7,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
- * QuestionID identifies the question uniquely
- * ThisAnswer is the answer given by the team that is logged inin the app (if any)
- * All answers contains all answers (for each team) for this question
+ * QuestionID identifies the question uniquely and is used to locate questions in the Question Sheet
+ * RoundNr and QuestionNr are used to locate it in the ArrayLists we have in the Quiz object
+ * All answers contains all answers (for each team) for this question. This ArrayList is initialized with the data from the GetAnswersListLPL
+ * The rest comes from the GetQuestionsLPL
+ * We foresee methods here to directly get and set answers for a specific team
  */
 public class Question implements Serializable, SpinnerData {
     private String questionID;
@@ -19,7 +21,6 @@ public class Question implements Serializable, SpinnerData {
     private String hint;
     private String question;
     private String correctAnswer;
-    //private Answer thisAnswer;
     private ArrayList<Answer> allAnswers;
     private int maxScore;
 
@@ -32,11 +33,12 @@ public class Question implements Serializable, SpinnerData {
         this.question = "";
         this.correctAnswer = "";
         this.maxScore = 0;
-        //this.thisAnswer = new Answer("");
-        this.allAnswers=new ArrayList<>();
+       this.allAnswers=new ArrayList<>();
     }
 
     public Question(String questionID, int questionNr, int roundNr, String name, String hint, String question, String correctAnswer, int maxScore) {
+        //This constructor is used when parsing the results from the sheet
+        //We only use the data we can get from this sheet
         this.questionID=questionID;
         this.questionNr = questionNr;
         this.roundNr = roundNr;
@@ -45,8 +47,7 @@ public class Question implements Serializable, SpinnerData {
         this.question = question;
         this.correctAnswer = correctAnswer;
         this.maxScore = maxScore;
-        //this.thisAnswer =  new Answer("");
-        this.allAnswers=new ArrayList<>();
+        //this.allAnswers=new ArrayList<>();
     }
 
     public void setName(String name) {
@@ -120,14 +121,18 @@ public class Question implements Serializable, SpinnerData {
     }
 
     public ArrayList<Answer> getAllAnswers() {
-        return allAnswers;
+       return allAnswers;
     }
 
     public void setAllAnswers(ArrayList<Answer> allAnswers) {
         this.allAnswers = allAnswers;
-    }
+   }
 
     public Answer getAnswerForTeam(int teamNr){
-        return allAnswers.get(teamNr);
+        return allAnswers.get(teamNr-1);
     }
+    public void setAnswerForTeam(int teamNr, String answer){
+        getAnswerForTeam(teamNr).setTheAnswer(answer);
+    }
+
 }

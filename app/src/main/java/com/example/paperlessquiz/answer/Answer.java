@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class Answer implements Serializable{
 
-    private int questionNr;
+    //private int questionNr;
     private String theAnswer;
     private boolean corrected;
     private boolean correct;
@@ -14,7 +14,7 @@ public class Answer implements Serializable{
     }
 
     public Answer(int questionNr){
-        this.questionNr=questionNr;
+        //this.questionNr=questionNr;
         this.theAnswer = "";
         this.correct=false;
         this.corrected = false;
@@ -22,7 +22,7 @@ public class Answer implements Serializable{
 
 
     public Answer(int questionNr, String myAnswer) {
-        this.questionNr = questionNr;
+        //this.questionNr = questionNr;
         this.theAnswer = myAnswer;
         //this.teamID = teamID;
     }
@@ -35,9 +35,9 @@ public class Answer implements Serializable{
         this.corrected = corrected;
     }
 
-    public int getQuestionNr() {
-        return questionNr;
-    }
+    //public int getQuestionNr() {
+    //    return questionNr;
+    //}
 
     public String getTheAnswer() {
         return theAnswer;

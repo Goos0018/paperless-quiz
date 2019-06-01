@@ -13,6 +13,7 @@ public class AnswersListParser implements JsonParser<AnswersList> {
     public static final String QUESTION_ID = "QuestionID";
     public static final String ROUND_NR = "RoundNr";
     public static final String QUESTION_NR = "QuestionNr";
+    //The other headers in the Answers tab are assumed to be team numbers
 
     @Override
     public AnswersList parse(JSONObject jo) throws JSONException {

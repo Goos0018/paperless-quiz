@@ -5,7 +5,6 @@ import java.util.Date;
 
 // This class stores the basic Quiz data as it can be found in the central QuizList sheet
 public class QuizListData implements Serializable {
-    //public static final String INTENT_EXTRA_NAME_THIS_QUIZ_BASICS = "thisQuizBasics";
     private String id;
     private String name;
     private String description;
@@ -29,6 +28,7 @@ public class QuizListData implements Serializable {
         this.logoURL = logoURL;
     }
 
+    /*
     public QuizListData(QuizListData quizListData) {
         this.id = quizListData.id;
         this.name = quizListData.name;
@@ -37,6 +37,7 @@ public class QuizListData implements Serializable {
         this.date = quizListData.date;
         this.logoURL = quizListData.logoURL;
     }
+    */
 
     public String getName() {
         return name;

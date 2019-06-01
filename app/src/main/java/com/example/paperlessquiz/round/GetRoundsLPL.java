@@ -1,20 +1,21 @@
 package com.example.paperlessquiz.round;
 
+import com.example.paperlessquiz.MyApplication;
 import com.example.paperlessquiz.google.access.ListParsedListener;
-import com.example.paperlessquiz.quiz.Quiz;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This LPL receives an ArrayList of Rounds, we don't need to do anything with this list, just return it
+ * However, because we need to refresh rounds information during  the quiz as well, we also update the central Quiz object with the information retrieved here
+ */
 public class GetRoundsLPL implements ListParsedListener<Round> {
 
-    private Quiz quiz;
     private ArrayList<Round> rounds;
 
-    public GetRoundsLPL(Quiz quiz) {
+    public GetRoundsLPL() {
         rounds = new ArrayList<Round>();
-        this.quiz = quiz;
-
     }
 
     public ArrayList<Round> getRounds() {
@@ -22,9 +23,20 @@ public class GetRoundsLPL implements ListParsedListener<Round> {
     }
 
     public void listParsed(List<Round> list) {
+        //rounds is the list of rounds with only the information from the Rounds sheet
+        //we copy the information here to the central Quiz object
         rounds = (ArrayList) list;
-        if (!(quiz == null)) {
-            quiz.setRounds((ArrayList) list);
+        for (int i = 0; i < rounds.size(); i++) {
+            Round rnd = list.get(i);
+            int rndNr = rnd.getRoundNr();
+            //We want to update MyApplication.theQuiz.getRound(rndNr), but only if that round already exists
+            if (rndNr <= MyApplication.theQuiz.getRounds().size()) {
+                MyApplication.theQuiz.getRound(rndNr).UpdateRoundBasics(rnd);
+            }
+            else{
+
+            }
+
         }
     }
 

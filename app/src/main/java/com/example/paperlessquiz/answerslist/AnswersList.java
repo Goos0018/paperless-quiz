@@ -4,7 +4,10 @@ import com.example.paperlessquiz.answer.Answer;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-
+/**
+ * AnswersList is used to store for each single question, an arraylist of Answers (one for each team)
+ * The AnswersList object also contains the questionID, roundNr and questionNr, so we can associate it with the correct question
+ */
 public class AnswersList implements Serializable {
     private String questionID;
     private int roundNr;

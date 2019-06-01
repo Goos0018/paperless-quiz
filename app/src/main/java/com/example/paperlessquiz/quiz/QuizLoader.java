@@ -2,6 +2,7 @@ package com.example.paperlessquiz.quiz;
 
 import android.content.Context;
 
+import com.example.paperlessquiz.MyApplication;
 import com.example.paperlessquiz.answer.Answer;
 import com.example.paperlessquiz.answerslist.AnswersList;
 import com.example.paperlessquiz.answerslist.AnswersListParser;
@@ -27,7 +28,7 @@ import java.util.ArrayList;
 public class QuizLoader {
     private Context context;
     private String sheetDocID;
-    private Quiz quiz;
+    //private Quiz quiz;
     public GetQuizExtraDataLPL quizExtraDataLPL;
     public GetRoundsLPL quizRoundsLPL;
     public GetQuestionsLPL quizQuestionsLPL;
@@ -35,19 +36,17 @@ public class QuizLoader {
     public GetLoginEntriesLPL quizTeamsLPL, quizOrganizersLPL;
     public ArrayList<ArrayList<Answer>> myAnswers;
 
-    public QuizLoader(Context context, String sheetDocID, Quiz quiz) {
+    public QuizLoader(Context context, String sheetDocID) {
         this.context = context;
         this.sheetDocID = sheetDocID;
         myAnswers = new ArrayList<>();
-        this.quiz = quiz;
-        quizExtraDataLPL = new GetQuizExtraDataLPL(quiz);
-        quizRoundsLPL = new GetRoundsLPL(quiz);
-        quizQuestionsLPL = new GetQuestionsLPL(quiz);
-        quizTeamsLPL = new GetLoginEntriesLPL(quiz);
-        quizOrganizersLPL = new GetLoginEntriesLPL(quiz);
-        quizAnswersLPL = new GetAnswersListLPL(quiz);
-        //Add quiz argument as argument for all constructors/LPL's
-
+        //this.quiz = MyApplication.theQuiz;
+        quizExtraDataLPL = new GetQuizExtraDataLPL();
+        quizRoundsLPL = new GetRoundsLPL();
+        quizQuestionsLPL = new GetQuestionsLPL();
+        quizTeamsLPL = new GetLoginEntriesLPL();
+        quizOrganizersLPL = new GetLoginEntriesLPL();
+        quizAnswersLPL = new GetAnswersListLPL();
     }
 
     public String generateParams(String sheet) {
@@ -58,10 +57,10 @@ public class QuizLoader {
 
     //Get the additional data we don't have yet: nr of rounds, nr of participants, status,  ...
     public void loadAll() {
+        loadRounds();
         loadExtradata();
         loadTeams();
         loadOrganizers();
-        loadRounds();
         loadQuestions();
         loadAllAnswers();
     }
@@ -70,7 +69,7 @@ public class QuizLoader {
         return (teamsOK() && organizersOK() && questionsOK());
     }
 
-    //Get extra data from the quiz
+    //Get extra data for the quiz
     public void loadExtradata() {
         String scriptParams = generateParams(GoogleAccess.SHEET_QUIZDATA);
         GoogleAccessGet<QuizExtraData> googleAccessGetQuizExtraData = new GoogleAccessGet<QuizExtraData>(context, scriptParams);
@@ -136,7 +135,7 @@ public class QuizLoader {
     }
 
     public boolean questionsOK() {
-        //There should be questions for every round
+        //There should be round.NrOfQuestions questions for every round
         if (!(quizQuestionsLPL.getAllQuestionsPerRound().size() == quizExtraDataLPL.getQuizExtraData().getNrOfRounds())) {
             return false;
         } else {

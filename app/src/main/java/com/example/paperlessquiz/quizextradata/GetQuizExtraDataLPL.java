@@ -6,16 +6,14 @@ import com.example.paperlessquiz.quiz.Quiz;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This list in this LPL will always only contain one element, which is stored in the quizExtraData variable
+ */
 public class GetQuizExtraDataLPL implements ListParsedListener<QuizExtraData> {
 
-    private Quiz quiz;
     private QuizExtraData quizExtraData;
-    private ArrayList<QuizExtraData> list;
 
-    public GetQuizExtraDataLPL(Quiz quiz) {
-        //public GetQuizExtraDataLPL(QuizExtraData quizExtraData) {
-        this.quizExtraData = new QuizExtraData();
-        this.quiz = quiz;
+    public GetQuizExtraDataLPL() {
 
     }
 
@@ -25,9 +23,5 @@ public class GetQuizExtraDataLPL implements ListParsedListener<QuizExtraData> {
 
     public void listParsed(List<QuizExtraData> list) {
         quizExtraData = new QuizExtraData(list.get(0));
-        this.list = (ArrayList) list;
-        if (!(quiz == null)) {
-            quiz.setAdditionalData(quizExtraData);
-        }
     }
 }

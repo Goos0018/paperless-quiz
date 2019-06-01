@@ -61,8 +61,8 @@
             android:layout_weight="1"
             android:layout_height="30dp"
             android:layout_gravity="center"
-            android:layout_marginRight="@dimen/margin_tiny"
-            android:clickable="false" />
+            android:layout_marginRight="@dimen/margin_huge"
+            tools:srcCompat="@drawable/rnd_not_yet_open"/>
 
         <Button
             android:id="@+id/btnRndUp"
@@ -211,7 +211,9 @@
             android:layout_marginRight="@dimen/margin_medium"
             android:gravity="center"
             android:text="Correct answers"
-            android:textColor="@color/correctGreen" />
+            android:textColor="@color/correctGreen"
+            android:textSize="@dimen/text_size_medium"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/btnSubmitCorrections"

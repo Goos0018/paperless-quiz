@@ -57,7 +57,7 @@ public class C_ParticipantHome extends AppCompatActivity {
     ImageView ivRoundStatus;
     EditText etAnswer;
     Button btnRndUp, btnRndDown, btnQuestionUp, btnQuestionDown, btnSubmit, btnSubmitCorrections;
-    LinearLayout displayLayout, answerLayout, correctorLayout,questionSpinnerLayout;
+    LinearLayout displayAnswersLayout, editAnswerLayout, correctorLayout,questionSpinnerLayout;
     ListView lvCorrectQuestions;
     RecyclerView rvDisplayAnswers;
     DisplayAnswersAdapter displayAnswersAdapter;
@@ -67,18 +67,25 @@ public class C_ParticipantHome extends AppCompatActivity {
 
     private void refresh() {
         Round thisRound = thisQuiz.getRound(roundSpinner.getRoundNr());
-        Question thisQuestion = thisQuiz.getQuestion(roundSpinner.getRoundNr(),questionSpinner.getQuestionNr());
+        //Question thisQuestion = thisQuiz.getQuestion(roundSpinner.getRoundNr(),questionSpinner.getQuestionNr());
         String thisLoginEntityType = thisQuiz.getMyLoginentity().getType();
+        //Set the icon that shows the round status
+        if (!thisRound.getAcceptsAnswers() && !thisRound.getAcceptsCorrections() && !thisRound.isCorrected()){ivRoundStatus.setImageResource(R.drawable.rnd_not_yet_open);}
+        if (thisRound.getAcceptsAnswers()){ivRoundStatus.setImageResource(R.drawable.rnd_open);}
+        if (thisRound.getAcceptsCorrections()){ivRoundStatus.setImageResource(R.drawable.rnd_closed);}
+        if (thisRound.isCorrected()){ivRoundStatus.setImageResource(R.drawable.rnd_corrected);}
         //If this is a participant
         if (thisLoginEntityType.equals(LoginEntity.SELECTION_PARTICIPANT)) {
             if (thisRound.getAcceptsAnswers()) {
                 questionSpinnerLayout.setVisibility(View.VISIBLE);
-                answerLayout.setVisibility(View.VISIBLE);
+                editAnswerLayout.setVisibility(View.VISIBLE);
+                displayAnswersLayout.setVisibility(View.VISIBLE);
                 //etAnswer is by default invisible to avoid seeing the keyboard when you shouldn't
                 etAnswer.setVisibility(View.VISIBLE);
             } else {
                 questionSpinnerLayout.setVisibility(View.GONE);
-                answerLayout.setVisibility((View.GONE));
+                editAnswerLayout.setVisibility((View.GONE));
+                displayAnswersLayout.setVisibility(View.VISIBLE);
             }
             correctorLayout.setVisibility((View.GONE));
             //correctorLayout.findFocus();
@@ -89,9 +96,18 @@ public class C_ParticipantHome extends AppCompatActivity {
         }
         //If this is a questionscorrector
         if (!(thisLoginEntityType.equals(LoginEntity.SELECTION_PARTICIPANT))) {
-            answerLayout.setVisibility((View.GONE));
-            displayLayout.setVisibility(View.GONE);
-            //correctorLayout.findFocus();
+            //No need for the editAnswers and displayAnswers parts
+            editAnswerLayout.setVisibility((View.GONE));
+            displayAnswersLayout.setVisibility(View.GONE);
+            if (thisRound.getAcceptsCorrections()){
+                questionSpinnerLayout.setVisibility(View.VISIBLE);
+                correctorLayout.setVisibility((View.VISIBLE));
+            }
+            else
+            {
+                questionSpinnerLayout.setVisibility(View.GONE);
+                correctorLayout.setVisibility((View.GONE));
+            }
             ArrayList<Answer> allAnswers;
             allAnswers = thisQuiz.getQuestion(roundSpinner.getRoundNr(),questionSpinner.getQuestionNr()).getAllAnswers();
             myAdapter = new CorrectAnswersAdapter(this, allAnswers);
@@ -136,8 +152,8 @@ public class C_ParticipantHome extends AppCompatActivity {
         thisTeamNr = thisQuiz.getMyLoginentity().getId();
         //Log that the user logged in
         MyApplication.eventLogger.logEvent(thisQuiz.getMyLoginentity().getName(), "Logged in");
-        displayLayout = findViewById(R.id.llDisplay);
-        answerLayout = findViewById(R.id.llAnswers);
+        displayAnswersLayout = findViewById(R.id.llDisplay);
+        editAnswerLayout = findViewById(R.id.llAnswers);
         correctorLayout = findViewById(R.id.llCorrectQuestions);
         questionSpinnerLayout = findViewById(R.id.llQuestionSpinner);
         tvQuestionName = findViewById(R.id.tvQuestionName);
@@ -153,6 +169,7 @@ public class C_ParticipantHome extends AppCompatActivity {
         btnRndUp = findViewById(R.id.btnRndUp);
         btnSubmit = findViewById(R.id.btnSubmit);
         btnSubmitCorrections = findViewById(R.id.btnSubmitCorrections);
+        ivRoundStatus=findViewById(R.id.ivRndStatus);
         lvCorrectQuestions = findViewById(R.id.lvCorrectQuestions);
         rvDisplayAnswers = findViewById(R.id.rvDisplayAnswers);
         rvDisplayAnswers.setHasFixedSize(true);
@@ -258,6 +275,13 @@ public class C_ParticipantHome extends AppCompatActivity {
                 GoogleAccessSet submitScores = new GoogleAccessSet(C_ParticipantHome.this, scriptParams);
                 submitScores.setData(new LoadingListenerNotify(C_ParticipantHome.this, thisQuiz.getMyLoginentity().getName(),
                         "Submitting scores for question " + thisQuiz.getQuestion(roundSpinner.getRoundNr(), questionSpinner.getQuestionNr()).getQuestionID()));
+            }
+        });
+
+        ivRoundStatus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                refresh();
             }
         });
     }

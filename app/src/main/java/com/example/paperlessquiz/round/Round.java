@@ -100,4 +100,16 @@ public class Round implements Serializable, SpinnerData {
     public int getRoundNr() {
         return roundNr;
     }
+
+    public void setAcceptsAnswers(boolean acceptsAnswers) {
+        this.acceptsAnswers = acceptsAnswers;
+    }
+
+    public void setAcceptsCorrections(boolean acceptsCorrections) {
+        this.acceptsCorrections = acceptsCorrections;
+    }
+
+    public void setCorrected(boolean corrected) {
+        this.corrected = corrected;
+    }
 }

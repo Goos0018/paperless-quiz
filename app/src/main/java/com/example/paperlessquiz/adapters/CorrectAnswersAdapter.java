@@ -84,6 +84,7 @@ public class CorrectAnswersAdapter extends ArrayAdapter<Answer> {
                         answers.get(i).setCorrected(true);
                     }
                 }
+
                 adapter.notifyDataSetChanged();
             }
 

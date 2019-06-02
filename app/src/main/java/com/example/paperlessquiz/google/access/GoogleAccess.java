@@ -26,7 +26,7 @@ public class GoogleAccess {
     public static final String PARAMVALUE_SETDATA = "setdata";
     public static final String PARAMVALUE_SUBMITANSWERS = "submitAnswers";
     public static final String PARAMVALUE_ADDLINE = "addline";
-    public static final String PARAMVALUE_DEBUGLEVEL = "10";
+    public static final String PARAMVALUE_DEBUGLEVEL = "1"; //TODO: make this configurable in the QuizExtraData
     public static final String PARAMVALUE_FIRST_TEAM_NR = "1";
     //Tabs in the Quiz sheet
     //public static final String SHEET_QUIZLIST = "QuizList";

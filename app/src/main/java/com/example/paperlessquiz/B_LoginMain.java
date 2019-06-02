@@ -50,21 +50,26 @@ public class B_LoginMain extends AppCompatActivity implements B_frag_ListEntitie
                     thisLoginEntity = thisQuiz.getOrganizer(teamNr);
                 }
                 if (input.isEmpty()) {
+                    //If no password was entered
                     Toast.makeText(B_LoginMain.this, "Please enter the passkey provided by the organizers", Toast.LENGTH_SHORT).show();
                 } else {
+                    //If the correct password was entered
                     if (input.equals(thisLoginEntity.getPasskey())) {
-                        if (thisLoginEntity.getType().equals(LoginEntity.SELECTION_PARTICIPANT)) {
+                        //If this is a participant or a corrector or the test team
+                        if (thisLoginEntity.getType().equals(LoginEntity.SELECTION_PARTICIPANT) ||
+                                (thisLoginEntity.getType().equals(LoginEntity.SELECTION_CORRECTOR)) || (thisLoginEntity.getType().equals(LoginEntity.SELECTION_TESTTEAM))) {
                             Intent intent = new Intent(B_LoginMain.this, C_ParticipantHome.class);
                             thisQuiz.setMyLoginentity(thisLoginEntity);
-                            //intent.putExtra(Quiz.INTENT_EXTRANAME_THIS_QUIZ, thisQuiz);
                             startActivity(intent);
-                        } else {
-                            Intent intent = new Intent(B_LoginMain.this, C_ParticipantHome.class);
+                        }
+                        //If this is a quizmaster
+                            if (thisLoginEntity.getType().equals(LoginEntity.SELECTION_QUIZMASTER)) {
+                            Intent intent = new Intent(B_LoginMain.this, C_QuizmasterHome.class);
                             thisQuiz.setMyLoginentity(thisLoginEntity);
-                            //intent.putExtra(Quiz.INTENT_EXTRANAME_THIS_QUIZ, thisQuiz);
                             startActivity(intent);
                         }
                     } else {
+                    //If the wrong password was entered
                         Toast.makeText(B_LoginMain.this, "Passkey " + input + " is incorrect - please enter the passkey provided by the organizers", Toast.LENGTH_SHORT).show();
                     }
                 }

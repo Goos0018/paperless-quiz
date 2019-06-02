@@ -10,6 +10,12 @@ public class LoginEntity implements Serializable {
     public static final String INTENT_EXTRA_NAME_THIS_LOGIN_TYPE = "thisLoginType";
     public static final String SELECTION_PARTICIPANT = "Participant";
     public static final String SELECTION_ORGANIZER = "Organizer";
+    public static final String SELECTION_CORRECTOR = "Corrector";
+    public static final String SELECTION_QUIZMASTER = "Quizmaster";
+    public static final String SELECTION_TESTTEAM = "Testteam";
+
+
+
     private int id;
     private String name;
     private String passkey;

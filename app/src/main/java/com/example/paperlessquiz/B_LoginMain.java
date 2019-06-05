@@ -68,6 +68,12 @@ public class B_LoginMain extends AppCompatActivity implements B_frag_ListEntitie
                             thisQuiz.setMyLoginentity(thisLoginEntity);
                             startActivity(intent);
                         }
+                        //If this is a receptionist
+                        if (thisLoginEntity.getType().equals("Receptionist")) {
+                            Intent intent = new Intent(B_LoginMain.this, C_ShowTeams.class);
+                            thisQuiz.setMyLoginentity(thisLoginEntity);
+                            startActivity(intent);
+                        }
                     } else {
                     //If the wrong password was entered
                         Toast.makeText(B_LoginMain.this, "Passkey " + input + " is incorrect - please enter the passkey provided by the organizers", Toast.LENGTH_SHORT).show();

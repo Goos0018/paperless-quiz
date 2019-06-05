@@ -1,5 +1,6 @@
 package com.example.paperlessquiz.loginentity;
 
+import com.example.paperlessquiz.MyApplication;
 import com.example.paperlessquiz.google.access.GoogleAccess;
 import com.example.paperlessquiz.google.access.ListParsedListener;
 import com.example.paperlessquiz.quiz.Quiz;
@@ -24,14 +25,21 @@ public class GetLoginEntriesLPL implements ListParsedListener<LoginEntity> {
 
     public void listParsed(List<LoginEntity> list) {
         loginEntities = (ArrayList) list;
-        /*
-        if (!(quiz == null)) {
-            if (loginEntities.get(0).getType().equals(LoginEntity.SELECTION_PARTICIPANT)) {
-                quiz.setTeams((ArrayList) list);
-            } else {
-                quiz.setOrganizers((ArrayList) list);
+        //We want to update MyApplication.theQuiz.getTeam(teamNr), but only if that team already exists and it is a Team
+        if (loginEntities.get(0).getType().equals(LoginEntity.SELECTION_PARTICIPANT)){
+            for (int i = 0; i < loginEntities.size(); i++) {
+                LoginEntity team = list.get(i);
+                int teamNr = team.getId();
+                if (teamNr <= MyApplication.theQuiz.getTeams().size()) {
+                    MyApplication.theQuiz.getTeam(teamNr).updateTeamBasics(team);
+                }
+                else{
+
+                }
+
             }
+
         }
-        */
+
     }
 }

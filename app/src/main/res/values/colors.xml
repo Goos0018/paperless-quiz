@@ -10,4 +10,5 @@
     <color name="colorDivider">#BDBDBD</color>
     <color name="correctGreen">#388E3C</color>
     <color name="wrongRed">#D32F2F</color>
+    <color name="halfwayOrange">#F57C00</color>
 </resources>

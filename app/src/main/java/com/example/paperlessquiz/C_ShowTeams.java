@@ -1,5 +1,6 @@
 package com.example.paperlessquiz;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,6 +10,7 @@ import android.view.MenuItem;
 import android.widget.ListView;
 
 import com.example.paperlessquiz.adapters.RoundsAdapter;
+import com.example.paperlessquiz.adapters.ShowTeamsAdapter;
 import com.example.paperlessquiz.google.access.GoogleAccess;
 import com.example.paperlessquiz.google.access.GoogleAccessSet;
 import com.example.paperlessquiz.google.access.LoadingListenerNotify;
@@ -16,18 +18,20 @@ import com.example.paperlessquiz.quiz.Quiz;
 import com.example.paperlessquiz.quiz.QuizLoader;
 import com.example.paperlessquiz.round.Round;
 import com.example.paperlessquiz.round.RoundParser;
-import com.google.gson.Gson;
-
-import org.json.JSONArray;
 
 import java.util.ArrayList;
 
-public class C_QuizmasterHome extends AppCompatActivity {
+public class C_ShowTeams extends AppCompatActivity {
+
+    //TODO: make name field and presence editable for Receptionist + toggle presence via icon + hide round AnswersSubmitted image
+    //TODO: find a way to hide actions not needed by certain roles
+    //TODO: Allow Quizmaster access to this sqcreen but no edit + round taken from previous screen + navigate back
+
 
     Quiz thisQuiz;
-    ListView lvRounds,lvTeams;
-    //RecyclerView.LayoutManager layoutManager;
-    RoundsAdapter showRoundsAdapter;
+    RecyclerView rvTeams;
+    RecyclerView.LayoutManager layoutManager;
+    ShowTeamsAdapter showTeamsAdapter;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -64,18 +68,18 @@ public class C_QuizmasterHome extends AppCompatActivity {
                         "Fieldname=" + RoundParser.ROUND_ACCEPTS_ANSWERS + GoogleAccess.PARAM_CONCATENATOR +
                         "NewValues=" + tmp + GoogleAccess.PARAM_CONCATENATOR +
                         GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_SETDATA;
-                GoogleAccessSet submitRounds = new GoogleAccessSet(C_QuizmasterHome.this, scriptParams);
-                submitRounds.setData(new LoadingListenerNotify(C_QuizmasterHome.this, thisQuiz.getMyLoginentity().getName(),
+                GoogleAccessSet submitRounds = new GoogleAccessSet(C_ShowTeams.this, scriptParams);
+                submitRounds.setData(new LoadingListenerNotify(C_ShowTeams.this, thisQuiz.getMyLoginentity().getName(),
                         "Submitting round statuses"));
                 break;
 
             case R.id.download:
-                    QuizLoader quizLoader = new QuizLoader(C_QuizmasterHome.this, thisQuiz.getListData().getSheetDocID());
-                    quizLoader.loadRounds();
-                    break;
+                QuizLoader quizLoader = new QuizLoader(C_ShowTeams.this, thisQuiz.getListData().getSheetDocID());
+                quizLoader.loadTeams();
+                break;
 
             case R.id.refresh:
-                showRoundsAdapter.notifyDataSetChanged();
+                showTeamsAdapter.notifyDataSetChanged();
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -84,16 +88,16 @@ public class C_QuizmasterHome extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.c_act_quizmaster_home);
+        setContentView(R.layout.c_act_show_teams);
 
         thisQuiz = MyApplication.theQuiz;
-        lvRounds = findViewById(R.id.lvRounds);
+        rvTeams = findViewById(R.id.rvShowTeams);
 
-        //lvRounds.setHasFixedSize(true);
-        //layoutManager = new LinearLayoutManager(this);
-        //lvRounds.setLayoutManager(layoutManager);
-        showRoundsAdapter = new RoundsAdapter(this, thisQuiz.getRounds());
-        lvRounds.setAdapter(showRoundsAdapter);
+        rvTeams.setHasFixedSize(true);
+        layoutManager = new LinearLayoutManager(this);
+        rvTeams.setLayoutManager(layoutManager);
+        showTeamsAdapter = new ShowTeamsAdapter(this, thisQuiz.getTeams(), 1);
+        rvTeams.setAdapter(showTeamsAdapter);
 
 
     }

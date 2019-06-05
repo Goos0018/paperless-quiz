@@ -25,7 +25,7 @@ public class C_ShowTeams extends AppCompatActivity {
 
     //TODO: make name field and presence editable for Receptionist + toggle presence via icon + hide round AnswersSubmitted image
     //TODO: find a way to hide actions not needed by certain roles
-    //TODO: Allow Quizmaster access to this sqcreen but no edit + round taken from previous screen + navigate back
+    //TODO: Allow Quizmaster access to this screen but no edit + round taken from previous screen + navigate back
 
 
     Quiz thisQuiz;

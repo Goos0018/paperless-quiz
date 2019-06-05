@@ -17,22 +17,24 @@ import java.util.ArrayList;
 public class ShowTeamsAdapter extends RecyclerView.Adapter<ShowTeamsAdapter.ViewHolder> {
     private ArrayList<LoginEntity> teams;
     private int roundNr;
+    private ShowTeamsAdapter adapter;
 
 
-    public ShowTeamsAdapter(Context context, ArrayList<LoginEntity> teams,int roundNr) {
+    public ShowTeamsAdapter(Context context, ArrayList<LoginEntity> teams, int roundNr) {
         this.teams = teams;
-        this.roundNr=roundNr;
+        this.roundNr = roundNr;
+        adapter = this;
 
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvTeamName;
-        ImageView ivPresent,ivAnswersSubmitted;
+        ImageView ivPresent, ivAnswersSubmitted;
 
         public ViewHolder(View itemView) {
             super(itemView);
             tvTeamName = itemView.findViewById(R.id.tvTeamName);
-                        ivPresent = itemView.findViewById(R.id.ivTeamPresent);
+            ivPresent = itemView.findViewById(R.id.ivTeamPresent);
             ivAnswersSubmitted = itemView.findViewById(R.id.ivAnswersSubmitted);
 
         }
@@ -54,32 +56,42 @@ public class ShowTeamsAdapter extends RecyclerView.Adapter<ShowTeamsAdapter.View
         boolean isPresent = teams.get(i).isPresent();
         boolean isLoggedIn = teams.get(i).isLoggedIn();
         boolean answersForThisRoundSubmitted = teams.get(i).isAnswersForThisRoundSubmitted(roundNr);
-        if (isPresent){
-            if (isLoggedIn){
+        if (isPresent) {
+            if (isLoggedIn) {
                 viewHolder.ivPresent.setImageResource(R.drawable.team_logged_in);
-            }
-            else
-            {
+            } else {
                 viewHolder.ivPresent.setImageResource(R.drawable.team_not_logged_in);
-            }}
-        else{
+            }
+        } else {
             viewHolder.ivPresent.setImageResource(R.drawable.team_not_present);
         }
-        if (answersForThisRoundSubmitted){
+        if (answersForThisRoundSubmitted) {
             viewHolder.ivAnswersSubmitted.setImageResource(R.drawable.answers_submitted);
-        }
-        else
-        {
+        } else {
             viewHolder.ivAnswersSubmitted.setImageResource(R.drawable.answers_not_submitted);
         }
+
+        viewHolder.ivPresent.setOnClickListener(new View.OnClickListener()
+                //Toggle isPresent from true to false
+        {
+            @Override
+            public void onClick(View view) {
+                final int position = view.getId();
+                teams.get(i).setPresent(!isPresent);
+                adapter.notifyDataSetChanged();
+
+            }
+
+
+        });
     }
 
-    @Override
-    public int getItemCount() {
-        return teams.size();
-    }
+        @Override
+        public int getItemCount() {
+            return teams.size();
+        }
 
-    public void setTeams(ArrayList<LoginEntity> teams) {
-        this.teams = teams;
+        public void setTeams (ArrayList < LoginEntity > teams) {
+            this.teams = teams;
+        }
     }
-}

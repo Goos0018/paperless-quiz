@@ -14,6 +14,8 @@ import java.util.ArrayList;
  * false, false,true: round is assumed to be corrected (final status)
  * The questions Array is  initialized by the GetQuestionsLPL, the rest comes from the GetRoundsLPL
  */
+
+//TODO: Write ToString functions for each class to upload item of the class to QuizSheet
 public class Round implements Serializable, SpinnerData {
     private int roundNr;
     private String id, name, description;
@@ -41,14 +43,6 @@ public class Round implements Serializable, SpinnerData {
         this.acceptsAnswers = acceptsAnswers;
         this.acceptsCorrections = acceptsCorrections;
         this.corrected = corrected;
-        /*
-        this.questions = new QuestionsList();
-        this.questions = new ArrayList<>();
-        for (int i=0;i < nrOfQuestions;i++)
-        {
-            questions.add(i,new Question());
-        }
-        */
     }
 
     public void UpdateRoundBasics(Round rnd) {
@@ -111,5 +105,12 @@ public class Round implements Serializable, SpinnerData {
 
     public void setCorrected(boolean corrected) {
         this.corrected = corrected;
+    }
+
+    @Override
+    public String toString() {
+       String tmp = "[\"" + name + "\",\"" + description + "\",\"" + nrOfQuestions + "\",\"" + Boolean.toString(acceptsAnswers) +
+               "\",\"" + Boolean.toString(acceptsCorrections) + "\",\"" + Boolean.toString(corrected) + "\"]";
+        return tmp;
     }
 }

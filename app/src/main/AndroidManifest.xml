@@ -12,7 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".C_ShowTeams"></activity>
+        <activity android:name=".C_EditTeams"></activity>
         <activity android:name=".C_QuizmasterHome" />
         <activity android:name=".C_CorrectorHome" />
         <activity android:name=".C_ParticipantHome" />

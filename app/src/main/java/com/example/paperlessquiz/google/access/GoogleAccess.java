@@ -40,4 +40,5 @@ public class GoogleAccess {
     public static final String SHEET_SCORES = "Scores";
     public static final String SHEET_EVENTLOG = "EventLog";
 
+    public static final String PARAMNAME_RECORD_ID = "RecordID=";
 }

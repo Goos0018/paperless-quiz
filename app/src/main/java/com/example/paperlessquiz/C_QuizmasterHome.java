@@ -39,10 +39,12 @@ public class C_QuizmasterHome extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.upload:
+                thisQuiz.updateRounds(C_QuizmasterHome.this);
+                /*
                 ArrayList<Round> roundsList = thisQuiz.getRounds();
                 String tmp = "[";
                 for (int i = 0; i < roundsList.size(); i++) {
-                    tmp = tmp + "[\"" + roundsList.get(i).getAcceptsAnswers() + "\",\"" + roundsList.get(i).getAcceptsCorrections() + "\",\"" + roundsList.get(i).isCorrected() +"\"]";
+                    tmp = tmp + roundsList.get(i).toString();
                     if (i<roundsList.size()-1){
                         tmp = tmp + ",";
                     }
@@ -50,23 +52,17 @@ public class C_QuizmasterHome extends AppCompatActivity {
                         tmp = tmp + "]";
                     }
                 }
-//TODO: Write generic function to convert object to Json and array to Json Array suitable for uploading
 
-                /*String json = new Gson().toJson(roundsList);
-                json = new Gson().toJson(roundsList);
-                JSONArray roundsArray = new JSONArray(roundsList);
-                String rounds = roundsArray.toString();
-                rounds = roundsArray.toString();
-                */
                 String scriptParams = GoogleAccess.PARAMNAME_DOC_ID + thisQuiz.getListData().getSheetDocID() + GoogleAccess.PARAM_CONCATENATOR +
-                        "Sheet=" + GoogleAccess.SHEET_ROUNDS + GoogleAccess.PARAM_CONCATENATOR +
-                        "RecordID=" + "1" + GoogleAccess.PARAM_CONCATENATOR +
-                        "Fieldname=" + RoundParser.ROUND_ACCEPTS_ANSWERS + GoogleAccess.PARAM_CONCATENATOR +
-                        "NewValues=" + tmp + GoogleAccess.PARAM_CONCATENATOR +
+                        GoogleAccess.PARAMNAME_SHEET + GoogleAccess.SHEET_ROUNDS + GoogleAccess.PARAM_CONCATENATOR +
+                        GoogleAccess.PARAMNAME_RECORD_ID + "1" + GoogleAccess.PARAM_CONCATENATOR +
+                        GoogleAccess.PARAMNAME_FIELDNAME + RoundParser.ROUND_NAME + GoogleAccess.PARAM_CONCATENATOR +
+                        GoogleAccess.PARAMNAME_NEWVALUES + tmp + GoogleAccess.PARAM_CONCATENATOR +
                         GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_SETDATA;
                 GoogleAccessSet submitRounds = new GoogleAccessSet(C_QuizmasterHome.this, scriptParams);
                 submitRounds.setData(new LoadingListenerNotify(C_QuizmasterHome.this, thisQuiz.getMyLoginentity().getName(),
-                        "Submitting round statuses"));
+                        "Submitting round updates"));
+                */
                 break;
 
             case R.id.download:

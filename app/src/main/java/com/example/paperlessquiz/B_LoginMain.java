@@ -70,7 +70,7 @@ public class B_LoginMain extends AppCompatActivity implements B_frag_ListEntitie
                         }
                         //If this is a receptionist
                         if (thisLoginEntity.getType().equals("Receptionist")) {
-                            Intent intent = new Intent(B_LoginMain.this, C_ShowTeams.class);
+                            Intent intent = new Intent(B_LoginMain.this, C_EditTeams.class);
                             thisQuiz.setMyLoginentity(thisLoginEntity);
                             startActivity(intent);
                         }

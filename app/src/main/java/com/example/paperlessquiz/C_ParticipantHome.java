@@ -247,7 +247,7 @@ public class C_ParticipantHome extends AppCompatActivity {
                         GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_SUBMITANSWERS;
                 GoogleAccessSet submitAnswers = new GoogleAccessSet(C_ParticipantHome.this, scriptParams);
                 submitAnswers.setData(new LoadingListenerNotify(C_ParticipantHome.this, thisQuiz.getMyLoginentity().getName(),
-                        "Submitting answers for round " + (roundSpinner.getRoundNr() + 1)));
+                        "Submitting answers for round " + (roundSpinner.getRoundNr())));
             }
         });
 

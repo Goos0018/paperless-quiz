@@ -16,7 +16,6 @@ public class LoginEntity implements Serializable {
     public static final String SELECTION_TESTTEAM = "Testteam";
 
 
-
     private int id;
     private String name;
     private String passkey;
@@ -72,15 +71,29 @@ public class LoginEntity implements Serializable {
         this.answerForRndsSubmitted = answerForRndsSubmitted;
     }
 
-    public boolean isAnswersForThisRoundSubmitted(int roundNr){
-        return this.answerForRndsSubmitted.get(roundNr-1).booleanValue();
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void updateTeamBasics(LoginEntity team){
-        if (team.getType().equals(SELECTION_PARTICIPANT)){
+    public boolean isAnswersForThisRoundSubmitted(int roundNr) {
+        return this.answerForRndsSubmitted.get(roundNr - 1).booleanValue();
+    }
+
+    public void updateTeamBasics(LoginEntity team) {
+        if (team.getType().equals(SELECTION_PARTICIPANT)) {
             setPresent(team.isPresent());
             setLoggedIn(team.isLoggedIn());
             setAnswerForRndsSubmitted(team.getAnswerForRndsSubmitted());
         }
+    }
+
+    @Override
+    public String toString() {
+        String tmp = "[\"" + name + "\",\"" + passkey + "\",\"" + Boolean.toString(present) + "\",\"" + Boolean.toString(loggedIn);
+        for (int i = 0; i < answerForRndsSubmitted.size(); i++) {
+            tmp = tmp + "\",\"" + Boolean.toString(answerForRndsSubmitted.get(i));
+        }
+        tmp = tmp + "\"]";
+        return tmp;
     }
 }

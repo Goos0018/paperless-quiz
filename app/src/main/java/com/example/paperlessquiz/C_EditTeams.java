@@ -1,19 +1,19 @@
 package com.example.paperlessquiz;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ListView;
 
-import com.example.paperlessquiz.adapters.RoundsAdapter;
+import com.example.paperlessquiz.adapters.EditTeamsAdapter;
 import com.example.paperlessquiz.adapters.ShowTeamsAdapter;
 import com.example.paperlessquiz.google.access.GoogleAccess;
 import com.example.paperlessquiz.google.access.GoogleAccessSet;
 import com.example.paperlessquiz.google.access.LoadingListenerNotify;
+import com.example.paperlessquiz.loginentity.LoginEntity;
+import com.example.paperlessquiz.loginentity.LoginEntityParser;
 import com.example.paperlessquiz.quiz.Quiz;
 import com.example.paperlessquiz.quiz.QuizLoader;
 import com.example.paperlessquiz.round.Round;
@@ -21,7 +21,7 @@ import com.example.paperlessquiz.round.RoundParser;
 
 import java.util.ArrayList;
 
-public class C_ShowTeams extends AppCompatActivity {
+public class C_EditTeams extends AppCompatActivity {
 
     //TODO: make name field and presence editable for Receptionist + toggle presence via icon + hide round AnswersSubmitted image
     //TODO: find a way to hide actions not needed by certain roles
@@ -31,7 +31,7 @@ public class C_ShowTeams extends AppCompatActivity {
     Quiz thisQuiz;
     RecyclerView rvTeams;
     RecyclerView.LayoutManager layoutManager;
-    ShowTeamsAdapter showTeamsAdapter;
+    EditTeamsAdapter editTeamsAdapter;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -43,43 +43,39 @@ public class C_ShowTeams extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.upload:
-                ArrayList<Round> roundsList = thisQuiz.getRounds();
+                thisQuiz.updateTeams(C_EditTeams.this);
+                /*
+                ArrayList<LoginEntity> teamsList = thisQuiz.getTeams();
                 String tmp = "[";
-                for (int i = 0; i < roundsList.size(); i++) {
-                    tmp = tmp + "[\"" + roundsList.get(i).getAcceptsAnswers() + "\",\"" + roundsList.get(i).getAcceptsCorrections() + "\",\"" + roundsList.get(i).isCorrected() +"\"]";
-                    if (i<roundsList.size()-1){
+                for (int i = 0; i < teamsList.size(); i++) {
+                    tmp = tmp + thisQuiz.getTeams().get(i).toString();
+                    if (i<teamsList.size()-1){
                         tmp = tmp + ",";
                     }
                     else{
                         tmp = tmp + "]";
                     }
                 }
-//TODO: Write generic function to convert object to Json and array to Json Array suitable for uploading
 
-                /*String json = new Gson().toJson(roundsList);
-                json = new Gson().toJson(roundsList);
-                JSONArray roundsArray = new JSONArray(roundsList);
-                String rounds = roundsArray.toString();
-                rounds = roundsArray.toString();
-                */
                 String scriptParams = GoogleAccess.PARAMNAME_DOC_ID + thisQuiz.getListData().getSheetDocID() + GoogleAccess.PARAM_CONCATENATOR +
-                        "Sheet=" + GoogleAccess.SHEET_ROUNDS + GoogleAccess.PARAM_CONCATENATOR +
-                        "RecordID=" + "1" + GoogleAccess.PARAM_CONCATENATOR +
-                        "Fieldname=" + RoundParser.ROUND_ACCEPTS_ANSWERS + GoogleAccess.PARAM_CONCATENATOR +
-                        "NewValues=" + tmp + GoogleAccess.PARAM_CONCATENATOR +
+                        GoogleAccess.PARAMNAME_SHEET + GoogleAccess.SHEET_TEAMS + GoogleAccess.PARAM_CONCATENATOR +
+                        GoogleAccess.PARAMNAME_RECORDID + "1" + GoogleAccess.PARAM_CONCATENATOR +
+                        GoogleAccess.PARAMNAME_FIELDNAME + LoginEntityParser.NAME + GoogleAccess.PARAM_CONCATENATOR +
+                        GoogleAccess.PARAMNAME_NEWVALUES + tmp + GoogleAccess.PARAM_CONCATENATOR +
                         GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_SETDATA;
-                GoogleAccessSet submitRounds = new GoogleAccessSet(C_ShowTeams.this, scriptParams);
-                submitRounds.setData(new LoadingListenerNotify(C_ShowTeams.this, thisQuiz.getMyLoginentity().getName(),
-                        "Submitting round statuses"));
+                GoogleAccessSet googleAccessSet = new GoogleAccessSet(C_EditTeams.this, scriptParams);
+                googleAccessSet.setData(new LoadingListenerNotify(C_EditTeams.this, thisQuiz.getMyLoginentity().getName(),
+                        "Submitting team updates"));
+                        */
                 break;
 
             case R.id.download:
-                QuizLoader quizLoader = new QuizLoader(C_ShowTeams.this, thisQuiz.getListData().getSheetDocID());
+                QuizLoader quizLoader = new QuizLoader(C_EditTeams.this, thisQuiz.getListData().getSheetDocID());
                 quizLoader.loadTeams();
                 break;
 
             case R.id.refresh:
-                showTeamsAdapter.notifyDataSetChanged();
+                editTeamsAdapter                                                                                                                                                                                                                                                                                                                                          .notifyDataSetChanged();
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -88,7 +84,7 @@ public class C_ShowTeams extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.c_act_show_teams);
+        setContentView(R.layout.c_act_edit_teams);
 
         thisQuiz = MyApplication.theQuiz;
         rvTeams = findViewById(R.id.rvShowTeams);
@@ -96,8 +92,8 @@ public class C_ShowTeams extends AppCompatActivity {
         rvTeams.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         rvTeams.setLayoutManager(layoutManager);
-        showTeamsAdapter = new ShowTeamsAdapter(this, thisQuiz.getTeams(), 1);
-        rvTeams.setAdapter(showTeamsAdapter);
+        editTeamsAdapter = new EditTeamsAdapter(this, thisQuiz.getTeams());
+        rvTeams.setAdapter(editTeamsAdapter);
 
 
     }

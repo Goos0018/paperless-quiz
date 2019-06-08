@@ -8,6 +8,4 @@
     <dimen name="margin_medium">8sp</dimen>
     <dimen name="margin_large">12sp</dimen>
     <dimen name="margin_huge">20sp</dimen>
-
-
 </resources>

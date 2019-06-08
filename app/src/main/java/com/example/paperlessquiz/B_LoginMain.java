@@ -13,8 +13,12 @@ import com.example.paperlessquiz.loginentity.LoginEntity;
 import com.example.paperlessquiz.quiz.Quiz;
 
 public class B_LoginMain extends AppCompatActivity implements B_frag_ListEntities.ItemSelected {
+    //public class B_LoginMain extends AppCompatActivity implements B_frag_ListEntities.ItemSelected, B_frag_LoginEntity.FragmentListener{
     //Extra objects from intent
     Quiz thisQuiz;
+    //String loginType;
+    //B_frag_LoginEntity b_frag_loginEntity;
+
     LoginEntity thisLoginEntity;
     //Local items in interface
     TextView tvDisplayName, tvDisplayID;
@@ -29,6 +33,10 @@ public class B_LoginMain extends AppCompatActivity implements B_frag_ListEntitie
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.b_act_login_main);
+     //   thisQuiz=MyApplication.theQuiz;
+     //   loginType = (String) getIntent().getStringExtra(LoginEntity.INTENT_EXTRA_NAME_THIS_LOGIN_TYPE);
+     //  b_frag_loginEntity = getSupportFragmentManager().findFragmentById(R.id.));
+
 
         tvDisplayName = findViewById(R.id.tvDisplayName);
         tvDisplayID = findViewById(R.id.tvDisplayID);
@@ -55,7 +63,7 @@ public class B_LoginMain extends AppCompatActivity implements B_frag_ListEntitie
                 } else {
                     //If the correct password was entered
                     if (input.equals(thisLoginEntity.getPasskey())) {
-                        //If this is a participant or a corrector or the test team
+                        //If this is a participant or a corrector or the setFields team
                         if (thisLoginEntity.getType().equals(LoginEntity.SELECTION_PARTICIPANT) ||
                                 (thisLoginEntity.getType().equals(LoginEntity.SELECTION_CORRECTOR)) || (thisLoginEntity.getType().equals(LoginEntity.SELECTION_TESTTEAM))) {
                             Intent intent = new Intent(B_LoginMain.this, C_ParticipantHome.class);
@@ -70,7 +78,7 @@ public class B_LoginMain extends AppCompatActivity implements B_frag_ListEntitie
                         }
                         //If this is a receptionist
                         if (thisLoginEntity.getType().equals("Receptionist")) {
-                            Intent intent = new Intent(B_LoginMain.this, C_EditTeams.class);
+                            Intent intent = new Intent(B_LoginMain.this, C_EditOrShowTeams.class);
                             thisQuiz.setMyLoginentity(thisLoginEntity);
                             startActivity(intent);
                         }
@@ -81,14 +89,30 @@ public class B_LoginMain extends AppCompatActivity implements B_frag_ListEntitie
                 }
             }
         });
-    }
 
+        onItemSelected(0);
+    }
+/*
+    //NEW
+    @Override
+    public void setFields(String name, String id) {
+
+            b_frag_loginEntity.setFields(name, id);
+
+
+    }
+    +*/
+//ENDNEW
     @Override
     public void onItemSelected(int index) {
+
         if (loginType.equals(LoginEntity.SELECTION_PARTICIPANT)) {
             tvDisplayName.setText(thisQuiz.getTeams().get(index).getName());
             tvDisplayID.setText(Integer.toString(thisQuiz.getTeams().get(index).getId()));
+
+            //tFields(thisQuiz.getTeams().get(index).getName(), Integer.toString(thisQuiz.getTeams().get(index).getId()));
         } else {
+            //setFields(thisQuiz.getOrganizers().get(index).getName(), Integer.toString(thisQuiz.getOrganizers().get(index).getId()));
             tvDisplayName.setText(thisQuiz.getOrganizers().get(index).getName());
             tvDisplayID.setText(Integer.toString(thisQuiz.getOrganizers().get(index).getId()));
         }

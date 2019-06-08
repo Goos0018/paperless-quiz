@@ -23,6 +23,7 @@ public class B_frag_ListEntities extends ListFragment {
     String loginType;
 
     ItemSelected actLoginMain;
+
     public interface  ItemSelected{
         void onItemSelected(int index);
     }

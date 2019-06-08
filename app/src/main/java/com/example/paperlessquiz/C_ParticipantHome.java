@@ -1,5 +1,8 @@
 package com.example.paperlessquiz;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -28,6 +31,8 @@ import com.example.paperlessquiz.quiz.QuizLoader;
 import com.example.paperlessquiz.round.Round;
 import com.example.paperlessquiz.spinners.QuestionSpinner;
 import com.example.paperlessquiz.spinners.RoundSpinner;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import org.json.JSONArray;
 
@@ -57,7 +62,7 @@ public class C_ParticipantHome extends AppCompatActivity {
     ImageView ivRoundStatus;
     EditText etAnswer;
     Button btnRndUp, btnRndDown, btnQuestionUp, btnQuestionDown, btnSubmit, btnSubmitCorrections;
-    LinearLayout displayAnswersLayout, editAnswerLayout, correctorLayout,questionSpinnerLayout;
+    LinearLayout displayAnswersLayout, editAnswerLayout, correctorLayout, questionSpinnerLayout;
     ListView lvCorrectQuestions;
     RecyclerView rvDisplayAnswers;
     DisplayAnswersAdapter displayAnswersAdapter;
@@ -70,10 +75,18 @@ public class C_ParticipantHome extends AppCompatActivity {
         //Question thisQuestion = thisQuiz.getQuestion(roundSpinner.getRoundNr(),questionSpinner.getQuestionNr());
         String thisLoginEntityType = thisQuiz.getMyLoginentity().getType();
         //Set the icon that shows the round status
-        if (!thisRound.getAcceptsAnswers() && !thisRound.getAcceptsCorrections() && !thisRound.isCorrected()){ivRoundStatus.setImageResource(R.drawable.rnd_not_yet_open);}
-        if (thisRound.getAcceptsAnswers()){ivRoundStatus.setImageResource(R.drawable.rnd_open);}
-        if (thisRound.getAcceptsCorrections()){ivRoundStatus.setImageResource(R.drawable.rnd_closed);}
-        if (thisRound.isCorrected()){ivRoundStatus.setImageResource(R.drawable.rnd_corrected);}
+        if (!thisRound.getAcceptsAnswers() && !thisRound.getAcceptsCorrections() && !thisRound.isCorrected()) {
+            ivRoundStatus.setImageResource(R.drawable.rnd_not_yet_open);
+        }
+        if (thisRound.getAcceptsAnswers()) {
+            ivRoundStatus.setImageResource(R.drawable.rnd_open);
+        }
+        if (thisRound.getAcceptsCorrections()) {
+            ivRoundStatus.setImageResource(R.drawable.rnd_closed);
+        }
+        if (thisRound.isCorrected()) {
+            ivRoundStatus.setImageResource(R.drawable.rnd_corrected);
+        }
         //If this is a participant
         if (thisLoginEntityType.equals(LoginEntity.SELECTION_PARTICIPANT)) {
             if (thisRound.getAcceptsAnswers()) {
@@ -99,20 +112,18 @@ public class C_ParticipantHome extends AppCompatActivity {
             //No need for the editAnswers and displayAnswers parts
             editAnswerLayout.setVisibility((View.GONE));
             displayAnswersLayout.setVisibility(View.GONE);
-            if (thisRound.getAcceptsCorrections()){
+            if (thisRound.getAcceptsCorrections()) {
                 questionSpinnerLayout.setVisibility(View.VISIBLE);
                 correctorLayout.setVisibility((View.VISIBLE));
-            }
-            else
-            {
+            } else {
                 questionSpinnerLayout.setVisibility(View.GONE);
                 correctorLayout.setVisibility((View.GONE));
             }
             ArrayList<Answer> allAnswers;
-            allAnswers = thisQuiz.getQuestion(roundSpinner.getRoundNr(),questionSpinner.getQuestionNr()).getAllAnswers();
+            allAnswers = thisQuiz.getQuestion(roundSpinner.getRoundNr(), questionSpinner.getQuestionNr()).getAllAnswers();
             myAdapter = new CorrectAnswersAdapter(this, allAnswers);
             lvCorrectQuestions.setAdapter(myAdapter);
-            tvCorrectAnswer.setText(thisQuiz.getQuestion(roundSpinner.getRoundNr(),questionSpinner.getQuestionNr()).getCorrectAnswer());
+            tvCorrectAnswer.setText(thisQuiz.getQuestion(roundSpinner.getRoundNr(), questionSpinner.getQuestionNr()).getCorrectAnswer());
         }
 
     }
@@ -121,6 +132,8 @@ public class C_ParticipantHome extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.c_participant_home, menu);
         return super.onCreateOptionsMenu(menu);
+
+
     }
 
     @Override
@@ -140,18 +153,44 @@ public class C_ParticipantHome extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.c_act_participant_home);
-
+        thisQuiz = MyApplication.theQuiz;
+        //Set the action bar
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        //actionBar.setIcon();
-        //actionBar.setDisplayHomeAsUpEnabled(true);
-        //actionBar.setDisplayUseLogoEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true); //Display the "back" icon, we will replace this with the icon of this Quiz
+        final Target mTarget = new Target() {
+            @Override
+            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom loadedFrom) {
+                //Log.d("DEBUG", "onBitmapLoaded");
+                BitmapDrawable mBitmapDrawable = new BitmapDrawable(getResources(), bitmap);
+                //                                mBitmapDrawable.setBounds(0,0,24,24);
+                // setting icon of Menu Item or Navigation View's Menu Item
+                //actionBar.setIcon(mBitmapDrawable);
+                actionBar.setHomeAsUpIndicator(mBitmapDrawable);
+            }
 
-        //thisQuiz = (Quiz) getIntent().getSerializableExtra(Quiz.INTENT_EXTRANAME_THIS_QUIZ);
-        thisQuiz=MyApplication.theQuiz;
-        thisTeamNr = thisQuiz.getMyLoginentity().getId();
+            @Override
+            public void onBitmapFailed(Drawable drawable) {
+                //Log.d("DEBUG", "onBitmapFailed");
+            }
+
+            @Override
+            public void onPrepareLoad(Drawable drawable) {
+                //Log.d("DEBUG", "onPrepareLoad");
+            }
+        };
+        String URL = thisQuiz.getListData().getLogoURL();
+        if (URL.equals("")) {
+            actionBar.setDisplayHomeAsUpEnabled(false);//If the Quiz has no logo, then don't display anything
+        } else {
+            //Picasso.with(this).load("http://www.meerdaal.be//assets/logo-05c267018885eb67356ce0b49bf72129.png").into(mTarget);
+            Picasso.with(this).load(thisQuiz.getListData().getLogoURL()).resize(Quiz.ACTIONBAR_ICON_WIDTH, Quiz.ACTIONBAR_ICON_HEIGHT).into(mTarget);
+        }
+        actionBar.setTitle(thisQuiz.getMyLoginentity().getName());
+
         //Log that the user logged in
+        thisTeamNr = thisQuiz.getMyLoginentity().getId();
         MyApplication.eventLogger.logEvent(thisQuiz.getMyLoginentity().getName(), "Logged in");
+        //Get all the stuff from the layout
         displayAnswersLayout = findViewById(R.id.llDisplay);
         editAnswerLayout = findViewById(R.id.llAnswers);
         correctorLayout = findViewById(R.id.llCorrectQuestions);
@@ -169,24 +208,19 @@ public class C_ParticipantHome extends AppCompatActivity {
         btnRndUp = findViewById(R.id.btnRndUp);
         btnSubmit = findViewById(R.id.btnSubmit);
         btnSubmitCorrections = findViewById(R.id.btnSubmitCorrections);
-        ivRoundStatus=findViewById(R.id.ivRndStatus);
+        ivRoundStatus = findViewById(R.id.ivRndStatus);
         lvCorrectQuestions = findViewById(R.id.lvCorrectQuestions);
         rvDisplayAnswers = findViewById(R.id.rvDisplayAnswers);
         rvDisplayAnswers.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         rvDisplayAnswers.setLayoutManager(layoutManager);
-        displayAnswersAdapter = new DisplayAnswersAdapter(this,thisQuiz.getRound(1).getQuestions(),thisTeamNr);
-        //rvDisplayAnswers.setAdapter(displayAnswersAdapter);
-
-        actionBar.setTitle(thisQuiz.getMyLoginentity().getName());
-
+        displayAnswersAdapter = new DisplayAnswersAdapter(this, thisQuiz.getRound(1).getQuestions(), thisTeamNr);
         //Initially, we start with question 1 of round 1, so set the text of the editText to this answer
-        etAnswer.setText(thisQuiz.getQuestion(1,1).getAnswerForTeam(thisTeamNr).getTheAnswer());
-        questionSpinner = new QuestionSpinner(thisQuiz, tvQuestionName, tvQuestionDescription, etAnswer, 1,thisTeamNr);
+        etAnswer.setText(thisQuiz.getQuestion(1, 1).getAnswerForTeam(thisTeamNr).getTheAnswer());
+        questionSpinner = new QuestionSpinner(thisQuiz, tvQuestionName, tvQuestionDescription, etAnswer, 1, thisTeamNr);
         roundSpinner = new RoundSpinner(thisQuiz, tvRoundName, tvRoundDescription, questionSpinner);
         //Refresh does all actions that are dependent on the position of the question spinner and the roundspinner
         refresh();
-
 
         btnRndDown.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -227,7 +261,7 @@ public class C_ParticipantHome extends AppCompatActivity {
                 questionSpinner.moveDown();
                 questionSpinner.moveUp();
                 refresh();
-                ArrayList<Answer> answerList = thisQuiz.getAnswersForRound(roundSpinner.getRoundNr(),thisTeamNr);
+                ArrayList<Answer> answerList = thisQuiz.getAnswersForRound(roundSpinner.getRoundNr(), thisTeamNr);
                 String tmp = "[";
                 for (int i = 0; i < answerList.size(); i++) {
                     tmp = tmp + "[\"" + answerList.get(i).getTheAnswer() + "\"]";

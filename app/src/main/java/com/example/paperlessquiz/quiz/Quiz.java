@@ -22,6 +22,8 @@ public class Quiz implements Serializable {
     public static final String INTENT_EXTRANAME_THIS_QUIZ = "ThisQuiz";
     public static final int TARGET_WIDTH = 200;
     public static final int TARGET_HEIGHT = 200;
+    public static final int ACTIONBAR_ICON_WIDTH = 150;
+    public static final int ACTIONBAR_ICON_HEIGHT = 150;
     private QuizListData listData;
     private QuizExtraData additionalData;
     private ArrayList<LoginEntity> teams;

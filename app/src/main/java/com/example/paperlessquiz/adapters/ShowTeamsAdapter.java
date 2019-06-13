@@ -71,6 +71,7 @@ public class ShowTeamsAdapter extends RecyclerView.Adapter<ShowTeamsAdapter.View
             viewHolder.ivAnswersSubmitted.setImageResource(R.drawable.answers_not_submitted);
         }
 
+        /*
         viewHolder.ivPresent.setOnClickListener(new View.OnClickListener()
                 //Toggle isPresent from true to false
         {
@@ -84,6 +85,7 @@ public class ShowTeamsAdapter extends RecyclerView.Adapter<ShowTeamsAdapter.View
 
 
         });
+        */
     }
 
         @Override
@@ -94,4 +96,8 @@ public class ShowTeamsAdapter extends RecyclerView.Adapter<ShowTeamsAdapter.View
         public void setTeams (ArrayList < LoginEntity > teams) {
             this.teams = teams;
         }
+
+    public void setRoundNr(int roundNr) {
+        this.roundNr = roundNr;
     }
+}

@@ -10,6 +10,7 @@ import android.widget.ListView;
 import com.example.paperlessquiz.adapters.QuizListAdapter;
 import com.example.paperlessquiz.google.access.GoogleAccess;
 import com.example.paperlessquiz.google.access.GoogleAccessGet;
+import com.example.paperlessquiz.google.access.LoadingActivity;
 import com.example.paperlessquiz.google.access.LoadingListenerShowProgress;
 import com.example.paperlessquiz.quiz.Quiz;
 import com.example.paperlessquiz.quizlistdata.GetQuizListDataLPL;
@@ -24,11 +25,17 @@ TODO: extract string resources + constants
 TODO: layout
  */
 
-public class MainActivity extends AppCompatActivity {
-    Quiz thisQuiz;// = new Quiz();
+public class MainActivity extends AppCompatActivity implements LoadingActivity {
+    Quiz thisQuiz = MyApplication.theQuiz;
     ListView lv_QuizList;
     QuizListAdapter adapter;
     String scriptParams;
+
+    @Override
+    public void loadingComplete() {
+        //nothing to do here
+        String test="Test";
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         scriptParams = GoogleAccess.PARAMNAME_DOC_ID + GoogleAccess.QUIZLIST_DOC_ID + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_SHEET + GoogleAccess.QUIZLIST_TABNAME + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_GETDATA;
-        GoogleAccessGet<QuizListData> googleAccessGet = new GoogleAccessGet<QuizListData>(this, scriptParams);
+        GoogleAccessGet<QuizListData> googleAccessGet = new GoogleAccessGet<QuizListData>(this, scriptParams, thisQuiz.getAdditionalData().getDebugLevel());
         googleAccessGet.getItems(new QuizListDataParser(), new GetQuizListDataLPL(adapter),
                 new LoadingListenerShowProgress(this, "Please wait", "Loading list of available quizzes",
                         "Something went wrong: ",false));

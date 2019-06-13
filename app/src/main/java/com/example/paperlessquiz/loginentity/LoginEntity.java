@@ -14,6 +14,7 @@ public class LoginEntity implements Serializable {
     public static final String SELECTION_CORRECTOR = "Corrector";
     public static final String SELECTION_QUIZMASTER = "Quizmaster";
     public static final String SELECTION_TESTTEAM = "Testteam";
+    public static final String SELECTION_RECEPTIONIST = "Receptionist";
 
 
     private int id;

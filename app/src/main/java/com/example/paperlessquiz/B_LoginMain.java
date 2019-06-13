@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 import com.example.paperlessquiz.loginentity.LoginEntity;
 import com.example.paperlessquiz.quiz.Quiz;
-
+//TODO:prevent showing keyboard initially, only show after selection is made
 public class B_LoginMain extends AppCompatActivity implements B_frag_ListEntities.ItemSelected {
     //public class B_LoginMain extends AppCompatActivity implements B_frag_ListEntities.ItemSelected, B_frag_LoginEntity.FragmentListener{
     //Extra objects from intent
@@ -64,23 +64,29 @@ public class B_LoginMain extends AppCompatActivity implements B_frag_ListEntitie
                     //If the correct password was entered
                     if (input.equals(thisLoginEntity.getPasskey())) {
                         //If this is a participant or a corrector or the setFields team
-                        if (thisLoginEntity.getType().equals(LoginEntity.SELECTION_PARTICIPANT) ||
-                                (thisLoginEntity.getType().equals(LoginEntity.SELECTION_CORRECTOR)) || (thisLoginEntity.getType().equals(LoginEntity.SELECTION_TESTTEAM))) {
-                            Intent intent = new Intent(B_LoginMain.this, C_ParticipantHome.class);
-                            thisQuiz.setMyLoginentity(thisLoginEntity);
-                            startActivity(intent);
-                        }
-                        //If this is a quizmaster
-                            if (thisLoginEntity.getType().equals(LoginEntity.SELECTION_QUIZMASTER)) {
-                            Intent intent = new Intent(B_LoginMain.this, C_QuizmasterHome.class);
-                            thisQuiz.setMyLoginentity(thisLoginEntity);
-                            startActivity(intent);
-                        }
-                        //If this is a receptionist
-                        if (thisLoginEntity.getType().equals("Receptionist")) {
-                            Intent intent = new Intent(B_LoginMain.this, C_EditOrShowTeams.class);
-                            thisQuiz.setMyLoginentity(thisLoginEntity);
-                            startActivity(intent);
+                        thisQuiz.setMyLoginentity(thisLoginEntity);
+                        switch (thisLoginEntity.getType()){
+                            case LoginEntity.SELECTION_PARTICIPANT:
+                                if (thisLoginEntity.isPresent()){
+                                Intent intentP = new Intent(B_LoginMain.this, C_ParticipantHome.class);
+                                startActivity(intentP);}
+                                else
+                                {
+                                    Toast.makeText(B_LoginMain.this, "Please register at the reception first", Toast.LENGTH_LONG).show();
+                                }
+                                break;
+                            case LoginEntity.SELECTION_QUIZMASTER:
+                                Intent intentQM = new Intent(B_LoginMain.this, C_QuizmasterRounds.class);
+                                startActivity(intentQM);
+                                break;
+                            case LoginEntity.SELECTION_CORRECTOR:
+                                Intent intentC = new Intent(B_LoginMain.this, C_CorrectorHome_New.class);
+                                startActivity(intentC);
+                                break;
+                            case LoginEntity.SELECTION_RECEPTIONIST:
+                                Intent intentR = new Intent(B_LoginMain.this, C_ReceptionistHome.class);
+                                startActivity(intentR);
+                                break;
                         }
                     } else {
                     //If the wrong password was entered

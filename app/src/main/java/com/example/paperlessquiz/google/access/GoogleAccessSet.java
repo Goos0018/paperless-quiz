@@ -16,16 +16,18 @@ import java.util.List;
 public class GoogleAccessSet {
     private Context context;
     private String parameters;
+    int debugLevel;
 
-    public GoogleAccessSet(Context context, String parameters) {
+    public GoogleAccessSet(Context context, String parameters,int debugLevel) {
         this.context = context;
         this.parameters = parameters;
+        this.debugLevel=debugLevel;
     }
 
     //This method will add a line at the bottom of the sheet that was passed via parameters, using the other fields that were given
     public void setData(LoadingListener loadingListener) {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, GoogleAccess.SCRIPT_URL + parameters
-                + GoogleAccess.PARAM_CONCATENATOR + GoogleAccess.PARAMNAME_DEBUGLEVEL + GoogleAccess.PARAMVALUE_DEBUGLEVEL,
+                + GoogleAccess.PARAM_CONCATENATOR + GoogleAccess.PARAMNAME_DEBUGLEVEL + debugLevel,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {

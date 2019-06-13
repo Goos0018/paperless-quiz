@@ -27,13 +27,14 @@ public class EditTeamsAdapter extends RecyclerView.Adapter<EditTeamsAdapter.View
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvTeamNr;
+        TextView tvTeamNr, tvTeamName;
         EditText etTeamName;
         ImageView ivPresent;
 
         public ViewHolder(View itemView) {
             super(itemView);
             tvTeamNr = itemView.findViewById(R.id.tvTeamNr);
+            tvTeamName = itemView.findViewById(R.id.tvTeamName);
             etTeamName = itemView.findViewById(R.id.etTeamName);
             ivPresent = itemView.findViewById(R.id.ivTeamPresent);
         }
@@ -53,12 +54,23 @@ public class EditTeamsAdapter extends RecyclerView.Adapter<EditTeamsAdapter.View
         viewHolder.itemView.setTag(teams.get(i));
         viewHolder.tvTeamNr.setText(teams.get(i).getId() + ".");
         viewHolder.etTeamName.setText(teams.get(i).getName());
+        viewHolder.tvTeamName.setText(teams.get(i).getName());
         boolean isPresent = teams.get(i).isPresent();
         if (isPresent) {
-                viewHolder.ivPresent.setImageResource(R.drawable.team_present);
+            viewHolder.ivPresent.setImageResource(R.drawable.team_present);
         } else {
             viewHolder.ivPresent.setImageResource(R.drawable.team_not_present);
         }
+
+        viewHolder.tvTeamName.setOnClickListener(new View.OnClickListener()
+                //Make field editable when clicked
+        {
+            @Override
+            public void onClick(View view) {
+                viewHolder.tvTeamName.setVisibility(View.GONE);
+                viewHolder.etTeamName.setVisibility(View.VISIBLE);
+            }
+        });
 
         viewHolder.ivPresent.setOnClickListener(new View.OnClickListener()
                 //Toggle isPresent from true to false
@@ -68,6 +80,8 @@ public class EditTeamsAdapter extends RecyclerView.Adapter<EditTeamsAdapter.View
                 final int position = view.getId();
                 teams.get(i).setPresent(!isPresent);
                 teams.get(i).setName(viewHolder.etTeamName.getText().toString().trim());
+                viewHolder.tvTeamName.setVisibility(View.VISIBLE);
+                viewHolder.etTeamName.setVisibility(View.GONE);
                 adapter.notifyDataSetChanged();
             }
         });

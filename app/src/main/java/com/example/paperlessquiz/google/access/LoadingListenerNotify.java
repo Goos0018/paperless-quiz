@@ -5,6 +5,8 @@ import android.widget.Toast;
 
 import com.example.paperlessquiz.MyApplication;
 
+//This LL will showa short message indicating that loading was started.
+// It will also log the same message to the eventLogger
 public class LoadingListenerNotify implements LoadingListener {
     private Context context;
     private String userName;

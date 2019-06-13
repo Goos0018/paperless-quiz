@@ -9,11 +9,19 @@
         android:orderInCategory="100"
         android:title="Refresh"
         app:showAsAction="always" />
-    <item android:id="@+id/order"
-        android:title="Thirsty!"
+
+    <item
+        android:id="@+id/allcorrect"
+        android:icon="@drawable/answer_ok"
         android:orderInCategory="100"
-        app:showAsAction="always"
-        android:icon="@drawable/dorst"/>
+        android:title="Rounds"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/allwrong"
+        android:icon="@drawable/answer_nok"
+        android:orderInCategory="100"
+        android:title="Rounds"
+        app:showAsAction="always" />
 
     <item android:id="@+id/teams"
         android:title="Teams"
@@ -26,12 +34,11 @@
         android:orderInCategory="100"
         app:showAsAction="always"
         android:icon="@drawable/rounds"/>
-
-    <item android:id="@+id/upload"
-        android:title="Upload"
+    <item
+        android:id="@+id/order"
+        android:icon="@drawable/dorst"
         android:orderInCategory="100"
-        app:showAsAction="always"
-        android:icon="@drawable/upload"/>
-
+        android:title="Thirsty!"
+        app:showAsAction="always" />
 
 </menu>

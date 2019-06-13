@@ -9,14 +9,14 @@
     tools:context=".B_LoginMain">
 
     <fragment
-        android:id="@+id/loginEntity"
+        android:id="@+id/loginEntityNew"
         android:name="com.example.paperlessquiz.B_frag_LoginEntity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:layout="@layout/b_frag_login_entity" />
 
     <fragment
-        android:id="@+id/listEntities"
+        android:id="@+id/listEntitiesNew"
         android:name="com.example.paperlessquiz.B_frag_ListEntities"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -24,23 +24,25 @@ public class GoogleAccessGet<T> {
 
     private Context context;
     private String parameters;
+    int debugLevel;
 
-    public GoogleAccessGet(Context context, String parameters) {
+    public GoogleAccessGet(Context context, String parameters,int debugLevel) {
         this.context = context;
         this.parameters = parameters;
+        this.debugLevel=debugLevel;
     }
 
     //For each type of object/specific use, you need to create an implementation of JsonParser and ListParsedListener
     public void getItems(JsonParser<T> parser, final ListParsedListener<T> listParsedListener, LoadingListener loadingListener) {
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, GoogleAccess.SCRIPT_URL+parameters +
-                GoogleAccess.PARAM_CONCATENATOR + GoogleAccess.PARAMNAME_DEBUGLEVEL + GoogleAccess.PARAMVALUE_DEBUGLEVEL,
+                GoogleAccess.PARAM_CONCATENATOR + GoogleAccess.PARAMNAME_DEBUGLEVEL + debugLevel,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         List<T> items =  parseItems(response, parser);
-                        loadingListener.loadingEnded();
                         listParsedListener.listParsed(items);
+                        loadingListener.loadingEnded();
                     }
                 },
 

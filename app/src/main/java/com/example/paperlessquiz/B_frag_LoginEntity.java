@@ -95,13 +95,13 @@ public interface FragmentListener{
                         }
                         //If this is a quizmaster
                         if (thisLoginEntity.getType().equals(LoginEntity.SELECTION_QUIZMASTER)) {
-                            Intent intent = new Intent(activity, C_QuizmasterHome.class);
+                            Intent intent = new Intent(activity, C_QuizmasterRounds.class);
                             thisQuiz.setMyLoginentity(thisLoginEntity);
                             startActivity(intent);
                         }
                         //If this is a receptionist
                         if (thisLoginEntity.getType().equals("Receptionist")) {
-                            Intent intent = new Intent(activity, C_EditOrShowTeams.class);
+                            Intent intent = new Intent(activity, C_QuizmasterTeams.class);
                             thisQuiz.setMyLoginentity(thisLoginEntity);
                             startActivity(intent);
                         }

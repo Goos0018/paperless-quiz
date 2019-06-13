@@ -23,6 +23,7 @@ import com.example.paperlessquiz.adapters.DisplayAnswersAdapter;
 import com.example.paperlessquiz.answer.Answer;
 import com.example.paperlessquiz.google.access.GoogleAccess;
 import com.example.paperlessquiz.google.access.GoogleAccessSet;
+import com.example.paperlessquiz.google.access.LoadingActivity;
 import com.example.paperlessquiz.google.access.LoadingListenerNotify;
 import com.example.paperlessquiz.loginentity.LoginEntity;
 import com.example.paperlessquiz.question.Question;
@@ -47,13 +48,8 @@ Display is as follows:
 - Round is corrected: display answers + scores + correct answers if available
  */
 
-//TODO: Show Icon displaying round status
-//TODO: Correct Question ID's
-//TODO: Hide icon while filling out a round
-//TODO: Make sure answers are loaded from sheet when restarting
-//TODO: fix bug with loading rounds not done when loading questions/answers + refresh rounds.
 
-public class C_ParticipantHome extends AppCompatActivity {
+public class C_ParticipantHome extends AppCompatActivity implements LoadingActivity {
     Quiz thisQuiz;
     int thisTeamNr;
     RoundSpinner roundSpinner;
@@ -69,6 +65,11 @@ public class C_ParticipantHome extends AppCompatActivity {
     RecyclerView.LayoutManager layoutManager;
     CorrectAnswersAdapter myAdapter;
 
+    @Override
+    public void loadingComplete() {
+        //Actions do do when we are completed (re)loading data from the Google sheet
+        refresh();
+    }
 
     private void refresh() {
         Round thisRound = thisQuiz.getRound(roundSpinner.getRoundNr());
@@ -160,23 +161,13 @@ public class C_ParticipantHome extends AppCompatActivity {
         final Target mTarget = new Target() {
             @Override
             public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom loadedFrom) {
-                //Log.d("DEBUG", "onBitmapLoaded");
                 BitmapDrawable mBitmapDrawable = new BitmapDrawable(getResources(), bitmap);
-                //                                mBitmapDrawable.setBounds(0,0,24,24);
-                // setting icon of Menu Item or Navigation View's Menu Item
-                //actionBar.setIcon(mBitmapDrawable);
                 actionBar.setHomeAsUpIndicator(mBitmapDrawable);
             }
-
             @Override
-            public void onBitmapFailed(Drawable drawable) {
-                //Log.d("DEBUG", "onBitmapFailed");
-            }
-
+            public void onBitmapFailed(Drawable drawable) { }
             @Override
-            public void onPrepareLoad(Drawable drawable) {
-                //Log.d("DEBUG", "onPrepareLoad");
-            }
+            public void onPrepareLoad(Drawable drawable) { }
         };
         String URL = thisQuiz.getListData().getLogoURL();
         if (URL.equals("")) {
@@ -208,7 +199,7 @@ public class C_ParticipantHome extends AppCompatActivity {
         btnRndUp = findViewById(R.id.btnRndUp);
         btnSubmit = findViewById(R.id.btnSubmit);
         btnSubmitCorrections = findViewById(R.id.btnSubmitCorrections);
-        ivRoundStatus = findViewById(R.id.ivRndStatus);
+        ivRoundStatus = findViewById(R.id.ivRndStatusL);
         lvCorrectQuestions = findViewById(R.id.lvCorrectQuestions);
         rvDisplayAnswers = findViewById(R.id.rvDisplayAnswers);
         rvDisplayAnswers.setHasFixedSize(true);
@@ -279,7 +270,7 @@ public class C_ParticipantHome extends AppCompatActivity {
                         GoogleAccess.PARAMNAME_TEAMID + thisQuiz.getMyLoginentity().getId() + GoogleAccess.PARAM_CONCATENATOR +
                         GoogleAccess.PARAMNAME_ANSWERS + tmp + GoogleAccess.PARAM_CONCATENATOR +
                         GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_SUBMITANSWERS;
-                GoogleAccessSet submitAnswers = new GoogleAccessSet(C_ParticipantHome.this, scriptParams);
+                GoogleAccessSet submitAnswers = new GoogleAccessSet(C_ParticipantHome.this, scriptParams, thisQuiz.getAdditionalData().getDebugLevel());
                 submitAnswers.setData(new LoadingListenerNotify(C_ParticipantHome.this, thisQuiz.getMyLoginentity().getName(),
                         "Submitting answers for round " + (roundSpinner.getRoundNr())));
             }
@@ -306,7 +297,7 @@ public class C_ParticipantHome extends AppCompatActivity {
                         GoogleAccess.PARAMNAME_FIELDNAME + GoogleAccess.PARAMVALUE_FIRST_TEAM_NR + GoogleAccess.PARAM_CONCATENATOR + //We write score starting from the first team which should have id 1
                         GoogleAccess.PARAMNAME_NEWVALUES + tmp + GoogleAccess.PARAM_CONCATENATOR +
                         GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_SETDATA;
-                GoogleAccessSet submitScores = new GoogleAccessSet(C_ParticipantHome.this, scriptParams);
+                GoogleAccessSet submitScores = new GoogleAccessSet(C_ParticipantHome.this, scriptParams,thisQuiz.getAdditionalData().getDebugLevel());
                 submitScores.setData(new LoadingListenerNotify(C_ParticipantHome.this, thisQuiz.getMyLoginentity().getName(),
                         "Submitting scores for question " + thisQuiz.getQuestion(roundSpinner.getRoundNr(), questionSpinner.getQuestionNr()).getQuestionID()));
             }

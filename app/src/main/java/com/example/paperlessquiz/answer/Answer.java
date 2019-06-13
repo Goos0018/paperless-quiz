@@ -3,6 +3,7 @@ package com.example.paperlessquiz.answer;
 import java.io.Serializable;
 
 public class Answer implements Serializable{
+    //TODO: add question ID here so we can display it when correcting answers
 
     //private int questionNr;
     private String theAnswer;
@@ -53,5 +54,6 @@ public class Answer implements Serializable{
 
     public void setCorrect(boolean correct) {
         this.correct = correct;
+        this.corrected=true;
     }
 }

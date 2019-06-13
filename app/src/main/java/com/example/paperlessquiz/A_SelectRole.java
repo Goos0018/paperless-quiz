@@ -8,10 +8,10 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.paperlessquiz.google.access.LoadingActivity;
 import com.example.paperlessquiz.loginentity.LoginEntity;
 import com.example.paperlessquiz.quiz.Quiz;
 import com.example.paperlessquiz.quiz.QuizLoader;
-import com.example.paperlessquiz.quizlistdata.QuizListData;
 
 /* This screen allows you to select if you are an organizer or a participant.
 All data about the quiz is loaded and stored in a Quiz object
@@ -19,7 +19,7 @@ TODO: string resources and constants
 TODO: layout
  */
 
-public class A_SelectRole extends AppCompatActivity {
+public class A_SelectRole extends AppCompatActivity implements LoadingActivity {
 
     Quiz thisQuiz;
     QuizLoader quizLoader;
@@ -30,6 +30,11 @@ public class A_SelectRole extends AppCompatActivity {
     Button btnParticipant;
     Button btnOrganizer;
     TextView tvWelcome;
+
+    @Override
+    public void loadingComplete() {
+        //Do something when loading is complete - not needed here
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +84,7 @@ public class A_SelectRole extends AppCompatActivity {
         thisQuiz.setRounds(quizLoader.quizRoundsLPL.getRounds()); //=> not necessary, always done inside the LPL when retrieving rounds info
         thisQuiz.setAllQuestionsPerRound(quizLoader.quizQuestionsLPL.getAllQuestionsPerRound()); //this will work because the Quiz should have all rounds initialized
         thisQuiz.setAllAnswersPerQuestion(quizLoader.quizAnswersLPL.getAllAnswersPerRound());    //this will work because the Quiz should have all questions for each round initialized
+        thisQuiz.setAllCorrectionsPerQuestion(quizLoader.quizCorrectionsLPL.getAllCorrectionsPerRound());    //this will work because the Quiz should have all questions for each round initialized
         intent = new Intent(A_SelectRole.this, B_LoginMain.class);
         //intent.putExtra(Quiz.INTENT_EXTRANAME_THIS_QUIZ, thisQuiz);
         intent.putExtra(LoginEntity.INTENT_EXTRA_NAME_THIS_LOGIN_TYPE, selection);

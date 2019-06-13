@@ -2,6 +2,7 @@ package com.example.paperlessquiz.quiz;
 
 import android.content.Context;
 
+import com.example.paperlessquiz.Corrections.CorrectionsList;
 import com.example.paperlessquiz.answer.Answer;
 import com.example.paperlessquiz.answerslist.AnswersList;
 import com.example.paperlessquiz.google.access.GoogleAccess;
@@ -19,17 +20,17 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Quiz implements Serializable {
-    public static final String INTENT_EXTRANAME_THIS_QUIZ = "ThisQuiz";
     public static final int TARGET_WIDTH = 200;
     public static final int TARGET_HEIGHT = 200;
-    public static final int ACTIONBAR_ICON_WIDTH = 150;
-    public static final int ACTIONBAR_ICON_HEIGHT = 150;
+    public static final int ACTIONBAR_ICON_WIDTH = 125;
+    public static final int ACTIONBAR_ICON_HEIGHT = 125;
     private QuizListData listData;
     private QuizExtraData additionalData;
     private ArrayList<LoginEntity> teams;
     private ArrayList<LoginEntity> organizers;
     private ArrayList<Round> rounds;
     private LoginEntity myLoginentity;
+    public QuizLoader loader;
 
     //We only need an empty constructor, the QuizLoader class will populate all fields of the quiz
     public Quiz() {
@@ -62,6 +63,23 @@ public class Quiz implements Serializable {
                 this.getRounds().get(i).getQuestions().get(j).setAllAnswers(allAnswersForThisQuestion.getAllAnswers());
             }
 
+        }
+    }
+
+    //Add the answers for each question from an array of array of AnswersLists
+    public void setAllCorrectionsPerQuestion(ArrayList<ArrayList<CorrectionsList>> allCorrectionsPerRound) {
+        //For each entry in the allAnswersPerRound array (=for each round)
+        for (int i = 0; i < allCorrectionsPerRound.size(); i++) {
+            ArrayList<CorrectionsList> allCorrectionsForThisRound = allCorrectionsPerRound.get(i);
+            //For each question in this round
+            for (int j = 0; j < allCorrectionsForThisRound.size(); j++) {
+                CorrectionsList allCorrectionsForThisQuestion = allCorrectionsForThisRound.get(j);
+                //Foreach answer to this question
+                for (int k = 0; k < allCorrectionsForThisQuestion.getAllCorrections().size() ; k++) {
+                    getRounds().get(i).getQuestions().get(j).getAllAnswers().get(k).setCorrect(allCorrectionsForThisQuestion.getAllCorrections().get(k).isCorrect());
+                    getRounds().get(i).getQuestions().get(j).getAllAnswers().get(k).setCorrected(allCorrectionsForThisQuestion.getAllCorrections().get(k).isCorrected());
+                }
+            }
         }
     }
 
@@ -169,7 +187,7 @@ public class Quiz implements Serializable {
                 GoogleAccess.PARAMNAME_FIELDNAME + RoundParser.ROUND_NAME + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_NEWVALUES + tmp + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_SETDATA;
-        GoogleAccessSet submitRounds = new GoogleAccessSet(context, scriptParams);
+        GoogleAccessSet submitRounds = new GoogleAccessSet(context, scriptParams,getAdditionalData().getDebugLevel());
         submitRounds.setData(new LoadingListenerNotify(context, getMyLoginentity().getName(),
                 "Submitting round updates"));
     }
@@ -191,9 +209,55 @@ public class Quiz implements Serializable {
                 GoogleAccess.PARAMNAME_FIELDNAME + LoginEntityParser.NAME + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_NEWVALUES + tmp + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_SETDATA;
-        GoogleAccessSet googleAccessSet = new GoogleAccessSet(context, scriptParams);
+        GoogleAccessSet googleAccessSet = new GoogleAccessSet(context, scriptParams,getAdditionalData().getDebugLevel());
         googleAccessSet.setData(new LoadingListenerNotify(context, getMyLoginentity().getName(),
                 "Submitting team updates"));
+    }
+
+    public void submitCorrectionsForQuestion(Context context, int roundNr, int questionNr){
+        ArrayList<Answer> answerList = getAllAnswersForQuestion(roundNr, questionNr);
+        String tmp = "[[";
+        for (int i = 0; i < answerList.size(); i++) {
+            tmp = tmp + "\"" + answerList.get(i).isCorrect() + "\"";
+            if (i < answerList.size() - 1) {
+                tmp = tmp + ",";
+            }
+        }
+        tmp = tmp + "]]";
+        String scriptParams = GoogleAccess.PARAMNAME_DOC_ID + getListData().getSheetDocID() + GoogleAccess.PARAM_CONCATENATOR +
+                GoogleAccess.PARAMNAME_USERID + "Rupert" + GoogleAccess.PARAM_CONCATENATOR +
+                GoogleAccess.PARAMNAME_SHEET + GoogleAccess.SHEET_SCORES + GoogleAccess.PARAM_CONCATENATOR +
+                GoogleAccess.PARAMNAME_RECORDID + getQuestion(roundNr, questionNr).getQuestionID() + GoogleAccess.PARAM_CONCATENATOR +
+                //We write score starting from the first team which should have id 1
+                GoogleAccess.PARAMNAME_FIELDNAME + GoogleAccess.PARAMVALUE_FIRST_TEAM_NR + GoogleAccess.PARAM_CONCATENATOR +
+                GoogleAccess.PARAMNAME_NEWVALUES + tmp + GoogleAccess.PARAM_CONCATENATOR +
+                GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_SETDATA;
+        GoogleAccessSet submitScores = new GoogleAccessSet(context, scriptParams,getAdditionalData().getDebugLevel());
+        submitScores.setData(new LoadingListenerNotify(context, getMyLoginentity().getName(),
+                "Submitting scores for question " + getQuestion(roundNr, questionNr).getQuestionID()));
+    }
+
+    public void submitCorrectionsForTeam(Context context, int roundNr, int teamNr){
+        ArrayList<Answer> answerList = getAnswersForRound(roundNr, teamNr);
+        String tmp = "[";
+        for (int i = 0; i < answerList.size(); i++) {
+            tmp = tmp + "[\"" + answerList.get(i).isCorrect() + "\"]";
+            if (i < answerList.size() - 1) {
+                tmp = tmp + ",";
+            }
+        }
+        tmp = tmp + "]";
+        String scriptParams = GoogleAccess.PARAMNAME_DOC_ID + getListData().getSheetDocID() + GoogleAccess.PARAM_CONCATENATOR +
+                GoogleAccess.PARAMNAME_USERID + "Rupert" + GoogleAccess.PARAM_CONCATENATOR +
+                GoogleAccess.PARAMNAME_SHEET + GoogleAccess.SHEET_SCORES + GoogleAccess.PARAM_CONCATENATOR +
+                GoogleAccess.PARAMNAME_RECORDID + getQuestion(roundNr, 1).getQuestionID() + GoogleAccess.PARAM_CONCATENATOR +
+                //We write score starting from the first team which should have id 1
+                GoogleAccess.PARAMNAME_FIELDNAME + teamNr + GoogleAccess.PARAM_CONCATENATOR +
+                GoogleAccess.PARAMNAME_NEWVALUES + tmp + GoogleAccess.PARAM_CONCATENATOR +
+                GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_SETDATA;
+        GoogleAccessSet submitScores = new GoogleAccessSet(context, scriptParams,getAdditionalData().getDebugLevel());
+        submitScores.setData(new LoadingListenerNotify(context, getMyLoginentity().getName(),
+                "Submitting scores for team " + getTeam(teamNr).getName()));
     }
 
 }

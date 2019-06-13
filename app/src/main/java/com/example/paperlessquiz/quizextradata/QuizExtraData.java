@@ -7,17 +7,20 @@ public class QuizExtraData implements Serializable {
     private boolean open;
     private int nrOfRounds;
     private int nrOfParticipants;
+    private int debugLevel;
 
-    public QuizExtraData(boolean open, int nrOfRounds, int nrOfParticipants) {
+    public QuizExtraData(boolean open, int nrOfRounds, int nrOfParticipants, int debugLevel) {
         this.open = open;
         this.nrOfRounds = nrOfRounds;
         this.nrOfParticipants = nrOfParticipants;
+        this.debugLevel=debugLevel;
     }
 
     public QuizExtraData(){
         this.open = false;
         this.nrOfRounds = 0;
         this.nrOfParticipants = 0;
+        this.debugLevel = 0;
     }
 
 
@@ -25,6 +28,7 @@ public class QuizExtraData implements Serializable {
         this.open = quizExtraData.open;
         this.nrOfRounds = quizExtraData.nrOfRounds;
         this.nrOfParticipants = quizExtraData.nrOfParticipants;
+        this.debugLevel=quizExtraData.getDebugLevel();
     }
 
 
@@ -39,5 +43,9 @@ public class QuizExtraData implements Serializable {
 
     public int getNrOfParticipants() {
         return nrOfParticipants;
+    }
+
+    public int getDebugLevel() {
+        return debugLevel;
     }
 }

@@ -30,14 +30,17 @@ public class ParticipantsAdapter extends ArrayAdapter<LoginEntity> {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View rowView = inflater.inflate(R.layout.row_layout_select_login_name,parent,false);
+        View rowView = inflater.inflate(R.layout.row_layout_select_login_name, parent, false);
         TextView tvName = (TextView) rowView.findViewById(R.id.tvName);
         TextView tvType = (TextView) rowView.findViewById(R.id.tvType);
         //ImageView ivleft = (ImageView) rowView.findViewById(R.id.ivQuizLogo);
-
         tvName.setText(getItem(position).getName());
-        tvType.setText(this.getItem(position).getType());
-        //ivleft.setImageResource(R.mipmap.placeholder);
+        //tvType.setText(this.getItem(position).getType());
+        if (getItem(position).getType().equals(LoginEntity.TYPE_PARTICIPANT)) {
+            tvType.setText("Team " + getItem(position).getId());
+        } else {
+            tvType.setText(this.getItem(position).getType());
+        }
         return rowView;
     }
 

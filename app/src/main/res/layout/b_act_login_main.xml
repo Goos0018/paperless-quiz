@@ -8,18 +8,83 @@
     android:orientation="vertical"
     tools:context=".B_LoginMain">
 
-    <fragment
-        android:id="@+id/loginEntityNew"
-        android:name="com.example.paperlessquiz.B_frag_LoginEntity"
+    <TextView
+        android:id="@+id/tv_login_prompt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:layout="@layout/b_frag_login_entity" />
+        android:layout_marginLeft="@dimen/margin_large"
+        android:layout_marginTop="@dimen/margin_tiny"
+        android:layout_marginRight="@dimen/margin_large"
+        android:background="@color/colorPrimaryLight"
+        android:gravity="center"
+        android:text="Select your team in the list below"
+        android:textColor="@color/colorSecondaryText"
+        android:textSize="18sp" />
 
-    <fragment
-        android:id="@+id/listEntitiesNew"
-        android:name="com.example.paperlessquiz.B_frag_ListEntities"
+    <TextView
+        android:id="@+id/tvDisplayID"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:layout="@layout/b_frag_list_entities" />
+        android:layout_marginLeft="@dimen/margin_large"
+        android:layout_marginTop="@dimen/margin_tiny"
+        android:layout_marginRight="@dimen/margin_large"
+        android:background="@color/colorPrimaryLight"
+        android:gravity="center"
+        android:text="Team number"
+        android:textColor="@color/colorPrimaryText"
+        android:textSize="@dimen/text_size_medium" />
+
+    <TextView
+        android:id="@+id/tvDisplayName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_large"
+        android:layout_marginTop="@dimen/margin_tiny"
+        android:layout_marginRight="@dimen/margin_large"
+        android:background="@color/colorPrimaryLight"
+        android:gravity="center"
+        android:text="Team name"
+        android:textColor="@color/colorPrimaryText"
+        android:textSize="@dimen/text_size_large"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/et_passkey"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_large"
+        android:layout_marginTop="@dimen/margin_tiny"
+        android:layout_marginRight="@dimen/margin_large"
+        android:background="@color/colorPrimaryLight"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="Enter passkey"
+        android:imeOptions="actionDone"
+        android:inputType="textPersonName"
+        android:textColor="@color/wrongRed"
+        android:textColorHint="@color/wrongRed" />
+
+    <Button
+        android:id="@+id/btn_submit_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_large"
+        android:layout_marginTop="@dimen/margin_tiny"
+        android:layout_marginRight="@dimen/margin_large"
+        android:layout_marginBottom="@dimen/margin_tiny"
+        android:gravity="center"
+        android:text="Log in" />
+
+
+    <ListView
+        android:id="@+id/lvNamesList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/margin_large"
+        android:layout_marginTop="@dimen/margin_tiny"
+        android:layout_marginRight="@dimen/margin_large"
+        android:layout_marginBottom="@dimen/margin_tiny"
+        android:background="@color/colorPrimaryLight"
+        app:layout_constraintTop_toBottomOf="@+id/tv_select_name_prompt" />
 
 </LinearLayout>

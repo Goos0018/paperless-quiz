@@ -25,78 +25,97 @@ import com.squareup.picasso.Target;
 
 import java.util.ArrayList;
 
-/**
- * Home screen for the corrector. Allows to correct questions
- * - per team/round (all answers for one team for one round)
- * - or per question (all answers of all teams)
- * Activity uses roundSpinner and questionSpinner fragments to scroll through round and questions
- * Actions: Refresh/Dorst/All wrong/All correct/Per question/per team
- */
+public class C_CorrectorHome extends AppCompatActivity implements LoadingActivity, FragSecondarySpinner.HasSecondarySpinner, Frag_RndSpinner.HasRoundSpinner {
 
-public class C_CorrectorHome extends AppCompatActivity implements LoadingActivity, Frag_RndSpinner.HasRoundSpinner, Frag_QuestionSpinner.QuestionHasChanged {
     Quiz thisQuiz = MyApplication.theQuiz;
-    int thisTeamNr, thisRoundNr, thisQuestionNr = 1;
+    int thisTeamNr, thisRoundNr, thisSecSpinnerPos = 1;
     TextView tvCorrectAnswer;
     Button btnSubmitCorrections;
     LinearLayout llCorrectQuestions;
     ListView lvCorrectQuestions;
     CorrectAnswersAdapter myAdapter;
-    Frag_QuestionSpinner qSpinner;
+    Frag_RndSpinner rndSpinner;
+    FragSecondarySpinner qSpinner;
     ArrayList<Answer> allAnswers;
+    boolean correctPerQuestion = true;
+    QuizLoader quizLoader;
 
     @Override
-    public void loadingComplete() {
-        //Actions do do when we are completed (re)loading data from the Google sheet
+    public void onSecondarySpinnerChanged(int oldSecSpinnerNr, int newSecSpinnerNr) {
+        this.thisSecSpinnerPos = newSecSpinnerNr;
         refresh();
+    }
+
+    @Override
+    public String getValueToSetForPrimaryField(int priSpinnerPos, int secSpinnerPos) {
+        if (correctPerQuestion) {
+            return thisQuiz.getQuestion(priSpinnerPos, secSpinnerPos).getName();
+        } else {
+            return Integer.toString(thisQuiz.getTeam(secSpinnerPos).getId());
+        }
+    }
+
+    @Override
+    public String getValueToSetForSecondaryField(int priSpinnerPos, int secSpinnerPos) {
+        if (correctPerQuestion) {
+            return thisQuiz.getQuestion(priSpinnerPos, secSpinnerPos).getDescription();
+        } else {
+            return thisQuiz.getTeam(secSpinnerPos).getName();
+        }
+    }
+
+    @Override
+    public int getSizeOfSecSpinnerArray(int priSpinnerPos) {
+        if (correctPerQuestion) {
+            return thisQuiz.getRound(priSpinnerPos).getQuestions().size();
+        } else {
+            return thisQuiz.getTeams().size();
+        }
     }
 
     @Override
     public void onRoundChanged(int roundNr) {
         this.thisRoundNr = roundNr;
-        qSpinner.setRoundNr(roundNr);
+        qSpinner.setPrimarySpinnerPos(roundNr);
         refresh();
     }
 
     @Override
-    public void onQuestionChanged(int oldQuestionNr, int newQuestionNr) {
-        this.thisQuestionNr = newQuestionNr;
+    public void loadingComplete() {
+        //If this was the quizloader for the rounds, we don't want to set the corrections
+        if(quizLoader.quizCorrectionsLPL.getAllCorrectionsPerRound().size()==0){} else {
+        thisQuiz.setAllCorrectionsPerQuestion(quizLoader.quizCorrectionsLPL.getAllCorrectionsPerRound());}
+        rndSpinner.positionChanged();
+        qSpinner.refreshDisplay();
         refresh();
-    }
-
-    private void refresh() {
-        //Depending on the round status, show the llCorrectQuestions and add the correct answers to the adapter
-        Round thisRound = thisQuiz.getRound(thisRoundNr);
-        if (thisRound.getAcceptsCorrections()) {
-            llCorrectQuestions.setVisibility((View.VISIBLE));
-        } else {
-            llCorrectQuestions.setVisibility((View.GONE));
-        }
-
-        allAnswers = thisQuiz.getQuestion(thisRoundNr, thisQuestionNr).getAllAnswers();
-        myAdapter = new CorrectAnswersAdapter(this, allAnswers);
-        lvCorrectQuestions.setAdapter(myAdapter);
-        tvCorrectAnswer.setText(thisQuiz.getQuestion(thisRoundNr, thisQuestionNr).getCorrectAnswer());
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.corrector, menu);
-        //Hide item for the correction per question button
-        MenuItem item = menu.findItem(R.id.rounds);
-        item.setVisible(false);
+        //Hide item for the correction per team/per question button as needed button
+        /*
+        MenuItem correctPerRndItem = menu.findItem(R.id.rounds);
+        MenuItem correctPerTeamItem = menu.findItem(R.id.teams);
+        if (correctPerQuestion){correctPerRndItem.setVisible(false);}
+        else {correctPerTeamItem.setVisible(false);}
+        */
         return super.onCreateOptionsMenu(menu);
-
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.refresh:
-                QuizLoader quizLoader = new QuizLoader(C_CorrectorHome.this, thisQuiz.getListData().getSheetDocID());
+                quizLoader = new QuizLoader(C_CorrectorHome.this, thisQuiz.getListData().getSheetDocID());
                 quizLoader.loadRounds();
-                refresh();
+                quizLoader.loadAllCorrections();
                 break;
-            case R.id.rounds:
+            case R.id.teams:
+                correctPerQuestion = !correctPerQuestion;
+                qSpinner.moveTo(1);
+                refresh();
+                qSpinner.refreshDisplay();
                 break;
             case R.id.allcorrect:
                 for (int i = 0; i < allAnswers.size(); i++) {
@@ -114,12 +133,34 @@ public class C_CorrectorHome extends AppCompatActivity implements LoadingActivit
         return super.onOptionsItemSelected(item);
     }
 
+    private void refresh() {
+        //Depending on the round status, show the llCorrectQuestions and add the correct answers to the adapter
+        Round thisRound = thisQuiz.getRound(thisRoundNr);
+        if (thisRound.getAcceptsCorrections()) {
+            llCorrectQuestions.setVisibility((View.VISIBLE));
+        } else {
+            llCorrectQuestions.setVisibility((View.GONE));
+        }
+        if (correctPerQuestion) {
+            allAnswers = thisQuiz.getQuestion(thisRoundNr, thisSecSpinnerPos).getAllAnswers();
+            tvCorrectAnswer.setText(thisQuiz.getQuestion(thisRoundNr, thisSecSpinnerPos).getCorrectAnswer());
+            tvCorrectAnswer.setVisibility(View.VISIBLE);
+        } else {
+            allAnswers = thisQuiz.getAnswersForRound(thisRoundNr, thisSecSpinnerPos);
+            tvCorrectAnswer.setVisibility(View.GONE);
+        }
+        myAdapter = new CorrectAnswersAdapter(this, allAnswers);
+        lvCorrectQuestions.setAdapter(myAdapter);
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.c_act_corrector_home);
         //Get the questionSpinner fragment
-        qSpinner = (Frag_QuestionSpinner) getSupportFragmentManager().findFragmentById(R.id.frQuestionSpinner);
+        qSpinner = (FragSecondarySpinner) getSupportFragmentManager().findFragmentById(R.id.frQuestionSpinner);
+        rndSpinner = (Frag_RndSpinner) getSupportFragmentManager().findFragmentById(R.id.frPriSpinner);
         //Set the action bar
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true); //Display the "back" icon, we will replace this with the icon of this Quiz
@@ -158,20 +199,14 @@ public class C_CorrectorHome extends AppCompatActivity implements LoadingActivit
         btnSubmitCorrections.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                thisQuiz.submitCorrectionsForQuestion(C_CorrectorHome.this, thisRoundNr, thisQuestionNr);
+                if (correctPerQuestion) {
+                    thisQuiz.submitCorrectionsForQuestion(C_CorrectorHome.this, thisRoundNr, thisSecSpinnerPos);
+                }
+                else
+                {
+                    thisQuiz.submitCorrectionsForTeam(C_CorrectorHome.this,thisRoundNr,thisSecSpinnerPos);
+                }
             }
         });
-    }
-
-    @Override
-    protected void onPause() {
-        MyApplication.eventLogger.logEvent(thisQuiz.getMyLoginentity().getName(), "WARNING: Paused the app");
-        super.onPause();
-    }
-
-    @Override
-    protected void onPostResume() {
-        super.onPostResume();
-        MyApplication.eventLogger.logEvent(thisQuiz.getMyLoginentity().getName(), "WARNING: Resumed the app");
     }
 }

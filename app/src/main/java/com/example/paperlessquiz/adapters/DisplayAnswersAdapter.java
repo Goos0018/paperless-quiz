@@ -16,6 +16,7 @@ import com.example.paperlessquiz.question.Question;
 
 import java.util.ArrayList;
 
+//TODO: check to add rounds status to make sure corrections are not displayed if not applicable
 public class DisplayAnswersAdapter extends RecyclerView.Adapter<DisplayAnswersAdapter.ViewHolder> {
     private ArrayList<Question> questions;
 private int teamNr;

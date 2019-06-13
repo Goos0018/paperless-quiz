@@ -35,7 +35,7 @@ public class C_QuizmasterTeams extends AppCompatActivity implements Frag_RndSpin
     @Override
     public void onRoundChanged(int roundNr) {
         this.roundNr = roundNr;
-        if (thisQuiz.getMyLoginentity().getType().equals(LoginEntity.SELECTION_QUIZMASTER) && showTeamsAdapter != null) {
+        if (thisQuiz.getMyLoginentity().getType().equals(LoginEntity.TYPE_QUIZMASTER) && showTeamsAdapter != null) {
             showTeamsAdapter.setRoundNr(roundNr);
             showTeamsAdapter.notifyDataSetChanged();
         }

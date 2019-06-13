@@ -4,48 +4,70 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.paperlessquiz.adapters.ParticipantsAdapter;
 import com.example.paperlessquiz.loginentity.LoginEntity;
 import com.example.paperlessquiz.quiz.Quiz;
-//TODO:prevent showing keyboard initially, only show after selection is made
-public class B_LoginMain extends AppCompatActivity implements B_frag_ListEntities.ItemSelected {
-    //public class B_LoginMain extends AppCompatActivity implements B_frag_ListEntities.ItemSelected, B_frag_LoginEntity.FragmentListener{
-    //Extra objects from intent
-    Quiz thisQuiz;
-    //String loginType;
-    //B_frag_LoginEntity b_frag_loginEntity;
 
+//TODO:prevent showing keyboard initially, only show after selection is made
+public class B_LoginMain extends AppCompatActivity {
+    Quiz thisQuiz = MyApplication.theQuiz;
     LoginEntity thisLoginEntity;
     //Local items in interface
     TextView tvDisplayName, tvDisplayID;
     EditText etPasskey;
     Button btnSubmit;
+    ListView lvShowParticipants;
+    ParticipantsAdapter adapter;
     String loginType;
     //other local variables needed
     int teamNr;
 
+    private void setFields(int position) {
+        if (loginType.equals(LoginEntity.SELECTION_PARTICIPANT)) {
+            tvDisplayName.setText(thisQuiz.getTeams().get(position).getName());
+            tvDisplayID.setText(Integer.toString(thisQuiz.getTeams().get(position).getId()));
+            etPasskey.setText("");
+            //tFields(thisQuiz.getTeams().get(index).getName(), Integer.toString(thisQuiz.getTeams().get(index).getId()));
+        } else {
+            //setFields(thisQuiz.getOrganizers().get(index).getName(), Integer.toString(thisQuiz.getOrganizers().get(index).getId()));
+            tvDisplayName.setText(thisQuiz.getOrganizers().get(position).getName());
+            tvDisplayID.setText(Integer.toString(thisQuiz.getOrganizers().get(position).getId()));
+            //tvDisplayID.setVisibility(View.GONE);
+            etPasskey.setText("");
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.b_act_login_main);
-     //   thisQuiz=MyApplication.theQuiz;
-     //   loginType = (String) getIntent().getStringExtra(LoginEntity.INTENT_EXTRA_NAME_THIS_LOGIN_TYPE);
-     //  b_frag_loginEntity = getSupportFragmentManager().findFragmentById(R.id.));
-
 
         tvDisplayName = findViewById(R.id.tvDisplayName);
         tvDisplayID = findViewById(R.id.tvDisplayID);
         btnSubmit = (Button) findViewById(R.id.btn_submit_login);
         etPasskey = (EditText) findViewById(R.id.et_passkey);
-        //thisQuiz = (Quiz) getIntent().getSerializableExtra(Quiz.INTENT_EXTRANAME_THIS_QUIZ);
-        thisQuiz=MyApplication.theQuiz;
+        lvShowParticipants = (ListView) findViewById(R.id.lvNamesList);
         loginType = (String) getIntent().getStringExtra(LoginEntity.INTENT_EXTRA_NAME_THIS_LOGIN_TYPE);
-        onItemSelected(0);
+        if (loginType.equals(LoginEntity.SELECTION_PARTICIPANT)) {
+            adapter = new ParticipantsAdapter(this, thisQuiz.getTeams());
+        } else {
+            adapter = new ParticipantsAdapter(this, thisQuiz.getOrganizers());
+        }
+        setFields(0);
+        lvShowParticipants.setAdapter(adapter);
+        lvShowParticipants.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                setFields(position);
+            }
+        });
 
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,62 +87,34 @@ public class B_LoginMain extends AppCompatActivity implements B_frag_ListEntitie
                     if (input.equals(thisLoginEntity.getPasskey())) {
                         //If this is a participant or a corrector or the setFields team
                         thisQuiz.setMyLoginentity(thisLoginEntity);
-                        switch (thisLoginEntity.getType()){
+                        switch (thisLoginEntity.getType()) {
                             case LoginEntity.SELECTION_PARTICIPANT:
-                                if (thisLoginEntity.isPresent()){
-                                Intent intentP = new Intent(B_LoginMain.this, C_ParticipantHome.class);
-                                startActivity(intentP);}
-                                else
-                                {
+                                if (thisLoginEntity.isPresent()) {
+                                    Intent intentP = new Intent(B_LoginMain.this, C_ParticipantHome.class);
+                                    startActivity(intentP);
+                                } else {
                                     Toast.makeText(B_LoginMain.this, "Please register at the reception first", Toast.LENGTH_LONG).show();
                                 }
                                 break;
-                            case LoginEntity.SELECTION_QUIZMASTER:
+                            case LoginEntity.TYPE_QUIZMASTER:
                                 Intent intentQM = new Intent(B_LoginMain.this, C_QuizmasterRounds.class);
                                 startActivity(intentQM);
                                 break;
-                            case LoginEntity.SELECTION_CORRECTOR:
-                                Intent intentC = new Intent(B_LoginMain.this, C_CorrectorHome_New.class);
+                            case LoginEntity.TYPE_CORRECTOR:
+                                Intent intentC = new Intent(B_LoginMain.this, C_CorrectorHome.class);
                                 startActivity(intentC);
                                 break;
-                            case LoginEntity.SELECTION_RECEPTIONIST:
+                            case LoginEntity.TYPE_RECEPTIONIST:
                                 Intent intentR = new Intent(B_LoginMain.this, C_ReceptionistHome.class);
                                 startActivity(intentR);
                                 break;
                         }
                     } else {
-                    //If the wrong password was entered
+                        //If the wrong password was entered
                         Toast.makeText(B_LoginMain.this, "Passkey " + input + " is incorrect - please enter the passkey provided by the organizers", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
         });
-
-        onItemSelected(0);
-    }
-/*
-    //NEW
-    @Override
-    public void setFields(String name, String id) {
-
-            b_frag_loginEntity.setFields(name, id);
-
-
-    }
-    +*/
-//ENDNEW
-    @Override
-    public void onItemSelected(int index) {
-
-        if (loginType.equals(LoginEntity.SELECTION_PARTICIPANT)) {
-            tvDisplayName.setText(thisQuiz.getTeams().get(index).getName());
-            tvDisplayID.setText(Integer.toString(thisQuiz.getTeams().get(index).getId()));
-
-            //tFields(thisQuiz.getTeams().get(index).getName(), Integer.toString(thisQuiz.getTeams().get(index).getId()));
-        } else {
-            //setFields(thisQuiz.getOrganizers().get(index).getName(), Integer.toString(thisQuiz.getOrganizers().get(index).getId()));
-            tvDisplayName.setText(thisQuiz.getOrganizers().get(index).getName());
-            tvDisplayID.setText(Integer.toString(thisQuiz.getOrganizers().get(index).getId()));
-        }
     }
 }

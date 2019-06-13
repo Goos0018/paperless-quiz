@@ -34,7 +34,6 @@ public class MainActivity extends AppCompatActivity implements LoadingActivity {
     @Override
     public void loadingComplete() {
         //nothing to do here
-        String test="Test";
     }
 
     @Override

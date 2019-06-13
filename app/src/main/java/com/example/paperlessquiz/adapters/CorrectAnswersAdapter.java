@@ -15,6 +15,7 @@ import com.example.paperlessquiz.answer.Answer;
 import java.util.ArrayList;
 
 //This class is used to correct all answers given by the participating teams for a specific question
+//test
 public class CorrectAnswersAdapter extends ArrayAdapter<Answer> {
 
     public final Context context;

@@ -24,7 +24,7 @@ import com.squareup.picasso.Target;
  * Quizmaster screen to show the teams and whether or not they submitted answers for a particular round
  * Actions: Refresh/Dorst/Rounds/Upload
  */
-public class C_QuizmasterTeams extends AppCompatActivity implements Frag_RndSpinner.HasRoundSpinner, LoadingActivity {
+public class C_QuizmasterTeams extends AppCompatActivity implements FragRoundSpinner.HasRoundSpinner, LoadingActivity {
     //TODO: Move code toset icon and nameto separate class/location
     Quiz thisQuiz = MyApplication.theQuiz;
     RecyclerView rvTeams;
@@ -33,7 +33,7 @@ public class C_QuizmasterTeams extends AppCompatActivity implements Frag_RndSpin
     int roundNr;
 
     @Override
-    public void onRoundChanged(int roundNr) {
+    public void onRoundChanged(int oldRoundnNr,int roundNr) {
         this.roundNr = roundNr;
         if (thisQuiz.getMyLoginentity().getType().equals(LoginEntity.TYPE_QUIZMASTER) && showTeamsAdapter != null) {
             showTeamsAdapter.setRoundNr(roundNr);
@@ -52,9 +52,9 @@ public class C_QuizmasterTeams extends AppCompatActivity implements Frag_RndSpin
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.c_quizmaster_home, menu);
-        //Hide item for the Teams button
-        MenuItem item = menu.findItem(R.id.teams);
-        item.setVisible(false);
+        //Hide item for the Teams button and also the upload button
+        menu.findItem(R.id.teams).setVisible(false);
+        menu.findItem(R.id.upload).setVisible(false);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -62,7 +62,7 @@ public class C_QuizmasterTeams extends AppCompatActivity implements Frag_RndSpin
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.upload:
-                thisQuiz.updateTeams(C_QuizmasterTeams.this);
+                //thisQuiz.updateTeams(C_QuizmasterTeams.this);
                 break;
 
             case R.id.refresh:

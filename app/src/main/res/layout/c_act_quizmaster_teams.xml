@@ -10,10 +10,11 @@
 
     <fragment
         android:id="@+id/frRndSpinner"
-        android:name="com.example.paperlessquiz.Frag_RndSpinner"
+        android:name="com.example.paperlessquiz.FragRoundSpinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_medium" />
+        android:layout_marginTop="@dimen/margin_medium"
+        tools:layout="@layout/frag_round_spinner" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvShowTeams"

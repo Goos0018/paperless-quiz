@@ -17,18 +17,20 @@ public class CorrectionsListParser implements JsonParser<CorrectionsList> {
 
     @Override
     public CorrectionsList parse(JSONObject jo) throws JSONException {
-        CorrectionsList correctionsList = new CorrectionsList(jo.getString(QUESTION_ID),jo.getInt(ROUND_NR), jo.getInt(QUESTION_NR));
+        CorrectionsList correctionsList = new CorrectionsList(jo.getString(QUESTION_ID), jo.getInt(ROUND_NR), jo.getInt(QUESTION_NR));
         ArrayList<Correction> allCorrections = new ArrayList<>();
+        boolean isCorrect, isCorrected;
         for (int i = 3; i < jo.length(); i++) {
             //Check if there is something filled out, if not, the question has not been corrected
-            String test =  jo.getString("" + (i-START_OF_TEAMS+1));
-            if (test.equals("")){
-                allCorrections.add(i-START_OF_TEAMS,new Correction(false,false));
+            try {
+                isCorrect = jo.getBoolean("" + (i - START_OF_TEAMS + 1));
+                isCorrected = true;
+            } catch (Exception e) {
+                isCorrect = false;
+                isCorrected = false;
             }
-            else{
-                allCorrections.add(i-START_OF_TEAMS,new Correction(jo.getBoolean("" + (i-START_OF_TEAMS+1)),true));
-            }
-
+            String test = jo.getString("" + (i - START_OF_TEAMS + 1));
+            allCorrections.add(i - START_OF_TEAMS, new Correction(isCorrect, isCorrected));
         }
         correctionsList.setAllCorrections(allCorrections);
         return correctionsList;

@@ -36,8 +36,6 @@ public class RoundSpinner {
         questionSpinner.setRoundNr(roundNr);
         questionSpinner.initialize(1);
         //Set the questions and answers of the questionspinner to those of the next round
-
-
     }
 
     public void moveTo(int newRoundNr){

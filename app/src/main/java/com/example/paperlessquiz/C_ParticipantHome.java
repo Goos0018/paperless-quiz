@@ -3,6 +3,7 @@ package com.example.paperlessquiz;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,56 +14,64 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.paperlessquiz.adapters.CorrectAnswersAdapter;
 import com.example.paperlessquiz.adapters.DisplayAnswersAdapter;
-import com.example.paperlessquiz.answer.Answer;
-import com.example.paperlessquiz.google.access.GoogleAccess;
-import com.example.paperlessquiz.google.access.GoogleAccessSet;
 import com.example.paperlessquiz.google.access.LoadingActivity;
-import com.example.paperlessquiz.google.access.LoadingListenerNotify;
-import com.example.paperlessquiz.loginentity.LoginEntity;
-import com.example.paperlessquiz.question.Question;
 import com.example.paperlessquiz.quiz.Quiz;
 import com.example.paperlessquiz.quiz.QuizLoader;
 import com.example.paperlessquiz.round.Round;
-import com.example.paperlessquiz.spinners.QuestionSpinner;
-import com.example.paperlessquiz.spinners.RoundSpinner;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
-import org.json.JSONArray;
+public class C_ParticipantHome extends AppCompatActivity implements LoadingActivity, FragSpinner.HasSpinner, FragRoundSpinner.HasRoundSpinner {
 
-import java.util.ArrayList;
-/*
-This activity is the home screen for participants. It will display a round spinner and a question spinner,
-allowing the user to enter answer per question, and submit them per round.
-Display is as follows:
-- Round is pending start: display text
-- Round is accepts answers: display spinners and answer field + submit button
-- Round is closed for answers: display answers + pending correction text
-- Round is corrected: display answers + scores + correct answers if available
- */
-
-//TODO: remove stuff from correctorReplace RoundSpinner and QuestionSpinner by fragments
-
-public class C_ParticipantHome extends AppCompatActivity implements LoadingActivity {
     Quiz thisQuiz = MyApplication.theQuiz;
     int thisTeamNr;
-    RoundSpinner roundSpinner;
-    QuestionSpinner questionSpinner;
-    TextView tvRoundName, tvRoundDescription, tvQuestionName, tvQuestionDescription, tvDisplayRoundResults;
-    ImageView ivRoundStatus;
+    FragRoundSpinner roundSpinner;
+    FragSpinner questionSpinner;
+    TextView tvDisplayRoundResults;
     EditText etAnswer;
-    Button btnRndUp, btnRndDown, btnQuestionUp, btnQuestionDown, btnSubmit;
-    LinearLayout displayAnswersLayout, editAnswerLayout, questionSpinnerLayout;
+    Button btnSubmit;
+    LinearLayout displayAnswersLayout, editAnswerLayout;
     RecyclerView rvDisplayAnswers;
     DisplayAnswersAdapter displayAnswersAdapter;
     RecyclerView.LayoutManager layoutManager;
+    String qSpinnerTag = "qSpinner";
+
+    @Override
+    public void onSpinnerChange(int id, int oldPos, int newPos) {
+        //Save the answer that was given
+        thisQuiz.setAnswerForTeam(roundSpinner.getPosition(), oldPos, thisTeamNr, etAnswer.getText().toString().trim());
+        //Set the value of the answer for the new question to what we already have
+        etAnswer.setText(thisQuiz.getAnswerForTeam(roundSpinner.getPosition(), newPos, thisTeamNr).getTheAnswer());
+        refresh();
+    }
+
+    @Override
+    public int getSizeOfSpinnerArray() {
+        return thisQuiz.getRound(roundSpinner.getPosition()).getQuestions().size();
+    }
+
+    @Override
+    public String getValueToSetForPrimaryField(int id, int newPos) {
+        return thisQuiz.getQuestion(roundSpinner.getPosition(), newPos).getName();
+    }
+
+    @Override
+    public String getValueToSetForSecondaryField(int id, int newPos) {
+        return thisQuiz.getQuestion(roundSpinner.getPosition(), newPos).getDescription();
+    }
+
+    @Override
+    public void onRoundChanged(int oldRoundNr, int roundNr) {
+        //Similar as with a questionSpinner change, we save the answer that we have and load the new answer
+        thisQuiz.setAnswerForTeam(oldRoundNr, questionSpinner.getPosition(), thisTeamNr, etAnswer.getText().toString().trim());
+        //Set the value of the answer for the new question to what we already have
+        etAnswer.setText(thisQuiz.getAnswerForTeam(oldRoundNr, questionSpinner.getPosition(), thisTeamNr).getTheAnswer());
+        refresh();
+    }
 
     @Override
     public void loadingComplete() {
@@ -71,36 +80,24 @@ public class C_ParticipantHome extends AppCompatActivity implements LoadingActiv
     }
 
     private void refresh() {
-        Round thisRound = thisQuiz.getRound(roundSpinner.getRoundNr());
-        //Question thisQuestion = thisQuiz.getQuestion(roundSpinner.getRoundNr(),questionSpinner.getQuestionNr());
-        String thisLoginEntityType = thisQuiz.getMyLoginentity().getType();
-        //Set the icon that shows the round status
-        if (!thisRound.getAcceptsAnswers() && !thisRound.getAcceptsCorrections() && !thisRound.isCorrected()) {
-            ivRoundStatus.setImageResource(R.drawable.rnd_not_yet_open);
-        }
+        //Refresh what is in the display based on the current values of roundSpinner and QuestionSpinner positions
+        Round thisRound = thisQuiz.getRound(roundSpinner.getPosition());
         if (thisRound.getAcceptsAnswers()) {
-            ivRoundStatus.setImageResource(R.drawable.rnd_open);
-        }
-        if (thisRound.getAcceptsCorrections()) {
-            ivRoundStatus.setImageResource(R.drawable.rnd_closed);
-        }
-        if (thisRound.isCorrected()) {
-            ivRoundStatus.setImageResource(R.drawable.rnd_corrected);
-        }
-        if (thisRound.getAcceptsAnswers()) {
-            questionSpinnerLayout.setVisibility(View.VISIBLE);
+            //TODO: unhide the questionspinner
             editAnswerLayout.setVisibility(View.VISIBLE);
             displayAnswersLayout.setVisibility(View.VISIBLE);
             //etAnswer is by default invisible to avoid seeing the keyboard when you shouldn't
             etAnswer.setVisibility(View.VISIBLE);
+            etAnswer.setText(thisQuiz.getAnswerForTeam(roundSpinner.getPosition(), questionSpinner.getPosition(), thisTeamNr).getTheAnswer());
         } else {
-            questionSpinnerLayout.setVisibility(View.GONE);
+            //TODO: hide the questionspinner
             editAnswerLayout.setVisibility((View.GONE));
             displayAnswersLayout.setVisibility(View.VISIBLE);
         }
-        ArrayList<Question> questions;
-        displayAnswersAdapter.setAnswers(thisQuiz.getRound(roundSpinner.getRoundNr()).getQuestions());
+        //Update the displayed answser as needed
+        displayAnswersAdapter.setAnswers(thisQuiz.getRound(roundSpinner.getPosition()).getQuestions());
         rvDisplayAnswers.setAdapter(displayAnswersAdapter);
+
     }
 
     @Override
@@ -120,10 +117,20 @@ public class C_ParticipantHome extends AppCompatActivity implements LoadingActiv
         return super.onOptionsItemSelected(item);
     }
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.c_act_participant_home);
+        //Get the round spinner fragment
+        roundSpinner = (FragRoundSpinner) getSupportFragmentManager().findFragmentById(R.id.frRoundSpinner);
+        //Create the QuestionSpinner fragment
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        questionSpinner = FragSpinner.newInstance(1);
+        ft.replace(R.id.frQuestionSpinner, questionSpinner,qSpinnerTag).commit();
+        //Get the question spinner fragment
+        //questionSpinner = (FragSpinner) getSupportFragmentManager().findFragmentByTag(qSpinnerTag);
+
         //Set the action bar
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true); //Display the "back" icon, we will replace this with the icon of this Quiz
@@ -157,19 +164,9 @@ public class C_ParticipantHome extends AppCompatActivity implements LoadingActiv
         //Get all the stuff from the layout
         displayAnswersLayout = findViewById(R.id.llDisplay);
         editAnswerLayout = findViewById(R.id.llAnswers);
-        questionSpinnerLayout = findViewById(R.id.llQuestionSpinner);
-        tvQuestionName = findViewById(R.id.tvQuestionName);
-        tvQuestionDescription = findViewById(R.id.tvQuestionDescription);
-        tvRoundName = findViewById(R.id.tvRoundName);
-        tvRoundDescription = findViewById(R.id.tvRoundDescription);
         tvDisplayRoundResults = findViewById(R.id.tvDisplayRound);
         etAnswer = findViewById(R.id.etAnswer);
-        btnQuestionDown = findViewById(R.id.btnQuestionDown);
-        btnQuestionUp = findViewById(R.id.btnQuestionUp);
-        btnRndDown = findViewById(R.id.btnRndDown);
-        btnRndUp = findViewById(R.id.btnRndUp);
         btnSubmit = findViewById(R.id.btnSubmit);
-        ivRoundStatus = findViewById(R.id.ivRndStatusL);
         rvDisplayAnswers = findViewById(R.id.rvDisplayAnswers);
         rvDisplayAnswers.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
@@ -177,72 +174,17 @@ public class C_ParticipantHome extends AppCompatActivity implements LoadingActiv
         displayAnswersAdapter = new DisplayAnswersAdapter(this, thisQuiz.getRound(1).getQuestions(), thisTeamNr);
         //Initially, we start with question 1 of round 1, so set the text of the editText to this answer
         etAnswer.setText(thisQuiz.getQuestion(1, 1).getAnswerForTeam(thisTeamNr).getTheAnswer());
-        questionSpinner = new QuestionSpinner(thisQuiz, tvQuestionName, tvQuestionDescription, etAnswer, 1, thisTeamNr);
-        roundSpinner = new RoundSpinner(thisQuiz, tvRoundName, tvRoundDescription, questionSpinner);
         //Refresh does all actions that are dependent on the position of the question spinner and the roundspinner
         refresh();
-
-        btnRndDown.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                roundSpinner.moveDown();
-                refresh();
-            }
-        });
-
-        btnRndUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                roundSpinner.moveUp();
-                refresh();
-
-            }
-        });
-
-        btnQuestionDown.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                questionSpinner.moveDown();
-                refresh();
-            }
-        });
-
-        btnQuestionUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                questionSpinner.moveUp();
-                refresh();
-            }
-        });
 
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                questionSpinner.moveDown();
-                questionSpinner.moveUp();
+                //questionSpinner.moveDown();
+                //questionSpinner.moveUp();
+                thisQuiz.setAnswerForTeam(roundSpinner.getPosition(), questionSpinner.getPosition(), thisTeamNr, etAnswer.getText().toString().trim());
                 refresh();
-                //TODO: move this to the Quiz object
-                ArrayList<Answer> answerList = thisQuiz.getAnswersForRound(roundSpinner.getRoundNr(), thisTeamNr);
-                String tmp = "[";
-                for (int i = 0; i < answerList.size(); i++) {
-                    tmp = tmp + "[\"" + answerList.get(i).getTheAnswer() + "\"]";
-                    if (i < answerList.size() - 1) {
-                        tmp = tmp + ",";
-                    }
-                }
-                tmp = tmp + "]";
-                JSONArray answerArray = new JSONArray(answerList);
-                String answers = answerArray.toString();
-                String scriptParams = GoogleAccess.PARAMNAME_DOC_ID + thisQuiz.getListData().getSheetDocID() + GoogleAccess.PARAM_CONCATENATOR +
-                        GoogleAccess.PARAMNAME_USERID + "Rupert" + GoogleAccess.PARAM_CONCATENATOR +
-                        GoogleAccess.PARAMNAME_ROUNDID + roundSpinner.getRoundNr() + GoogleAccess.PARAM_CONCATENATOR +
-                        GoogleAccess.PARAMNAME_FIRSTQUESTION + thisQuiz.getRound(roundSpinner.getRoundNr()).getQuestion(1).getQuestionID() + GoogleAccess.PARAM_CONCATENATOR +
-                        GoogleAccess.PARAMNAME_TEAMID + thisQuiz.getMyLoginentity().getId() + GoogleAccess.PARAM_CONCATENATOR +
-                        GoogleAccess.PARAMNAME_ANSWERS + tmp + GoogleAccess.PARAM_CONCATENATOR +
-                        GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_SUBMITANSWERS;
-                GoogleAccessSet submitAnswers = new GoogleAccessSet(C_ParticipantHome.this, scriptParams, thisQuiz.getAdditionalData().getDebugLevel());
-                submitAnswers.setData(new LoadingListenerNotify(C_ParticipantHome.this, thisQuiz.getMyLoginentity().getName(),
-                        "Submitting answers for round " + (roundSpinner.getRoundNr())));
+                thisQuiz.submitAnswers(C_ParticipantHome.this, roundSpinner.getPosition());
             }
         });
     }

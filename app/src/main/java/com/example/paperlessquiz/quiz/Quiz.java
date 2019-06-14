@@ -260,4 +260,27 @@ public class Quiz implements Serializable {
                 "Submitting scores for team " + getTeam(teamNr).getName()));
     }
 
+    public void submitAnswers(Context context,int roundNr){
+        ArrayList<Answer> answerList = getAnswersForRound(roundNr,getMyLoginentity().getId());
+        String tmp = "[";
+        for (int i = 0; i < answerList.size(); i++) {
+            tmp = tmp + "[\"" + answerList.get(i).getTheAnswer() + "\"]";
+            if (i < answerList.size() - 1) {
+                tmp = tmp + ",";
+            }
+        }
+        tmp = tmp + "]";
+        String scriptParams = GoogleAccess.PARAMNAME_DOC_ID + listData.getSheetDocID() + GoogleAccess.PARAM_CONCATENATOR +
+                GoogleAccess.PARAMNAME_USERID + "Rupert" + GoogleAccess.PARAM_CONCATENATOR +
+                GoogleAccess.PARAMNAME_ROUNDID + roundNr + GoogleAccess.PARAM_CONCATENATOR +
+                GoogleAccess.PARAMNAME_FIRSTQUESTION + getRound(roundNr).getQuestion(1).getQuestionID() + GoogleAccess.PARAM_CONCATENATOR +
+                GoogleAccess.PARAMNAME_TEAMID + myLoginentity.getId() + GoogleAccess.PARAM_CONCATENATOR +
+                GoogleAccess.PARAMNAME_ANSWERS + tmp + GoogleAccess.PARAM_CONCATENATOR +
+                GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_SUBMITANSWERS;
+        GoogleAccessSet submitAnswers = new GoogleAccessSet(context, scriptParams, additionalData.getDebugLevel());
+        submitAnswers.setData(new LoadingListenerNotify(context, myLoginentity.getName(),
+                "Submitting answers for round " + roundNr));
+    }
+
+
 }

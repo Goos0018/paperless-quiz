@@ -25,7 +25,7 @@ import com.squareup.picasso.Target;
 
 import java.util.ArrayList;
 
-public class C_CorrectorHome extends AppCompatActivity implements LoadingActivity, FragSecondarySpinner.HasSecondarySpinner, Frag_RndSpinner.HasRoundSpinner {
+public class C_CorrectorHome extends AppCompatActivity implements LoadingActivity, FragSecondarySpinner.HasSecondarySpinner, FragRoundSpinner.HasRoundSpinner {
 
     Quiz thisQuiz = MyApplication.theQuiz;
     int thisTeamNr, thisRoundNr, thisSecSpinnerPos = 1;
@@ -34,7 +34,7 @@ public class C_CorrectorHome extends AppCompatActivity implements LoadingActivit
     LinearLayout llCorrectQuestions;
     ListView lvCorrectQuestions;
     CorrectAnswersAdapter myAdapter;
-    Frag_RndSpinner rndSpinner;
+    FragRoundSpinner rndSpinner;
     FragSecondarySpinner qSpinner;
     ArrayList<Answer> allAnswers;
     boolean correctPerQuestion = true;
@@ -74,9 +74,9 @@ public class C_CorrectorHome extends AppCompatActivity implements LoadingActivit
     }
 
     @Override
-    public void onRoundChanged(int roundNr) {
+    public void onRoundChanged(int oldRoundNr, int roundNr) {
         this.thisRoundNr = roundNr;
-        qSpinner.setPrimarySpinnerPos(roundNr);
+        //qSpinner.setPrimarySpinnerPos(roundNr);
         refresh();
     }
 
@@ -86,7 +86,7 @@ public class C_CorrectorHome extends AppCompatActivity implements LoadingActivit
         if(quizLoader.quizCorrectionsLPL.getAllCorrectionsPerRound().size()==0){} else {
         thisQuiz.setAllCorrectionsPerQuestion(quizLoader.quizCorrectionsLPL.getAllCorrectionsPerRound());}
         rndSpinner.positionChanged();
-        qSpinner.refreshDisplay();
+        qSpinner.positionChanged();
         refresh();
     }
 
@@ -115,7 +115,7 @@ public class C_CorrectorHome extends AppCompatActivity implements LoadingActivit
                 correctPerQuestion = !correctPerQuestion;
                 qSpinner.moveTo(1);
                 refresh();
-                qSpinner.refreshDisplay();
+                qSpinner.positionChanged();
                 break;
             case R.id.allcorrect:
                 for (int i = 0; i < allAnswers.size(); i++) {
@@ -160,7 +160,7 @@ public class C_CorrectorHome extends AppCompatActivity implements LoadingActivit
         setContentView(R.layout.c_act_corrector_home);
         //Get the questionSpinner fragment
         qSpinner = (FragSecondarySpinner) getSupportFragmentManager().findFragmentById(R.id.frQuestionSpinner);
-        rndSpinner = (Frag_RndSpinner) getSupportFragmentManager().findFragmentById(R.id.frPriSpinner);
+        rndSpinner = (FragRoundSpinner) getSupportFragmentManager().findFragmentById(R.id.frPriSpinner);
         //Set the action bar
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true); //Display the "back" icon, we will replace this with the icon of this Quiz
@@ -195,7 +195,7 @@ public class C_CorrectorHome extends AppCompatActivity implements LoadingActivit
         tvCorrectAnswer = findViewById(R.id.tvCorrectAnswer);
         btnSubmitCorrections = findViewById(R.id.btnSubmitCorrections);
         lvCorrectQuestions = findViewById(R.id.lvCorrectQuestions);
-        onRoundChanged(1);
+        //onRoundChanged(1);
         btnSubmitCorrections.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

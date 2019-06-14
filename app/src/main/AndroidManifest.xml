@@ -12,11 +12,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".C_CorrectorHome"></activity>
+        <activity android:name=".C_ParticipantHome"></activity>
+        <activity android:name=".C_CorrectorHome" />
         <activity android:name=".C_ReceptionistHome" />
         <activity android:name=".C_QuizmasterTeams" />
         <activity android:name=".C_QuizmasterRounds" />
-        <activity android:name=".C_ParticipantHome" />
+        <activity android:name=".C_ParticipantHomeOld" />
         <activity android:name=".B_LoginMain" />
         <activity android:name=".A_SelectRole" />
         <activity android:name=".MainActivity">

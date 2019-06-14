@@ -26,8 +26,16 @@ public class LoginEntityParser implements JsonParser<LoginEntity> {
             loginEntity.setPresent(jo.getBoolean(PRESENT));
             loginEntity.setLoggedIn(jo.getBoolean(LOGGED_IN));
             ArrayList<Boolean> answersSubmitted = new ArrayList<>();
+            boolean valueToSet;
             for (int i = START_OF_ROUNDS; i < jo.length(); i++) {
-                answersSubmitted.add(i - START_OF_ROUNDS, Boolean.valueOf(jo.getBoolean("" + (i - START_OF_ROUNDS+1))));
+               try {
+                   valueToSet = jo.getBoolean("" + (i - START_OF_ROUNDS+1));
+               }
+               catch (Exception e){
+                   //if we cannot make sense of what we get, return false
+                   valueToSet = false;
+                }
+                answersSubmitted.add(i - START_OF_ROUNDS, Boolean.valueOf(valueToSet));
             }
             loginEntity.setAnswerForRndsSubmitted(answersSubmitted);
         }

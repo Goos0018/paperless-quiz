@@ -2,14 +2,13 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".Frag_QuestionSpinner">
+    tools:context=".FragSpinner">
 
 
     <Button
-        android:id="@+id/btnQuestionDown"
+        android:id="@+id/btnDown"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_gravity="center"
@@ -24,7 +23,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
-        android:id="@+id/frQuestionSpinner"
+        android:id="@+id/secondarySpinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -36,32 +35,32 @@
         android:layout_weight="6"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btnQuestionUp"
-        app:layout_constraintStart_toEndOf="@+id/btnQuestionDown"
+        app:layout_constraintEnd_toStartOf="@+id/btnUp"
+        app:layout_constraintStart_toEndOf="@+id/btnDown"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/tvQuestionName"
+            android:id="@+id/tvPrimaryField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_tiny"
             android:gravity="center"
-            android:text="Questionname"
+            android:text="Primary Field"
             android:textSize="@dimen/text_size_medium" />
 
         <TextView
-            android:id="@+id/tvQuestionDescription"
+            android:id="@+id/tvSecondaryField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_tiny"
             android:layout_marginBottom="@dimen/margin_tiny"
             android:gravity="center"
-            android:text="Questionhint"
+            android:text="Secondary Field"
             android:textSize="@dimen/text_size_small" />
     </LinearLayout>
 
     <Button
-        android:id="@+id/btnQuestionUp"
+        android:id="@+id/btnUp"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_gravity="center"
@@ -76,7 +75,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.951"
+        app:layout_constraintStart_toStartOf="@+id/secondarySpinner"
         app:layout_constraintTop_toTopOf="parent" />
 
-</android.support.constraint.ConstraintLayout>
 
+</android.support.constraint.ConstraintLayout>

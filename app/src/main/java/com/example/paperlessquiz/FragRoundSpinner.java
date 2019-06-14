@@ -19,21 +19,21 @@ import com.example.paperlessquiz.round.Round;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Frag_RndSpinner extends Fragment {
+public class FragRoundSpinner extends Fragment {
 
     private Quiz thisQuiz = MyApplication.theQuiz;
-    private int roundNr;
-    private int oldRoundNr;
+    private int position = 1;
+    private int oldPosition;
     private TextView tvRoundName,tvRoundDescription;
     ImageView ivRoundStatusL,ivRoundStatusR;
     Button btnRndUp, btnRndDown;
     HasRoundSpinner activity;
 
     public interface HasRoundSpinner {
-        public void onRoundChanged(int roundNr);
+        public void onRoundChanged(int oldRoundNr, int roundNr);
     }
 
-    public Frag_RndSpinner() {
+    public FragRoundSpinner() {
         // Required empty public constructor
     }
 
@@ -42,7 +42,7 @@ public class Frag_RndSpinner extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.frag_rnd_spinner, container, false);
+        View v = inflater.inflate(R.layout.frag_round_spinner, container, false);
         tvRoundName = v.findViewById(R.id.tvRoundName);
         tvRoundDescription = v.findViewById(R.id.tvRoundDescription);
         ivRoundStatusL=v.findViewById(R.id.ivRndStatusL);
@@ -80,9 +80,9 @@ public class Frag_RndSpinner extends Fragment {
     }
 
     public void positionChanged() {
-        tvRoundName.setText(thisQuiz.getRound(roundNr).getName());
-        tvRoundDescription.setText(thisQuiz.getRound(roundNr).getDescription());
-        Round thisRound = thisQuiz.getRound(roundNr);
+        tvRoundName.setText(thisQuiz.getRound(position).getName());
+        tvRoundDescription.setText(thisQuiz.getRound(position).getDescription());
+        Round thisRound = thisQuiz.getRound(position);
         String thisLoginEntityType = thisQuiz.getMyLoginentity().getType();
         //Set the icon that shows the round status
         if (!thisRound.getAcceptsAnswers() && !thisRound.getAcceptsCorrections() && !thisRound.isCorrected()) {
@@ -101,41 +101,41 @@ public class Frag_RndSpinner extends Fragment {
             ivRoundStatusL.setImageResource(R.drawable.rnd_corrected);
             ivRoundStatusR.setImageResource(R.drawable.rnd_corrected);
         }
-        activity.onRoundChanged(roundNr);
+        activity.onRoundChanged(oldPosition, position);
     }
 
     public void moveTo(int newRoundNr) {
-        oldRoundNr = roundNr;
+        oldPosition = position;
         if (newRoundNr <= thisQuiz.getRounds().size()) {
-            roundNr = newRoundNr;
+            position = newRoundNr;
         } else {
-            roundNr = 1;
+            position = 1;
         }
         positionChanged();
     }
 
     public void moveUp() {
-        oldRoundNr = roundNr;
-        if (roundNr == thisQuiz.getRounds().size()) {
-            roundNr = 1;
+        oldPosition = position;
+        if (position == thisQuiz.getRounds().size()) {
+            position = 1;
         } else {
-            roundNr++;
+            position++;
         }
         positionChanged();
     }
 
     public void moveDown() {
-        oldRoundNr = roundNr;
-        if (roundNr == 1) {
-            roundNr = thisQuiz.getRounds().size();
+        oldPosition = position;
+        if (position == 1) {
+            position = thisQuiz.getRounds().size();
         } else {
-            roundNr--;
+            position--;
         }
         positionChanged();
     }
 
-    public int getRoundNr() {
-        return roundNr;
+    public int getPosition() {
+        return position;
     }
 
 }

@@ -69,10 +69,10 @@ public class FragSecondarySpinner extends Fragment {
         activity = (HasSecondarySpinner) context;
     }
 
-    public void refreshDisplay() {
+    public void positionChanged() {
         tvPrimaryField.setText(activity.getValueToSetForPrimaryField(priSpinnerPos, secSpinnerPos));
         tvSecondaryField.setText(activity.getValueToSetForSecondaryField(priSpinnerPos, secSpinnerPos));
-        activity.onSecondarySpinnerChanged(0, secSpinnerPos);
+        activity.onSecondarySpinnerChanged(oldSecSpinnerPos, secSpinnerPos);
     }
 
     public void moveTo(int newSecSpinnerPos) {
@@ -82,7 +82,7 @@ public class FragSecondarySpinner extends Fragment {
         } else {
             secSpinnerPos = 1;
         }
-        refreshDisplay();
+        positionChanged();
     }
 
     public void moveUp() {
@@ -92,7 +92,7 @@ public class FragSecondarySpinner extends Fragment {
         } else {
             secSpinnerPos++;
         }
-        refreshDisplay();
+        positionChanged();
     }
 
     public void moveDown() {
@@ -102,12 +102,12 @@ public class FragSecondarySpinner extends Fragment {
         } else {
             secSpinnerPos--;
         }
-        refreshDisplay();
+        positionChanged();
     }
 
     public void setPrimarySpinnerPos(int newPrimarySpinnerPos) {
         this.priSpinnerPos = newPrimarySpinnerPos;
-        refreshDisplay();
+        positionChanged();
     }
 
     public int getSecSpinnerPos() {

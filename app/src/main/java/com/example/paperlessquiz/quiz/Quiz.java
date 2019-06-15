@@ -33,6 +33,7 @@ public class Quiz implements Serializable {
     private LoginEntity myLoginentity;
     private ArrayList<Score> allScoresPerTeam;
     public QuizLoader loader;
+    public boolean loadingCompleted = false;
 
     //We only need an empty constructor, the QuizLoader class will populate all fields of the quiz
     public Quiz() {
@@ -43,6 +44,33 @@ public class Quiz implements Serializable {
         this.rounds = new ArrayList<>();
         for (int i = 0; i < this.additionalData.getNrOfRounds(); i++) {
             rounds.add(i, new Round());
+        }
+    }
+
+    //Calculate scores based on corrections
+    public void calculateScores() {
+        //for each team
+        for (int i = 0; i < teams.size(); i++) {
+            int teamNr = i + 1;
+            LoginEntity thisTeam = getTeam(teamNr);
+            //for each round
+            for (int j = 0; j < rounds.size(); j++) {
+                int roundNr = j + 1;
+                Round thisRnd = getRound(roundNr);
+                int scoreForThisRnd = 0;
+                if (thisRnd.isCorrected()) {
+                    //for each question in round j
+                    for (int k = 0; k < getRounds().get(j).getQuestions().size(); k++) {
+                        int questionNr = k + 1;
+                        Question thisQuestion = getQuestion(roundNr, questionNr);
+                        Answer thisAnswer = getAnswerForTeam(roundNr, questionNr, teamNr);
+                        if (thisAnswer.isCorrect()) {
+                            scoreForThisRnd = scoreForThisRnd + thisQuestion.getMaxScore();
+                        }
+                    }
+                }
+                setRoundScoreForTeam(teamNr, roundNr, scoreForThisRnd);
+            }
         }
     }
 
@@ -77,7 +105,7 @@ public class Quiz implements Serializable {
             for (int j = 0; j < allCorrectionsForThisRound.size(); j++) {
                 CorrectionsList allCorrectionsForThisQuestion = allCorrectionsForThisRound.get(j);
                 //Foreach answer to this question
-                for (int k = 0; k < allCorrectionsForThisQuestion.getAllCorrections().size() ; k++) {
+                for (int k = 0; k < allCorrectionsForThisQuestion.getAllCorrections().size(); k++) {
                     getRounds().get(i).getQuestions().get(j).getAllAnswers().get(k).setCorrect(allCorrectionsForThisQuestion.getAllCorrections().get(k).isCorrect());
                     getRounds().get(i).getQuestions().get(j).getAllAnswers().get(k).setCorrected(allCorrectionsForThisQuestion.getAllCorrections().get(k).isCorrected());
                 }
@@ -86,13 +114,18 @@ public class Quiz implements Serializable {
     }
 
     //Get the total score for team
-    public int getTotalScoreForTeam(int teamId){
-        return allScoresPerTeam.get(teamId-1).getTotalScore();
+    public int getTotalScoreForTeam(int teamId) {
+        return allScoresPerTeam.get(teamId - 1).getTotalScore();
     }
 
     //Get round score for team
-    public int getRoundScoreForTeam(int teamId, int roundId){
-        return allScoresPerTeam.get(teamId-1).getScorePerRoundForTeam().get(roundId-1);
+    public int getRoundScoreForTeam(int teamId, int roundId) {
+        return allScoresPerTeam.get(teamId - 1).getScorePerRoundForTeam().get(roundId - 1);
+    }
+
+    //Set round score for team
+    public void setRoundScoreForTeam(int teamId, int roundNr, int score) {
+        allScoresPerTeam.get(teamId - 1).setScoreForRound(roundNr, score);
     }
 
     //Return the team/organizer with the given ID
@@ -207,7 +240,7 @@ public class Quiz implements Serializable {
                 GoogleAccess.PARAMNAME_FIELDNAME + RoundParser.ROUND_NAME + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_NEWVALUES + tmp + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_SETDATA;
-        GoogleAccessSet submitRounds = new GoogleAccessSet(context, scriptParams,getAdditionalData().getDebugLevel());
+        GoogleAccessSet submitRounds = new GoogleAccessSet(context, scriptParams, getAdditionalData().getDebugLevel());
         submitRounds.setData(new LoadingListenerNotify(context, getMyLoginentity().getName(),
                 "Submitting round updates"));
     }
@@ -229,12 +262,12 @@ public class Quiz implements Serializable {
                 GoogleAccess.PARAMNAME_FIELDNAME + LoginEntityParser.NAME + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_NEWVALUES + tmp + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_SETDATA;
-        GoogleAccessSet googleAccessSet = new GoogleAccessSet(context, scriptParams,getAdditionalData().getDebugLevel());
+        GoogleAccessSet googleAccessSet = new GoogleAccessSet(context, scriptParams, getAdditionalData().getDebugLevel());
         googleAccessSet.setData(new LoadingListenerNotify(context, getMyLoginentity().getName(),
                 "Submitting team updates"));
     }
 
-    public void submitCorrectionsForQuestion(Context context, int roundNr, int questionNr){
+    public void submitCorrectionsForQuestion(Context context, int roundNr, int questionNr) {
         ArrayList<Answer> answerList = getAllAnswersForQuestion(roundNr, questionNr);
         String tmp = "[[";
         for (int i = 0; i < answerList.size(); i++) {
@@ -252,12 +285,12 @@ public class Quiz implements Serializable {
                 GoogleAccess.PARAMNAME_FIELDNAME + GoogleAccess.PARAMVALUE_FIRST_TEAM_NR + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_NEWVALUES + tmp + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_SETDATA;
-        GoogleAccessSet submitScores = new GoogleAccessSet(context, scriptParams,getAdditionalData().getDebugLevel());
+        GoogleAccessSet submitScores = new GoogleAccessSet(context, scriptParams, getAdditionalData().getDebugLevel());
         submitScores.setData(new LoadingListenerNotify(context, getMyLoginentity().getName(),
                 "Submitting scores for question " + getQuestion(roundNr, questionNr).getQuestionID()));
     }
 
-    public void submitCorrectionsForTeam(Context context, int roundNr, int teamNr){
+    public void submitCorrectionsForTeam(Context context, int roundNr, int teamNr) {
         ArrayList<Answer> answerList = getAnswersForRound(roundNr, teamNr);
         String tmp = "[";
         for (int i = 0; i < answerList.size(); i++) {
@@ -275,13 +308,13 @@ public class Quiz implements Serializable {
                 GoogleAccess.PARAMNAME_FIELDNAME + teamNr + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_NEWVALUES + tmp + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_SETDATA;
-        GoogleAccessSet submitScores = new GoogleAccessSet(context, scriptParams,getAdditionalData().getDebugLevel());
+        GoogleAccessSet submitScores = new GoogleAccessSet(context, scriptParams, getAdditionalData().getDebugLevel());
         submitScores.setData(new LoadingListenerNotify(context, getMyLoginentity().getName(),
                 "Submitting scores for team " + getTeam(teamNr).getName()));
     }
 
-    public void submitAnswers(Context context,int roundNr){
-        ArrayList<Answer> answerList = getAnswersForRound(roundNr,getMyLoginentity().getId());
+    public void submitAnswers(Context context, int roundNr) {
+        ArrayList<Answer> answerList = getAnswersForRound(roundNr, getMyLoginentity().getId());
         String tmp = "[";
         for (int i = 0; i < answerList.size(); i++) {
             tmp = tmp + "[\"" + answerList.get(i).getTheAnswer() + "\"]";

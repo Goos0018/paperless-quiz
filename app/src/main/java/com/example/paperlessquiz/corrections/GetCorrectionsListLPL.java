@@ -1,5 +1,6 @@
 package com.example.paperlessquiz.corrections;
 
+import com.example.paperlessquiz.MyApplication;
 import com.example.paperlessquiz.google.access.ListParsedListener;
 
 import java.util.ArrayList;
@@ -24,23 +25,24 @@ public class GetCorrectionsListLPL implements ListParsedListener<CorrectionsList
     public void listParsed(List<CorrectionsList> list) {
         //List contains a list of all questions in the quiz with a QuestionID and a RoundID.
         //Loop over each element in the list and add them to Round<RoundID>[] in the order in which they are found
-        for (int i = 0;i< list.size();i++)
-        {
+        for (int i = 0; i < list.size(); i++) {
             CorrectionsList correctionsList = list.get(i);
             int rndNr = correctionsList.getRoundNr();
             int qNr = correctionsList.getQuestionNr();
             //add (empty questionslists until you are sure you have one at the required position (rndNr - 1)
-            while (allCorrectionsPerRound.size() < rndNr)
-            {
+            while (allCorrectionsPerRound.size() < rndNr) {
                 allCorrectionsPerRound.add(new ArrayList<CorrectionsList>());
             }
             //Add empty Corrections until you are sure you have one at the requested position
-            while (allCorrectionsPerRound.get(rndNr -1).size() < qNr)
-            {
-                allCorrectionsPerRound.get(rndNr -1).add(new CorrectionsList("",0,0));
+            while (allCorrectionsPerRound.get(rndNr - 1).size() < qNr) {
+                allCorrectionsPerRound.get(rndNr - 1).add(new CorrectionsList("", 0, 0));
             }
             //Now we are sure that this will work
-            allCorrectionsPerRound.get(rndNr -1).set(qNr-1,correctionsList);
+            allCorrectionsPerRound.get(rndNr - 1).set(qNr - 1, correctionsList);
+        }
+        //Add the corrections to the Quiz object if we already have rounds
+        if (MyApplication.theQuiz.loadingCompleted) {
+            MyApplication.theQuiz.setAllCorrectionsPerQuestion(allCorrectionsPerRound);
         }
     }
 

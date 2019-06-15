@@ -186,6 +186,7 @@ public class C_ParticipantHome extends AppCompatActivity implements LoadingActiv
             case R.id.refresh:
                 QuizLoader quizLoader = new QuizLoader(C_ParticipantHome.this, thisQuiz.getListData().getSheetDocID());
                 quizLoader.loadRounds();
+                quizLoader.loadAllCorrections();
                 break;
         }
         return super.onOptionsItemSelected(item);

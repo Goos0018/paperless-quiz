@@ -23,6 +23,10 @@ public class Score {
         this.totalScore = totalScore;
     }
 
+    public void setScoreForRound(int rndNr,int score){
+        scorePerRoundForTeam.set(rndNr-1,new Integer(score));
+    }
+
     public ArrayList<Integer> getScorePerRoundForTeam() {
         return scorePerRoundForTeam;
     }

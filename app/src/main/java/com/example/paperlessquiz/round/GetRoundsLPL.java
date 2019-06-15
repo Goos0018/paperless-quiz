@@ -29,15 +29,12 @@ public class GetRoundsLPL implements ListParsedListener<Round> {
         for (int i = 0; i < rounds.size(); i++) {
             Round rnd = list.get(i);
             int rndNr = rnd.getRoundNr();
-            //We want to update MyApplication.theQuiz.getRound(rndNr), but only if that round already exists
+            //Update MyApplication.theQuiz with the new info
             if (rndNr <= MyApplication.theQuiz.getRounds().size()) {
                 MyApplication.theQuiz.getRound(rndNr).UpdateRoundBasics(rnd);
             }
             else{
-
             }
-
         }
     }
-
 }

@@ -2,9 +2,9 @@ package com.example.paperlessquiz.quiz;
 
 import android.content.Context;
 
-import com.example.paperlessquiz.Corrections.CorrectionsList;
-import com.example.paperlessquiz.Corrections.CorrectionsListParser;
-import com.example.paperlessquiz.Corrections.GetCorrectionsListLPL;
+import com.example.paperlessquiz.corrections.CorrectionsList;
+import com.example.paperlessquiz.corrections.CorrectionsListParser;
+import com.example.paperlessquiz.corrections.GetCorrectionsListLPL;
 import com.example.paperlessquiz.MyApplication;
 import com.example.paperlessquiz.answer.Answer;
 import com.example.paperlessquiz.answerslist.AnswersList;
@@ -25,6 +25,9 @@ import com.example.paperlessquiz.quizextradata.QuizExtraDataParser;
 import com.example.paperlessquiz.round.GetRoundsLPL;
 import com.example.paperlessquiz.round.Round;
 import com.example.paperlessquiz.round.RoundParser;
+import com.example.paperlessquiz.scores.GetScoresLPL;
+import com.example.paperlessquiz.scores.Score;
+import com.example.paperlessquiz.scores.ScoreParser;
 
 import java.util.ArrayList;
 
@@ -38,6 +41,7 @@ public class QuizLoader {
     public GetAnswersListLPL quizAnswersLPL;
     public GetCorrectionsListLPL quizCorrectionsLPL;
     public GetLoginEntriesLPL quizTeamsLPL, quizOrganizersLPL;
+    public GetScoresLPL quizScoresLPL;
 
     public ArrayList<ArrayList<Answer>> myAnswers;
 
@@ -53,6 +57,7 @@ public class QuizLoader {
         quizOrganizersLPL = new GetLoginEntriesLPL();
         quizAnswersLPL = new GetAnswersListLPL();
         quizCorrectionsLPL = new GetCorrectionsListLPL();
+        quizScoresLPL =new GetScoresLPL();
     }
 
     public String generateParams(String sheet) {
@@ -70,6 +75,7 @@ public class QuizLoader {
         loadQuestions();
         loadAllAnswers();
         loadAllCorrections();
+        loadScores();
     }
 
     public boolean allChecksOK() {
@@ -167,13 +173,21 @@ public class QuizLoader {
 
     public void loadAllCorrections() {
         //Get the list of ALL answers per question
-        String scriptParams = generateParams(GoogleAccess.SHEET_SCORES);
+        String scriptParams = generateParams(GoogleAccess.SHEET_CORRECTIONS);
         GoogleAccessGet<CorrectionsList> googleAccessGetScores = new GoogleAccessGet<CorrectionsList>(context, scriptParams,MyApplication.theQuiz.getAdditionalData().getDebugLevel());
         googleAccessGetScores.getItems(new CorrectionsListParser(), quizCorrectionsLPL,
                 new LoadingListenerShowProgress(context, "Please wait", "Loading scores",
                         "Something went wrong: ",false));
     }
 
+    public void loadScores() {
+        //Get the list of scores per team
+        String scriptParams = generateParams(GoogleAccess.SHEET_SCORES);
+        GoogleAccessGet<Score> googleAccessGetScores = new GoogleAccessGet<Score>(context, scriptParams,MyApplication.theQuiz.getAdditionalData().getDebugLevel());
+        googleAccessGetScores.getItems(new ScoreParser(), quizScoresLPL,
+                new LoadingListenerShowProgress(context, "Please wait", "Updating scores...",
+                        "Something went wrong: ",false));
+    }
 
     public void generateBlankAnswers() {
 

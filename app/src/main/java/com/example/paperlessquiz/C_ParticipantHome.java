@@ -3,6 +3,7 @@ package com.example.paperlessquiz;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -25,13 +26,16 @@ import com.example.paperlessquiz.round.Round;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
-public class C_ParticipantHome extends AppCompatActivity implements LoadingActivity, FragSpinner.HasSpinner, FragRoundSpinner.HasRoundSpinner {
+public class C_ParticipantHome extends AppCompatActivity implements LoadingActivity, FragSpinner.HasSpinner,
+        FragRoundSpinner.HasRoundSpinner, FragShowRoundScore.HasShowRoundScore, FragExplainRoundStatus.HasExplainRoundStatus {
 
     Quiz thisQuiz = MyApplication.theQuiz;
     int thisTeamNr;
     FragRoundSpinner roundSpinner;
     FragSpinner questionSpinner;
-    TextView tvDisplayRoundResults;
+    FragShowRoundScore roundResultFrag;
+    FragExplainRoundStatus explainRoundStatus;
+    TextView tvDisplayRoundResults,tvExplainRoundStatus;
     EditText etAnswer;
     Button btnSubmit;
     LinearLayout displayAnswersLayout, editAnswerLayout;
@@ -39,6 +43,22 @@ public class C_ParticipantHome extends AppCompatActivity implements LoadingActiv
     DisplayAnswersAdapter displayAnswersAdapter;
     RecyclerView.LayoutManager layoutManager;
     String qSpinnerTag = "qSpinner";
+    String roundStatusExplanation;
+
+    @Override
+    public String getRoundStatusExplanation() {
+        return roundStatusExplanation;
+    }
+
+    @Override
+    public int getRound() {
+        return roundSpinner.getPosition();
+    }
+
+    @Override
+    public int getTeam() {
+        return thisTeamNr;
+    }
 
     @Override
     public void onSpinnerChange(int id, int oldPos, int newPos) {
@@ -46,7 +66,7 @@ public class C_ParticipantHome extends AppCompatActivity implements LoadingActiv
         thisQuiz.setAnswerForTeam(roundSpinner.getPosition(), oldPos, thisTeamNr, etAnswer.getText().toString().trim());
         //Set the value of the answer for the new question to what we already have
         etAnswer.setText(thisQuiz.getAnswerForTeam(roundSpinner.getPosition(), newPos, thisTeamNr).getTheAnswer());
-        refresh();
+        refreshAnswers();
     }
 
     @Override
@@ -66,38 +86,92 @@ public class C_ParticipantHome extends AppCompatActivity implements LoadingActiv
 
     @Override
     public void onRoundChanged(int oldRoundNr, int roundNr) {
-        //Similar as with a questionSpinner change, we save the answer that we have and load the new answer
-        thisQuiz.setAnswerForTeam(oldRoundNr, questionSpinner.getPosition(), thisTeamNr, etAnswer.getText().toString().trim());
+        //Similar as with a questionSpinner change, we save the answer that we have and load the new answer - only do this if the field is visible
+        if (etAnswer.getVisibility() == View.VISIBLE){
+        thisQuiz.setAnswerForTeam(oldRoundNr, questionSpinner.getPosition(), thisTeamNr, etAnswer.getText().toString().trim());}
         //Set the value of the answer for the new question to what we already have
-        etAnswer.setText(thisQuiz.getAnswerForTeam(oldRoundNr, questionSpinner.getPosition(), thisTeamNr).getTheAnswer());
-        refresh();
+        //Move the QuestionSpinner to position 1 to make sure we have something at that position
+        questionSpinner.moveToFirstPos();
+        etAnswer.setText(thisQuiz.getAnswerForTeam(roundNr, 1, thisTeamNr).getTheAnswer());
+        refreshDisplayFragments();
+
+
     }
 
     @Override
     public void loadingComplete() {
         //Actions do do when we are completed (re)loading data from the Google sheet
-        refresh();
+        refreshDisplayFragments();
     }
 
-    private void refresh() {
-        //Refresh what is in the display based on the current values of roundSpinner and QuestionSpinner positions
+    private void refreshAnswers() {
+        //Update the displayed answer as needed
+        displayAnswersAdapter.setAnswers(thisQuiz.getRound(roundSpinner.getPosition()).getQuestions());
+        rvDisplayAnswers.setAdapter(displayAnswersAdapter);
+    }
+
+    protected void toggleFragments(Fragment fragToShow, Fragment fragToHide1, Fragment fragToHide2) {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        if (fragToShow.isAdded()) { // if the fragment is already in container
+            ft.show(fragToShow);
+        } else { // fragment needs to be added to frame container
+            ft.add(R.id.frQuestionSpinner, fragToShow);
+            ft.show(fragToShow);
+        }
+        // Hide other fragments
+        if (fragToHide1.isAdded()) {
+            ft.hide(fragToHide1);
+        }
+        if (fragToHide2.isAdded()) {
+            ft.hide(fragToHide2);
+        }
+        // Commit changes
+        ft.commit();
+    }
+
+    private void refreshDisplayFragments() {
+        //Refresh what is in the display based on the current values of roundSpinner position
         Round thisRound = thisQuiz.getRound(roundSpinner.getPosition());
+        if (!(thisRound.getAcceptsAnswers() || thisRound.getAcceptsCorrections() || thisRound.isCorrected())){
+            //Round is not yet open
+            //Just display the fragment that tells you this
+            roundStatusExplanation = "Please wait for this round to be opened";
+            explainRoundStatus.setStatus(roundStatusExplanation);
+            toggleFragments(explainRoundStatus, roundResultFrag, questionSpinner);
+            editAnswerLayout.setVisibility((View.GONE));
+            displayAnswersLayout.setVisibility(View.GONE);
+        }
         if (thisRound.getAcceptsAnswers()) {
-            //TODO: unhide the questionspinner
+            //Round is open to enter answers
+            //Show the questionSpinner
+            toggleFragments(questionSpinner, roundResultFrag, explainRoundStatus);
+            //Show the layouts to edit and display answers
             editAnswerLayout.setVisibility(View.VISIBLE);
             displayAnswersLayout.setVisibility(View.VISIBLE);
             //etAnswer is by default invisible to avoid seeing the keyboard when you shouldn't
             etAnswer.setVisibility(View.VISIBLE);
+            //Initialize etAnswer with the correct answer
             etAnswer.setText(thisQuiz.getAnswerForTeam(roundSpinner.getPosition(), questionSpinner.getPosition(), thisTeamNr).getTheAnswer());
-        } else {
-            //TODO: hide the questionspinner
+        }
+        if (thisRound.getAcceptsCorrections()) {
+            //Round is closed for answering, but not yet corrected
+            //Just display the fragment that tells you this
+            roundStatusExplanation = "Please wait for this round to be corrected";
+            explainRoundStatus.setStatus(roundStatusExplanation);
+            toggleFragments(explainRoundStatus, roundResultFrag, questionSpinner);
+            //explainRoundStatus.setStatus("Please wait for this round to be corrected");
+            editAnswerLayout.setVisibility((View.GONE));
+            displayAnswersLayout.setVisibility(View.GONE);
+        }
+        if (thisRound.isCorrected()) {
+            //Show the RoundResults Fragment
+            toggleFragments(roundResultFrag, questionSpinner, explainRoundStatus);
+            //Hide the layout to edit answers
             editAnswerLayout.setVisibility((View.GONE));
             displayAnswersLayout.setVisibility(View.VISIBLE);
         }
-        //Update the displayed answser as needed
-        displayAnswersAdapter.setAnswers(thisQuiz.getRound(roundSpinner.getPosition()).getQuestions());
-        rvDisplayAnswers.setAdapter(displayAnswersAdapter);
 
+        refreshAnswers();
     }
 
     @Override
@@ -124,12 +198,19 @@ public class C_ParticipantHome extends AppCompatActivity implements LoadingActiv
         setContentView(R.layout.c_act_participant_home);
         //Get the round spinner fragment
         roundSpinner = (FragRoundSpinner) getSupportFragmentManager().findFragmentById(R.id.frRoundSpinner);
-        //Create the QuestionSpinner fragment
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        //Create the other fragments that are needed here
+        //FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         questionSpinner = FragSpinner.newInstance(1);
-        ft.replace(R.id.frQuestionSpinner, questionSpinner,qSpinnerTag).commit();
-        //Get the question spinner fragment
-        //questionSpinner = (FragSpinner) getSupportFragmentManager().findFragmentByTag(qSpinnerTag);
+        //roundResultFrag = new FragShowRoundScore();
+        //ft.replace(R.id.frQuestionSpinner, questionSpinner, qSpinnerTag).commit();
+        //Create the roundResults fragment
+        //FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        roundResultFrag = new FragShowRoundScore();
+        explainRoundStatus = new FragExplainRoundStatus();
+
+        //roundResultFrag = new FragShowRoundScore();
+        //getSupportFragmentManager().beginTransaction().replace(R.id.frQuestionSpinner, questionSpinner, qSpinnerTag).commit();
+
 
         //Set the action bar
         ActionBar actionBar = getSupportActionBar();
@@ -171,11 +252,12 @@ public class C_ParticipantHome extends AppCompatActivity implements LoadingActiv
         rvDisplayAnswers.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         rvDisplayAnswers.setLayoutManager(layoutManager);
+        //Initialize the adapter, we will change the questionsList later on
         displayAnswersAdapter = new DisplayAnswersAdapter(this, thisQuiz.getRound(1).getQuestions(), thisTeamNr);
         //Initially, we start with question 1 of round 1, so set the text of the editText to this answer
-        etAnswer.setText(thisQuiz.getQuestion(1, 1).getAnswerForTeam(thisTeamNr).getTheAnswer());
-        //Refresh does all actions that are dependent on the position of the question spinner and the roundspinner
-        refresh();
+        //etAnswer.setText(thisQuiz.getQuestion(1, 1).getAnswerForTeam(thisTeamNr).getTheAnswer());
+        //RefreshDisplay will make sure we are seeing the correct fragments
+        //refreshDisplayFragments();
 
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -183,7 +265,7 @@ public class C_ParticipantHome extends AppCompatActivity implements LoadingActiv
                 //questionSpinner.moveDown();
                 //questionSpinner.moveUp();
                 thisQuiz.setAnswerForTeam(roundSpinner.getPosition(), questionSpinner.getPosition(), thisTeamNr, etAnswer.getText().toString().trim());
-                refresh();
+                refreshDisplayFragments();
                 thisQuiz.submitAnswers(C_ParticipantHome.this, roundSpinner.getPosition());
             }
         });

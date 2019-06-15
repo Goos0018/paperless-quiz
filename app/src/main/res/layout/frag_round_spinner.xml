@@ -47,7 +47,7 @@
         android:layout_marginRight="8dp"
         android:gravity="center"
         android:text="Roundname"
-        android:textSize="@dimen/text_size_medium"
+        android:textSize="@dimen/text_size_large"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/ivRndStatusR"
         app:layout_constraintStart_toEndOf="@+id/ivRndStatusL"

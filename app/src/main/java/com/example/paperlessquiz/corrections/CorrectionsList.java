@@ -1,4 +1,4 @@
-package com.example.paperlessquiz.Corrections;
+package com.example.paperlessquiz.corrections;
 
 import java.util.ArrayList;
 

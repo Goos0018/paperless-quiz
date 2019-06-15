@@ -17,64 +17,81 @@
     <FrameLayout
         android:id="@+id/frQuestionSpinner"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></FrameLayout>
+        android:layout_height="wrap_content">
 
-    <LinearLayout
-        android:id="@+id/llAnswers"
+
+    </FrameLayout>
+
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/margin_huge"
-        android:layout_marginTop="@dimen/margin_tiny"
-        android:layout_marginRight="@dimen/margin_huge"
-        android:orientation="vertical">
+        app:cardBackgroundColor="@color/cardview_shadow_end_color">
 
-        <EditText
-            android:id="@+id/etAnswer"
+        <LinearLayout
+            android:id="@+id/llAnswers"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:gravity="center"
-            android:hint="Your answer"
-            android:imeOptions="actionDone"
-            android:inputType="text"
-            android:visibility="invisible" />
-
-        <Button
-            android:id="@+id/btnSubmit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Submit Answers" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/llDisplay"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/margin_huge"
-        android:layout_marginTop="@dimen/margin_tiny"
-        android:layout_marginRight="@dimen/margin_huge"
-        android:orientation="vertical">
-
-
-        <TextView
-            android:id="@+id/tvDisplayRound"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="@dimen/margin_medium"
-            android:layout_marginRight="@dimen/margin_medium"
-            android:text="Your answers:" />
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rvDisplayAnswers"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/margin_large"
+            android:layout_marginLeft="@dimen/margin_huge"
             android:layout_marginTop="@dimen/margin_tiny"
-            android:layout_marginRight="@dimen/margin_large" />
+            android:layout_marginRight="@dimen/margin_huge"
+            android:orientation="vertical">
 
-    </LinearLayout>
+            <EditText
+                android:id="@+id/etAnswer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:gravity="center"
+                android:hint="Your answer"
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                android:visibility="invisible" />
+
+            <Button
+                android:id="@+id/btnSubmit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Submit Answers" />
+
+
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:cardBackgroundColor="@color/colorPrimaryLight">
+
+        <LinearLayout
+            android:id="@+id/llDisplay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_huge"
+            android:layout_marginTop="@dimen/margin_tiny"
+            android:layout_marginRight="@dimen/margin_huge"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:id="@+id/tvDisplayRound"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/margin_medium"
+                android:layout_marginRight="@dimen/margin_medium"
+                android:text="Your answers:" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rvDisplayAnswers"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/margin_large"
+                android:layout_marginTop="@dimen/margin_tiny"
+                android:layout_marginRight="@dimen/margin_large" />
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
 
 </LinearLayout>

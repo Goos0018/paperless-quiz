@@ -18,7 +18,7 @@ import android.widget.TextView;
  */
 public class FragSpinner extends Fragment {
 
-    private int position = 1, oldPosition=1;
+    private int position = 1, oldPosition = 1;
     private int id;
     TextView tvPrimaryField, tvSecondaryField;
     Button btnDown, btnUp;
@@ -88,6 +88,16 @@ public class FragSpinner extends Fragment {
         callingActivity.onSpinnerChange(id, oldPosition, position);
     }
 
+    public void moveToFirstPos() {
+        //Cover the case where we call this before the fragment is properly initialized
+        if (callingActivity != null) {
+            oldPosition = position;
+            position = 1;
+            tvPrimaryField.setText(callingActivity.getValueToSetForPrimaryField(id, position));
+            tvSecondaryField.setText(callingActivity.getValueToSetForSecondaryField(id, position));
+        }
+    }
+
     public void moveUp() {
         oldPosition = position;
         if (position == callingActivity.getSizeOfSpinnerArray()) {
@@ -112,4 +122,7 @@ public class FragSpinner extends Fragment {
         return position;
     }
 
+    public int getOldPosition() {
+        return oldPosition;
+    }
 }

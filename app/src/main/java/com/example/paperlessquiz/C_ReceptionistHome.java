@@ -30,8 +30,10 @@ public class C_ReceptionistHome extends AppCompatActivity implements LoadingActi
 
 
     //TODO: create own action bar = default
-    //TODO: Hide RndSpinnner for receptionist + create own actionbar + make field editable when clicked only
-
+    //TODO: Hide RndSpinnner for receptionist + create own actionbar
+    // TODO:make field editable when clicked only via below methods:
+        //<your_editText>.setEnabled(true)
+        //<your_editText>.requestFocus();
 
     Quiz thisQuiz = MyApplication.theQuiz;
     RecyclerView rvTeams;

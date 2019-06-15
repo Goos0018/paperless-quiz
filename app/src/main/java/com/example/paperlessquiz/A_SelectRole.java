@@ -16,7 +16,7 @@ import com.example.paperlessquiz.quiz.QuizLoader;
 /* This screen allows you to select if you are an organizer or a participant.
 All data about the quiz is loaded and stored in a Quiz object
 TODO: string resources and constants
-TODO: layout
+TODO: Modify allLPL's to write info directly in to central Quiz object where possible
  */
 
 public class A_SelectRole extends AppCompatActivity implements LoadingActivity {
@@ -82,6 +82,7 @@ public class A_SelectRole extends AppCompatActivity implements LoadingActivity {
         thisQuiz.setTeams(quizLoader.quizTeamsLPL.getLoginEntities());
         thisQuiz.setOrganizers(quizLoader.quizOrganizersLPL.getLoginEntities());
         thisQuiz.setRounds(quizLoader.quizRoundsLPL.getRounds()); //=> not necessary, always done inside the LPL when retrieving rounds info
+        //thisQuiz.setAllScoresPerTeam();=> not necessary, done in the LPL
         thisQuiz.setAllQuestionsPerRound(quizLoader.quizQuestionsLPL.getAllQuestionsPerRound()); //this will work because the Quiz should have all rounds initialized
         thisQuiz.setAllAnswersPerQuestion(quizLoader.quizAnswersLPL.getAllAnswersPerRound());    //this will work because the Quiz should have all questions for each round initialized
         thisQuiz.setAllCorrectionsPerQuestion(quizLoader.quizCorrectionsLPL.getAllCorrectionsPerRound());    //this will work because the Quiz should have all questions for each round initialized

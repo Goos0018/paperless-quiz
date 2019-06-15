@@ -36,6 +36,7 @@ public class GoogleAccess {
     public static final String SHEET_ORGANIZERS = "Organizers";
     //public static final String SHEET_TEAMCONTROL = "TeamRegistration";
     public static final String SHEET_ANSWERS = "Answers";
+    public static final String SHEET_CORRECTIONS = "Corrections";
     public static final String SHEET_SCORES = "Scores";
     public static final String SHEET_EVENTLOG = "EventLog";
 

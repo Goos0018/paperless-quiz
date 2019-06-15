@@ -1,4 +1,4 @@
-package com.example.paperlessquiz.Corrections;
+package com.example.paperlessquiz.corrections;
 
 public class Correction{
     private boolean isCorrect;

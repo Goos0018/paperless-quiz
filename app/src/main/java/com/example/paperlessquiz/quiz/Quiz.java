@@ -2,7 +2,7 @@ package com.example.paperlessquiz.quiz;
 
 import android.content.Context;
 
-import com.example.paperlessquiz.Corrections.CorrectionsList;
+import com.example.paperlessquiz.corrections.CorrectionsList;
 import com.example.paperlessquiz.answer.Answer;
 import com.example.paperlessquiz.answerslist.AnswersList;
 import com.example.paperlessquiz.google.access.GoogleAccess;
@@ -15,6 +15,7 @@ import com.example.paperlessquiz.quizextradata.QuizExtraData;
 import com.example.paperlessquiz.quizlistdata.QuizListData;
 import com.example.paperlessquiz.round.Round;
 import com.example.paperlessquiz.round.RoundParser;
+import com.example.paperlessquiz.scores.Score;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -30,6 +31,7 @@ public class Quiz implements Serializable {
     private ArrayList<LoginEntity> organizers;
     private ArrayList<Round> rounds;
     private LoginEntity myLoginentity;
+    private ArrayList<Score> allScoresPerTeam;
     public QuizLoader loader;
 
     //We only need an empty constructor, the QuizLoader class will populate all fields of the quiz
@@ -83,6 +85,16 @@ public class Quiz implements Serializable {
         }
     }
 
+    //Get the total score for team
+    public int getTotalScoreForTeam(int teamId){
+        return allScoresPerTeam.get(teamId-1).getTotalScore();
+    }
+
+    //Get round score for team
+    public int getRoundScoreForTeam(int teamId, int roundId){
+        return allScoresPerTeam.get(teamId-1).getScorePerRoundForTeam().get(roundId-1);
+    }
+
     //Return the team/organizer with the given ID
     public LoginEntity getTeam(int teamNr) {
         return teams.get(teamNr - 1);
@@ -91,6 +103,14 @@ public class Quiz implements Serializable {
     //Return the team with the given ID
     public LoginEntity getOrganizer(int organizerNr) {
         return organizers.get(organizerNr - 1);
+    }
+
+    public ArrayList<Score> getAllScoresPerTeam() {
+        return allScoresPerTeam;
+    }
+
+    public void setAllScoresPerTeam(ArrayList<Score> allScoresPerTeam) {
+        this.allScoresPerTeam = allScoresPerTeam;
     }
 
     public ArrayList<LoginEntity> getTeams() {
@@ -226,7 +246,7 @@ public class Quiz implements Serializable {
         tmp = tmp + "]]";
         String scriptParams = GoogleAccess.PARAMNAME_DOC_ID + getListData().getSheetDocID() + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_USERID + "Rupert" + GoogleAccess.PARAM_CONCATENATOR +
-                GoogleAccess.PARAMNAME_SHEET + GoogleAccess.SHEET_SCORES + GoogleAccess.PARAM_CONCATENATOR +
+                GoogleAccess.PARAMNAME_SHEET + GoogleAccess.SHEET_CORRECTIONS + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_RECORDID + getQuestion(roundNr, questionNr).getQuestionID() + GoogleAccess.PARAM_CONCATENATOR +
                 //We write score starting from the first team which should have id 1
                 GoogleAccess.PARAMNAME_FIELDNAME + GoogleAccess.PARAMVALUE_FIRST_TEAM_NR + GoogleAccess.PARAM_CONCATENATOR +
@@ -249,7 +269,7 @@ public class Quiz implements Serializable {
         tmp = tmp + "]";
         String scriptParams = GoogleAccess.PARAMNAME_DOC_ID + getListData().getSheetDocID() + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_USERID + "Rupert" + GoogleAccess.PARAM_CONCATENATOR +
-                GoogleAccess.PARAMNAME_SHEET + GoogleAccess.SHEET_SCORES + GoogleAccess.PARAM_CONCATENATOR +
+                GoogleAccess.PARAMNAME_SHEET + GoogleAccess.SHEET_CORRECTIONS + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_RECORDID + getQuestion(roundNr, 1).getQuestionID() + GoogleAccess.PARAM_CONCATENATOR +
                 //We write score starting from the first team which should have id 1
                 GoogleAccess.PARAMNAME_FIELDNAME + teamNr + GoogleAccess.PARAM_CONCATENATOR +

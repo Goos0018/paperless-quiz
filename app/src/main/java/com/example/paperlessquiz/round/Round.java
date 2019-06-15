@@ -113,4 +113,8 @@ public class Round implements Serializable, SpinnerData {
                "\",\"" + Boolean.toString(acceptsCorrections) + "\",\"" + Boolean.toString(corrected) + "\"]";
         return tmp;
     }
+
+    public void setNrOfQuestions(int nrOfQuestions) {
+        this.nrOfQuestions = nrOfQuestions;
+    }
 }

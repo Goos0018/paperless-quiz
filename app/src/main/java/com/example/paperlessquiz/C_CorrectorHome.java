@@ -25,26 +25,36 @@ import com.squareup.picasso.Target;
 
 import java.util.ArrayList;
 
-public class C_CorrectorHome extends AppCompatActivity implements LoadingActivity, FragSecondarySpinner.HasSecondarySpinner, FragRoundSpinner.HasRoundSpinner {
+public class C_CorrectorHome extends AppCompatActivity implements LoadingActivity, FragSpinner.HasSpinner, FragRoundSpinner.HasRoundSpinner {
 
     Quiz thisQuiz = MyApplication.theQuiz;
-    int thisTeamNr, thisRoundNr, thisSecSpinnerPos = 1;
+    int thisTeamNr, thisRoundNr=1, thisQuestionNr = 1;
     TextView tvCorrectAnswer;
     Button btnSubmitCorrections;
     LinearLayout llCorrectQuestions;
     ListView lvCorrectQuestions;
     CorrectAnswersAdapter myAdapter;
     FragRoundSpinner rndSpinner;
-    FragSecondarySpinner qSpinner;
+    FragSpinner qSpinner;
     ArrayList<Answer> allAnswers;
     boolean correctPerQuestion = true;
     QuizLoader quizLoader;
 
     @Override
-    public void onSecondarySpinnerChanged(int oldSecSpinnerNr, int newSecSpinnerNr) {
-        this.thisSecSpinnerPos = newSecSpinnerNr;
-        refresh();
+    public void onSpinnerChange(int id, int oldPos, int newPos) {
+        this.thisQuestionNr = newPos;
+        //refresh();
     }
+
+    @Override
+    public int getSizeOfSpinnerArray() {
+        if (correctPerQuestion) {
+            return thisQuiz.getRound(thisRoundNr).getQuestions().size();
+        } else {
+            return thisQuiz.getTeams().size();
+        }
+    }
+
 
     @Override
     public String getValueToSetForPrimaryField(int priSpinnerPos, int secSpinnerPos) {
@@ -61,15 +71,6 @@ public class C_CorrectorHome extends AppCompatActivity implements LoadingActivit
             return thisQuiz.getQuestion(priSpinnerPos, secSpinnerPos).getDescription();
         } else {
             return thisQuiz.getTeam(secSpinnerPos).getName();
-        }
-    }
-
-    @Override
-    public int getSizeOfSecSpinnerArray(int priSpinnerPos) {
-        if (correctPerQuestion) {
-            return thisQuiz.getRound(priSpinnerPos).getQuestions().size();
-        } else {
-            return thisQuiz.getTeams().size();
         }
     }
 
@@ -113,7 +114,7 @@ public class C_CorrectorHome extends AppCompatActivity implements LoadingActivit
                 break;
             case R.id.teams:
                 correctPerQuestion = !correctPerQuestion;
-                qSpinner.moveTo(1);
+                qSpinner.moveToFirstPos();
                 refresh();
                 qSpinner.positionChanged();
                 break;
@@ -142,11 +143,11 @@ public class C_CorrectorHome extends AppCompatActivity implements LoadingActivit
             llCorrectQuestions.setVisibility((View.GONE));
         }
         if (correctPerQuestion) {
-            allAnswers = thisQuiz.getQuestion(thisRoundNr, thisSecSpinnerPos).getAllAnswers();
-            tvCorrectAnswer.setText(thisQuiz.getQuestion(thisRoundNr, thisSecSpinnerPos).getCorrectAnswer());
+            allAnswers = thisQuiz.getQuestion(thisRoundNr, thisQuestionNr).getAllAnswers();
+            tvCorrectAnswer.setText(thisQuiz.getQuestion(thisRoundNr, thisQuestionNr).getCorrectAnswer());
             tvCorrectAnswer.setVisibility(View.VISIBLE);
         } else {
-            allAnswers = thisQuiz.getAnswersForRound(thisRoundNr, thisSecSpinnerPos);
+            allAnswers = thisQuiz.getAnswersForRound(thisRoundNr, thisQuestionNr);
             tvCorrectAnswer.setVisibility(View.GONE);
         }
         myAdapter = new CorrectAnswersAdapter(this, allAnswers);
@@ -159,7 +160,7 @@ public class C_CorrectorHome extends AppCompatActivity implements LoadingActivit
         super.onCreate(savedInstanceState);
         setContentView(R.layout.c_act_corrector_home);
         //Get the questionSpinner fragment
-        qSpinner = (FragSecondarySpinner) getSupportFragmentManager().findFragmentById(R.id.frQuestionSpinner);
+        qSpinner = (FragSpinner) getSupportFragmentManager().findFragmentById(R.id.frQuestionSpinner);
         rndSpinner = (FragRoundSpinner) getSupportFragmentManager().findFragmentById(R.id.frPriSpinner);
         //Set the action bar
         ActionBar actionBar = getSupportActionBar();
@@ -200,11 +201,11 @@ public class C_CorrectorHome extends AppCompatActivity implements LoadingActivit
             @Override
             public void onClick(View view) {
                 if (correctPerQuestion) {
-                    thisQuiz.submitCorrectionsForQuestion(C_CorrectorHome.this, thisRoundNr, thisSecSpinnerPos);
+                    thisQuiz.submitCorrectionsForQuestion(C_CorrectorHome.this, thisRoundNr, thisQuestionNr);
                 }
                 else
                 {
-                    thisQuiz.submitCorrectionsForTeam(C_CorrectorHome.this,thisRoundNr,thisSecSpinnerPos);
+                    thisQuiz.submitCorrectionsForTeam(C_CorrectorHome.this,thisRoundNr, thisQuestionNr);
                 }
             }
         });

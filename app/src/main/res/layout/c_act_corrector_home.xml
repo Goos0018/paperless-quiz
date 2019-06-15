@@ -17,10 +17,10 @@
 
     <fragment
         android:id="@+id/frQuestionSpinner"
-        android:name="com.example.paperlessquiz.FragSecondarySpinner"
+        android:name="com.example.paperlessquiz.FragSpinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:layout="@layout/frag_secondary_spinner" />
+        tools:layout="@layout/frag_spinner" />
 
     <LinearLayout
         android:id="@+id/llCorrectQuestions"

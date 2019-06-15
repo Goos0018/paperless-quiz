@@ -34,6 +34,7 @@ public class Quiz implements Serializable {
     private ArrayList<Score> allScoresPerTeam;
     public QuizLoader loader;
     public boolean loadingCompleted = false;
+    public ArrayList<ArrayList<Integer>> totalScoreAfterEachRoundPerTeam;
 
     //We only need an empty constructor, the QuizLoader class will populate all fields of the quiz
     public Quiz() {
@@ -42,9 +43,10 @@ public class Quiz implements Serializable {
         this.teams = new ArrayList<>();
         this.organizers = new ArrayList<>();
         this.rounds = new ArrayList<>();
-        for (int i = 0; i < this.additionalData.getNrOfRounds(); i++) {
-            rounds.add(i, new Round());
-        }
+        this.totalScoreAfterEachRoundPerTeam = new ArrayList<>();
+        //for (int i = 0; i < this.additionalData.getNrOfRounds(); i++) {
+        //    rounds.add(i, new Round());
+        //}
     }
 
     //Calculate scores based on corrections
@@ -58,6 +60,7 @@ public class Quiz implements Serializable {
                 int roundNr = j + 1;
                 Round thisRnd = getRound(roundNr);
                 int scoreForThisRnd = 0;
+                int totalScoreUntilThisRound = 0;
                 if (thisRnd.isCorrected()) {
                     //for each question in round j
                     for (int k = 0; k < getRounds().get(j).getQuestions().size(); k++) {
@@ -70,8 +73,15 @@ public class Quiz implements Serializable {
                     }
                 }
                 setRoundScoreForTeam(teamNr, roundNr, scoreForThisRnd);
+                totalScoreUntilThisRound = totalScoreUntilThisRound + scoreForThisRnd;
+                setTotalScoreAfterRound(teamNr,roundNr,totalScoreUntilThisRound);
+
             }
         }
+    }
+
+    public void setTotalScoreAfterRound(int teamNr, int roundNr,int score){
+        totalScoreAfterEachRoundPerTeam.get(teamNr-1).set(roundNr - 1, new Integer(score));
     }
 
     //Add the questions information we have from an array of array of questions.
@@ -79,6 +89,7 @@ public class Quiz implements Serializable {
         //For each entry in the allQuestionsPerRound array (=for each round)
         for (int i = 0; i < allQuestionsPerRound.size(); i++) {
             this.getRounds().get(i).setQuestions(allQuestionsPerRound.get(i));
+            this.getRounds().get(i).setNrOfQuestions(allQuestionsPerRound.get(i).size());
         }
     }
 
@@ -100,22 +111,25 @@ public class Quiz implements Serializable {
     public void setAllCorrectionsPerQuestion(ArrayList<ArrayList<CorrectionsList>> allCorrectionsPerRound) {
         //For each entry in the allAnswersPerRound array (=for each round)
         for (int i = 0; i < allCorrectionsPerRound.size(); i++) {
+            int roundNr = i+1;
             ArrayList<CorrectionsList> allCorrectionsForThisRound = allCorrectionsPerRound.get(i);
             //For each question in this round
             for (int j = 0; j < allCorrectionsForThisRound.size(); j++) {
+                int questionNr = j+1;
                 CorrectionsList allCorrectionsForThisQuestion = allCorrectionsForThisRound.get(j);
                 //Foreach answer to this question
                 for (int k = 0; k < allCorrectionsForThisQuestion.getAllCorrections().size(); k++) {
-                    getRounds().get(i).getQuestions().get(j).getAllAnswers().get(k).setCorrect(allCorrectionsForThisQuestion.getAllCorrections().get(k).isCorrect());
-                    getRounds().get(i).getQuestions().get(j).getAllAnswers().get(k).setCorrected(allCorrectionsForThisQuestion.getAllCorrections().get(k).isCorrected());
+                    int teamNr = k+1;
+                    getAnswerForTeam(roundNr,questionNr,teamNr).setCorrect(allCorrectionsForThisQuestion.getAllCorrections().get(k).isCorrect());
+                    getAnswerForTeam(roundNr,questionNr,teamNr).setCorrected(allCorrectionsForThisQuestion.getAllCorrections().get(k).isCorrected());
                 }
             }
         }
     }
 
-    //Get the total score for team
-    public int getTotalScoreForTeam(int teamId) {
-        return allScoresPerTeam.get(teamId - 1).getTotalScore();
+    //Get the total score for team after round roundNr
+    public int getTotalScoreForTeam(int teamId,int roundNr) {
+        return totalScoreAfterEachRoundPerTeam.get(teamId - 1).get(roundNr-1);
     }
 
     //Get round score for team
@@ -156,6 +170,7 @@ public class Quiz implements Serializable {
 
     public void setTeams(ArrayList<LoginEntity> teams) {
         this.teams = teams;
+        this.additionalData.setNrOfParticipants(teams.size());
     }
 
     public void setOrganizers(ArrayList<LoginEntity> organizers) {
@@ -200,6 +215,7 @@ public class Quiz implements Serializable {
 
     public void setRounds(ArrayList<Round> rounds) {
         this.rounds = rounds;
+        this.additionalData.setNrOfRounds(rounds.size());
     }
 
     public ArrayList<Answer> getAnswersForRound(int rndNr, int teamNr) {
@@ -335,5 +351,12 @@ public class Quiz implements Serializable {
                 "Submitting answers for round " + roundNr));
     }
 
-
+public void initializeTotalScoreAfterEachRound(){
+    for (int i = 0; i < this.additionalData.getNrOfParticipants() ; i++) {
+        totalScoreAfterEachRoundPerTeam.add(new ArrayList<>());
+        for (int j = 0; j < this.additionalData.getNrOfRounds(); j++) {
+            totalScoreAfterEachRoundPerTeam.get(i).add(new Integer(0));
+        }
+    }
+}
 }

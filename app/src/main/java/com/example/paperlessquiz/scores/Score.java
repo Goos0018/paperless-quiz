@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Score {
     private ArrayList<Integer> scorePerRoundForTeam;
-    private int totalScore;
+    private int currentTotalScore;
     private int teamId;
     private String teamName;
 
@@ -12,15 +12,15 @@ public class Score {
         this.teamId=teamId;
         this.teamName=teamName;
         this.scorePerRoundForTeam =new ArrayList<>();
-        this.totalScore=0;
+        this.currentTotalScore =0;
     }
 
     public void setScorePerRoundForTeam(ArrayList<Integer> scorePerRoundForTeam) {
         this.scorePerRoundForTeam = scorePerRoundForTeam;
     }
 
-    public void setTotalScore(int totalScore) {
-        this.totalScore = totalScore;
+    public void setCurrentTotalScore(int currentTotalScore) {
+        this.currentTotalScore = currentTotalScore;
     }
 
     public void setScoreForRound(int rndNr,int score){
@@ -31,7 +31,7 @@ public class Score {
         return scorePerRoundForTeam;
     }
 
-    public int getTotalScore() {
-        return totalScore;
+    public int getCurrentTotalScore() {
+        return currentTotalScore;
     }
 }

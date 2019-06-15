@@ -80,12 +80,15 @@ public class A_SelectRole extends AppCompatActivity implements LoadingActivity {
         //thisQuiz.setListData(thisQuizListData); => Already done in the main activity
         thisQuiz.setAdditionalData(quizLoader.quizExtraDataLPL.getQuizExtraData());
         thisQuiz.setTeams(quizLoader.quizTeamsLPL.getLoginEntities());
+        thisQuiz.getAdditionalData().setNrOfParticipants(thisQuiz.getTeams().size());
         thisQuiz.setOrganizers(quizLoader.quizOrganizersLPL.getLoginEntities());
         thisQuiz.setRounds(quizLoader.quizRoundsLPL.getRounds()); //=> not necessary, always done inside the LPL when retrieving rounds info
+        thisQuiz.getAdditionalData().setNrOfRounds(thisQuiz.getRounds().size());
         //thisQuiz.setAllScoresPerTeam();=> not necessary, done in the LPL
         thisQuiz.setAllQuestionsPerRound(quizLoader.quizQuestionsLPL.getAllQuestionsPerRound()); //this will work because the Quiz should have all rounds initialized
         thisQuiz.setAllAnswersPerQuestion(quizLoader.quizAnswersLPL.getAllAnswersPerRound());    //this will work because the Quiz should have all questions for each round initialized
         thisQuiz.setAllCorrectionsPerQuestion(quizLoader.quizCorrectionsLPL.getAllCorrectionsPerRound());    //this will work because the Quiz should have all questions for each round initialized
+        thisQuiz.initializeTotalScoreAfterEachRound();
         thisQuiz.loadingCompleted = true; //So now we know we can update rounds, questions, ...
         intent = new Intent(A_SelectRole.this, B_LoginMain.class);
         //intent.putExtra(Quiz.INTENT_EXTRANAME_THIS_QUIZ, thisQuiz);

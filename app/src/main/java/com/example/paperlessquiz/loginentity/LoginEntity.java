@@ -90,11 +90,14 @@ public class LoginEntity implements Serializable {
 
     @Override
     public String toString() {
-        String tmp = "[\"" + name + "\",\"" + passkey + "\",\"" + Boolean.toString(present) + "\",\"" + Boolean.toString(loggedIn);
+        String tmp;
+        if (type.equals(TYPE_PARTICIPANT)){
+        tmp = "[\"" + name + "\",\"" + passkey + "\",\"" + Boolean.toString(present) + "\",\"" + Boolean.toString(loggedIn);
         for (int i = 0; i < answerForRndsSubmitted.size(); i++) {
             tmp = tmp + "\",\"" + Boolean.toString(answerForRndsSubmitted.get(i));
         }
-        tmp = tmp + "\"]";
+        tmp = tmp + "\"]";}
+        else {tmp = "";}
         return tmp;
     }
 }

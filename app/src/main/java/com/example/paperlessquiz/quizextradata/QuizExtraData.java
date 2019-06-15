@@ -48,4 +48,12 @@ public class QuizExtraData implements Serializable {
     public int getDebugLevel() {
         return debugLevel;
     }
+
+    public void setNrOfRounds(int nrOfRounds) {
+        this.nrOfRounds = nrOfRounds;
+    }
+
+    public void setNrOfParticipants(int nrOfParticipants) {
+        this.nrOfParticipants = nrOfParticipants;
+    }
 }

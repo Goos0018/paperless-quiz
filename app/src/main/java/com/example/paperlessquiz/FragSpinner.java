@@ -53,7 +53,9 @@ public class FragSpinner extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         //Set the id to what was passed via newInstance
-        id = getArguments().getInt("id", 0);
+        //TODO: remove, not needed
+        //id = getArguments().getInt("id", 0);
+        id = 1;
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.frag_secondary_spinner, container, false);
         tvPrimaryField = v.findViewById(R.id.tvPrimaryField);

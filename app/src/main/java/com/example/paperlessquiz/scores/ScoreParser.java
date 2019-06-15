@@ -21,9 +21,9 @@ public class ScoreParser implements JsonParser<Score> {
     public Score parse(JSONObject jo) throws JSONException {
         Score score = new Score(jo.getInt(SCORE_TEAMID), jo.getString(SCORE_TEAMNAME));
         try {
-            score.setTotalScore(jo.getInt(SCORE_TOTAL));
+            score.setCurrentTotalScore(jo.getInt(SCORE_TOTAL));
         } catch (Exception e) {
-            score.setTotalScore(0);
+            score.setCurrentTotalScore(0);
         }
         ArrayList<Integer> scorePerRoundForTeam = new ArrayList<>();
         int scoreToSet;

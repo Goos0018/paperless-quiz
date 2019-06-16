@@ -1,12 +1,7 @@
 package com.example.paperlessquiz;
 
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,24 +16,21 @@ import android.widget.TextView;
 
 import com.example.paperlessquiz.adapters.DisplayAnswersAdapter;
 import com.example.paperlessquiz.google.access.LoadingActivity;
-import com.example.paperlessquiz.quiz.Quiz;
 import com.example.paperlessquiz.quiz.QuizLoader;
 import com.example.paperlessquiz.round.Round;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 //TODO: disable predictive typing and spell-check!!!!
 //TODO: find method to hide the keyboard when spinner changes
-public class C_ParticipantHome extends AppCompatActivity implements LoadingActivity, FragSpinner.HasSpinner,
+public class C_ParticipantHome extends MyActivity implements LoadingActivity, FragSpinner.HasSpinner,
         FragRoundSpinner.HasRoundSpinner, FragShowRoundScore.HasShowRoundScore, FragExplainRoundStatus.HasExplainRoundStatus {
 
-    Quiz thisQuiz = MyApplication.theQuiz;
+    //Quiz thisQuiz = MyApplication.theQuiz => already defined in MyActivity
     int thisTeamNr;
     FragRoundSpinner roundSpinner;
     FragSpinner questionSpinner;
     FragShowRoundScore roundResultFrag;
     FragExplainRoundStatus explainRoundStatus;
-    TextView tvDisplayRoundResults,tvExplainRoundStatus;
+    TextView tvDisplayRoundResults, tvExplainRoundStatus;
     EditText etAnswer;
     Button btnSubmit;
     LinearLayout displayAnswersLayout, editAnswerLayout;
@@ -69,6 +61,7 @@ public class C_ParticipantHome extends AppCompatActivity implements LoadingActiv
         thisQuiz.setAnswerForTeam(roundSpinner.getPosition(), oldPos, thisTeamNr, etAnswer.getText().toString().trim());
         //Set the value of the answer for the new question to what we already have
         etAnswer.setText(thisQuiz.getAnswerForTeam(roundSpinner.getPosition(), newPos, thisTeamNr).getTheAnswer());
+        //etAnswer.clearFocus();
         etAnswer.setImeOptions(EditorInfo.IME_ACTION_DONE);
         refreshAnswers();
     }
@@ -91,8 +84,9 @@ public class C_ParticipantHome extends AppCompatActivity implements LoadingActiv
     @Override
     public void onRoundChanged(int oldRoundNr, int roundNr) {
         //Similar as with a questionSpinner change, we save the answer that we have and load the new answer - only do this if the field is visible
-        if (etAnswer.getVisibility() == View.VISIBLE){
-        thisQuiz.setAnswerForTeam(oldRoundNr, questionSpinner.getPosition(), thisTeamNr, etAnswer.getText().toString().trim());}
+        if (etAnswer.getVisibility() == View.VISIBLE) {
+            thisQuiz.setAnswerForTeam(oldRoundNr, questionSpinner.getPosition(), thisTeamNr, etAnswer.getText().toString().trim());
+        }
         //Set the value of the answer for the new question to what we already have
         //Move the QuestionSpinner to position 1 to make sure we have something at that position
         questionSpinner.moveToFirstPos();
@@ -135,7 +129,7 @@ public class C_ParticipantHome extends AppCompatActivity implements LoadingActiv
     private void refreshDisplayFragments() {
         //Refresh what is in the display based on the current values of roundSpinner position
         Round thisRound = thisQuiz.getRound(roundSpinner.getPosition());
-        if (!(thisRound.getAcceptsAnswers() || thisRound.getAcceptsCorrections() || thisRound.isCorrected())){
+        if (!(thisRound.getAcceptsAnswers() || thisRound.getAcceptsCorrections() || thisRound.isCorrected())) {
             //Round is not yet open
             //Just display the fragment that tells you this
             roundStatusExplanation = "Please wait for this round to be opened";
@@ -147,7 +141,7 @@ public class C_ParticipantHome extends AppCompatActivity implements LoadingActiv
         if (thisRound.getAcceptsAnswers()) {
             //Round is open to enter answers
             //Show the questionSpinner
-            toggleFragments(R.id.frPlaceHolder,questionSpinner, roundResultFrag, explainRoundStatus);
+            toggleFragments(R.id.frPlaceHolder, questionSpinner, roundResultFrag, explainRoundStatus);
             //Show the layouts to edit and display answers
             editAnswerLayout.setVisibility(View.VISIBLE);
             displayAnswersLayout.setVisibility(View.VISIBLE);
@@ -161,14 +155,14 @@ public class C_ParticipantHome extends AppCompatActivity implements LoadingActiv
             //Just display the fragment that tells you this
             roundStatusExplanation = "Please wait for this round to be corrected";
             explainRoundStatus.setStatus(roundStatusExplanation);
-            toggleFragments(R.id.frPlaceHolder,explainRoundStatus, roundResultFrag, questionSpinner);
+            toggleFragments(R.id.frPlaceHolder, explainRoundStatus, roundResultFrag, questionSpinner);
             //explainRoundStatus.setStatus("Please wait for this round to be corrected");
             editAnswerLayout.setVisibility((View.GONE));
             displayAnswersLayout.setVisibility(View.GONE);
         }
         if (thisRound.isCorrected()) {
             //Show the RoundResults Fragment
-            toggleFragments(R.id.frPlaceHolder,roundResultFrag, questionSpinner, explainRoundStatus);
+            toggleFragments(R.id.frPlaceHolder, roundResultFrag, questionSpinner, explainRoundStatus);
             //Hide the layout to edit answers
             editAnswerLayout.setVisibility((View.GONE));
             displayAnswersLayout.setVisibility(View.VISIBLE);
@@ -179,7 +173,7 @@ public class C_ParticipantHome extends AppCompatActivity implements LoadingActiv
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.c_participant_home, menu);
+        getMenuInflater().inflate(R.menu.participant, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -214,35 +208,8 @@ public class C_ParticipantHome extends AppCompatActivity implements LoadingActiv
 
         //roundResultFrag = new FragShowRoundScore();
         //getSupportFragmentManager().beginTransaction().replace(R.id.frQuestionSpinner, questionSpinner, qSpinnerTag).commit();
-
-
-        //Set the action bar
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true); //Display the "back" icon, we will replace this with the icon of this Quiz
-        final Target mTarget = new Target() {
-            @Override
-            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom loadedFrom) {
-                BitmapDrawable mBitmapDrawable = new BitmapDrawable(getResources(), bitmap);
-                actionBar.setHomeAsUpIndicator(mBitmapDrawable);
-            }
-
-            @Override
-            public void onBitmapFailed(Drawable drawable) {
-            }
-
-            @Override
-            public void onPrepareLoad(Drawable drawable) {
-            }
-        };
-        String URL = thisQuiz.getListData().getLogoURL();
-        if (URL.equals("")) {
-            actionBar.setDisplayHomeAsUpEnabled(false);//If the Quiz has no logo, then don't display anything
-        } else {
-            //Picasso.with(this).load("http://www.meerdaal.be//assets/logo-05c267018885eb67356ce0b49bf72129.png").into(mTarget);
-            Picasso.with(this).load(thisQuiz.getListData().getLogoURL()).resize(Quiz.ACTIONBAR_ICON_WIDTH, Quiz.ACTIONBAR_ICON_HEIGHT).into(mTarget);
-        }
-        actionBar.setTitle(thisQuiz.getMyLoginentity().getName());
-
+        setActionBarIcon();
+        setActionBarTitle();
         //Log that the user logged in
         thisTeamNr = thisQuiz.getMyLoginentity().getId();
         MyApplication.eventLogger.logEvent(thisQuiz.getMyLoginentity().getName(), "Logged in");

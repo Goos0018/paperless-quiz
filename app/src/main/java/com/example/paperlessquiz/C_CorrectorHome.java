@@ -27,6 +27,7 @@ import com.squareup.picasso.Target;
 
 import java.util.ArrayList;
 //TODO: change colour of qSpinner if not all answers are corrected - current way is not working as it should
+
 /**
  * This class is allows a corrector to mark answers as correct or not correct. The screen always has a round spinner to spin through the rounds.
  * Corrections are only possible if the status of a round is to allow this (acceptCorrections = true).
@@ -35,9 +36,9 @@ import java.util.ArrayList;
  * Team, round and question numbers are stored in the thisTeamNr, thisRoundNr, thisQuestionNr
  */
 
-public class C_CorrectorHome extends AppCompatActivity implements LoadingActivity, FragSpinner.HasSpinner, FragRoundSpinner.HasRoundSpinner, FragExplainRoundStatus.HasExplainRoundStatus {
+public class C_CorrectorHome extends MyActivity implements LoadingActivity, FragSpinner.HasSpinner, FragRoundSpinner.HasRoundSpinner, FragExplainRoundStatus.HasExplainRoundStatus {
 
-    Quiz thisQuiz = MyApplication.theQuiz;
+    //Quiz thisQuiz = MyApplication.theQuiz;
     int thisTeamNr = 1, thisRoundNr = 1, thisQuestionNr = 1;
     String roundStatusExplanation;
     TextView tvCorrectAnswer;
@@ -79,7 +80,6 @@ public class C_CorrectorHome extends AppCompatActivity implements LoadingActivit
         }
         */
     }
-
 
 
     @Override
@@ -226,6 +226,7 @@ public class C_CorrectorHome extends AppCompatActivity implements LoadingActivit
             toggleFragments(R.id.frPlaceHolder, explainRoundStatus, spinner, spinner);
             llCorrectQuestions.setVisibility((View.GONE));
         }
+        //Force onCreateoptionsMenu to run again
         supportInvalidateOptionsMenu();
     }
 
@@ -238,35 +239,8 @@ public class C_CorrectorHome extends AppCompatActivity implements LoadingActivit
         spinner = new FragSpinner();
         explainRoundStatus = new FragExplainRoundStatus();
         //Set the action bar
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true); //Display the "back" icon, we will replace this with the icon of this Quiz
-        final Target mTarget = new Target() {
-            @Override
-            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom loadedFrom) {
-                BitmapDrawable mBitmapDrawable = new BitmapDrawable(getResources(), bitmap);
-                actionBar.setHomeAsUpIndicator(mBitmapDrawable);
-            }
-
-            @Override
-            public void onBitmapFailed(Drawable drawable) {
-            }
-
-            @Override
-            public void onPrepareLoad(Drawable drawable) {
-            }
-        };
-        String URL = thisQuiz.getListData().getLogoURL();
-        if (URL.equals("")) {
-            actionBar.setDisplayHomeAsUpEnabled(false);//If the Quiz has no logo, then don't display anything
-        } else {
-            //Picasso.with(this).load("http://www.meerdaal.be//assets/logo-05c267018885eb67356ce0b49bf72129.png").into(mTarget);
-            Picasso.with(this).load(thisQuiz.getListData().getLogoURL()).resize(Quiz.ACTIONBAR_ICON_WIDTH, Quiz.ACTIONBAR_ICON_HEIGHT).into(mTarget);
-        }
-        actionBar.setTitle(thisQuiz.getMyLoginentity().getName());
-        //Log that the user logged in
-        //thisTeamNr = thisQuiz.getMyLoginentity().getId();
-        //MyApplication.eventLogger.logEvent(thisQuiz.getMyLoginentity().getName(), "Logged in");
-        //Get all the stuff from the layout
+        setActionBarIcon();
+        setActionBarTitle();
         //Get handles to everything in the layout
         llCorrectQuestions = findViewById(R.id.llCorrectQuestions);
         tvCorrectAnswer = findViewById(R.id.tvCorrectAnswer);

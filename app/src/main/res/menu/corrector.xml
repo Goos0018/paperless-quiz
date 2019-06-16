@@ -34,11 +34,5 @@
         android:orderInCategory="100"
         app:showAsAction="always"
         android:icon="@drawable/rounds"/>
-    <item
-        android:id="@+id/order"
-        android:icon="@drawable/dorst"
-        android:orderInCategory="100"
-        android:title="Thirsty!"
-        app:showAsAction="always" />
 
 </menu>

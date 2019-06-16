@@ -20,7 +20,7 @@ public class B_LoginMain extends AppCompatActivity {
     Quiz thisQuiz = MyApplication.theQuiz;
     LoginEntity thisLoginEntity;
     //Local items in interface
-    TextView tvDisplayName, tvDisplayID;
+    TextView tvLoginPrompt, tvDisplayName, tvDisplayID;
     EditText etPasskey;
     Button btnSubmit;
     ListView lvShowParticipants;
@@ -37,7 +37,7 @@ public class B_LoginMain extends AppCompatActivity {
             //tFields(thisQuiz.getTeams().get(index).getName(), Integer.toString(thisQuiz.getTeams().get(index).getId()));
         } else {
             //setFields(thisQuiz.getOrganizers().get(index).getName(), Integer.toString(thisQuiz.getOrganizers().get(index).getId()));
-            tvDisplayName.setText(thisQuiz.getOrganizers().get(position).getName());
+            tvDisplayName.setText(thisQuiz.getOrganizers().get(position).getType());
             tvDisplayID.setText(Integer.toString(thisQuiz.getOrganizers().get(position).getId()));
             //tvDisplayID.setVisibility(View.GONE);
             etPasskey.setText("");
@@ -49,6 +49,7 @@ public class B_LoginMain extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_b_login_main);
 
+        tvLoginPrompt = findViewById(R.id.tvLoginPrompt);
         tvDisplayName = findViewById(R.id.tvDisplayName);
         tvDisplayID = findViewById(R.id.tvDisplayID);
         btnSubmit = (Button) findViewById(R.id.btn_submit_login);
@@ -57,8 +58,10 @@ public class B_LoginMain extends AppCompatActivity {
         loginType = (String) getIntent().getStringExtra(LoginEntity.INTENT_EXTRA_NAME_THIS_LOGIN_TYPE);
         if (loginType.equals(LoginEntity.SELECTION_PARTICIPANT)) {
             adapter = new ParticipantsAdapter(this, thisQuiz.getTeams());
+            tvLoginPrompt.setText("Select your team in the list below");
         } else {
             adapter = new ParticipantsAdapter(this, thisQuiz.getOrganizers());
+            tvLoginPrompt.setText("Select your role in the list below");
         }
         setFields(0);
         lvShowParticipants.setAdapter(adapter);

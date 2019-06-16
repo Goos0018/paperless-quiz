@@ -9,11 +9,6 @@
         android:orderInCategory="100"
         android:title="Refresh"
         app:showAsAction="always" />
-    <item android:id="@+id/order"
-        android:title="Thirsty!"
-        android:orderInCategory="100"
-        app:showAsAction="always"
-        android:icon="@drawable/dorst"/>
 
     <item android:id="@+id/teams"
         android:title="Teams"

@@ -24,9 +24,8 @@ import com.squareup.picasso.Target;
  * Quizmaster screen to show the teams and whether or not they submitted answers for a particular round
  * Actions: Refresh/Dorst/Rounds/Upload
  */
-public class C_QuizmasterTeams extends AppCompatActivity implements FragRoundSpinner.HasRoundSpinner, LoadingActivity {
-    //TODO: Move code toset icon and nameto separate class/location
-    Quiz thisQuiz = MyApplication.theQuiz;
+public class C_QuizmasterTeams extends MyActivity implements FragRoundSpinner.HasRoundSpinner, LoadingActivity {
+    //Quiz thisQuiz = MyApplication.theQuiz;
     RecyclerView rvTeams;
     RecyclerView.LayoutManager layoutManager;
     ShowTeamsAdapter showTeamsAdapter;
@@ -51,7 +50,7 @@ public class C_QuizmasterTeams extends AppCompatActivity implements FragRoundSpi
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.c_quizmaster_home, menu);
+        getMenuInflater().inflate(R.menu.quizmaster, menu);
         //Hide item for the Teams button and also the upload button
         menu.findItem(R.id.teams).setVisible(false);
         menu.findItem(R.id.upload).setVisible(false);
@@ -83,37 +82,8 @@ public class C_QuizmasterTeams extends AppCompatActivity implements FragRoundSpi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_c_quizmaster_teams);
         //Set the action bar
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true); //Display the "back" icon, we will replace this with the icon of this Quiz
-        final Target mTarget = new Target() {
-            @Override
-            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom loadedFrom) {
-                //Log.d("DEBUG", "onBitmapLoaded");
-                BitmapDrawable mBitmapDrawable = new BitmapDrawable(getResources(), bitmap);
-                //                                mBitmapDrawable.setBounds(0,0,24,24);
-                // setting icon of Menu Item or Navigation View's Menu Item
-                //actionBar.setIcon(mBitmapDrawable);
-                actionBar.setHomeAsUpIndicator(mBitmapDrawable);
-            }
-
-            @Override
-            public void onBitmapFailed(Drawable drawable) {
-                //Log.d("DEBUG", "onBitmapFailed");
-            }
-
-            @Override
-            public void onPrepareLoad(Drawable drawable) {
-                //Log.d("DEBUG", "onPrepareLoad");
-            }
-        };
-        String URL = thisQuiz.getListData().getLogoURL();
-        if (URL.equals("")) {
-            actionBar.setDisplayHomeAsUpEnabled(false);//If the Quiz has no logo, then don't display anything
-        } else {
-            //Picasso.with(this).load("http://www.meerdaal.be//assets/logo-05c267018885eb67356ce0b49bf72129.png").into(mTarget);
-            Picasso.with(this).load(thisQuiz.getListData().getLogoURL()).resize(Quiz.ACTIONBAR_ICON_WIDTH, Quiz.ACTIONBAR_ICON_HEIGHT).into(mTarget);
-        }
-        actionBar.setTitle(thisQuiz.getMyLoginentity().getName());
+        setActionBarIcon();
+        setActionBarTitle();
         rvTeams = findViewById(R.id.rvShowTeams);
         rvTeams.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);

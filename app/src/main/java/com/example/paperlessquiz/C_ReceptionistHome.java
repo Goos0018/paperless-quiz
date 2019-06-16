@@ -24,16 +24,15 @@ import com.squareup.picasso.Target;
  */
 
 
-public class C_ReceptionistHome extends AppCompatActivity implements LoadingActivity {
+public class C_ReceptionistHome extends MyActivity implements LoadingActivity {
 
 
     //TODO: create own action bar = default
-    //TODO: Hide RndSpinnner for receptionist + create own actionbar
     // TODO:make field editable when clicked only via below methods:
         //<your_editText>.setEnabled(true)
         //<your_editText>.requestFocus();
 
-    Quiz thisQuiz = MyApplication.theQuiz;
+    //Quiz thisQuiz = MyApplication.theQuiz;
     RecyclerView rvTeams;
     RecyclerView.LayoutManager layoutManager;
     EditTeamsAdapter editTeamsAdapter;
@@ -73,37 +72,9 @@ public class C_ReceptionistHome extends AppCompatActivity implements LoadingActi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_c_receptionist_home);
         //Set the action bar
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true); //Display the "back" icon, we will replace this with the icon of this Quiz
-        final Target mTarget = new Target() {
-            @Override
-            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom loadedFrom) {
-                //Log.d("DEBUG", "onBitmapLoaded");
-                BitmapDrawable mBitmapDrawable = new BitmapDrawable(getResources(), bitmap);
-                //                                mBitmapDrawable.setBounds(0,0,24,24);
-                // setting icon of Menu Item or Navigation View's Menu Item
-                //actionBar.setIcon(mBitmapDrawable);
-                actionBar.setHomeAsUpIndicator(mBitmapDrawable);
-            }
+        setActionBarIcon();
+        setActionBarTitle();
 
-            @Override
-            public void onBitmapFailed(Drawable drawable) {
-                //Log.d("DEBUG", "onBitmapFailed");
-            }
-
-            @Override
-            public void onPrepareLoad(Drawable drawable) {
-                //Log.d("DEBUG", "onPrepareLoad");
-            }
-        };
-        String URL = thisQuiz.getListData().getLogoURL();
-        if (URL.equals("")) {
-            actionBar.setDisplayHomeAsUpEnabled(false);//If the Quiz has no logo, then don't display anything
-        } else {
-            //Picasso.with(this).load("http://www.meerdaal.be//assets/logo-05c267018885eb67356ce0b49bf72129.png").into(mTarget);
-            Picasso.with(this).load(thisQuiz.getListData().getLogoURL()).resize(Quiz.ACTIONBAR_ICON_WIDTH, Quiz.ACTIONBAR_ICON_HEIGHT).into(mTarget);
-        }
-        actionBar.setTitle(thisQuiz.getMyLoginentity().getName());
         rvTeams = findViewById(R.id.rvShowTeams);
         rvTeams.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);

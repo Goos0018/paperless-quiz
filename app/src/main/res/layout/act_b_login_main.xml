@@ -9,7 +9,7 @@
     tools:context=".B_LoginMain">
 
     <TextView
-        android:id="@+id/tv_login_prompt"
+        android:id="@+id/tvLoginPrompt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/margin_large"
@@ -17,7 +17,6 @@
         android:layout_marginRight="@dimen/margin_large"
         android:background="@color/colorPrimaryLight"
         android:gravity="center"
-        android:text="Select your team in the list below"
         android:textColor="@color/colorSecondaryText"
         android:textSize="18sp" />
 

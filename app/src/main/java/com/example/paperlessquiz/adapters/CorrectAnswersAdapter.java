@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.paperlessquiz.MyApplication;
 import com.example.paperlessquiz.R;
 import com.example.paperlessquiz.answer.Answer;
 
@@ -21,6 +22,7 @@ public class CorrectAnswersAdapter extends ArrayAdapter<Answer> {
     public final Context context;
     private final ArrayList<Answer> answers;
     private CorrectAnswersAdapter adapter;
+    public boolean allAnswersCorrected;
 
     public CorrectAnswersAdapter(Context context, ArrayList<Answer> answers) {
         super(context, R.layout.row_layout_correct_answers,answers);
@@ -85,7 +87,10 @@ public class CorrectAnswersAdapter extends ArrayAdapter<Answer> {
                         answers.get(i).setCorrected(true);
                     }
                 }
-
+                allAnswersCorrected = true;
+                for (int i = 0; i < answers.size(); i++) {
+                    allAnswersCorrected = allAnswersCorrected && answers.get(i).isCorrected();
+                }
                 adapter.notifyDataSetChanged();
             }
 

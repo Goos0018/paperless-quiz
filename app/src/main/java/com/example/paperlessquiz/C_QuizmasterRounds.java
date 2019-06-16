@@ -18,12 +18,12 @@ import com.example.paperlessquiz.quiz.QuizLoader;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
+/**
+ * This shows the Rounds to the QM and allows to set status'es for them.
+ * Actionbar:Refresh/Upload/Teams/Dorst
+ */
 public class C_QuizmasterRounds extends AppCompatActivity implements LoadingActivity {
 
-    /**
-     * This shows the Rounds to the QM and allows to set status'es for them.
-     * Actionbar:Refresh/Upload/Teams/Dorst
-     */
     Quiz thisQuiz = MyApplication.theQuiz;
     ListView lvRounds, lvTeams;
     //RecyclerView.LayoutManager layoutManager;

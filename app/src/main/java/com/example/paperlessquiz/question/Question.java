@@ -25,6 +25,12 @@ public class Question implements Serializable, SpinnerData {
     private int maxScore;
     private boolean allAnswersCorrected;
 
+    public void updateAllAnswersCorrected(){
+        for (int i = 0; i < allAnswers.size(); i++) {
+            allAnswersCorrected=allAnswersCorrected && allAnswers.get(i).isCorrect();
+        }
+    }
+
     public Question() {
         this.questionID = "";
         this.questionNr = 0;

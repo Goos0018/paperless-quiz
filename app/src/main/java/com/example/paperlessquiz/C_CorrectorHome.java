@@ -72,8 +72,7 @@ public class C_CorrectorHome extends AppCompatActivity implements LoadingActivit
             thisTeamNr = newPos;
         }
         /*
-        //if (thisQuiz.getQuestion(thisRoundNr, thisQuestionNr).isAllAnswersCorrected()) {
-        if (true){
+        if (myAdapter.allAnswersCorrected){
             spinner.changeSpinnerColor(R.color.correctGreen);
         } else {
             spinner.changeSpinnerColor(R.color.wrongRed);

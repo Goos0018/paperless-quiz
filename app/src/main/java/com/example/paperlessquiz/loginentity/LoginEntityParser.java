@@ -23,8 +23,14 @@ public class LoginEntityParser implements JsonParser<LoginEntity> {
                 jo.getString(NAME), jo.getString(PASSKEY));
         if (jo.getString(TYPE).equals(LoginEntity.SELECTION_PARTICIPANT)) {
             // If this is a participant, fill out the rest of the info
-            loginEntity.setPresent(jo.getBoolean(PRESENT));
-            loginEntity.setLoggedIn(jo.getBoolean(LOGGED_IN));
+            try {
+                loginEntity.setPresent(jo.getBoolean(PRESENT));
+                loginEntity.setLoggedIn(jo.getBoolean(LOGGED_IN));
+            }
+            catch (Exception e){
+                loginEntity.setPresent(false);
+                loginEntity.setLoggedIn(false);
+            }
             ArrayList<Boolean> answersSubmitted = new ArrayList<>();
             boolean valueToSet;
             for (int i = START_OF_ROUNDS; i < jo.length(); i++) {

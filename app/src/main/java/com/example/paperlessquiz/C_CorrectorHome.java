@@ -119,7 +119,8 @@ public class C_CorrectorHome extends MyActivity implements LoadingActivity, Frag
             thisQuiz.setAllCorrectionsPerQuestion(quizLoader.quizCorrectionsLPL.getAllCorrectionsPerRound());
         }
         rndSpinner.positionChanged();
-        spinner.positionChanged();
+        if (spinner.callingActivity!=null){
+        spinner.positionChanged();}
         refreshDisplayFragments();
     }
 

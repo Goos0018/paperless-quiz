@@ -5,7 +5,8 @@ public class GoogleAccess {
     public static final String QUIZLIST_DOC_ID = "1A4CGyeZZk2LW-xvh_P1dyeufZhV0qpBgCIQdrNEIDgk";
     public static final String QUIZLIST_TABNAME = "QuizList";
     //This is the base URL & parameters for the Google script to interact with any google sheet
-    static final String SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxF4oneivWH9QUnOyEJRWWDNIfdaSft5idzfNWgz7USI0ZzKw_o/exec?";
+    //static final String SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxF4oneivWH9QUnOyEJRWWDNIfdaSft5idzfNWgz7USI0ZzKw_o/exec?";
+    static final String SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzBnefs99HeSwpCQEHY4c6K4pEvpWoiuE3dEU-UuKQ-yRtO-Awe/exec?";
     public static final String PARAM_CONCATENATOR = "&";
     //Paramater names
     public static final String PARAMNAME_DEBUGLEVEL = "debuglevel=";

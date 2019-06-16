@@ -29,7 +29,7 @@ public class CorrectionsListParser implements JsonParser<CorrectionsList> {
                 isCorrect = false;
                 isCorrected = false;
             }
-            String test = jo.getString("" + (i - START_OF_TEAMS + 1));
+            //String test = jo.getString("" + (i - START_OF_TEAMS + 1));
             allCorrections.add(i - START_OF_TEAMS, new Correction(isCorrect, isCorrected));
         }
         correctionsList.setAllCorrections(allCorrections);

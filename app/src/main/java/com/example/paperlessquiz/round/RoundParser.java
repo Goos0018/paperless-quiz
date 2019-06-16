@@ -19,11 +19,17 @@ public class RoundParser implements JsonParser<Round> {
 
     @Override
     public Round parse(JSONObject jo) throws JSONException {
-        return new Round(jo.getInt(ROUND_NR), jo.getString(ROUND_NAME),
-                jo.getString(ROUND_DESCRIPTION), jo.getInt(ROUND_NR_OF_QUESTIONS),
-                jo.getBoolean(ROUND_ACCEPTS_ANSWERS),jo.getBoolean(ROUND_ACCEPTS_CORRECTIONS),
-                jo.getBoolean(ROUND_IS_CORRECTED));
-
-
+        Round round;
+        try {
+            round = new Round(jo.getInt(ROUND_NR), jo.getString(ROUND_NAME),
+                    jo.getString(ROUND_DESCRIPTION), jo.getInt(ROUND_NR_OF_QUESTIONS),
+                    jo.getBoolean(ROUND_ACCEPTS_ANSWERS), jo.getBoolean(ROUND_ACCEPTS_CORRECTIONS),
+                    jo.getBoolean(ROUND_IS_CORRECTED));
+        } catch (Exception e){
+            round = new Round(jo.getInt(ROUND_NR), jo.getString(ROUND_NAME),
+                    jo.getString(ROUND_DESCRIPTION), jo.getInt(ROUND_NR_OF_QUESTIONS),
+                    false, false,false);
+        }
+        return round;
     }
 }

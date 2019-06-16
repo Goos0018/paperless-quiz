@@ -59,7 +59,7 @@ public class FragSpinner extends Fragment {
         //id = getArguments().getInt("id", 0);
         //id = 1;
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.frag_secondary_spinner, container, false);
+        View v = inflater.inflate(R.layout.frag_spinner, container, false);
         tvPrimaryField = v.findViewById(R.id.tvPrimaryField);
         tvSecondaryField = v.findViewById(R.id.tvSecondaryField);
         btnDown = v.findViewById(R.id.btnDown);

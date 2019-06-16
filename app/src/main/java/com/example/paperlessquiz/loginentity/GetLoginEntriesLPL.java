@@ -1,12 +1,9 @@
 package com.example.paperlessquiz.loginentity;
 
 import com.example.paperlessquiz.MyApplication;
-import com.example.paperlessquiz.google.access.GoogleAccess;
 import com.example.paperlessquiz.google.access.ListParsedListener;
-import com.example.paperlessquiz.quiz.Quiz;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**

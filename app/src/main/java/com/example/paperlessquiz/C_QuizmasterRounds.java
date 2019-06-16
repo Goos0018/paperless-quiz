@@ -67,7 +67,7 @@ public class C_QuizmasterRounds extends AppCompatActivity implements LoadingActi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.c_act_quizmaster_rounds);
+        setContentView(R.layout.act_c_quizmaster_rounds);
         //Set the action bar
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true); //Display the "back" icon, we will replace this with the icon of this Quiz

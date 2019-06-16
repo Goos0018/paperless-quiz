@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryLight"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".A_Main">
 
     <TextView
         android:id="@+id/tv_prompt"

@@ -39,13 +39,13 @@ public class A_SelectRole extends AppCompatActivity implements LoadingActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.a_act_select_role);
+        setContentView(R.layout.act_a_select_role);
 
         btnParticipant = findViewById(R.id.btn_participant);
         btnOrganizer = findViewById(R.id.btn_organizer);
         tvWelcome = findViewById(R.id.tv_welcome);
         //thisQuiz = (Quiz) getIntent().getSerializableExtra(Quiz.INTENT_EXTRANAME_THIS_QUIZ);
-        thisQuiz=MyApplication.theQuiz;
+        thisQuiz= MyApplication.theQuiz;
         tvWelcome.setText("Welcome to the " + thisQuiz.getListData().getName() + "\n" + thisQuiz.getListData().getDescription());
         quizLoader = new QuizLoader(this, thisQuiz.getListData().getSheetDocID());
         quizLoader.loadAll();

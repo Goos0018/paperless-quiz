@@ -25,7 +25,7 @@ TODO: extract string resources + constants
 TODO: layout
  */
 
-public class MainActivity extends AppCompatActivity implements LoadingActivity {
+public class A_Main extends AppCompatActivity implements LoadingActivity {
     Quiz thisQuiz = MyApplication.theQuiz;
     ListView lv_QuizList;
     QuizListAdapter adapter;
@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements LoadingActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.act_a_main);
 
         lv_QuizList = (ListView) findViewById(R.id.lvQuizList);
         adapter = new QuizListAdapter(this);
@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements LoadingActivity {
                 //thisQuiz.setListData(adapter.getItem(position));
                 MyApplication.theQuiz.setListData(adapter.getItem(position));
                 thisQuiz=MyApplication.theQuiz;
-                Intent intent = new Intent(MainActivity.this, A_SelectRole.class);
+                Intent intent = new Intent(A_Main.this, A_SelectRole.class);
                 //intent.putExtra(Quiz.INTENT_EXTRANAME_THIS_QUIZ, thisQuiz);
                 MyApplication.eventLogger.setDocID(adapter.getItem(position).getSheetDocID());
                 startActivity(intent);

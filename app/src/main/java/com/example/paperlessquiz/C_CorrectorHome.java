@@ -232,7 +232,7 @@ public class C_CorrectorHome extends AppCompatActivity implements LoadingActivit
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.c_act_corrector_home);
+        setContentView(R.layout.act_c_corrector_home);
         //RoundSpinner is in the layout, create the dynamic fragments that will be used
         rndSpinner = (FragRoundSpinner) getSupportFragmentManager().findFragmentById(R.id.frRoundSpinner);
         spinner = new FragSpinner();

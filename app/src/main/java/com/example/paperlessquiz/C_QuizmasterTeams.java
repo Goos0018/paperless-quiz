@@ -81,7 +81,7 @@ public class C_QuizmasterTeams extends AppCompatActivity implements FragRoundSpi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.c_act_quizmaster_teams);
+        setContentView(R.layout.act_c_quizmaster_teams);
         //Set the action bar
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true); //Display the "back" icon, we will replace this with the icon of this Quiz

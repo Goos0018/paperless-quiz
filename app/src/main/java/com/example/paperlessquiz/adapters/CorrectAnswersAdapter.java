@@ -9,7 +9,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.paperlessquiz.MyApplication;
 import com.example.paperlessquiz.R;
 import com.example.paperlessquiz.answer.Answer;
 

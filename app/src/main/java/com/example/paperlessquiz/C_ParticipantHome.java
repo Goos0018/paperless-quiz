@@ -199,7 +199,7 @@ public class C_ParticipantHome extends AppCompatActivity implements LoadingActiv
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.c_act_participant_home);
+        setContentView(R.layout.act_c_participant_home);
         //Get the round spinner fragment
         roundSpinner = (FragRoundSpinner) getSupportFragmentManager().findFragmentById(R.id.frRoundSpinner);
         //Create the other fragments that are needed here

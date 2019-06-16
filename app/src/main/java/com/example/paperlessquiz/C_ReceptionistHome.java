@@ -1,6 +1,5 @@
 package com.example.paperlessquiz;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -14,7 +13,6 @@ import android.view.MenuItem;
 
 import com.example.paperlessquiz.adapters.EditTeamsAdapter;
 import com.example.paperlessquiz.google.access.LoadingActivity;
-import com.example.paperlessquiz.loginentity.LoginEntity;
 import com.example.paperlessquiz.quiz.Quiz;
 import com.example.paperlessquiz.quiz.QuizLoader;
 import com.squareup.picasso.Picasso;
@@ -73,7 +71,7 @@ public class C_ReceptionistHome extends AppCompatActivity implements LoadingActi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.c_act_receptionist_home);
+        setContentView(R.layout.act_c_receptionist_home);
         //Set the action bar
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true); //Display the "back" icon, we will replace this with the icon of this Quiz

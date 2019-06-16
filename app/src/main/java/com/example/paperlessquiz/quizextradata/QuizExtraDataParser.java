@@ -1,7 +1,5 @@
 package com.example.paperlessquiz.quizextradata;
 
-import com.example.paperlessquiz.MyApplication;
-import com.example.paperlessquiz.google.access.GoogleAccess;
 import com.example.paperlessquiz.google.access.JsonParser;
 
 import org.json.JSONException;

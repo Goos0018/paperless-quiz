@@ -9,18 +9,17 @@
 
 
     <fragment
-        android:id="@+id/frPriSpinner"
+        android:id="@+id/frRoundSpinner"
         android:name="com.example.paperlessquiz.FragRoundSpinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:layout="@layout/frag_round_spinner" />
 
-    <fragment
-        android:id="@+id/frQuestionSpinner"
-        android:name="com.example.paperlessquiz.FragSpinner"
+    <FrameLayout
+        android:id="@+id/frPlaceHolder"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:layout="@layout/frag_spinner" />
+        android:layout_height="wrap_content">
+    </FrameLayout>
 
     <LinearLayout
         android:id="@+id/llCorrectQuestions"
@@ -39,7 +38,7 @@
             android:layout_marginLeft="@dimen/margin_medium"
             android:layout_marginRight="@dimen/margin_medium"
             android:gravity="center"
-            android:text="Correct answers"
+            android:text="Correct answer"
             android:textColor="@color/correctGreen"
             android:textSize="@dimen/text_size_medium"
             android:textStyle="bold" />

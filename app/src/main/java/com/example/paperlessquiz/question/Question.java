@@ -23,6 +23,7 @@ public class Question implements Serializable, SpinnerData {
     private String correctAnswer;
     private ArrayList<Answer> allAnswers;
     private int maxScore;
+    private boolean allAnswersCorrected;
 
     public Question() {
         this.questionID = "";
@@ -133,6 +134,15 @@ public class Question implements Serializable, SpinnerData {
     }
     public void setAnswerForTeam(int teamNr, String answer){
         getAnswerForTeam(teamNr).setTheAnswer(answer);
+    }
+
+
+    public boolean isAllAnswersCorrected() {
+        return allAnswersCorrected;
+    }
+
+    public void setAllAnswersCorrected(boolean allAnswersCorrected) {
+        this.allAnswersCorrected = allAnswersCorrected;
     }
 
 }

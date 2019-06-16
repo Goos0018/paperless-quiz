@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -26,6 +27,8 @@ import com.example.paperlessquiz.round.Round;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
+//TODO: disable predictive typing and spell-check!!!!
+//TODO: find method to hide the keyboard when spinner changes
 public class C_ParticipantHome extends AppCompatActivity implements LoadingActivity, FragSpinner.HasSpinner,
         FragRoundSpinner.HasRoundSpinner, FragShowRoundScore.HasShowRoundScore, FragExplainRoundStatus.HasExplainRoundStatus {
 
@@ -61,11 +64,12 @@ public class C_ParticipantHome extends AppCompatActivity implements LoadingActiv
     }
 
     @Override
-    public void onSpinnerChange(int id, int oldPos, int newPos) {
+    public void onSpinnerChange(int oldPos, int newPos) {
         //Save the answer that was given
         thisQuiz.setAnswerForTeam(roundSpinner.getPosition(), oldPos, thisTeamNr, etAnswer.getText().toString().trim());
         //Set the value of the answer for the new question to what we already have
         etAnswer.setText(thisQuiz.getAnswerForTeam(roundSpinner.getPosition(), newPos, thisTeamNr).getTheAnswer());
+        etAnswer.setImeOptions(EditorInfo.IME_ACTION_DONE);
         refreshAnswers();
     }
 
@@ -75,12 +79,12 @@ public class C_ParticipantHome extends AppCompatActivity implements LoadingActiv
     }
 
     @Override
-    public String getValueToSetForPrimaryField(int id, int newPos) {
+    public String getValueToSetForPrimaryField(int newPos) {
         return thisQuiz.getQuestion(roundSpinner.getPosition(), newPos).getName();
     }
 
     @Override
-    public String getValueToSetForSecondaryField(int id, int newPos) {
+    public String getValueToSetForSecondaryField(int newPos) {
         return thisQuiz.getQuestion(roundSpinner.getPosition(), newPos).getDescription();
     }
 
@@ -93,9 +97,8 @@ public class C_ParticipantHome extends AppCompatActivity implements LoadingActiv
         //Move the QuestionSpinner to position 1 to make sure we have something at that position
         questionSpinner.moveToFirstPos();
         etAnswer.setText(thisQuiz.getAnswerForTeam(roundNr, 1, thisTeamNr).getTheAnswer());
+        etAnswer.setImeOptions(EditorInfo.IME_ACTION_DONE);
         refreshDisplayFragments();
-
-
     }
 
     @Override
@@ -110,12 +113,12 @@ public class C_ParticipantHome extends AppCompatActivity implements LoadingActiv
         rvDisplayAnswers.setAdapter(displayAnswersAdapter);
     }
 
-    protected void toggleFragments(Fragment fragToShow, Fragment fragToHide1, Fragment fragToHide2) {
+    protected void toggleFragments(int placeHolderID, Fragment fragToShow, Fragment fragToHide1, Fragment fragToHide2) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         if (fragToShow.isAdded()) { // if the fragment is already in container
             ft.show(fragToShow);
         } else { // fragment needs to be added to frame container
-            ft.add(R.id.frQuestionSpinner, fragToShow);
+            ft.add(placeHolderID, fragToShow);
             ft.show(fragToShow);
         }
         // Hide other fragments
@@ -137,14 +140,14 @@ public class C_ParticipantHome extends AppCompatActivity implements LoadingActiv
             //Just display the fragment that tells you this
             roundStatusExplanation = "Please wait for this round to be opened";
             explainRoundStatus.setStatus(roundStatusExplanation);
-            toggleFragments(explainRoundStatus, roundResultFrag, questionSpinner);
+            toggleFragments(R.id.frPlaceHolder, explainRoundStatus, roundResultFrag, questionSpinner);
             editAnswerLayout.setVisibility((View.GONE));
             displayAnswersLayout.setVisibility(View.GONE);
         }
         if (thisRound.getAcceptsAnswers()) {
             //Round is open to enter answers
             //Show the questionSpinner
-            toggleFragments(questionSpinner, roundResultFrag, explainRoundStatus);
+            toggleFragments(R.id.frPlaceHolder,questionSpinner, roundResultFrag, explainRoundStatus);
             //Show the layouts to edit and display answers
             editAnswerLayout.setVisibility(View.VISIBLE);
             displayAnswersLayout.setVisibility(View.VISIBLE);
@@ -158,14 +161,14 @@ public class C_ParticipantHome extends AppCompatActivity implements LoadingActiv
             //Just display the fragment that tells you this
             roundStatusExplanation = "Please wait for this round to be corrected";
             explainRoundStatus.setStatus(roundStatusExplanation);
-            toggleFragments(explainRoundStatus, roundResultFrag, questionSpinner);
+            toggleFragments(R.id.frPlaceHolder,explainRoundStatus, roundResultFrag, questionSpinner);
             //explainRoundStatus.setStatus("Please wait for this round to be corrected");
             editAnswerLayout.setVisibility((View.GONE));
             displayAnswersLayout.setVisibility(View.GONE);
         }
         if (thisRound.isCorrected()) {
             //Show the RoundResults Fragment
-            toggleFragments(roundResultFrag, questionSpinner, explainRoundStatus);
+            toggleFragments(R.id.frPlaceHolder,roundResultFrag, questionSpinner, explainRoundStatus);
             //Hide the layout to edit answers
             editAnswerLayout.setVisibility((View.GONE));
             displayAnswersLayout.setVisibility(View.VISIBLE);
@@ -201,7 +204,7 @@ public class C_ParticipantHome extends AppCompatActivity implements LoadingActiv
         roundSpinner = (FragRoundSpinner) getSupportFragmentManager().findFragmentById(R.id.frRoundSpinner);
         //Create the other fragments that are needed here
         //FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        questionSpinner = FragSpinner.newInstance(1);
+        questionSpinner = new FragSpinner();
         //roundResultFrag = new FragShowRoundScore();
         //ft.replace(R.id.frQuestionSpinner, questionSpinner, qSpinnerTag).commit();
         //Create the roundResults fragment

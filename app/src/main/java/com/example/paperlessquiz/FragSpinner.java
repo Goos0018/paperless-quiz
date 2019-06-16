@@ -19,7 +19,7 @@ import android.widget.TextView;
 public class FragSpinner extends Fragment {
 
     private int position = 1, oldPosition = 1;
-    private int id;
+    //private int id;
     TextView tvPrimaryField, tvSecondaryField;
     Button btnDown, btnUp;
     HasSpinner callingActivity;
@@ -28,6 +28,7 @@ public class FragSpinner extends Fragment {
         // Required empty public constructor
     }
 
+    /*
     public static FragSpinner newInstance(int id) {
         FragSpinner fragSpinner = new FragSpinner();
         Bundle args = new Bundle();
@@ -35,15 +36,16 @@ public class FragSpinner extends Fragment {
         fragSpinner.setArguments(args);
         return fragSpinner;
     }
+    */
 
     public interface HasSpinner {
         //Implement stuff to do in the activity when this spinner changes
-        public void onSpinnerChange(int id, int oldPos, int newPos);
+        public void onSpinnerChange(int oldPos, int newPos);
 
         //Get the values to set in the first and second field
-        public String getValueToSetForPrimaryField(int id, int newPos);
+        public String getValueToSetForPrimaryField(int newPos);
 
-        public String getValueToSetForSecondaryField(int id, int newPos);
+        public String getValueToSetForSecondaryField(int newPos);
 
         //Get the size of the Array of the values to use for priSpinnerPos
         public int getSizeOfSpinnerArray();
@@ -55,7 +57,7 @@ public class FragSpinner extends Fragment {
         //Set the id to what was passed via newInstance
         //TODO: remove, not needed
         //id = getArguments().getInt("id", 0);
-        id = 1;
+        //id = 1;
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.frag_secondary_spinner, container, false);
         tvPrimaryField = v.findViewById(R.id.tvPrimaryField);
@@ -85,9 +87,9 @@ public class FragSpinner extends Fragment {
     }
 
     public void positionChanged() {
-        tvPrimaryField.setText(callingActivity.getValueToSetForPrimaryField(id, position));
-        tvSecondaryField.setText(callingActivity.getValueToSetForSecondaryField(id, position));
-        callingActivity.onSpinnerChange(id, oldPosition, position);
+        tvPrimaryField.setText(callingActivity.getValueToSetForPrimaryField(position));
+        tvSecondaryField.setText(callingActivity.getValueToSetForSecondaryField(position));
+        callingActivity.onSpinnerChange(oldPosition, position);
     }
 
     public void moveToFirstPos() {
@@ -95,8 +97,8 @@ public class FragSpinner extends Fragment {
         if (callingActivity != null) {
             oldPosition = position;
             position = 1;
-            tvPrimaryField.setText(callingActivity.getValueToSetForPrimaryField(id, position));
-            tvSecondaryField.setText(callingActivity.getValueToSetForSecondaryField(id, position));
+            tvPrimaryField.setText(callingActivity.getValueToSetForPrimaryField(position));
+            tvSecondaryField.setText(callingActivity.getValueToSetForSecondaryField(position));
         }
     }
 
@@ -126,5 +128,10 @@ public class FragSpinner extends Fragment {
 
     public int getOldPosition() {
         return oldPosition;
+    }
+
+    public void changeSpinnerColor(int colorID){
+        tvPrimaryField.setTextColor(colorID);
+        tvSecondaryField.setTextColor(colorID);
     }
 }

@@ -43,8 +43,7 @@
                 android:ems="10"
                 android:gravity="center"
                 android:hint="Your answer"
-                android:imeOptions="actionDone"
-                android:inputType="textNoSuggestions|text|textAutoComplete"
+                android:inputType="textVisiblePassword"
                 android:visibility="invisible" />
 
             <Button

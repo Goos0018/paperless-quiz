@@ -27,6 +27,7 @@ import com.squareup.picasso.Target;
 
 import java.util.ArrayList;
 //TODO: change colour of qSpinner if not all answers are corrected - current way is not working as it should
+//TODO: check to submit answers automatically when spinner is changed
 
 /**
  * This class is allows a corrector to mark answers as correct or not correct. The screen always has a round spinner to spin through the rounds.
@@ -60,17 +61,34 @@ public class C_CorrectorHome extends MyActivity implements LoadingActivity, Frag
 
     @Override
     public void onRoundChanged(int oldRoundNr, int roundNr) {
+        /*
+        if (correctPerQuestion) {
+            thisQuiz.submitCorrectionsForQuestion(C_CorrectorHome.this, thisRoundNr, thisQuestionNr);
+        } else {
+            thisQuiz.submitCorrectionsForTeam(C_CorrectorHome.this, thisRoundNr, thisTeamNr);
+        }
+        */
         this.thisRoundNr = roundNr;
         refreshDisplayFragments();
+        spinner.moveToFirstPos();
+
     }
 
     @Override
     public void onSpinnerChange(int oldPos, int newPos) {
         if (correctPerQuestion) {
+            //thisQuiz.submitCorrectionsForQuestion(C_CorrectorHome.this, thisRoundNr, thisQuestionNr);
             thisQuestionNr = newPos;
             showCorrectAnswerForQuestion(thisRoundNr, thisQuestionNr);
         } else {
+            //thisQuiz.submitCorrectionsForTeam(C_CorrectorHome.this, thisRoundNr, thisTeamNr);
             thisTeamNr = newPos;
+        }
+        refreshAnswers();
+        if (correctPerQuestion) {
+
+        } else {
+
         }
         /*
         if (myAdapter.allAnswersCorrected){
@@ -119,8 +137,9 @@ public class C_CorrectorHome extends MyActivity implements LoadingActivity, Frag
             thisQuiz.setAllCorrectionsPerQuestion(quizLoader.quizCorrectionsLPL.getAllCorrectionsPerRound());
         }
         rndSpinner.positionChanged();
-        if (spinner.callingActivity!=null){
-        spinner.positionChanged();}
+        if (spinner.callingActivity != null) {
+            spinner.positionChanged();
+        }
         refreshDisplayFragments();
     }
 
@@ -190,7 +209,7 @@ public class C_CorrectorHome extends MyActivity implements LoadingActivity, Frag
     }
 
     private void showCorrectAnswerForQuestion(int roundNr, int questionNr) {
-        tvCorrectAnswer.setText(thisQuiz.getQuestion(thisRoundNr, thisQuestionNr).getCorrectAnswer());
+        tvCorrectAnswer.setText(thisQuiz.getQuestion(thisRoundNr, thisQuestionNr).getQuestionID() + ": " + thisQuiz.getQuestion(thisRoundNr, thisQuestionNr).getCorrectAnswer());
     }
 
     private void refreshDisplayFragments() {

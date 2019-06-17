@@ -18,6 +18,8 @@ import java.util.ArrayList;
 //test
 public class CorrectAnswersAdapter extends ArrayAdapter<Answer> {
 
+    //TODO: fix bug: if correcting per team, don't score questions with the same answer as having the same score.
+
     public final Context context;
     private final ArrayList<Answer> answers;
     private CorrectAnswersAdapter adapter;

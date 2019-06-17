@@ -21,6 +21,7 @@ import com.example.paperlessquiz.round.Round;
 
 //TODO: disable predictive typing and spell-check!!!!
 //TODO: find method to hide the keyboard when spinner changes
+//TODO: refresh Scores fragment when round spinner changes
 public class C_ParticipantHome extends MyActivity implements LoadingActivity, FragSpinner.HasSpinner,
         FragRoundSpinner.HasRoundSpinner, FragShowRoundScore.HasShowRoundScore, FragExplainRoundStatus.HasExplainRoundStatus {
 
@@ -93,6 +94,7 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
         etAnswer.setText(thisQuiz.getAnswerForTeam(roundNr, 1, thisTeamNr).getTheAnswer());
         etAnswer.setImeOptions(EditorInfo.IME_ACTION_DONE);
         refreshDisplayFragments();
+        roundResultFrag.refresh();
     }
 
     @Override
@@ -181,9 +183,11 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.refresh:
+                //thisQuiz.calculateScores();
                 QuizLoader quizLoader = new QuizLoader(C_ParticipantHome.this, thisQuiz.getListData().getSheetDocID());
                 quizLoader.loadRounds();
                 quizLoader.loadAllCorrections();
+                roundResultFrag.refresh();
                 break;
         }
         return super.onOptionsItemSelected(item);

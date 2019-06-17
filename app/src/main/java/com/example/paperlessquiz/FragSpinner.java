@@ -87,13 +87,16 @@ public class FragSpinner extends Fragment {
     }
 
     public void positionChanged() {
-        tvPrimaryField.setText(callingActivity.getValueToSetForPrimaryField(position));
-        tvSecondaryField.setText(callingActivity.getValueToSetForSecondaryField(position));
-        callingActivity.onSpinnerChange(oldPosition, position);
+        //Cover the case where we call this before the fragment is properly initialized
+        if (callingActivity != null) {
+            tvPrimaryField.setText(callingActivity.getValueToSetForPrimaryField(position));
+            tvSecondaryField.setText(callingActivity.getValueToSetForSecondaryField(position));
+            callingActivity.onSpinnerChange(oldPosition, position);
+        }
     }
 
     public void moveToFirstPos() {
-        //Cover the case where we call this before the fragment is properly initialized
+
         if (callingActivity != null) {
             oldPosition = position;
             position = 1;
@@ -130,7 +133,7 @@ public class FragSpinner extends Fragment {
         return oldPosition;
     }
 
-    public void changeSpinnerColor(int colorID){
+    public void changeSpinnerColor(int colorID) {
         tvPrimaryField.setTextColor(colorID);
         tvSecondaryField.setTextColor(colorID);
     }

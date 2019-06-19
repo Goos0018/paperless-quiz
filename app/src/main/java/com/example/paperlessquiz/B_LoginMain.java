@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.example.paperlessquiz.adapters.ParticipantsAdapter;
 import com.example.paperlessquiz.loginentity.LoginEntity;
 import com.example.paperlessquiz.quiz.Quiz;
+import com.example.paperlessquiz.quiz.QuizGenerator;
 
 //TODO:prevent showing keyboard initially, only show after selection is made
 public class B_LoginMain extends AppCompatActivity {
@@ -30,7 +31,7 @@ public class B_LoginMain extends AppCompatActivity {
     int teamNr;
 
     private void setFields(int position) {
-        if (loginType.equals(LoginEntity.SELECTION_PARTICIPANT)) {
+        if (loginType.equals(QuizGenerator.SELECTION_PARTICIPANT)) {
             tvDisplayName.setText(thisQuiz.getTeams().get(position).getName());
             tvDisplayID.setText(Integer.toString(thisQuiz.getTeams().get(position).getId()));
             etPasskey.setText("");
@@ -56,7 +57,7 @@ public class B_LoginMain extends AppCompatActivity {
         etPasskey = (EditText) findViewById(R.id.et_passkey);
         lvShowParticipants = (ListView) findViewById(R.id.lvNamesList);
         loginType = (String) getIntent().getStringExtra(LoginEntity.INTENT_EXTRA_NAME_THIS_LOGIN_TYPE);
-        if (loginType.equals(LoginEntity.SELECTION_PARTICIPANT)) {
+        if (loginType.equals(QuizGenerator.SELECTION_PARTICIPANT)) {
             adapter = new ParticipantsAdapter(this, thisQuiz.getTeams());
             tvLoginPrompt.setText("Select your team in the list below");
         } else {
@@ -77,7 +78,7 @@ public class B_LoginMain extends AppCompatActivity {
             public void onClick(View v) {
                 teamNr = Integer.valueOf(tvDisplayID.getText().toString());
                 String input = etPasskey.getText().toString().trim();
-                if (loginType.equals(LoginEntity.SELECTION_PARTICIPANT)) {
+                if (loginType.equals(QuizGenerator.SELECTION_PARTICIPANT)) {
                     thisLoginEntity = thisQuiz.getTeam(teamNr);
                 } else {
                     thisLoginEntity = thisQuiz.getOrganizer(teamNr);
@@ -91,7 +92,7 @@ public class B_LoginMain extends AppCompatActivity {
                         //If this is a participant or a corrector or the setFields team
                         thisQuiz.setMyLoginentity(thisLoginEntity);
                         switch (thisLoginEntity.getType()) {
-                            case LoginEntity.SELECTION_PARTICIPANT:
+                            case QuizGenerator.SELECTION_PARTICIPANT:
                                 if (thisLoginEntity.isPresent()) {
                                     Intent intentP = new Intent(B_LoginMain.this, C_ParticipantHome.class);
                                     startActivity(intentP);
@@ -99,15 +100,15 @@ public class B_LoginMain extends AppCompatActivity {
                                     Toast.makeText(B_LoginMain.this, "Please register at the reception first", Toast.LENGTH_LONG).show();
                                 }
                                 break;
-                            case LoginEntity.TYPE_QUIZMASTER:
+                            case QuizGenerator.TYPE_QUIZMASTER:
                                 Intent intentQM = new Intent(B_LoginMain.this, C_QuizmasterRounds.class);
                                 startActivity(intentQM);
                                 break;
-                            case LoginEntity.TYPE_CORRECTOR:
+                            case QuizGenerator.TYPE_CORRECTOR:
                                 Intent intentC = new Intent(B_LoginMain.this, C_CorrectorHome.class);
                                 startActivity(intentC);
                                 break;
-                            case LoginEntity.TYPE_RECEPTIONIST:
+                            case QuizGenerator.TYPE_RECEPTIONIST:
                                 Intent intentR = new Intent(B_LoginMain.this, C_ReceptionistHome.class);
                                 startActivity(intentR);
                                 break;

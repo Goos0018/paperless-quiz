@@ -1,11 +1,6 @@
 package com.example.paperlessquiz;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,11 +9,8 @@ import android.view.MenuItem;
 
 import com.example.paperlessquiz.adapters.ShowTeamsAdapter;
 import com.example.paperlessquiz.google.access.LoadingActivity;
-import com.example.paperlessquiz.loginentity.LoginEntity;
-import com.example.paperlessquiz.quiz.Quiz;
+import com.example.paperlessquiz.quiz.QuizGenerator;
 import com.example.paperlessquiz.quiz.QuizLoader;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 /**
  * Quizmaster screen to show the teams and whether or not they submitted answers for a particular round
@@ -34,7 +26,7 @@ public class C_QuizmasterTeams extends MyActivity implements FragRoundSpinner.Ha
     @Override
     public void onRoundChanged(int oldRoundnNr,int roundNr) {
         this.roundNr = roundNr;
-        if (thisQuiz.getMyLoginentity().getType().equals(LoginEntity.TYPE_QUIZMASTER) && showTeamsAdapter != null) {
+        if (thisQuiz.getMyLoginentity().getType().equals(QuizGenerator.TYPE_QUIZMASTER) && showTeamsAdapter != null) {
             showTeamsAdapter.setRoundNr(roundNr);
             showTeamsAdapter.notifyDataSetChanged();
         }

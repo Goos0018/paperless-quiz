@@ -1,5 +1,7 @@
 package com.example.paperlessquiz.loginentity;
 
+import com.example.paperlessquiz.quiz.QuizGenerator;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -9,12 +11,6 @@ The id is the order in which they are listed in the sheet. For teams, this is th
  */
 public class LoginEntity implements Serializable {
     public static final String INTENT_EXTRA_NAME_THIS_LOGIN_TYPE = "thisLoginType";
-    public static final String SELECTION_PARTICIPANT = "Participant";
-    public static final String SELECTION_ORGANIZER = "Organizer";
-    public static final String TYPE_PARTICIPANT = "Participant";
-    public static final String TYPE_CORRECTOR = "Corrector";
-    public static final String TYPE_QUIZMASTER = "Quizmaster";
-    public static final String TYPE_RECEPTIONIST = "Receptionist";
 
 
     private int id;
@@ -81,7 +77,7 @@ public class LoginEntity implements Serializable {
     }
 
     public void updateTeamBasics(LoginEntity team) {
-        if (team.getType().equals(SELECTION_PARTICIPANT)) {
+        if (team.getType().equals(QuizGenerator.SELECTION_PARTICIPANT)) {
             setPresent(team.isPresent());
             setLoggedIn(team.isLoggedIn());
             setAnswerForRndsSubmitted(team.getAnswerForRndsSubmitted());
@@ -91,7 +87,7 @@ public class LoginEntity implements Serializable {
     @Override
     public String toString() {
         String tmp;
-        if (type.equals(TYPE_PARTICIPANT)){
+        if (type.equals(QuizGenerator.TYPE_PARTICIPANT)){
         tmp = "[\"" + name + "\",\"" + passkey + "\",\"" + Boolean.toString(present) + "\",\"" + Boolean.toString(loggedIn);
         for (int i = 0; i < answerForRndsSubmitted.size(); i++) {
             tmp = tmp + "\",\"" + Boolean.toString(answerForRndsSubmitted.get(i));

@@ -6,11 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.paperlessquiz.R;
 import com.example.paperlessquiz.loginentity.LoginEntity;
+import com.example.paperlessquiz.quiz.QuizGenerator;
 
 import java.util.ArrayList;
 
@@ -36,7 +36,7 @@ public class ParticipantsAdapter extends ArrayAdapter<LoginEntity> {
         //ImageView ivleft = (ImageView) rowView.findViewById(R.id.ivQuizLogo);
         tvName.setText(getItem(position).getName());
         //tvType.setText(this.getItem(position).getType());
-        if (getItem(position).getType().equals(LoginEntity.TYPE_PARTICIPANT)) {
+        if (getItem(position).getType().equals(QuizGenerator.TYPE_PARTICIPANT)) {
             tvType.setText("Team " + getItem(position).getId());
         } else {
             tvType.setText(this.getItem(position).getType());

@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.example.paperlessquiz.google.access.LoadingActivity;
 import com.example.paperlessquiz.loginentity.LoginEntity;
 import com.example.paperlessquiz.quiz.Quiz;
+import com.example.paperlessquiz.quiz.QuizGenerator;
 import com.example.paperlessquiz.quiz.QuizLoader;
 
 /* This screen allows you to select if you are an organizer or a participant.
@@ -54,7 +55,7 @@ public class A_SelectRole extends AppCompatActivity implements LoadingActivity {
             @Override
             public void onClick(View view) {
                 if (quizLoader.quizExtraDataLPL.getQuizExtraData().isOpen()) {
-                    commonActions(LoginEntity.SELECTION_PARTICIPANT);
+                    commonActions(QuizGenerator.SELECTION_PARTICIPANT);
                 } else {
                     Toast.makeText(A_SelectRole.this, "This quiz has not been opened yet. " +
                             "Please wait for the quizmaster to open it", Toast.LENGTH_LONG).show();
@@ -65,7 +66,7 @@ public class A_SelectRole extends AppCompatActivity implements LoadingActivity {
         btnOrganizer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                commonActions(LoginEntity.SELECTION_ORGANIZER);
+                commonActions(QuizGenerator.SELECTION_ORGANIZER);
             }
         });
     }

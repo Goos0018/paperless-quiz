@@ -14,7 +14,7 @@ public class LoginEntityParser implements JsonParser<LoginEntity> {
     public LoginEntity parse(JSONObject jo) throws JSONException {
         LoginEntity loginEntity = new LoginEntity(jo.getInt(QuizGenerator.LOGIN_ENTITY_ID), jo.getString(QuizGenerator.LOGIN_ENTITY_TYPE),
                 jo.getString(QuizGenerator.LOGIN_ENTITY_NAME), jo.getString(QuizGenerator.LOGIN_ENTITY_PASSKEY));
-        if (jo.getString(QuizGenerator.LOGIN_ENTITY_TYPE).equals(LoginEntity.SELECTION_PARTICIPANT)) {
+        if (jo.getString(QuizGenerator.LOGIN_ENTITY_TYPE).equals(QuizGenerator.SELECTION_PARTICIPANT)) {
             // If this is a participant, fill out the rest of the info
             try {
                 loginEntity.setPresent(jo.getBoolean(QuizGenerator.TEAM_PRESENT));

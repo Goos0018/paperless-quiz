@@ -1,27 +1,19 @@
 package com.example.paperlessquiz.question;
 
 import com.example.paperlessquiz.google.access.JsonParser;
+import com.example.paperlessquiz.quiz.QuizGenerator;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class QuestionParser implements JsonParser<Question> {
-
-    //Strings here MUST match the headers in the Questions tab of the Quiz sheet
-    public static final String QUESTIONID = "QuestionID";
-    public static final String QUESTIONNR = "QuestionNr";
-    public static final String ROUND_ID = "RoundNr";
-    public static final String NAME = "Name";
-    public static final String HINT = "Hint";
-    public static final String QUESTION = "Question";
-    public static final String CORRECT_ANSWER = "CorrectAnswer";
-    public static final String MAX_SCORE = "MaxScore";
-
+//Headers are taken from the QuizGenerator class and must match those of course
 
     @Override
     public Question parse(JSONObject jo) throws JSONException {
-        return new Question(jo.getString(QUESTIONID),jo.getInt(QUESTIONNR),jo.getInt(ROUND_ID), jo.getString(NAME),jo.getString(HINT),
-                jo.getString(QUESTION),jo.getString(CORRECT_ANSWER),jo.getInt(MAX_SCORE));
+        return new Question(jo.getString(QuizGenerator.QUESTION_ID),jo.getInt(QuizGenerator.QUESTION_NR),jo.getInt(QuizGenerator.ROUND_NR), jo.getString(QuizGenerator.QUESTION_NAME),
+                jo.getString(QuizGenerator.QUESTION_HINT),jo.getString(QuizGenerator.QUESTION_FULL),jo.getString(QuizGenerator.QUESTION_CORRECT_ANSWER),
+                jo.getInt(QuizGenerator.QUESTION_MAX_SCORE));
     }
 }
 

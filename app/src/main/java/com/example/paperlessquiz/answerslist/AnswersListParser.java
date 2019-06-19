@@ -2,6 +2,7 @@ package com.example.paperlessquiz.answerslist;
 
 import com.example.paperlessquiz.answer.Answer;
 import com.example.paperlessquiz.google.access.JsonParser;
+import com.example.paperlessquiz.quiz.QuizGenerator;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -9,19 +10,14 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class AnswersListParser implements JsonParser<AnswersList> {
-    //Strings here MUST match the headers in the Answers tab of the Quiz sheet
-    public static final String QUESTION_ID = "QuestionID";
-    public static final String ROUND_NR = "RoundNr";
-    public static final String QUESTION_NR = "QuestionNr";
-    public static final int START_OF_TEAMS = 3;
-    //The other headers in the Answers tab are assumed to be team numbers
+    //Headers are taken from the QuizGenerator class and must match those of course
 
     @Override
     public AnswersList parse(JSONObject jo) throws JSONException {
-        AnswersList answersList = new AnswersList(jo.getString(QUESTION_ID),jo.getInt(ROUND_NR), jo.getInt(QUESTION_NR));
+        AnswersList answersList = new AnswersList(jo.getString(QuizGenerator.QUESTION_ID),jo.getInt(QuizGenerator.ROUND_NR), jo.getInt(QuizGenerator.QUESTION_NR));
         ArrayList<Answer> allAnswers = new ArrayList<>();
         for (int i = 3; i < jo.length(); i++) {
-            allAnswers.add(i-START_OF_TEAMS,new Answer(jo.getString("" + (i-START_OF_TEAMS+1))));
+            allAnswers.add(i- QuizGenerator.ANSWERSSHEET_START_OF_TEAMS,new Answer(jo.getString(QuizGenerator.TEAMS_PREFIX + (i- QuizGenerator.ANSWERSSHEET_START_OF_TEAMS +1))));
         }
         answersList.setAllAnswers(allAnswers);
         return answersList;

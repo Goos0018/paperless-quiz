@@ -13,6 +13,7 @@ import com.example.paperlessquiz.google.access.GoogleAccessGet;
 import com.example.paperlessquiz.google.access.LoadingActivity;
 import com.example.paperlessquiz.google.access.LoadingListenerShowProgress;
 import com.example.paperlessquiz.quiz.Quiz;
+import com.example.paperlessquiz.quiz.QuizGenerator;
 import com.example.paperlessquiz.quizlistdata.GetQuizListDataLPL;
 import com.example.paperlessquiz.quizlistdata.QuizListData;
 import com.example.paperlessquiz.quizlistdata.QuizListDataParser;
@@ -44,8 +45,8 @@ public class A_Main extends AppCompatActivity implements LoadingActivity {
         lv_QuizList = (ListView) findViewById(R.id.lvQuizList);
         adapter = new QuizListAdapter(this);
         //Load the list of quizzes into the adapter
-        scriptParams = GoogleAccess.PARAMNAME_DOC_ID + GoogleAccess.QUIZLIST_DOC_ID + GoogleAccess.PARAM_CONCATENATOR +
-                GoogleAccess.PARAMNAME_SHEET + GoogleAccess.QUIZLIST_TABNAME + GoogleAccess.PARAM_CONCATENATOR +
+        scriptParams = GoogleAccess.PARAMNAME_DOC_ID + QuizGenerator.QUIZLIST_DOC_ID + GoogleAccess.PARAM_CONCATENATOR +
+                GoogleAccess.PARAMNAME_SHEET + QuizGenerator.SHEET_QUIZLIST + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_GETDATA;
         GoogleAccessGet<QuizListData> googleAccessGet = new GoogleAccessGet<QuizListData>(this, scriptParams, thisQuiz.getAdditionalData().getDebugLevel());
         googleAccessGet.getItems(new QuizListDataParser(), new GetQuizListDataLPL(adapter),

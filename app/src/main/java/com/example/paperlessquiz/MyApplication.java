@@ -7,8 +7,8 @@ import android.os.Build;
 import android.os.Bundle;
 
 import com.example.paperlessquiz.google.access.EventLogger;
-import com.example.paperlessquiz.google.access.GoogleAccess;
 import com.example.paperlessquiz.quiz.Quiz;
+import com.example.paperlessquiz.quiz.QuizGenerator;
 
 import java.util.UUID;
 
@@ -22,7 +22,7 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         logDocID = "1A4CGyeZZk2LW-xvh_P1dyeufZhV0qpBgCIQdrNEIDgk";
-        eventLogger = new EventLogger(this, logDocID, GoogleAccess.SHEET_EVENTLOG);
+        eventLogger = new EventLogger(this, logDocID, QuizGenerator.SHEET_EVENTLOG);
         deviceID = getUniquePsuedoID();
         eventLogger.logEvent(deviceID, "Starting application");
         theQuiz=new Quiz();

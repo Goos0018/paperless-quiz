@@ -1,9 +1,6 @@
 package com.example.paperlessquiz.google.access;
 
 public class GoogleAccess {
-    //This is where we get the list of quiz'es from
-    public static final String QUIZLIST_DOC_ID = "1A4CGyeZZk2LW-xvh_P1dyeufZhV0qpBgCIQdrNEIDgk";
-    public static final String QUIZLIST_TABNAME = "QuizList";
     //This is the base URL & parameters for the Google script to interact with any google sheet
     //static final String SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxF4oneivWH9QUnOyEJRWWDNIfdaSft5idzfNWgz7USI0ZzKw_o/exec?";
     static final String SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzBnefs99HeSwpCQEHY4c6K4pEvpWoiuE3dEU-UuKQ-yRtO-Awe/exec?";
@@ -28,18 +25,6 @@ public class GoogleAccess {
     public static final String PARAMVALUE_SUBMITANSWERS = "submitAnswers";
     public static final String PARAMVALUE_ADDLINE = "addline";
     public static final String PARAMVALUE_FIRST_TEAM_NR = "1";
-    //Tabs in the Quiz sheet
-    //public static final String SHEET_QUIZLIST = "QuizList";
-    public static final String SHEET_QUIZDATA = "QuizData";
-    public static final String SHEET_ROUNDS = "Rounds";
-    public static final String SHEET_QUESTIONS = "Questions";
-    public static final String SHEET_TEAMS = "Teams";
-    public static final String SHEET_ORGANIZERS = "Organizers";
-    //public static final String SHEET_TEAMCONTROL = "TeamRegistration";
-    public static final String SHEET_ANSWERS = "Answers";
-    public static final String SHEET_CORRECTIONS = "Corrections";
-    public static final String SHEET_SCORES = "Scores";
-    public static final String SHEET_EVENTLOG = "EventLog";
 
     public static final String PARAMNAME_RECORD_ID = "RecordID=";
 }

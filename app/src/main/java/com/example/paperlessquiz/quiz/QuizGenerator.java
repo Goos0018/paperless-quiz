@@ -94,15 +94,15 @@ public class QuizGenerator {
     private ArrayList<Integer> roundNrOfQuestions;
     private ArrayList<String> roundDescriptions;
     private int nrOfTeams;
-    private int nrOfCorrectors;
+    private int nrOfCorrectors = 1;
     private Context context;
-    private int standardScore;
-    private String quizMasterName;
-    private String quizMasterPw;
-    private String jurorName;
-    private String jurorPw;
-    private String receptionistName;
-    private String receptionistPw;
+    private int standardScore = 2;
+    private String quizMasterName = "Sven";
+    private String quizMasterPw = "sven";
+    private String jurorName = "Koen";
+    private String jurorPw = "koen";
+    private String receptionistName = "Dirk";
+    private String receptionistPw = "dirk";
     private ArrayList<String> correctorNames;
     private String correctorPw;
     private ArrayList<String> allTabs = new ArrayList<>();
@@ -142,8 +142,8 @@ public class QuizGenerator {
 
     //Create an empty document with the necessary tabs and return the docID for it
     public String createQuizDoc(ArrayList<String> sheetsToCreate) {
-        String parameters = "SheetsToCreate=" + convertArrayListToString(sheetsToCreate) +
-                GoogleAccess.PARAM_CONCATENATOR + GoogleAccess.PARAMNAME_ACTION + "CreateQuizDoc";
+        String parameters = "sheetsToCreate=" + convertArrayListToString(sheetsToCreate) +
+                GoogleAccess.PARAM_CONCATENATOR + GoogleAccess.PARAMNAME_ACTION + "createQuizDoc";
         GoogleAccessGet googleAccessGet = new GoogleAccessGet(context, parameters, debugLevel);
         //googleAccessGet.getItems(....);
         String docID = ""; //TODO: return from Google script

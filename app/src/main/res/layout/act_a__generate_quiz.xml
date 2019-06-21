@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".A__GenerateQuiz">
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tvEnterQuizName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Enter Quiz Name" />
+
+            <EditText
+                android:id="@+id/etQuizName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tvEnterNrOfRounds"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Enter nr of rounds" />
+
+            <EditText
+                android:id="@+id/etNrOfRounds"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="number"
+                android:text="1" />
+
+        </TableRow>
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:id="@+id/tvEnterDataForRound"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Enter data for round: " />
+
+            <TextView
+                android:id="@+id/tvRoundNr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tvEnterNrOfQuestions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nr of questions for this round" />
+
+            <EditText
+                android:id="@+id/etNrOfQuestions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="number"
+                android:text="1" />
+        </TableRow>
+
+
+    </TableLayout>
+
+    <Button
+        android:id="@+id/btnGenerateQuiz"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="GO"
+        tools:layout_editor_absoluteX="108dp"
+        tools:layout_editor_absoluteY="184dp" />
+
+    <fragment
+        android:id="@+id/fragment"
+        android:name="com.example.paperlessquiz.FragSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:layout="@layout/frag_spinner" />
+</LinearLayout>

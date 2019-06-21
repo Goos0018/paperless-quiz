@@ -11,11 +11,15 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.List;
 
 public class GoogleAccessSet {
     private Context context;
     private String parameters;
+    private String result;
     int debugLevel;
 
     public GoogleAccessSet(Context context, String parameters,int debugLevel) {
@@ -31,7 +35,12 @@ public class GoogleAccessSet {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-
+                        try {
+                        JSONObject jo = new JSONObject(response);
+                        result = jo.getString("result");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                         //TODO: add response listener for this + logging/messages
                         loadingListener.loadingEnded();
                     }
@@ -55,5 +64,7 @@ public class GoogleAccessSet {
         loadingListener.loadingStarted();
     }
 
-
+    public String getResult() {
+        return result;
+    }
 }

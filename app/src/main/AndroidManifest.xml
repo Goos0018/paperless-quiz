@@ -12,12 +12,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".C_ParticipantHome" android:windowSoftInputMode="stateHidden"></activity>
+        <activity android:name=".A__GenerateQuiz"></activity>
+        <activity
+            android:name=".C_ParticipantHome"
+            android:windowSoftInputMode="stateHidden" />
         <activity android:name=".C_CorrectorHome" />
         <activity android:name=".C_ReceptionistHome" />
         <activity android:name=".C_QuizmasterTeams" />
         <activity android:name=".C_QuizmasterRounds" />
-        <activity android:name=".B_LoginMain" android:windowSoftInputMode="stateHidden"/>
+        <activity
+            android:name=".B_LoginMain"
+            android:windowSoftInputMode="stateHidden" />
         <activity android:name=".A_SelectRole" />
         <activity android:name=".A_Main">
             <intent-filter>

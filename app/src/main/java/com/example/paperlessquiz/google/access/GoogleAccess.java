@@ -2,8 +2,9 @@ package com.example.paperlessquiz.google.access;
 
 public class GoogleAccess {
     //This is the base URL & parameters for the Google script to interact with any google sheet
-    //static final String SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxF4oneivWH9QUnOyEJRWWDNIfdaSft5idzfNWgz7USI0ZzKw_o/exec?";
-    static final String SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzBnefs99HeSwpCQEHY4c6K4pEvpWoiuE3dEU-UuKQ-yRtO-Awe/exec?";
+    //static final String SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxF4oneivWH9QUnOyEJRWWDNIfdaSft5idzfNWgz7USI0ZzKw_o/exec?"; => RME Version
+    //static final String SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzBnefs99HeSwpCQEHY4c6K4pEvpWoiuE3dEU-UuKQ-yRtO-Awe/exec?"; => PQ version
+    static final String SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz1qygz4GdX4kDFYk1NrPT0zRwzveAUAUXfByjW0EhMliLhB-c/exec?"; //=> new PQ version
     public static final String PARAM_CONCATENATOR = "&";
     //Paramater names
     public static final String PARAMNAME_DEBUGLEVEL = "debuglevel=";

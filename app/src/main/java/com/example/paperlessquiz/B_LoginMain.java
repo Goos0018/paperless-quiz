@@ -17,6 +17,7 @@ import com.example.paperlessquiz.quiz.Quiz;
 import com.example.paperlessquiz.quiz.QuizGenerator;
 
 //TODO:prevent showing keyboard initially, only show after selection is made
+//TODO: check bug where app crashes when back button is used on LoginMain/SelectRole
 public class B_LoginMain extends AppCompatActivity {
     Quiz thisQuiz = MyApplication.theQuiz;
     LoginEntity thisLoginEntity;
@@ -111,6 +112,10 @@ public class B_LoginMain extends AppCompatActivity {
                             case QuizGenerator.TYPE_RECEPTIONIST:
                                 Intent intentR = new Intent(B_LoginMain.this, C_ReceptionistHome.class);
                                 startActivity(intentR);
+                                break;
+                            case "Generator":
+                                Intent intentG = new Intent(B_LoginMain.this, A__GenerateQuiz.class);
+                                startActivity(intentG);
                                 break;
                         }
                     } else {

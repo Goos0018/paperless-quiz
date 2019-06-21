@@ -3,9 +3,11 @@ package com.example.paperlessquiz.quiz;
 import android.content.Context;
 
 import com.example.paperlessquiz.google.access.GoogleAccess;
-import com.example.paperlessquiz.google.access.GoogleAccessGet;
 import com.example.paperlessquiz.google.access.GoogleAccessSet;
+import com.example.paperlessquiz.google.access.LoadingActivity;
 import com.example.paperlessquiz.google.access.LoadingListenerNotify;
+import com.example.paperlessquiz.google.access.LoadingListenerShowProgress;
+import com.example.paperlessquiz.google.access.LoadingListenerSilent;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -90,12 +92,17 @@ public class QuizGenerator {
     public static final int debugLevel = 5;
 
     //This is what we need to generate all mandatory tabs - these data are entered in the activity X_GenerateQuiz
+
+    private String quizName;
     private int nrOfRounds;
     private ArrayList<Integer> roundNrOfQuestions;
     private ArrayList<String> roundDescriptions;
     private int nrOfTeams;
+    public String docID; //Initialized when sheet is created
+    //Hardcoded for now
     private int nrOfCorrectors = 1;
     private Context context;
+
     private int standardScore = 2;
     private String quizMasterName = "Sven";
     private String quizMasterPw = "sven";
@@ -119,8 +126,16 @@ public class QuizGenerator {
     private ArrayList<ArrayList<String>> stdContentForRoundsTab = new ArrayList<>();
     //private ArrayList<ArrayList<String>> stdContentForScoresTab = new ArrayList<>();
     private ArrayList<ArrayList<String>> stdContentForTeamsTab = new ArrayList<>();
+    public GoogleAccessSet googleAccessCreateQuiz;
 
 
+
+    public void createQuiz(){
+        createQuizDoc(quizName,allTabs);
+        //Rest of the actions is triggered by loadingComplete when quizDoc has been created
+    }
+
+    //Set all headers for all sheets - assumes docID is properly initialized
     public void setAllHeaders() {
         setHeaders(SHEET_ANSWERS, headersForAnswersTab);
         setHeaders(SHEET_CORRECTIONS, headersForAnswersTab);
@@ -132,25 +147,54 @@ public class QuizGenerator {
         setHeaders(SHEET_TEAMS, headersForTeamsTab);
     }
 
+    public void initializeAllSheets() {
+        initializeRows(SHEET_ANSWERS, stdContentForAnswersTab);
+        initializeRows(SHEET_CORRECTIONS, stdContentForAnswersTab);
+        //initializeRows(SHEET_EVENTLOG, headersForEventLogTab);
+        initializeRows(SHEET_ORGANIZERS, stdContentForOrganizersTab);
+        initializeRows(SHEET_QUESTIONS, stdContentForQuestionsTab);
+        initializeRows(SHEET_ROUNDS, stdContentForRoundsTab);
+        //initializeRows(SHEET_SCORES, headersForScoresTab);
+        initializeRows(SHEET_TEAMS, stdContentForTeamsTab);
+    }
+
+
+    //Create an empty document with the necessary tabs and return the docID for it
+    public void createQuizDoc(String quizName, ArrayList<String> sheetsToCreate) {
+        String parameters = "sheetsToCreate=" + convertArrayListTo1DString(sheetsToCreate) + GoogleAccess.PARAM_CONCATENATOR +
+                "quizName=" + quizName + GoogleAccess.PARAM_CONCATENATOR +
+                GoogleAccess.PARAMNAME_ACTION + "createQuizDoc";
+        googleAccessCreateQuiz = new GoogleAccessSet(context, parameters, debugLevel);
+        googleAccessCreateQuiz.setData(new LoadingListenerShowProgress(context,"Creating quiz","Creating " + quizName,"Error",false));
+        //The docID for the quiz will be in the result property of the googleAccessCreateQuiz
+    }
+
     //Set headers for the given sheet
     public void setHeaders(String sheetName, ArrayList<String> headersToSet) {
-        String parameters = GoogleAccess.PARAMNAME_SHEET + sheetName + GoogleAccess.PARAM_CONCATENATOR + convertArrayListToString(headersToSet) +
-                GoogleAccess.PARAM_CONCATENATOR + GoogleAccess.PARAMNAME_ACTION + "SetHeaders";
+        String parameters = "docID=" + docID + GoogleAccess.PARAM_CONCATENATOR +
+                GoogleAccess.PARAMNAME_SHEET + sheetName + GoogleAccess.PARAM_CONCATENATOR +
+                "headersToSet=" + convertArrayListTo2DString(headersToSet) + GoogleAccess.PARAM_CONCATENATOR +
+                GoogleAccess.PARAMNAME_ACTION + "setHeaders";
         GoogleAccessSet googleAccessSet = new GoogleAccessSet(context, parameters, debugLevel);
         googleAccessSet.setData(new LoadingListenerNotify(context, "Rupert", "Setting headers for sheet " + sheetName));
     }
 
-    //Create an empty document with the necessary tabs and return the docID for it
-    public String createQuizDoc(ArrayList<String> sheetsToCreate) {
-        String parameters = "sheetsToCreate=" + convertArrayListToString(sheetsToCreate) +
-                GoogleAccess.PARAM_CONCATENATOR + GoogleAccess.PARAMNAME_ACTION + "createQuizDoc";
-        GoogleAccessGet googleAccessGet = new GoogleAccessGet(context, parameters, debugLevel);
-        //googleAccessGet.getItems(....);
-        String docID = ""; //TODO: return from Google script
-        return docID;
+    //Initialize rows for the given sheet
+    public void initializeRows(String sheetName, ArrayList<ArrayList<String>> dataToSet) {
+        String parameters = "docID=" + docID + GoogleAccess.PARAM_CONCATENATOR +
+                GoogleAccess.PARAMNAME_SHEET + sheetName + GoogleAccess.PARAM_CONCATENATOR +
+                "dataToSet=" + convert2DArrayListToString(dataToSet) + GoogleAccess.PARAM_CONCATENATOR +
+                GoogleAccess.PARAMNAME_ACTION + "initializeRows";
+        GoogleAccessSet googleAccessSet = new GoogleAccessSet(context, parameters, debugLevel);
+        googleAccessSet.setData(new LoadingListenerNotify(context, "Rupert", "Setting headers for sheet " + sheetName));
     }
 
-    public String convertArrayListToString(ArrayList<String> arrayListToConvert) {
+    //Convert ArrayList to something like [["value1","value2",...,"valuen"]]
+    public String convertArrayListTo2DString(ArrayList<String> arrayListToConvert) {
+        ArrayList<ArrayList<String>> tmp2DArraylist = new ArrayList<>();
+        tmp2DArraylist.add(arrayListToConvert);
+        return convert2DArrayListToString(tmp2DArraylist);
+        /*
         String tmp = "[[";
         for (int i = 0; i < arrayListToConvert.size(); i++) {
             tmp = tmp + "\"" + arrayListToConvert.get(i) + "\"";
@@ -161,14 +205,55 @@ public class QuizGenerator {
             }
         }
         return tmp;
+        */
+    }
+
+    //Convert ArrayList to something like ["value1","value2",...,"valuen"]
+    public String convertArrayListTo1DString(ArrayList<String> arrayListToConvert) {
+
+        String tmp = "[";
+        for (int i = 0; i < arrayListToConvert.size(); i++) {
+            tmp = tmp + "\"" + arrayListToConvert.get(i) + "\"";
+            if (i == arrayListToConvert.size() - 1) {
+                tmp = tmp + "]";
+            } else {
+                tmp = tmp + ",";
+            }
+        }
+        return tmp;
+
+    }
+
+    //Convert ArrayList to something like [["value1","value2",...,"valuen"],["value1","value2",...,"valuen"],...,["value1","value2",...,"valuen"]]
+    public String convert2DArrayListToString(ArrayList<ArrayList<String>> arrayListToConvert) {
+        String tmp = "[[";
+        //For each row
+        for (int i = 0; i < arrayListToConvert.size(); i++) {
+            ArrayList<String> row = arrayListToConvert.get(i);
+            //for each field in the row
+            for (int j = 0; j < row.size(); j++) {
+                tmp = tmp + "\"" + row.get(j) + "\"";
+                if (j == row.size() - 1) {                          //If this is the last field in the row
+                    if (i == arrayListToConvert.size() - 1) {       //If this is the last row
+                        tmp = tmp + "]]";
+                    } else {
+                        tmp = tmp + "],[";
+                    }
+                } else {
+                    tmp = tmp + ",";
+                }
+            }
+        }
+        return tmp;
     }
 
     //Standard constructors, getters and setters for this class
-    public QuizGenerator(Context context, int nrOfRounds, ArrayList<Integer> roundNrOfQuestions, int nrOfTeams) {
+    public QuizGenerator(Context context, String quizName, int nrOfRounds, ArrayList<Integer> roundNrOfQuestions, int nrOfTeams) {
         this.nrOfRounds = nrOfRounds;
         this.roundNrOfQuestions = roundNrOfQuestions;
         this.nrOfTeams = nrOfTeams;
         this.context = context;
+        this.quizName=quizName;
         allTabs.add(SHEET_ANSWERS);
         allTabs.add(SHEET_CORRECTIONS);
         allTabs.add(SHEET_EVENTLOG);
@@ -180,7 +265,7 @@ public class QuizGenerator {
         headersForAnswersTab.add(QUESTION_ID);
         headersForAnswersTab.add(ROUND_NR);
         headersForAnswersTab.add(QUESTION_NR);
-        for (int i = 1; i < nrOfTeams; i++) {
+        for (int i = 1; i < nrOfTeams+1; i++) {
             headersForAnswersTab.add(TEAMS_PREFIX + i);
         }
         headersForEventLogTab.add(EVENTLOG_TIME);
@@ -213,7 +298,7 @@ public class QuizGenerator {
         headersForTeamsTab.add(LOGIN_ENTITY_PASSKEY);
         headersForTeamsTab.add(TEAM_PRESENT);
         headersForTeamsTab.add(TEAM_LOGGED_IN);
-        for (int i = 0; i < nrOfRounds; i++) {
+        for (int i = 1; i < nrOfRounds+1; i++) {
             headersForTeamsTab.add(ROUNDS_PREFIX + i);
         }
         //stdContentForAnswersTab
@@ -234,7 +319,7 @@ public class QuizGenerator {
         stdContentForOrganizersTab.add(new ArrayList<>(Arrays.asList("2", "Juror", jurorName, jurorPw)));
         stdContentForOrganizersTab.add(new ArrayList<>(Arrays.asList("3", TYPE_RECEPTIONIST, receptionistName, receptionistPw)));
         for (int i = 0; i < nrOfCorrectors; i++) {
-            stdContentForOrganizersTab.add(new ArrayList<>(Arrays.asList("" + (i + 4), TYPE_CORRECTOR, correctorNames.get(i), correctorPw)));
+            stdContentForOrganizersTab.add(new ArrayList<>(Arrays.asList("" + (i + 4), TYPE_CORRECTOR, "Corrector", correctorPw)));
         }
         //stdContentForQuestionsTab
         for (int i = 0; i < nrOfRounds; i++) {
@@ -249,13 +334,17 @@ public class QuizGenerator {
         //stdContentForRoundsTab
         for (int i = 0; i < nrOfRounds; i++) {
             int roundNr = i + 1;
-            stdContentForRoundsTab.add(new ArrayList<>(Arrays.asList("" + roundNr, ROUND_STRING + roundNr, roundDescriptions.get(i), "" + roundNrOfQuestions.get(i))));
+            stdContentForRoundsTab.add(new ArrayList<>(Arrays.asList("" + roundNr, ROUND_STRING + roundNr, "description" + roundNr, "" + roundNrOfQuestions.get(i))));
         }
         //stdContentForTeamsTab
         for (int i = 0; i < nrOfTeams; i++) {
             int teamnr = i + 1;
             stdContentForTeamsTab.add(new ArrayList<>(Arrays.asList("" + teamnr, TYPE_PARTICIPANT, "", "")));
         }
+    }
+
+    public void setDocID(String docID) {
+        this.docID = docID;
     }
 }
 

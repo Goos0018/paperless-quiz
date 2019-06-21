@@ -26,7 +26,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                android:text="auto" />
         </TableRow>
 
         <TableRow
@@ -45,24 +46,50 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="number"
-                android:text="1" />
+                android:text="2" />
 
         </TableRow>
+
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="match_parent" >
 
             <TextView
-                android:id="@+id/tvEnterDataForRound"
+                android:id="@+id/tvEnterNrofTeams"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Enter data for round: " />
+                android:text="Enter number of teams" />
 
-            <TextView
-                android:id="@+id/tvRoundNr"
+            <EditText
+                android:id="@+id/etNrOfTeams"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0" />
+                android:ems="10"
+                android:inputType="number"
+                android:text="5" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <Button
+                android:id="@+id/btnInitGenerator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="initialize" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <fragment
+                android:id="@+id/fragment"
+                android:name="com.example.paperlessquiz.FragSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:layout="@layout/frag_spinner" />
         </TableRow>
 
         <TableRow
@@ -95,10 +122,10 @@
         tools:layout_editor_absoluteX="108dp"
         tools:layout_editor_absoluteY="184dp" />
 
-    <fragment
-        android:id="@+id/fragment"
-        android:name="com.example.paperlessquiz.FragSpinner"
+    <TextView
+        android:id="@+id/tvDisplayQuiz"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:layout="@layout/frag_spinner" />
+        android:text="quiz summary" />
+
 </LinearLayout>

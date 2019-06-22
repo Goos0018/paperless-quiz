@@ -10,6 +10,7 @@ import com.example.paperlessquiz.google.access.EventLogger;
 import com.example.paperlessquiz.quiz.Quiz;
 import com.example.paperlessquiz.quiz.QuizGenerator;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 public class MyApplication extends Application {
@@ -17,6 +18,7 @@ public class MyApplication extends Application {
     public static EventLogger eventLogger;
     public static String deviceID;
     public static Quiz theQuiz;
+    public static ArrayList<String> googleLog = new ArrayList<>();
 
     @Override
     public void onCreate() {

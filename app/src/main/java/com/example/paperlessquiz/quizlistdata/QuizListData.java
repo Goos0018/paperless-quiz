@@ -5,23 +5,25 @@ import java.util.Date;
 
 // This class stores the basic Quiz data as it can be found in the central QuizList sheet
 public class QuizListData implements Serializable {
-    private String id;
+    //private String id;
     private String name;
     private String description;
     private String sheetDocID;
     private Date date;
     private String logoURL;
+    private int debugLevel;
+    private boolean clearLogs;
 
     public QuizListData() {
-        this.id = "";
+        //this.id = "";
         this.name = "";
         this.description = "";
         this.sheetDocID = "";
         this.logoURL = "";
     }
 
-    public QuizListData(String id, String name, String description, String sheetDocID, String logoURL) {
-        this.id = id;
+    public QuizListData(String name, String description, String sheetDocID, String logoURL) {
+        //this.id = id;
         this.name = name;
         this.description = description;
         this.sheetDocID = sheetDocID;

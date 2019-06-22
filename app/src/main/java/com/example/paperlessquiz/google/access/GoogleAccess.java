@@ -8,8 +8,8 @@ public class GoogleAccess {
     public static final String PARAM_CONCATENATOR = "&";
     //Paramater names
     public static final String PARAMNAME_DEBUGLEVEL = "debuglevel=";
-    public static final String PARAMNAME_DOC_ID = "DocID=";
-    public static final String PARAMNAME_SHEET = "Sheet=";
+    public static final String PARAMNAME_DOC_ID = "docID=";
+    public static final String PARAMNAME_SHEET = "sheet=";
     public static final String PARAMNAME_ACTION = "action=";
     public static final String PARAMNAME_LINE_TO_ADD = "LineToAdd=";
     public static final String PARAMNAME_NEWVALUES = "NewValues=";

@@ -10,6 +10,7 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.paperlessquiz.MyApplication;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,10 +23,10 @@ public class GoogleAccessSet {
     private String result;
     int debugLevel;
 
-    public GoogleAccessSet(Context context, String parameters,int debugLevel) {
+    public GoogleAccessSet(Context context, String parameters, int debugLevel) {
         this.context = context;
         this.parameters = parameters;
-        this.debugLevel=debugLevel;
+        this.debugLevel = debugLevel;
     }
 
     //This method will add a line at the bottom of the sheet that was passed via parameters, using the other fields that were given
@@ -36,12 +37,12 @@ public class GoogleAccessSet {
                     @Override
                     public void onResponse(String response) {
                         try {
-                        JSONObject jo = new JSONObject(response);
-                        result = jo.getString("result");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                        //TODO: add response listener for this + logging/messages
+                            JSONObject jo = new JSONObject(response);
+                            result = jo.getString("result");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        MyApplication.googleLog.add(result);
                         loadingListener.loadingEnded();
                     }
                 },

@@ -24,7 +24,7 @@ public class ScoreParser implements JsonParser<Score> {
         int scoreToSet;
         for (int i = QuizGenerator.SCORESHEET_START_OF_ROUNDS; i < jo.length(); i++) {
             try {
-                scoreToSet = jo.getInt(QuizGenerator.SCORE_RND_INDICATOR + (i - QuizGenerator.SCORESHEET_START_OF_ROUNDS + 1));
+                scoreToSet = jo.getInt(QuizGenerator.ROUNDS_PREFIX + (i - QuizGenerator.SCORESHEET_START_OF_ROUNDS + 1));
             } catch (Exception e) {
                 //if we cannot make sense of what we get, return false
                 scoreToSet = 0;

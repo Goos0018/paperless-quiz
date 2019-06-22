@@ -28,7 +28,7 @@ public class LoginEntityParser implements JsonParser<LoginEntity> {
             boolean valueToSet;
             for (int i = QuizGenerator.TEAMSHEET_START_OF_ROUNDS; i < jo.length(); i++) {
                try {
-                   valueToSet = jo.getBoolean("" + (i - QuizGenerator.TEAMSHEET_START_OF_ROUNDS +1));
+                   valueToSet = jo.getBoolean(QuizGenerator.ROUNDS_PREFIX + (i - QuizGenerator.TEAMSHEET_START_OF_ROUNDS +1));
                }
                catch (Exception e){
                    //if we cannot make sense of what we get, return false

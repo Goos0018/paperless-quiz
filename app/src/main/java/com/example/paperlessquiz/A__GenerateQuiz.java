@@ -7,21 +7,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.paperlessquiz.adapters.EditTeamsAdapter;
-import com.example.paperlessquiz.google.access.GoogleAccessSet;
 import com.example.paperlessquiz.google.access.LoadingActivity;
-import com.example.paperlessquiz.google.access.LoadingListenerShowProgress;
 import com.example.paperlessquiz.quiz.QuizGenerator;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class A__GenerateQuiz extends AppCompatActivity implements FragSpinner.HasSpinner, LoadingActivity {
 
     int nrOfRounds = 1, nrOfTeams = 1;
-    String quizName;
+    String quizName,quizDescription;
     ArrayList<Integer> roundNrOfQuestions = new ArrayList<>();
     QuizGenerator generator;
-    EditText etQuizName, etNrOfRounds, etNrOfQuestions, etNrOfTeams;
+    EditText etQuizName, etQuizDescription,etNrOfRounds, etNrOfQuestions, etNrOfTeams;
     TextView tvDisplayQuiz;
 
 
@@ -29,7 +27,10 @@ public class A__GenerateQuiz extends AppCompatActivity implements FragSpinner.Ha
 
     @Override
     public void loadingComplete() {
-        generator.setDocID(generator.googleAccessCreateQuiz.getResult());
+        generator.setQuizDocID(generator.googleAccessCreateQuiz.getResult());
+        //stdContentForQuizListDataTab
+        generator.stdContentForQuizListDataTab.add(new ArrayList<>(Arrays.asList(generator.quizName, generator.quizDescription,
+                generator.quizDocID, generator.quizLogoURL, Integer.toString(generator.quizDebugLevel), Boolean.toString(generator.quizKeepLogs))));
         generator.setAllHeaders();
         generator.initializeAllSheets();
     }
@@ -39,6 +40,7 @@ public class A__GenerateQuiz extends AppCompatActivity implements FragSpinner.Ha
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_a__generate_quiz);
         etQuizName = findViewById(R.id.etQuizName);
+        etQuizDescription = findViewById(R.id.etQuizDescription);
         etNrOfRounds = findViewById(R.id.etNrOfRounds);
         etNrOfQuestions = findViewById(R.id.etNrOfQuestions);
         etNrOfTeams = findViewById(R.id.etNrOfTeams);
@@ -50,6 +52,7 @@ public class A__GenerateQuiz extends AppCompatActivity implements FragSpinner.Ha
             @Override
             public void onClick(View view) {
                 quizName = etQuizName.getText().toString().trim();
+                quizDescription = etQuizDescription.getText().toString().trim();
                 nrOfRounds = Integer.valueOf(etNrOfRounds.getText().toString().trim());
                 nrOfTeams = Integer.valueOf(etNrOfTeams.getText().toString().trim());
                 for (int i = 0; i < nrOfRounds; i++) {
@@ -62,18 +65,20 @@ public class A__GenerateQuiz extends AppCompatActivity implements FragSpinner.Ha
         btnGenerateQuiz.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                generator = new QuizGenerator(A__GenerateQuiz.this, quizName, nrOfRounds, roundNrOfQuestions, nrOfTeams);
+                generator = new QuizGenerator(A__GenerateQuiz.this, quizName, quizDescription,nrOfRounds, roundNrOfQuestions, nrOfTeams);
                 generator.createQuiz();
             }
         });
     }
 
     public void displayQuizSummary() {
-        String tmp = "Quiz name: " + quizName + "\n" +
-                "Nr of rounds: " + nrOfRounds + "\n" +
-                "Nr of teams: " + nrOfTeams + "\n";
+        String tmp =
+                "Name:              " + quizName + "\n" +
+                "Description:       " + quizDescription + "\n" +
+                "Nr of rounds:      " + nrOfRounds + "\n" +
+                "Nr of teams:       " + nrOfTeams + "\n";
         for (int i = 0; i < nrOfRounds; i++) {
-            tmp = tmp + "Nr of Questions for round " + (i + 1) + ": " + roundNrOfQuestions.get(i) + "\n";
+            tmp = tmp + "   Nr of Questions for round " + (i + 1) + ": " + roundNrOfQuestions.get(i) + "\n";
         }
         tvDisplayQuiz.setText(tmp);
     }

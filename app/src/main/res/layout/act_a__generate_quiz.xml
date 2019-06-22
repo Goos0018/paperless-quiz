@@ -32,6 +32,25 @@
 
         <TableRow
             android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:id="@+id/etEnterQuizDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Enter quiz description" />
+
+            <EditText
+                android:id="@+id/etQuizDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:text="Name" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <TextView
@@ -73,6 +92,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" >
 
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
             <Button
                 android:id="@+id/btnInitGenerator"
                 android:layout_width="wrap_content"
@@ -84,35 +107,36 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" >
 
-            <fragment
-                android:id="@+id/fragment"
-                android:name="com.example.paperlessquiz.FragSpinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                tools:layout="@layout/frag_spinner" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/tvEnterNrOfQuestions"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Nr of questions for this round" />
-
-            <EditText
-                android:id="@+id/etNrOfQuestions"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="number"
-                android:text="1" />
         </TableRow>
 
 
     </TableLayout>
+
+    <fragment
+        android:id="@+id/fragment"
+        android:name="com.example.paperlessquiz.FragSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:layout="@layout/frag_spinner" />
+
+    <EditText
+        android:id="@+id/etNrOfQuestions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:ems="10"
+        android:gravity="center"
+        android:inputType="number"
+        android:text="1" />
+
+    <TextView
+        android:id="@+id/tvDisplayQuiz"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_huge"
+        android:layout_marginTop="@dimen/margin_large"
+        android:layout_marginRight="@dimen/margin_huge"
+        android:text="quiz summary" />
 
     <Button
         android:id="@+id/btnGenerateQuiz"
@@ -121,11 +145,5 @@
         android:text="GO"
         tools:layout_editor_absoluteX="108dp"
         tools:layout_editor_absoluteY="184dp" />
-
-    <TextView
-        android:id="@+id/tvDisplayQuiz"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="quiz summary" />
 
 </LinearLayout>

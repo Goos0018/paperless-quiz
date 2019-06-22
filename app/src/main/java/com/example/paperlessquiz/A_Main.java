@@ -62,7 +62,7 @@ public class A_Main extends AppCompatActivity implements LoadingActivity {
                 MyApplication.theQuiz.setListData(adapter.getItem(position));
                 thisQuiz=MyApplication.theQuiz;
                 Intent intent = new Intent(A_Main.this, A_SelectRole.class);
-                //intent.putExtra(Quiz.INTENT_EXTRANAME_THIS_QUIZ, thisQuiz);
+                //Pass the SheetId of the selected quiz so we can log further events there
                 MyApplication.eventLogger.setDocID(adapter.getItem(position).getSheetDocID());
                 startActivity(intent);
             }

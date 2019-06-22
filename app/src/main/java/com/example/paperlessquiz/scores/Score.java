@@ -3,8 +3,8 @@ package com.example.paperlessquiz.scores;
 import java.util.ArrayList;
 
 public class Score {
-    private ArrayList<Integer> scorePerRoundForTeam;
-    private int currentTotalScore;
+    private ArrayList<Integer> scorePerRoundForTeam; //This array contains the score for a team after each round
+    private int currentTotalScore; //this contains the total score at any given time
     private int teamId;
     private String teamName;
 

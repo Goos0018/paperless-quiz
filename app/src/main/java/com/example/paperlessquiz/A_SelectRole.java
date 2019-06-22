@@ -54,12 +54,12 @@ public class A_SelectRole extends AppCompatActivity implements LoadingActivity {
         btnParticipant.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (quizLoader.quizExtraDataLPL.getQuizExtraData().isOpen()) {
+                //if (quizLoader.quizExtraDataLPL.getQuizExtraData().isOpen()) {
                     commonActions(QuizGenerator.SELECTION_PARTICIPANT);
-                } else {
-                    Toast.makeText(A_SelectRole.this, "This quiz has not been opened yet. " +
-                            "Please wait for the quizmaster to open it", Toast.LENGTH_LONG).show();
-                }
+                //} else {
+                //    Toast.makeText(A_SelectRole.this, "This quiz has not been opened yet. " +
+                //            "Please wait for the quizmaster to open it", Toast.LENGTH_LONG).show();
+                //}
             }
         });
 
@@ -78,13 +78,13 @@ public class A_SelectRole extends AppCompatActivity implements LoadingActivity {
         //    Toast.makeText(A_SelectRole.this, "Attention organizers, " +
         //            "something is wrong with your quiz", Toast.LENGTH_LONG).show();
         //}
-        //thisQuiz.setListData(thisQuizListData); => Already done in the main activity
-        thisQuiz.setAdditionalData(quizLoader.quizExtraDataLPL.getQuizExtraData());
+        //thisQuiz.setListData(thisQuizListData); //=> Already done in the main activity
+        //thisQuiz.setAdditionalData(quizLoader.quizExtraDataLPL.getQuizExtraData());
         thisQuiz.setTeams(quizLoader.quizTeamsLPL.getLoginEntities());
-        thisQuiz.getAdditionalData().setNrOfParticipants(thisQuiz.getTeams().size());
+        //thisQuiz.getAdditionalData().setNrOfParticipants(thisQuiz.getTeams().size());
         thisQuiz.setOrganizers(quizLoader.quizOrganizersLPL.getLoginEntities());
         thisQuiz.setRounds(quizLoader.quizRoundsLPL.getRounds()); //=> not necessary, always done inside the LPL when retrieving rounds info
-        thisQuiz.getAdditionalData().setNrOfRounds(thisQuiz.getRounds().size());
+        //thisQuiz.getAdditionalData().setNrOfRounds(thisQuiz.getRounds().size());
         //thisQuiz.setAllScoresPerTeam();=> not necessary, done in the LPL
         thisQuiz.setAllQuestionsPerRound(quizLoader.quizQuestionsLPL.getAllQuestionsPerRound()); //this will work because the Quiz should have all rounds initialized
         thisQuiz.setAllAnswersPerQuestion(quizLoader.quizAnswersLPL.getAllAnswersPerRound());    //this will work because the Quiz should have all questions for each round initialized

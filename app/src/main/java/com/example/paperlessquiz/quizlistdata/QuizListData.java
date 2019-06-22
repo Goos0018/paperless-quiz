@@ -12,7 +12,7 @@ public class QuizListData implements Serializable {
     private Date date;
     private String logoURL;
     private int debugLevel;
-    private boolean clearLogs;
+    private boolean keepLogs;
 
     public QuizListData() {
         //this.id = "";
@@ -22,7 +22,7 @@ public class QuizListData implements Serializable {
         this.logoURL = "";
     }
 
-    public QuizListData(String name, String description, String sheetDocID, String logoURL) {
+    public QuizListData(String name, String description, String sheetDocID, String logoURL,int debugLevel,boolean clearLogs) {
         //this.id = id;
         this.name = name;
         this.description = description;
@@ -55,5 +55,13 @@ public class QuizListData implements Serializable {
 
     public String getLogoURL() {
         return logoURL;
+    }
+
+    public int getDebugLevel() {
+        return debugLevel;
+    }
+
+    public boolean isKeepLogs() {
+        return keepLogs;
     }
 }

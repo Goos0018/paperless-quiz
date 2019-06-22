@@ -8,7 +8,7 @@ public class QuizExtraData implements Serializable {
     private int nrOfRounds;
     private int nrOfParticipants;
     private int debugLevel;
-
+/*
     public QuizExtraData(boolean open, int nrOfRounds, int nrOfParticipants, int debugLevel) {
         this.open = open;
         this.nrOfRounds = nrOfRounds;
@@ -56,4 +56,5 @@ public class QuizExtraData implements Serializable {
     public void setNrOfParticipants(int nrOfParticipants) {
         this.nrOfParticipants = nrOfParticipants;
     }
+    */
 }

@@ -28,6 +28,8 @@ import com.squareup.picasso.Target;
 import java.util.ArrayList;
 //TODO: change colour of qSpinner if not all answers are corrected - current way is not working as it should
 //TODO: check to submit answers automatically when spinner is changed
+//TODO: refresh answers when refresh is clicked
+//TODO: pass ID of loader when running LoadCompleted
 
 /**
  * This class is allows a corrector to mark answers as correct or not correct. The screen always has a round spinner to spin through the rounds.

@@ -48,7 +48,7 @@ public class A_Main extends AppCompatActivity implements LoadingActivity {
         scriptParams = GoogleAccess.PARAMNAME_DOC_ID + QuizGenerator.QUIZLIST_DOC_ID + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_SHEET + QuizGenerator.SHEET_QUIZLIST + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_GETDATA;
-        GoogleAccessGet<QuizListData> googleAccessGet = new GoogleAccessGet<QuizListData>(this, scriptParams, thisQuiz.getAdditionalData().getDebugLevel());
+        GoogleAccessGet<QuizListData> googleAccessGet = new GoogleAccessGet<QuizListData>(this, scriptParams, thisQuiz.getListData().getDebugLevel());
         googleAccessGet.getItems(new QuizListDataParser(), new GetQuizListDataLPL(adapter),
                 new LoadingListenerShowProgress(this, "Please wait", "Loading list of available quizzes",
                         "Something went wrong: ",false));
@@ -58,7 +58,7 @@ public class A_Main extends AppCompatActivity implements LoadingActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //Load the data from the selected Quiz into the thisQuiz object
-                //thisQuiz.setListData(adapter.getItem(position));
+                thisQuiz.setListData(adapter.getItem(position));
                 MyApplication.theQuiz.setListData(adapter.getItem(position));
                 thisQuiz=MyApplication.theQuiz;
                 Intent intent = new Intent(A_Main.this, A_SelectRole.class);

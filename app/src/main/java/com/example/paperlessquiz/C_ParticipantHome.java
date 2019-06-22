@@ -239,6 +239,7 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
             public void onClick(View view) {
                 //questionSpinner.moveDown();
                 //questionSpinner.moveUp();
+                //TODO: report failure if round already closed!
                 thisQuiz.setAnswerForTeam(roundSpinner.getPosition(), questionSpinner.getPosition(), thisTeamNr, etAnswer.getText().toString().trim());
                 refreshDisplayFragments();
                 thisQuiz.submitAnswers(C_ParticipantHome.this, roundSpinner.getPosition());

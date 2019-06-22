@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class QuizGenerator {
+    //TODO: set data as plain text!!
 
     //Headers for the Answers tab of the Quiz sheet
     //Headers for the Corrections sheet - these are identical to those of the answers sheet
@@ -62,7 +63,7 @@ public class QuizGenerator {
     public static final String QUIZ_SHEET_DOC_ID = "QuizSheetDocID";
     public static final String QUIZ_LOGO_URL = "QuizLogoURL";
     public static final String QUIZ_DEBUGLEVEL = "DebugLevel";
-    public static final String QUIZ_CLEARLOGS = "KeepLogs";
+    public static final String QUIZ_KEEPLOGS = "KeepLogs";
 
     //Names of the different mandatory tabs in a Quiz sheet
     public static final String SHEET_ANSWERS = "Answers";
@@ -105,6 +106,7 @@ public class QuizGenerator {
     public String quizName, quizDescription, quizLogoURL;
     public int quizDebugLevel = 10;
     public boolean quizKeepLogs;
+    private int standardScore = 2;
     private int nrOfRounds;
     private ArrayList<Integer> roundNrOfQuestions;
     private ArrayList<String> roundDescriptions;
@@ -114,7 +116,7 @@ public class QuizGenerator {
     private int nrOfCorrectors = 1;
     private Context context;
 
-    private int standardScore = 2;
+
     private String quizMasterName = "Sven";
     private String quizMasterPw = "sven";
     private String jurorName = "Koen";
@@ -292,7 +294,7 @@ public class QuizGenerator {
         this.quizDescription = quizDescription;
         this.quizLogoURL = "";
         allTabs = new ArrayList<>(Arrays.asList(SHEET_QUIZLISTDATA, SHEET_TEAMS, SHEET_ORGANIZERS, SHEET_ROUNDS, SHEET_QUESTIONS, SHEET_ANSWERS, SHEET_CORRECTIONS, SHEET_SCORES, SHEET_EVENTLOG));
-        headersForQuizListDataTab = new ArrayList<>(Arrays.asList(QUIZ_NAME, QUIZ_DESCRIPTION, QUIZ_SHEET_DOC_ID, QUIZ_LOGO_URL, QUIZ_DEBUGLEVEL, QUIZ_CLEARLOGS));
+        headersForQuizListDataTab = new ArrayList<>(Arrays.asList(QUIZ_NAME, QUIZ_DESCRIPTION, QUIZ_SHEET_DOC_ID, QUIZ_LOGO_URL, QUIZ_DEBUGLEVEL, QUIZ_KEEPLOGS));
         headersForAnswersTab = new ArrayList<>(Arrays.asList(QUESTION_ID, ROUND_NR, QUESTION_NR));
         for (int i = 1; i < nrOfTeams + 1; i++) {
             headersForAnswersTab.add(TEAMS_PREFIX + i);
@@ -336,7 +338,7 @@ public class QuizGenerator {
                 //For question questionNr of round roundNr
                 stdContentForQuestionsTab.add(new ArrayList<>(Arrays.asList(roundNr + SEPARATOR_ROUND_QUESTION + questionNr, "" + roundNr, "" + questionNr,
                         QUESTION_STRING + questionNr, "(" + HINT_STRING + roundNr + SEPARATOR_ROUND_QUESTION + questionNr + ")",
-                        FULL_QUESTION_STRING + roundNr + SEPARATOR_ROUND_QUESTION + questionNr, "(correct answer", QUESTION_MAX_SCORE)));
+                        FULL_QUESTION_STRING + roundNr + SEPARATOR_ROUND_QUESTION + questionNr, "(correct answer)", Integer.toString(standardScore))));
             }
         }
         //stdContentForRoundsTab

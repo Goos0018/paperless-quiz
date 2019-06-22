@@ -22,6 +22,6 @@ public class GetQuizExtraDataLPL implements ListParsedListener<QuizExtraData> {
     }
 
     public void listParsed(List<QuizExtraData> list) {
-        quizExtraData = new QuizExtraData(list.get(0));
+        //quizExtraData = new QuizExtraData(list.get(0));
     }
 }

@@ -11,9 +11,15 @@ public class QuestionParser implements JsonParser<Question> {
 
     @Override
     public Question parse(JSONObject jo) throws JSONException {
-        return new Question(jo.getString(QuizGenerator.QUESTION_ID),jo.getInt(QuizGenerator.QUESTION_NR),jo.getInt(QuizGenerator.ROUND_NR), jo.getString(QuizGenerator.QUESTION_NAME),
-                jo.getString(QuizGenerator.QUESTION_HINT),jo.getString(QuizGenerator.QUESTION_FULL),jo.getString(QuizGenerator.QUESTION_CORRECT_ANSWER),
-                jo.getInt(QuizGenerator.QUESTION_MAX_SCORE));
+        try {
+            return new Question(jo.getString(QuizGenerator.QUESTION_ID), jo.getInt(QuizGenerator.QUESTION_NR), jo.getInt(QuizGenerator.ROUND_NR), jo.getString(QuizGenerator.QUESTION_NAME),
+                    jo.getString(QuizGenerator.QUESTION_HINT), jo.getString(QuizGenerator.QUESTION_FULL), jo.getString(QuizGenerator.QUESTION_CORRECT_ANSWER),
+                    jo.getInt(QuizGenerator.QUESTION_MAX_SCORE));
+        } catch (Exception e) {
+            return new Question(jo.getString(QuizGenerator.QUESTION_ID), jo.getInt(QuizGenerator.QUESTION_NR), jo.getInt(QuizGenerator.ROUND_NR), jo.getString(QuizGenerator.QUESTION_NAME),
+                    jo.getString(QuizGenerator.QUESTION_HINT), jo.getString(QuizGenerator.QUESTION_FULL), jo.getString(QuizGenerator.QUESTION_CORRECT_ANSWER),
+                    0);
+        }
     }
 }
 

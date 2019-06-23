@@ -6,7 +6,7 @@ import com.example.paperlessquiz.google.access.ListParsedListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GetScoresLPL implements ListParsedListener<Score> {
+public class GetScoresLPL {/*implements ListParsedListener<Score> {
 
     private ArrayList<Score> allScores;
 
@@ -25,4 +25,5 @@ public class GetScoresLPL implements ListParsedListener<Score> {
 
         }
     }
+    */
 }

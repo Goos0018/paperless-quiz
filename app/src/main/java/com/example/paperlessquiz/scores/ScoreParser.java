@@ -9,7 +9,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 //TODO:addlogtoQuizsettingsoverviewiferroristhrown
 
-public class ScoreParser implements JsonParser<Score> {
+public class ScoreParser {/*implements JsonParser<Score> {
     //Headers are taken from the QuizGenerator class and must match those of course
 
     @Override
@@ -34,4 +34,5 @@ public class ScoreParser implements JsonParser<Score> {
         score.setScorePerRoundForTeam(scorePerRoundForTeam);
         return score;
     }
+    */
 }

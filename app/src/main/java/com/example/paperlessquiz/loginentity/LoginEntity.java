@@ -1,6 +1,7 @@
 package com.example.paperlessquiz.loginentity;
 
 import com.example.paperlessquiz.quiz.QuizGenerator;
+import com.example.paperlessquiz.quiz.ResultAfterRound;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -20,12 +21,27 @@ public class LoginEntity implements Serializable {
     private boolean present;
     private boolean loggedIn;
     private ArrayList<Boolean> answerForRndsSubmitted;
+    private ArrayList<ResultAfterRound> results;
 
     public LoginEntity(int id, String type, String name, String passkey) {
         this.id = id;
         this.type = type;
         this.name = name;
         this.passkey = passkey;
+        results =new ArrayList<>();
+    }
+
+
+    public ResultAfterRound getResultAfterRound(int roundNr){
+        return results.get(roundNr - 1);
+    }
+
+    public ArrayList<ResultAfterRound> getResults() {
+        return results;
+    }
+
+    public void setResults(ArrayList<ResultAfterRound> results) {
+        this.results = results;
     }
 
     public String getName() {

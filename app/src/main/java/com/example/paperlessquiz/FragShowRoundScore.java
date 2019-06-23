@@ -35,8 +35,8 @@ public class FragShowRoundScore extends Fragment {
     public void refresh() {
         thisQuiz.calculateScores();
         if (tvYourScoreForThisRnd !=null && callingActivity!=null) {
-            tvYourScoreForThisRnd.setText(Integer.valueOf(MyApplication.theQuiz.getRoundScoreForTeam(thisTeamNr, callingActivity.getRound())).toString());
-            tvYourScoreTotal.setText(Integer.valueOf(MyApplication.theQuiz.getTotalScoreForTeam(thisTeamNr, callingActivity.getRound())).toString());
+            //tvYourScoreForThisRnd.setText(Integer.valueOf(MyApplication.theQuiz.getRoundScoreForTeam(thisTeamNr, callingActivity.getRound())).toString());
+            //tvYourScoreTotal.setText(Integer.valueOf(MyApplication.theQuiz.getTotalScoreForTeam(thisTeamNr, callingActivity.getRound())).toString());
         }
     }
 

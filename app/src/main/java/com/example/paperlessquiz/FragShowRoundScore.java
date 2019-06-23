@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.paperlessquiz.quiz.Quiz;
+import com.example.paperlessquiz.quiz.QuizStandingsCalculator;
 
 
 /**
@@ -18,7 +19,7 @@ import com.example.paperlessquiz.quiz.Quiz;
  */
 public class FragShowRoundScore extends Fragment {
 
-    TextView tvYourScoreForThisRnd, tvYourRankForThisRnd, tvYourScoreTotal, tvYourRankTotal;
+    TextView tvYourScoreForThisRnd, tvYourRankForThisRnd, tvYourScoreTotal, tvYourRankAfterThisRound;
     int thisTeamNr, thisRoundNr;
     HasShowRoundScore callingActivity;
     Quiz thisQuiz = MyApplication.theQuiz;
@@ -33,10 +34,18 @@ public class FragShowRoundScore extends Fragment {
     }
 
     public void refresh() {
-        thisQuiz.calculateScores();
+        QuizStandingsCalculator quizStandingsCalculator = new QuizStandingsCalculator(thisQuiz);
+        quizStandingsCalculator.calculateScores();
+        quizStandingsCalculator.calculateStandings();
         if (tvYourScoreForThisRnd !=null && callingActivity!=null) {
-            //tvYourScoreForThisRnd.setText(Integer.valueOf(MyApplication.theQuiz.getRoundScoreForTeam(thisTeamNr, callingActivity.getRound())).toString());
-            //tvYourScoreTotal.setText(Integer.valueOf(MyApplication.theQuiz.getTotalScoreForTeam(thisTeamNr, callingActivity.getRound())).toString());
+            int yourScoreForThisRound = thisQuiz.getTeam(thisTeamNr).getResultAfterRound(callingActivity.getRound()).getScoreForThisRound();
+            int yourTotalScoreAftertHisRound = thisQuiz.getTeam(thisTeamNr).getResultAfterRound(callingActivity.getRound()).getTotalScoreAfterThisRound();
+            int yourRankForThisRound = thisQuiz.getTeam(thisTeamNr).getResultAfterRound(callingActivity.getRound()).getPosInStandingForThisRound();
+            int yourRankAfterThisRound = thisQuiz.getTeam(thisTeamNr).getResultAfterRound(callingActivity.getRound()).getPosInStandingAfterThisRound();
+            tvYourScoreForThisRnd.setText(Integer.toString(yourScoreForThisRound));
+            tvYourScoreTotal.setText(Integer.toString(yourTotalScoreAftertHisRound));
+            tvYourRankForThisRnd.setText(Integer.toString(yourRankForThisRound));
+            tvYourRankAfterThisRound.setText(Integer.toString(yourRankAfterThisRound));
         }
     }
 
@@ -48,7 +57,7 @@ public class FragShowRoundScore extends Fragment {
         tvYourScoreForThisRnd = v.findViewById(R.id.tvYourScoreForThisRnd);
         tvYourRankForThisRnd = v.findViewById(R.id.tvYourRankForThisRnd);
         tvYourScoreTotal = v.findViewById(R.id.tvYourScoreTotal);
-        tvYourRankTotal = v.findViewById(R.id.tvYourRankTotal);
+        tvYourRankAfterThisRound = v.findViewById(R.id.tvYourRankTotal);
         return v;
     }
 

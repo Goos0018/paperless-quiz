@@ -5,6 +5,9 @@ import com.example.paperlessquiz.loginentity.LoginEntity;
 import com.example.paperlessquiz.question.Question;
 import com.example.paperlessquiz.round.Round;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 public class QuizStandingsCalculator {
     private Quiz thisQuiz;
 
@@ -34,15 +37,63 @@ public class QuizStandingsCalculator {
                 totalScoreUntilThisRound = totalScoreUntilThisRound + scoreForThisRnd;
                 thisTeam.getResultAfterRound(roundNr).setScoreForThisRound(scoreForThisRnd);
                 thisTeam.getResultAfterRound(roundNr).setTotalScoreAfterThisRound(totalScoreUntilThisRound);
-                //setRoundScoreForTeam(teamNr, roundNr, scoreForThisRnd);
-
-                //setTotalScoreAfterRound(teamNr,roundNr,totalScoreUntilThisRound);
-
             }
         }
     }
 
+    //Calculate standings for the entire quiz, based on the scores calculated per team
+    //Build an array
+    public void calculateStandings() {
+        ArrayList<ScoreForTeam> allScoresForThisRound = new ArrayList<>(); //This contains the score for all teams for a round
+        ArrayList<ScoreForTeam> allTotalScoresAfterThisRound = new ArrayList<>(); //This contains the total score for all teams after a round
+        int teamNr, roundNr;
+        //for each round
+        for (int j = 0; j < thisQuiz.getRounds().size(); j++) {
+            roundNr = j + 1;
+            Round thisRnd = thisQuiz.getRound(roundNr);
+            if (thisRnd.isCorrected()) {
+                //for each team
+                for (int i = 0; i < thisQuiz.getTeams().size(); i++) {
+                    teamNr = i + 1;
+                    LoginEntity thisTeam = thisQuiz.getTeam(teamNr);
+                    allScoresForThisRound.add(new ScoreForTeam(teamNr, thisTeam.getResultAfterRound(roundNr).getScoreForThisRound()));
+                    allTotalScoresAfterThisRound.add(new ScoreForTeam(teamNr, thisTeam.getResultAfterRound(roundNr).getTotalScoreAfterThisRound()));
+                }
+            }
+            //Now we sort allScoresForThisRound per score
+            Collections.sort(allScoresForThisRound);
+            Collections.sort(allTotalScoresAfterThisRound);
+            //Loop over the (sorted) array and assign each team the standing it has
+            for (int i = 0; i < allScoresForThisRound.size(); i++) {
+                LoginEntity theTeam;
+                theTeam = thisQuiz.getTeam(allScoresForThisRound.get(i).teamNr);
+                theTeam.getResultAfterRound(roundNr).setPosInStandingForThisRound(i + 1);
+            }
+            for (int i = 0; i < allTotalScoresAfterThisRound.size(); i++) {
+                LoginEntity theTeam;
+                theTeam = thisQuiz.getTeam(allScoresForThisRound.get(i).teamNr);
+                theTeam.getResultAfterRound(roundNr).setPosInStandingAfterThisRound(i + 1);
+            }
+        }
+    }
 
+    //This class is used to store a teamNumber + a score
+    //We will create an array of those to represent all Team  scores and sort this array by score to get the standings
+    private class ScoreForTeam implements Comparable<ScoreForTeam> {
+        int teamNr;
+        int score;
+
+        @Override
+        public int compareTo(ScoreForTeam o) {
+            return o.score - score;
+        }
+
+        public ScoreForTeam(int teamNr, int score) {
+            this.teamNr = teamNr;
+            this.score = score;
+        }
+
+    }
 
 
     public QuizStandingsCalculator(Quiz thisQuiz) {

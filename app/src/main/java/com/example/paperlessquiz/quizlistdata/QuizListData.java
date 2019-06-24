@@ -8,6 +8,7 @@ public class QuizListData implements Serializable {
     //private String id;
     private String name;
     private String description;
+    private int nrOfRounds;
     private String sheetDocID;
     private Date date;
     private String logoURL;
@@ -63,5 +64,13 @@ public class QuizListData implements Serializable {
 
     public boolean isKeepLogs() {
         return keepLogs;
+    }
+
+    public int getNrOfRounds() {
+        return nrOfRounds;
+    }
+
+    public void setNrOfRounds(int nrOfRounds) {
+        this.nrOfRounds = nrOfRounds;
     }
 }

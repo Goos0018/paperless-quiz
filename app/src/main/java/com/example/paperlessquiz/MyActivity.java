@@ -11,6 +11,9 @@ import com.example.paperlessquiz.quiz.Quiz;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
+/**
+ * Extention of AppCompatActivity - used to set the actionBar icon in a standard way
+ */
 public class MyActivity extends AppCompatActivity {
 
     public Quiz thisQuiz = MyApplication.theQuiz;

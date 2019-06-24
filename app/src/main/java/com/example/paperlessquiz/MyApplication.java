@@ -13,12 +13,16 @@ import com.example.paperlessquiz.quiz.QuizGenerator;
 import java.util.ArrayList;
 import java.util.UUID;
 
+/**
+ * This class contains stuff that is used throughout the application
+ */
+
 public class MyApplication extends Application {
-    public static String logDocID;
+    public static String logDocID;                                  //The ID of a google sheet where we log things that do not belong to a particular quiz - in practice the QuizList sheet
     public static EventLogger eventLogger;
-    public static String deviceID;
-    public static Quiz theQuiz;
-    public static ArrayList<String> googleLog = new ArrayList<>();
+    public static String deviceID;                                  //Contains an ID of the device on which the app runs
+    public static Quiz theQuiz;                                     //The quiz for which the app is being used
+    public static ArrayList<String> googleLog = new ArrayList<>();  //An arraylist that will contain a log of all transactions to and from a Google sheet (=the back-end of this app)
 
     @Override
     public void onCreate() {
@@ -28,42 +32,33 @@ public class MyApplication extends Application {
         deviceID = getUniquePsuedoID();
         eventLogger.logEvent(deviceID, "Starting application");
         theQuiz=new Quiz();
-
+        //Make sure the app always runs in portrait mode TODO: make landscape for tablet
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
             @Override
             public void onActivityCreated(Activity activity, Bundle bundle) {
                 activity.setRequestedOrientation(
                         ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
-
-// for each activity this function is called and so it is set to portrait mode
-
-
+                        // for each activity this function is called and so it is set to portrait mode
             }
 
             @Override
             public void onActivityStarted(Activity activity) {
-
             }
 
             @Override
             public void onActivityResumed(Activity activity) {
-
             }
 
             @Override
             public void onActivityPaused(Activity activity) {
-
             }
 
             @Override
             public void onActivityStopped(Activity activity) {
-
             }
 
             @Override
             public void onActivitySaveInstanceState(Activity activity, Bundle bundle) {
-
             }
 
             @Override
@@ -75,12 +70,8 @@ public class MyApplication extends Application {
         MyApplication.logDocID = logDocID;
     }
 
-    /**
-     * Return pseudo unique ID
-     *
-     * @return ID
-     */
-    public static String getUniquePsuedoID() {
+    //Return pseudo unique ID
+     public static String getUniquePsuedoID() {
         // If all else fails, if the user does have lower than API 9 (lower
         // than Gingerbread), has reset their device or 'Secure.ANDROID_ID'
         // returns 'null', then simply the ID returned will be solely based
@@ -112,6 +103,4 @@ public class MyApplication extends Application {
         // Finally, combine the values we have found by using the UUID class to create a unique identifier
         return new UUID(m_szDevIDShort.hashCode(), serial.hashCode()).toString();
     }
-
-
 }

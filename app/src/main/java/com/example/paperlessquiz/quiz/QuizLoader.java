@@ -31,6 +31,7 @@ import com.example.paperlessquiz.scores.ScoreParser;
 
 import java.util.ArrayList;
 
+//This class populates a quiz from a a Google Sheet
 public class QuizLoader {
     private Context context;
     private String sheetDocID;
@@ -41,7 +42,7 @@ public class QuizLoader {
     public GetAnswersListLPL quizAnswersLPL;
     public GetCorrectionsListLPL quizCorrectionsLPL;
     public GetLoginEntriesLPL quizTeamsLPL, quizOrganizersLPL;
-    public GetScoresLPL quizScoresLPL;
+    //public GetScoresLPL quizScoresLPL;
 
     public ArrayList<ArrayList<Answer>> myAnswers;
 
@@ -57,7 +58,7 @@ public class QuizLoader {
         quizOrganizersLPL = new GetLoginEntriesLPL();
         quizAnswersLPL = new GetAnswersListLPL();
         quizCorrectionsLPL = new GetCorrectionsListLPL();
-        quizScoresLPL = new GetScoresLPL();
+        //quizScoresLPL = new GetScoresLPL();
     }
 
     public String generateParams(String sheet) {
@@ -181,16 +182,6 @@ public class QuizLoader {
                 new LoadingListenerShowProgress(context, "Please wait", "Loading corrections",
                         "Something went wrong: ", false));
     }
-/*
-    public void loadScores() {
-        //Get the list of scores per team
-        String scriptParams = generateParams(QuizGenerator.SHEET_SCORES);
-        GoogleAccessGet<Score> googleAccessGetScores = new GoogleAccessGet<Score>(context, scriptParams,MyApplication.theQuiz.getListData().getDebugLevel());
-        googleAccessGetScores.getItems(new ScoreParser(), quizScoresLPL,
-                new LoadingListenerShowProgress(context, "Please wait", "Updating scores...",
-                        "Something went wrong: ",false));
-    }
-    */
 
     public void generateBlankAnswers() {
         //for each round

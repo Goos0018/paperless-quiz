@@ -16,13 +16,13 @@ public class QuizStandingsCalculator {
         //for each team
         for (int i = 0; i < thisQuiz.getTeams().size(); i++) {
             int teamNr = i + 1;
+            int totalScoreUntilThisRound = 0;
             LoginEntity thisTeam = thisQuiz.getTeam(teamNr);
             //for each round
             for (int j = 0; j < thisQuiz.getRounds().size(); j++) {
                 int roundNr = j + 1;
                 Round thisRnd = thisQuiz.getRound(roundNr);
                 int scoreForThisRnd = 0;
-                int totalScoreUntilThisRound = 0;
                 if (thisRnd.isCorrected()) {
                     //for each question in round j
                     for (int k = 0; k < thisQuiz.getRounds().get(j).getQuestions().size(); k++) {
@@ -44,11 +44,11 @@ public class QuizStandingsCalculator {
     //Calculate standings for the entire quiz, based on the scores calculated per team
     //Build an array
     public void calculateStandings() {
-        ArrayList<ScoreForTeam> allScoresForThisRound = new ArrayList<>(); //This contains the score for all teams for a round
-        ArrayList<ScoreForTeam> allTotalScoresAfterThisRound = new ArrayList<>(); //This contains the total score for all teams after a round
         int teamNr, roundNr;
         //for each round
         for (int j = 0; j < thisQuiz.getRounds().size(); j++) {
+            ArrayList<ScoreForTeam> allScoresForThisRound = new ArrayList<>(); //This contains the score for all teams for a round
+            ArrayList<ScoreForTeam> allTotalScoresAfterThisRound = new ArrayList<>(); //This contains the total score for all teams after a round
             roundNr = j + 1;
             Round thisRnd = thisQuiz.getRound(roundNr);
             if (thisRnd.isCorrected()) {

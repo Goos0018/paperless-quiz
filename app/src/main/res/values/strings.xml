@@ -4,5 +4,20 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="please_select_a_quiz">Please select a quiz</string>
+    <string name="loadingtitle">Please wait</string>
+    <string name="loadingmsg_list">Loading list of available quizzes</string>
+    <string name="loadingerror">Something went wrong:</string>
+    <string name="btn_participant">I am a participant</string>
+    <string name="btn_organizer">I am an organizer</string>
+    <string name="main_selectteamprompt">Select your team in the list below</string>
+    <string name="main_selectorganizerprompt">Select your role in the list below</string>
+    <string name="main_wrongpswdentered">Please enter the passkey provided by the organizers</string>
+    <string name="main_registeratreceptionfirst">Please register at the reception first</string>
+    <string name="main_wrongpassword">Passkey is incorrect - please enter the passkey provided by the organizers</string>
+    <string name="corrector_waitforroundopen">Please wait for this round to be opened</string>
+    <string name="corrector_waitforallanswers">Please wait until all answers for this round are submitted</string>
+    <string name="corrector_roundalreadycorrected">This round has already been corrected</string>
+    <string name="participant_waitforroundopen">Please wait for this round to be opened</string>
+    <string name="participant_waitforroundcorrection">Please wait for this round to be corrected</string>
 
 </resources>

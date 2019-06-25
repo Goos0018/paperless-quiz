@@ -22,13 +22,11 @@ public class Quiz implements Serializable {
     public static final int ACTIONBAR_ICON_WIDTH = 125;
     public static final int ACTIONBAR_ICON_HEIGHT = 125;
     private QuizListData listData;
-    //private QuizExtraData additionalData;
     private ArrayList<LoginEntity> teams;
     private ArrayList<LoginEntity> organizers;
     private ArrayList<Round> rounds;
     private LoginEntity myLoginentity;
-    //private ArrayList<Score> allScoresPerTeam;
-    public QuizLoader loader;
+    //public QuizLoader loader;
     public boolean loadingCompleted = false;
     //public ArrayList<ArrayList<Integer>> totalScoreAfterEachRoundPerTeam;
 

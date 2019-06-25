@@ -5,32 +5,31 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.paperlessquiz.google.access.LoadingActivity;
 import com.example.paperlessquiz.loginentity.LoginEntity;
 import com.example.paperlessquiz.quiz.Quiz;
 import com.example.paperlessquiz.quiz.QuizGenerator;
 import com.example.paperlessquiz.quiz.QuizLoader;
+import com.squareup.picasso.Picasso;
 
-/* This screen allows you to select if you are an organizer or a participant.
-All data about the quiz is loaded and stored in a Quiz object
-TODO: string resources and constants
-TODO: Modify allLPL's to write info directly in to central Quiz object where possible
+/**
+ * This screen allows you to select if you are an organizer or a participant.
+ * All data about the quiz is loaded and stored in a Quiz object
  */
 
 public class A_SelectRole extends AppCompatActivity implements LoadingActivity {
 
     Quiz thisQuiz;
     QuizLoader quizLoader;
-    //QuizListData thisQuizListData;
     Intent intent;
-    //String quizSheetID, scriptParams;
-    //boolean quizIsOpen;
     Button btnParticipant;
     Button btnOrganizer;
-    TextView tvWelcome;
+    TextView tvQuizName, tvWelcome;
+    ImageView ivQuizLogo;
+    int counter = 0;
 
     @Override
     public void loadingComplete() {
@@ -44,22 +43,39 @@ public class A_SelectRole extends AppCompatActivity implements LoadingActivity {
 
         btnParticipant = findViewById(R.id.btn_participant);
         btnOrganizer = findViewById(R.id.btn_organizer);
-        tvWelcome = findViewById(R.id.tv_welcome);
-        //thisQuiz = (Quiz) getIntent().getSerializableExtra(Quiz.INTENT_EXTRANAME_THIS_QUIZ);
-        thisQuiz= MyApplication.theQuiz;
-        tvWelcome.setText("Welcome to the " + thisQuiz.getListData().getName() + "\n" + thisQuiz.getListData().getDescription());
+        tvQuizName = findViewById(R.id.tvQuizName);
+        tvWelcome = findViewById(R.id.tvWelcome);
+        ivQuizLogo = findViewById(R.id.ivQuizLogo);
+        thisQuiz = MyApplication.theQuiz;
+        tvQuizName.setText(thisQuiz.getListData().getName());
+        tvWelcome.setText(thisQuiz.getListData().getDescription());
+        String URL = thisQuiz.getListData().getLogoURL();
+        if (URL.equals("")) {
+            ivQuizLogo.setImageResource(R.mipmap.placeholder);
+        } else {
+            Picasso.with(this)
+                    .load(URL)
+                    .resize(Quiz.TARGET_WIDTH, Quiz.TARGET_HEIGHT)
+                    .centerCrop()
+                    .into(ivQuizLogo);
+        }
         quizLoader = new QuizLoader(this, thisQuiz.getListData().getSheetDocID());
         quizLoader.loadAll();
-
+        //Access the Generator screen by tapping the logo 5 times
+        ivQuizLogo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                counter++;
+                if (counter == 5) {
+                    Intent intentG = new Intent(A_SelectRole.this, A__GenerateQuiz.class);
+                    startActivity(intentG);
+                }
+            }
+        });
         btnParticipant.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //if (quizLoader.quizExtraDataLPL.getQuizExtraData().isOpen()) {
-                    commonActions(QuizGenerator.SELECTION_PARTICIPANT);
-                //} else {
-                //    Toast.makeText(A_SelectRole.this, "This quiz has not been opened yet. " +
-                //            "Please wait for the quizmaster to open it", Toast.LENGTH_LONG).show();
-                //}
+                commonActions(QuizGenerator.SELECTION_PARTICIPANT);
             }
         });
 
@@ -72,14 +88,9 @@ public class A_SelectRole extends AppCompatActivity implements LoadingActivity {
     }
 
     public void commonActions(String selection) {
-        //if we are here, all loading actions should be finished, so we can set the result in the central Quiz object
-        //First check that all results are OK
-        //if (!(quizLoader.allChecksOK())) {
-        //    Toast.makeText(A_SelectRole.this, "Attention organizers, " +
-        //            "something is wrong with your quiz", Toast.LENGTH_LONG).show();
-        //}
+        //if we are here, all loading actions should be finished, so we can set the result in the central Quiz object and make sure this is properly initialized
+        //TODO: put this as a method of the QuizLoader class
         //thisQuiz.setListData(thisQuizListData); //=> Already done in the main activity
-        //thisQuiz.setAdditionalData(quizLoader.quizExtraDataLPL.getQuizExtraData());
         thisQuiz.setTeams(quizLoader.quizTeamsLPL.getLoginEntities());
         //thisQuiz.getAdditionalData().setNrOfParticipants(thisQuiz.getTeams().size());
         thisQuiz.setOrganizers(quizLoader.quizOrganizersLPL.getLoginEntities());

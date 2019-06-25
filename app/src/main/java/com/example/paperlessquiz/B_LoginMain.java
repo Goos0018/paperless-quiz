@@ -16,8 +16,10 @@ import com.example.paperlessquiz.loginentity.LoginEntity;
 import com.example.paperlessquiz.quiz.Quiz;
 import com.example.paperlessquiz.quiz.QuizGenerator;
 
-//TODO:prevent showing keyboard initially, only show after selection is made
-//TODO: check bug where app crashes when back button is used on LoginMain/SelectRole
+/**
+ * Main login screen, allows user to select a team or organizer role and log in
+ * Depending on the role (team, quizmaster, corrector, ... , the appropriate home screen will be opened
+ */
 public class B_LoginMain extends AppCompatActivity {
     Quiz thisQuiz = MyApplication.theQuiz;
     LoginEntity thisLoginEntity;
@@ -36,12 +38,9 @@ public class B_LoginMain extends AppCompatActivity {
             tvDisplayName.setText(thisQuiz.getTeams().get(position).getName());
             tvDisplayID.setText(Integer.toString(thisQuiz.getTeams().get(position).getId()));
             etPasskey.setText("");
-            //tFields(thisQuiz.getTeams().get(index).getName(), Integer.toString(thisQuiz.getTeams().get(index).getId()));
         } else {
-            //setFields(thisQuiz.getOrganizers().get(index).getName(), Integer.toString(thisQuiz.getOrganizers().get(index).getId()));
             tvDisplayName.setText(thisQuiz.getOrganizers().get(position).getType());
             tvDisplayID.setText(Integer.toString(thisQuiz.getOrganizers().get(position).getId()));
-            //tvDisplayID.setVisibility(View.GONE);
             etPasskey.setText("");
         }
     }
@@ -54,16 +53,16 @@ public class B_LoginMain extends AppCompatActivity {
         tvLoginPrompt = findViewById(R.id.tvLoginPrompt);
         tvDisplayName = findViewById(R.id.tvDisplayName);
         tvDisplayID = findViewById(R.id.tvDisplayID);
-        btnSubmit = (Button) findViewById(R.id.btn_submit_login);
-        etPasskey = (EditText) findViewById(R.id.et_passkey);
-        lvShowParticipants = (ListView) findViewById(R.id.lvNamesList);
-        loginType = (String) getIntent().getStringExtra(LoginEntity.INTENT_EXTRA_NAME_THIS_LOGIN_TYPE);
+        btnSubmit = findViewById(R.id.btn_submit_login);
+        etPasskey = findViewById(R.id.et_passkey);
+        lvShowParticipants = findViewById(R.id.lvNamesList);
+        loginType = getIntent().getStringExtra(LoginEntity.INTENT_EXTRA_NAME_THIS_LOGIN_TYPE);
         if (loginType.equals(QuizGenerator.SELECTION_PARTICIPANT)) {
             adapter = new ParticipantsAdapter(this, thisQuiz.getTeams());
-            tvLoginPrompt.setText("Select your team in the list below");
+            tvLoginPrompt.setText(this.getString(R.string.main_selectteamprompt));
         } else {
             adapter = new ParticipantsAdapter(this, thisQuiz.getOrganizers());
-            tvLoginPrompt.setText("Select your role in the list below");
+            tvLoginPrompt.setText(this.getString(R.string.main_selectorganizerprompt));
         }
         setFields(0);
         lvShowParticipants.setAdapter(adapter);
@@ -86,7 +85,7 @@ public class B_LoginMain extends AppCompatActivity {
                 }
                 if (input.isEmpty()) {
                     //If no password was entered
-                    Toast.makeText(B_LoginMain.this, "Please enter the passkey provided by the organizers", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(B_LoginMain.this, B_LoginMain.this.getString(R.string.main_wrongpswdentered), Toast.LENGTH_SHORT).show();
                 } else {
                     //If the correct password was entered
                     if (input.equals(thisLoginEntity.getPasskey())) {
@@ -98,7 +97,7 @@ public class B_LoginMain extends AppCompatActivity {
                                     Intent intentP = new Intent(B_LoginMain.this, C_ParticipantHome.class);
                                     startActivity(intentP);
                                 } else {
-                                    Toast.makeText(B_LoginMain.this, "Please register at the reception first", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(B_LoginMain.this, B_LoginMain.this.getString(R.string.main_registeratreceptionfirst), Toast.LENGTH_LONG).show();
                                 }
                                 break;
                             case QuizGenerator.TYPE_QUIZMASTER:
@@ -113,14 +112,10 @@ public class B_LoginMain extends AppCompatActivity {
                                 Intent intentR = new Intent(B_LoginMain.this, C_ReceptionistHome.class);
                                 startActivity(intentR);
                                 break;
-                            case "Generator":
-                                Intent intentG = new Intent(B_LoginMain.this, A__GenerateQuiz.class);
-                                startActivity(intentG);
-                                break;
                         }
                     } else {
                         //If the wrong password was entered
-                        Toast.makeText(B_LoginMain.this, "Passkey " + input + " is incorrect - please enter the passkey provided by the organizers", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(B_LoginMain.this, B_LoginMain.this.getString(R.string.main_wrongpassword), Toast.LENGTH_SHORT).show();
                     }
                 }
             }

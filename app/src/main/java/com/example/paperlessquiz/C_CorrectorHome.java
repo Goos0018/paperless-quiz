@@ -1,12 +1,7 @@
 package com.example.paperlessquiz;
 
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,29 +14,24 @@ import android.widget.TextView;
 import com.example.paperlessquiz.adapters.CorrectAnswersAdapter;
 import com.example.paperlessquiz.answer.Answer;
 import com.example.paperlessquiz.google.access.LoadingActivity;
-import com.example.paperlessquiz.quiz.Quiz;
 import com.example.paperlessquiz.quiz.QuizLoader;
 import com.example.paperlessquiz.round.Round;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 import java.util.ArrayList;
 //TODO: change colour of qSpinner if not all answers are corrected - current way is not working as it should
-//TODO: check to submit answers automatically when spinner is changed
 //TODO: refresh answers when refresh is clicked
 //TODO: pass ID of loader when running LoadCompleted
 
 /**
  * This class is allows a corrector to mark answers as correct or not correct. The screen always has a round spinner to spin through the rounds.
  * Corrections are only possible if the status of a round is to allow this (acceptCorrections = true).
- * Standard is to correct all answers for a question. In that case, a questionspinner allow to scroll through the questions of the round and correct them
+ * Standard is to correct all answers for a question. In that case, a questionspinner allows to scroll through the questions of the round and correct them
  * There is also the option to correct answers per team. In that case, the questionspinner is replaced by a teamSpinner
  * Team, round and question numbers are stored in the thisTeamNr, thisRoundNr, thisQuestionNr
  */
 
 public class C_CorrectorHome extends MyActivity implements LoadingActivity, FragSpinner.HasSpinner, FragRoundSpinner.HasRoundSpinner, FragExplainRoundStatus.HasExplainRoundStatus {
 
-    //Quiz thisQuiz = MyApplication.theQuiz;
     int thisTeamNr = 1, thisRoundNr = 1, thisQuestionNr = 1;
     String roundStatusExplanation;
     TextView tvCorrectAnswer;
@@ -63,32 +53,21 @@ public class C_CorrectorHome extends MyActivity implements LoadingActivity, Frag
 
     @Override
     public void onRoundChanged(int oldRoundNr, int roundNr) {
-        /*
-        if (correctPerQuestion) {
-            thisQuiz.submitCorrectionsForQuestion(C_CorrectorHome.this, thisRoundNr, thisQuestionNr);
-        } else {
-            thisQuiz.submitCorrectionsForTeam(C_CorrectorHome.this, thisRoundNr, thisTeamNr);
-        }
-        */
         this.thisRoundNr = roundNr;
         refreshDisplayFragments();
         spinner.moveToFirstPos();
-
     }
 
     @Override
     public void onSpinnerChange(int oldPos, int newPos) {
         if (correctPerQuestion) {
-            //thisQuiz.submitCorrectionsForQuestion(C_CorrectorHome.this, thisRoundNr, thisQuestionNr);
             thisQuestionNr = newPos;
             showCorrectAnswerForQuestion(thisRoundNr, thisQuestionNr);
         } else {
-            //thisQuiz.submitCorrectionsForTeam(C_CorrectorHome.this, thisRoundNr, thisTeamNr);
             thisTeamNr = newPos;
         }
         refreshAnswers();
         if (correctPerQuestion) {
-
         } else {
 
         }
@@ -124,7 +103,7 @@ public class C_CorrectorHome extends MyActivity implements LoadingActivity, Frag
     @Override
     public String getValueToSetForSecondaryField(int spinnerPos) {
         if (correctPerQuestion) {
-            return thisQuiz.getQuestion(thisRoundNr, spinnerPos).getDescription();
+            return thisQuiz.getQuestion(thisRoundNr, spinnerPos).getHint();
         } else {
             return thisQuiz.getTeam(spinnerPos).getName();
         }
@@ -220,7 +199,7 @@ public class C_CorrectorHome extends MyActivity implements LoadingActivity, Frag
         if (!(thisRound.getAcceptsAnswers() || thisRound.getAcceptsCorrections() || thisRound.isCorrected())) {
             //Round is not yet open
             //Just display the fragment that tells you this
-            roundStatusExplanation = "Please wait for this round to be opened";
+            roundStatusExplanation = C_CorrectorHome.this.getString(R.string.corrector_waitforroundopen);
             explainRoundStatus.setStatus(roundStatusExplanation);
             toggleFragments(R.id.frPlaceHolder, explainRoundStatus, spinner, spinner);
             llCorrectQuestions.setVisibility((View.GONE));
@@ -228,7 +207,7 @@ public class C_CorrectorHome extends MyActivity implements LoadingActivity, Frag
         if (thisRound.getAcceptsAnswers()) {
             //Round is open for the teams
             //Just display the fragment that tells you this
-            roundStatusExplanation = "Please wait until all answers for this round are submitted";
+            roundStatusExplanation = C_CorrectorHome.this.getString(R.string.corrector_waitforallanswers);
             explainRoundStatus.setStatus(roundStatusExplanation);
             toggleFragments(R.id.frPlaceHolder, explainRoundStatus, spinner, spinner);
             llCorrectQuestions.setVisibility((View.GONE));
@@ -243,7 +222,7 @@ public class C_CorrectorHome extends MyActivity implements LoadingActivity, Frag
         if (thisRound.isCorrected()) {
             //Round is open for the teams
             //Just display the fragment that tells you this
-            roundStatusExplanation = "This round has already been corrected";
+            roundStatusExplanation = C_CorrectorHome.this.getString(R.string.corrector_roundalreadycorrected);
             explainRoundStatus.setStatus(roundStatusExplanation);
             toggleFragments(R.id.frPlaceHolder, explainRoundStatus, spinner, spinner);
             llCorrectQuestions.setVisibility((View.GONE));

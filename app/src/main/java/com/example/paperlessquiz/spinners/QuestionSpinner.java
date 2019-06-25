@@ -28,7 +28,7 @@ public class QuestionSpinner {
 
     public void refreshDisplay(){
         tvMain.setText(quiz.getQuestion(roundNr,questionNr).getName());
-        tvSub.setText(quiz.getQuestion(roundNr,questionNr).getDescription());
+        tvSub.setText(quiz.getQuestion(roundNr,questionNr).getHint());
     }
 
     public void positionChanged() {

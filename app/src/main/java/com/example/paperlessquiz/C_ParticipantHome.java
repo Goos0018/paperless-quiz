@@ -19,26 +19,24 @@ import com.example.paperlessquiz.google.access.LoadingActivity;
 import com.example.paperlessquiz.quiz.QuizLoader;
 import com.example.paperlessquiz.round.Round;
 
-//TODO: disable predictive typing and spell-check!!!!
 //TODO: find method to hide the keyboard when spinner changes
 //TODO: refresh Scores fragment when round spinner changes
 public class C_ParticipantHome extends MyActivity implements LoadingActivity, FragSpinner.HasSpinner,
         FragRoundSpinner.HasRoundSpinner, FragShowRoundScore.HasShowRoundScore, FragExplainRoundStatus.HasExplainRoundStatus {
 
-    //Quiz thisQuiz = MyApplication.theQuiz => already defined in MyActivity
     int thisTeamNr;
     FragRoundSpinner roundSpinner;
     FragSpinner questionSpinner;
     FragShowRoundScore roundResultFrag;
     FragExplainRoundStatus explainRoundStatus;
-    TextView tvDisplayRoundResults, tvExplainRoundStatus;
+    TextView tvDisplayRoundResults;
     EditText etAnswer;
     Button btnSubmit;
     LinearLayout displayAnswersLayout, editAnswerLayout;
     RecyclerView rvDisplayAnswers;
     DisplayAnswersAdapter displayAnswersAdapter;
     RecyclerView.LayoutManager layoutManager;
-    String qSpinnerTag = "qSpinner";
+    //String qSpinnerTag = "qSpinner";
     String roundStatusExplanation;
 
     @Override
@@ -63,7 +61,7 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
         //Set the value of the answer for the new question to what we already have
         etAnswer.setText(thisQuiz.getAnswerForTeam(roundSpinner.getPosition(), newPos, thisTeamNr).getTheAnswer());
         //etAnswer.clearFocus();
-        etAnswer.setImeOptions(EditorInfo.IME_ACTION_DONE);
+        //etAnswer.setImeOptions(EditorInfo.IME_ACTION_DONE);
         refreshAnswers();
     }
 
@@ -79,7 +77,7 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
 
     @Override
     public String getValueToSetForSecondaryField(int newPos) {
-        return thisQuiz.getQuestion(roundSpinner.getPosition(), newPos).getDescription();
+        return "(" + thisQuiz.getQuestion(roundSpinner.getPosition(), newPos).getHint() + ")";
     }
 
     @Override
@@ -92,7 +90,7 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
         //Move the QuestionSpinner to position 1 to make sure we have something at that position
         questionSpinner.moveToFirstPos();
         etAnswer.setText(thisQuiz.getAnswerForTeam(roundNr, 1, thisTeamNr).getTheAnswer());
-        etAnswer.setImeOptions(EditorInfo.IME_ACTION_DONE);
+        //etAnswer.setImeOptions(EditorInfo.IME_ACTION_DONE);
         refreshDisplayFragments();
         roundResultFrag.refresh();
     }
@@ -109,6 +107,7 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
         rvDisplayAnswers.setAdapter(displayAnswersAdapter);
     }
 
+    //TODO: Move to MyActivity?
     protected void toggleFragments(int placeHolderID, Fragment fragToShow, Fragment fragToHide1, Fragment fragToHide2) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         if (fragToShow.isAdded()) { // if the fragment is already in container
@@ -134,7 +133,7 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
         if (!(thisRound.getAcceptsAnswers() || thisRound.getAcceptsCorrections() || thisRound.isCorrected())) {
             //Round is not yet open
             //Just display the fragment that tells you this
-            roundStatusExplanation = "Please wait for this round to be opened";
+            roundStatusExplanation = C_ParticipantHome.this.getString(R.string.participant_waitforroundopen);
             explainRoundStatus.setStatus(roundStatusExplanation);
             toggleFragments(R.id.frPlaceHolder, explainRoundStatus, roundResultFrag, questionSpinner);
             editAnswerLayout.setVisibility((View.GONE));
@@ -155,7 +154,7 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
         if (thisRound.getAcceptsCorrections()) {
             //Round is closed for answering, but not yet corrected
             //Just display the fragment that tells you this
-            roundStatusExplanation = "Please wait for this round to be corrected";
+            roundStatusExplanation = C_ParticipantHome.this.getString(R.string.participant_waitforroundcorrection);
             explainRoundStatus.setStatus(roundStatusExplanation);
             toggleFragments(R.id.frPlaceHolder, explainRoundStatus, roundResultFrag, questionSpinner);
             //explainRoundStatus.setStatus("Please wait for this round to be corrected");

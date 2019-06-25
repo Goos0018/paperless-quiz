@@ -7,31 +7,61 @@
     android:orientation="vertical"
     tools:context=".A_SelectRole">
 
+    <ImageView
+        android:id="@+id/ivQuizLogo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/margin_large"
+        android:layout_marginBottom="@dimen/margin_large"
+        app:srcCompat="@android:drawable/alert_dark_frame" />
+
     <TextView
-        android:id="@+id/tv_welcome"
+        android:id="@+id/tvQuizName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="@dimen/margin_medium"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:layout_marginRight="@dimen/text_size_medium"
+        android:text="QUIZ NAME"
+        android:textSize="@dimen/text_size_large"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvWelcome"
         android:layout_width="match_parent"
-        android:layout_height="156dp"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="15dp"
         android:layout_marginRight="15dp"
-        android:text="Welcome" />
+        android:gravity="center"
+        android:text="Welcome message comes here"
+        android:textSize="@dimen/text_size_medium" />
 
     <Button
         android:id="@+id/btn_participant"
         android:layout_width="match_parent"
-        android:layout_height="171dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginRight="15dp"
-        android:text="PARTICIPANT" />
+        android:layout_height="100dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginRight="50dp"
+        android:background="@color/correctGreen"
+        android:ellipsize="none"
+        android:text="@string/btn_participant"
+        android:textSize="@dimen/text_size_large"
+        android:textStyle="bold" />
 
     <Button
         android:id="@+id/btn_organizer"
         android:layout_width="match_parent"
-        android:layout_height="171dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginRight="15dp"
-        android:text="ORGANIZER" />
+        android:layout_height="100dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginRight="50dp"
+        android:background="@color/halfwayOrange"
+        android:text="@string/btn_organizer"
+        android:textSize="@dimen/text_size_large"
+        android:textStyle="bold" />
 
 </LinearLayout>

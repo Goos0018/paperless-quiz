@@ -20,7 +20,7 @@ import com.example.paperlessquiz.quizlistdata.QuizListDataParser;
 
 /*
 This class/screen is the first screen of the app. It allows users to select a quiz from a list of available quiz'es.
-The list of the available quizzes comes from a central, hardcoded Google Sheet (docID is in the GoogleAccess class
+The list of the available quizzes comes from a central Google Sheet (docID is in the GoogleAccess class
 Basic details of the selected quiz are stored and passed via a thisQuiz variable
 TODO: extract string resources + constants
 TODO: layout
@@ -50,8 +50,8 @@ public class A_Main extends AppCompatActivity implements LoadingActivity {
                 GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_GETDATA;
         GoogleAccessGet<QuizListData> googleAccessGet = new GoogleAccessGet<QuizListData>(this, scriptParams, thisQuiz.getListData().getDebugLevel());
         googleAccessGet.getItems(new QuizListDataParser(), new GetQuizListDataLPL(adapter),
-                new LoadingListenerShowProgress(this, "Please wait", "Loading list of available quizzes",
-                        "Something went wrong: ",false));
+                new LoadingListenerShowProgress(this, this.getString(R.string.loadingtitle), this.getString(R.string.loadingmsg_list),
+                        this.getString(R.string.loadingerror),false));
 
         lv_QuizList.setAdapter(adapter);
         lv_QuizList.setOnItemClickListener(new AdapterView.OnItemClickListener() {

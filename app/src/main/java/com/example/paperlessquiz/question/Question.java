@@ -13,7 +13,7 @@ import java.util.ArrayList;
  * The rest comes from the GetQuestionsLPL
  * We foresee methods here to directly get and set answers for a specific team
  */
-public class Question implements Serializable, SpinnerData {
+public class Question implements Serializable {
     private String questionID;
     private int questionNr;
     private int roundNr;
@@ -77,10 +77,6 @@ public class Question implements Serializable, SpinnerData {
         this.roundNr = roundNr;
     }
 
-    public String getHint() {
-        return hint;
-    }
-
     public void setHint(String hint) {
         this.hint = hint;
     }
@@ -109,12 +105,11 @@ public class Question implements Serializable, SpinnerData {
         this.maxScore = maxScore;
     }
 
-    @Override
-    public String getDescription() {
+
+    public String getHint() {
         return hint;
     }
 
-    @Override
     public String getName() {
         return name;
     }

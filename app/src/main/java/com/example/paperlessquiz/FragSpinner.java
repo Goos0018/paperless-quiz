@@ -28,16 +28,6 @@ public class FragSpinner extends Fragment {
         // Required empty public constructor
     }
 
-    /*
-    public static FragSpinner newInstance(int id) {
-        FragSpinner fragSpinner = new FragSpinner();
-        Bundle args = new Bundle();
-        args.putInt("id", id);
-        fragSpinner.setArguments(args);
-        return fragSpinner;
-    }
-    */
-
     public interface HasSpinner {
         //Implement stuff to do in the activity when this spinner changes
         public void onSpinnerChange(int oldPos, int newPos);
@@ -54,10 +44,6 @@ public class FragSpinner extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        //Set the id to what was passed via newInstance
-        //TODO: remove, not needed
-        //id = getArguments().getInt("id", 0);
-        //id = 1;
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.frag_spinner, container, false);
         tvPrimaryField = v.findViewById(R.id.tvPrimaryField);
@@ -76,7 +62,7 @@ public class FragSpinner extends Fragment {
                 moveUp();
             }
         });
-        positionChanged();
+        //positionChanged();
         return v;
     }
 

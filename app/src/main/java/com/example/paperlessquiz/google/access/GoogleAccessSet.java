@@ -15,12 +15,11 @@ import com.example.paperlessquiz.MyApplication;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.List;
-
 public class GoogleAccessSet {
     private Context context;
     private String parameters;
-    private String result;
+    private String resultExplanation; //explanation of what was the result
+    private boolean resultOK;             //indicates whether the results was OK or not
     int debugLevel;
 
     public GoogleAccessSet(Context context, String parameters, int debugLevel) {
@@ -38,11 +37,12 @@ public class GoogleAccessSet {
                     public void onResponse(String response) {
                         try {
                             JSONObject jo = new JSONObject(response);
-                            result = jo.getString("result");
+                            resultOK = jo.getBoolean(GoogleAccess.GASET_FIELDNAME_RESULT);
+                            resultExplanation = jo.getString(GoogleAccess.GASET_FIELDNAME_RESULT_EXPLANATION);
+                            MyApplication.googleLog.add(Boolean.toString(resultOK) + ": " + resultExplanation);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        MyApplication.googleLog.add(result);
                         loadingListener.loadingEnded();
                     }
                 },
@@ -65,7 +65,11 @@ public class GoogleAccessSet {
         loadingListener.loadingStarted();
     }
 
-    public String getResult() {
-        return result;
+    public String getResultExplanation() {
+        return resultExplanation;
+    }
+
+    public boolean isResultOK() {
+        return resultOK;
     }
 }

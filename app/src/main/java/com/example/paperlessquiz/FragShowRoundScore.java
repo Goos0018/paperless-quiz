@@ -38,10 +38,12 @@ public class FragShowRoundScore extends Fragment {
         quizStandingsCalculator.calculateScores();
         quizStandingsCalculator.calculateStandings();
         if (tvYourScoreForThisRnd !=null && callingActivity!=null) {
-            int yourScoreForThisRound = thisQuiz.getTeam(thisTeamNr).getResultAfterRound(callingActivity.getRound()).getScoreForThisRound();
-            int yourTotalScoreAftertHisRound = thisQuiz.getTeam(thisTeamNr).getResultAfterRound(callingActivity.getRound()).getTotalScoreAfterThisRound();
-            int yourRankForThisRound = thisQuiz.getTeam(thisTeamNr).getResultAfterRound(callingActivity.getRound()).getPosInStandingForThisRound();
-            int yourRankAfterThisRound = thisQuiz.getTeam(thisTeamNr).getResultAfterRound(callingActivity.getRound()).getPosInStandingAfterThisRound();
+            thisRoundNr= callingActivity.getRound();
+            thisTeamNr=callingActivity.getTeam();
+            int yourScoreForThisRound = thisQuiz.getTeam(thisTeamNr).getResultAfterRound(thisRoundNr).getScoreForThisRound();
+            int yourTotalScoreAftertHisRound = thisQuiz.getTeam(thisTeamNr).getResultAfterRound(thisRoundNr).getTotalScoreAfterThisRound();
+            int yourRankForThisRound = thisQuiz.getTeam(thisTeamNr).getResultAfterRound(thisRoundNr).getPosInStandingForThisRound();
+            int yourRankAfterThisRound = thisQuiz.getTeam(thisTeamNr).getResultAfterRound(thisRoundNr).getPosInStandingAfterThisRound();
             tvYourScoreForThisRnd.setText(Integer.toString(yourScoreForThisRound));
             tvYourScoreTotal.setText(Integer.toString(yourTotalScoreAftertHisRound));
             tvYourRankForThisRnd.setText(Integer.toString(yourRankForThisRound));
@@ -65,8 +67,8 @@ public class FragShowRoundScore extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         callingActivity=(HasShowRoundScore) context;
-        thisRoundNr= callingActivity.getRound();
-        thisTeamNr=callingActivity.getTeam();
+        //thisRoundNr= callingActivity.getRound();
+        //thisTeamNr=callingActivity.getTeam();
     }
 
     @Override

@@ -271,7 +271,7 @@ public class Quiz implements Serializable {
         }
         String scriptParams = GoogleAccess.PARAMNAME_DOC_ID + getListData().getSheetDocID() + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_SHEET + QuizGenerator.SHEET_TEAMS + GoogleAccess.PARAM_CONCATENATOR +
-                GoogleAccess.PARAMNAME_RECORDID + "1" + GoogleAccess.PARAM_CONCATENATOR +
+                GoogleAccess.PARAMNAME_RECORDID + GoogleAccess.PARAMVALUE_FIRST_ROUNDNR + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_FIELDNAME + QuizGenerator.LOGIN_ENTITY_NAME + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_NEWVALUES + tmp + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_SETDATA;
@@ -295,7 +295,7 @@ public class Quiz implements Serializable {
                 GoogleAccess.PARAMNAME_SHEET + QuizGenerator.SHEET_CORRECTIONS + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_RECORDID + getQuestion(roundNr, questionNr).getQuestionID() + GoogleAccess.PARAM_CONCATENATOR +
                 //We write score starting from the first team which should have id 1
-                GoogleAccess.PARAMNAME_FIELDNAME + GoogleAccess.PARAMVALUE_FIRST_TEAM_NR + GoogleAccess.PARAM_CONCATENATOR +
+                GoogleAccess.PARAMNAME_FIELDNAME + QuizGenerator.TEAMS_PREFIX + GoogleAccess.PARAMVALUE_FIRST_TEAM_NR + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_NEWVALUES + tmp + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_SETDATA;
         GoogleAccessSet submitScores = new GoogleAccessSet(context, scriptParams, getListData().getDebugLevel());
@@ -317,8 +317,7 @@ public class Quiz implements Serializable {
                 GoogleAccess.PARAMNAME_USERID + "Rupert" + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_SHEET + QuizGenerator.SHEET_CORRECTIONS + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_RECORDID + getQuestion(roundNr, 1).getQuestionID() + GoogleAccess.PARAM_CONCATENATOR +
-                //We write score starting from the first team which should have id 1
-                GoogleAccess.PARAMNAME_FIELDNAME + teamNr + GoogleAccess.PARAM_CONCATENATOR +
+                GoogleAccess.PARAMNAME_FIELDNAME + QuizGenerator.TEAMS_PREFIX + teamNr + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_NEWVALUES + tmp + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_SETDATA;
         GoogleAccessSet submitScores = new GoogleAccessSet(context, scriptParams, getListData().getDebugLevel());
@@ -339,8 +338,10 @@ public class Quiz implements Serializable {
         String scriptParams = GoogleAccess.PARAMNAME_DOC_ID + listData.getSheetDocID() + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_USERID + "Rupert" + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_ROUNDID + roundNr + GoogleAccess.PARAM_CONCATENATOR +
+                GoogleAccess.PARAMNAME_ROUND_PREFIX + QuizGenerator.ROUNDS_PREFIX + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_FIRSTQUESTION + getRound(roundNr).getQuestion(1).getQuestionID() + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_TEAMID + myLoginentity.getId() + GoogleAccess.PARAM_CONCATENATOR +
+                GoogleAccess.PARAMNAME_TEAM_PREFIX + QuizGenerator.TEAMS_PREFIX + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_ANSWERS + tmp + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_SUBMITANSWERS;
         GoogleAccessSet submitAnswers = new GoogleAccessSet(context, scriptParams, getListData().getDebugLevel());

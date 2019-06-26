@@ -1,5 +1,6 @@
 package com.example.paperlessquiz;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -20,7 +22,6 @@ import com.example.paperlessquiz.quiz.QuizLoader;
 import com.example.paperlessquiz.round.Round;
 
 //TODO: find method to hide the keyboard when spinner changes
-//TODO: refresh Scores fragment when round spinner changes
 public class C_ParticipantHome extends MyActivity implements LoadingActivity, FragSpinner.HasSpinner,
         FragRoundSpinner.HasRoundSpinner, FragShowRoundScore.HasShowRoundScore, FragExplainRoundStatus.HasExplainRoundStatus {
 
@@ -86,11 +87,15 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
         if (etAnswer.getVisibility() == View.VISIBLE) {
             thisQuiz.setAnswerForTeam(oldRoundNr, questionSpinner.getPosition(), thisTeamNr, etAnswer.getText().toString().trim());
         }
+
         //Set the value of the answer for the new question to what we already have
         //Move the QuestionSpinner to position 1 to make sure we have something at that position
         questionSpinner.moveToFirstPos();
         etAnswer.setText(thisQuiz.getAnswerForTeam(roundNr, 1, thisTeamNr).getTheAnswer());
-        //etAnswer.setImeOptions(EditorInfo.IME_ACTION_DONE);
+        //Dismiss the keyboard if its there
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(etAnswer.getWindowToken(), 0);
+        //etAnswer.onEditorAction(EditorInfo.IME_ACTION_DONE);
         refreshDisplayFragments();
         roundResultFrag.refresh();
     }

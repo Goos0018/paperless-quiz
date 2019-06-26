@@ -83,7 +83,6 @@ public class FragRoundSpinner extends Fragment {
         tvRoundName.setText(thisQuiz.getRound(position).getName());
         tvRoundDescription.setText(thisQuiz.getRound(position).getDescription());
         Round thisRound = thisQuiz.getRound(position);
-        //String thisLoginEntityType = thisQuiz.getMyLoginentity().getType();
         //Set the icon that shows the round status
         if (!thisRound.getAcceptsAnswers() && !thisRound.getAcceptsCorrections() && !thisRound.isCorrected()) {
             ivRoundStatusL.setImageResource(R.drawable.rnd_not_yet_open);

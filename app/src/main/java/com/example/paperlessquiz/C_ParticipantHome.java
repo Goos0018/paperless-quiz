@@ -15,8 +15,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.paperlessquiz.adapters.DisplayAnswersAdapter;
+import com.example.paperlessquiz.google.access.EventLogger;
 import com.example.paperlessquiz.google.access.LoadingActivity;
 import com.example.paperlessquiz.quiz.QuizLoader;
 import com.example.paperlessquiz.round.Round;
@@ -218,9 +220,11 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
         //getSupportFragmentManager().beginTransaction().replace(R.id.frQuestionSpinner, questionSpinner, qSpinnerTag).commit();
         setActionBarIcon();
         setActionBarTitle();
-        //Log that the user logged in
+        //Log that the user logged in and set LoggedIn to TRUE
         thisTeamNr = thisQuiz.getMyLoginentity().getId();
-        MyApplication.eventLogger.logEvent(thisQuiz.getMyLoginentity().getName(), "Logged in");
+        MyApplication.eventLogger.logEvent(thisQuiz.getMyLoginentity().getName(), EventLogger.LEVEL_INFO, "Logged in");
+        thisQuiz.setLoggedIn(C_ParticipantHome.this,thisTeamNr,true);
+        MyApplication.setLoggedIn(true);
         //Get all the stuff from the layout
         displayAnswersLayout = findViewById(R.id.llDisplay);
         editAnswerLayout = findViewById(R.id.llAnswers);
@@ -253,13 +257,28 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
 
     @Override
     protected void onPause() {
-        MyApplication.eventLogger.logEvent(thisQuiz.getMyLoginentity().getName(), "WARNING: Paused the app");
+        MyApplication.eventLogger.logEvent(thisQuiz.getMyLoginentity().getName(), EventLogger.LEVEL_WARNING,"WARNING: Paused the app");
+        thisQuiz.setLoggedIn(C_ParticipantHome.this,thisTeamNr,false);
+        MyApplication.setAppPaused(true);
         super.onPause();
     }
 
     @Override
     protected void onPostResume() {
         super.onPostResume();
-        MyApplication.eventLogger.logEvent(thisQuiz.getMyLoginentity().getName(), "WARNING: Resumed the app");
+        if (MyApplication.isAppPaused()) {
+            MyApplication.eventLogger.logEvent(thisQuiz.getMyLoginentity().getName(), EventLogger.LEVEL_WARNING, "WARNING: Resumed the app");
+            thisQuiz.setLoggedIn(C_ParticipantHome.this, thisTeamNr, true);
+            MyApplication.setAppPaused(false);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (true) {
+            Toast.makeText(this, "Back button is disabled", Toast.LENGTH_SHORT).show();
+        } else {
+            super.onBackPressed();
+        }
     }
 }

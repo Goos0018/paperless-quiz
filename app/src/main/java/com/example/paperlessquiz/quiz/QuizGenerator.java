@@ -25,6 +25,7 @@ public class QuizGenerator {
     //Headers for the Eventlog sheet
     public static final String EVENTLOG_TIME = "Date/Time";
     public static final String EVENTLOG_NAME = "Teamname";
+    public static final String EVENTLOG_LEVEL = "Level";
     public static final String EVENTLOG_MESSAGE = "Message";
 
     //Headers for the Organizers and Teams tabs of the Quiz sheet
@@ -187,7 +188,7 @@ public class QuizGenerator {
         String parameters = "sheetsToCreate=" + convertArrayListTo1DString(sheetsToCreate) + GoogleAccess.PARAM_CONCATENATOR +
                 "quizName=" + quizName + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_ACTION + "createQuizDoc";
-        googleAccessCreateQuiz = new GoogleAccessSet(context, parameters, debugLevel);
+        googleAccessCreateQuiz = new GoogleAccessSet(context, parameters);
         googleAccessCreateQuiz.setData(new LoadingListenerShowProgress(context, "Creating quiz", "Creating " + quizName, "Error", false));
         //The quizDocID for the quiz will be in the result property of the googleAccessCreateQuiz
     }
@@ -198,7 +199,7 @@ public class QuizGenerator {
                 GoogleAccess.PARAMNAME_SHEET + sheetName + GoogleAccess.PARAM_CONCATENATOR +
                 "headersToSet=" + convertArrayListTo2DString(headersToSet) + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_ACTION + "setHeaders";
-        GoogleAccessSet googleAccessSet = new GoogleAccessSet(context, parameters, debugLevel);
+        GoogleAccessSet googleAccessSet = new GoogleAccessSet(context, parameters);
         googleAccessSet.setData(new LoadingListenerNotify(context, "Rupert", "Setting headers for sheet " + sheetName));
     }
 
@@ -208,7 +209,7 @@ public class QuizGenerator {
                 GoogleAccess.PARAMNAME_SHEET + sheetName + GoogleAccess.PARAM_CONCATENATOR +
                 "dataToSet=" + convert2DArrayListToString(dataToSet) + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_ACTION + "initializeRows";
-        GoogleAccessSet googleAccessSet = new GoogleAccessSet(context, parameters, debugLevel);
+        GoogleAccessSet googleAccessSet = new GoogleAccessSet(context, parameters);
         googleAccessSet.setData(new LoadingListenerNotify(context, "Rupert", "Setting headers for sheet " + sheetName));
     }
 
@@ -299,7 +300,7 @@ public class QuizGenerator {
         for (int i = 1; i < nrOfTeams + 1; i++) {
             headersForAnswersTab.add(TEAMS_PREFIX + i);
         }
-        headersForEventLogTab = new ArrayList<>(Arrays.asList(EVENTLOG_TIME, EVENTLOG_NAME, EVENTLOG_MESSAGE));
+        headersForEventLogTab = new ArrayList<>(Arrays.asList(EVENTLOG_TIME, EVENTLOG_NAME, EVENTLOG_LEVEL,EVENTLOG_MESSAGE));
         headersForOrganizersTab = new ArrayList<>(Arrays.asList(LOGIN_ENTITY_ID, LOGIN_ENTITY_TYPE, LOGIN_ENTITY_NAME, LOGIN_ENTITY_PASSKEY));
         headersForQuestionsTab = new ArrayList<>(Arrays.asList(QUESTION_ID, ROUND_NR, QUESTION_NR, QUESTION_NAME, QUESTION_HINT, QUESTION_FULL, QUESTION_CORRECT_ANSWER, QUESTION_MAX_SCORE));
         headersForRoundsTab = new ArrayList<>(Arrays.asList(ROUND_NR, ROUND_NAME, ROUND_DESCRIPTION, ROUND_NR_OF_QUESTIONS, ROUND_ACCEPTS_ANSWERS, ROUND_ACCEPTS_CORRECTIONS, ROUND_IS_CORRECTED));

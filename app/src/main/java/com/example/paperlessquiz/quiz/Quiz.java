@@ -8,6 +8,7 @@ import com.example.paperlessquiz.answerslist.AnswersList;
 import com.example.paperlessquiz.google.access.GoogleAccess;
 import com.example.paperlessquiz.google.access.GoogleAccessSet;
 import com.example.paperlessquiz.google.access.LoadingListenerNotify;
+import com.example.paperlessquiz.google.access.LoadingListenerSilent;
 import com.example.paperlessquiz.loginentity.LoginEntity;
 import com.example.paperlessquiz.question.Question;
 import com.example.paperlessquiz.quizlistdata.QuizListData;
@@ -253,7 +254,7 @@ public class Quiz implements Serializable {
                 GoogleAccess.PARAMNAME_FIELDNAME + QuizGenerator.ROUND_NAME + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_NEWVALUES + tmp + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_SETDATA;
-        GoogleAccessSet submitRounds = new GoogleAccessSet(context, scriptParams, listData.getDebugLevel());
+        GoogleAccessSet submitRounds = new GoogleAccessSet(context, scriptParams);
         submitRounds.setData(new LoadingListenerNotify(context, getMyLoginentity().getName(),
                 "Submitting round updates"));
     }
@@ -275,11 +276,12 @@ public class Quiz implements Serializable {
                 GoogleAccess.PARAMNAME_FIELDNAME + QuizGenerator.LOGIN_ENTITY_NAME + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_NEWVALUES + tmp + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_SETDATA;
-        GoogleAccessSet googleAccessSet = new GoogleAccessSet(context, scriptParams, getListData().getDebugLevel());
+        GoogleAccessSet googleAccessSet = new GoogleAccessSet(context, scriptParams);
         googleAccessSet.setData(new LoadingListenerNotify(context, getMyLoginentity().getName(),
                 "Submitting team updates"));
     }
 
+    //Used by the Corrector to submit all corrections for a single question
     public void submitCorrectionsForQuestion(Context context, int roundNr, int questionNr) {
         ArrayList<Answer> answerList = getAllAnswersForQuestion(roundNr, questionNr);
         String tmp = "[[";
@@ -298,11 +300,12 @@ public class Quiz implements Serializable {
                 GoogleAccess.PARAMNAME_FIELDNAME + QuizGenerator.TEAMS_PREFIX + GoogleAccess.PARAMVALUE_FIRST_TEAM_NR + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_NEWVALUES + tmp + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_SETDATA;
-        GoogleAccessSet submitScores = new GoogleAccessSet(context, scriptParams, getListData().getDebugLevel());
+        GoogleAccessSet submitScores = new GoogleAccessSet(context, scriptParams);
         submitScores.setData(new LoadingListenerNotify(context, getMyLoginentity().getName(),
                 "Submitting scores for question " + getQuestion(roundNr, questionNr).getQuestionID()));
     }
 
+    //Used by the Corrector to submit all corrections for a single team
     public void submitCorrectionsForTeam(Context context, int roundNr, int teamNr) {
         ArrayList<Answer> answerList = getAnswersForRound(roundNr, teamNr);
         String tmp = "[";
@@ -320,11 +323,12 @@ public class Quiz implements Serializable {
                 GoogleAccess.PARAMNAME_FIELDNAME + QuizGenerator.TEAMS_PREFIX + teamNr + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_NEWVALUES + tmp + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_SETDATA;
-        GoogleAccessSet submitScores = new GoogleAccessSet(context, scriptParams, getListData().getDebugLevel());
+        GoogleAccessSet submitScores = new GoogleAccessSet(context, scriptParams);
         submitScores.setData(new LoadingListenerNotify(context, getMyLoginentity().getName(),
                 "Submitting scores for team " + getTeam(teamNr).getName()));
     }
 
+    //Used by the Participant to submit all answers for a single round
     public void submitAnswers(Context context, int roundNr) {
         ArrayList<Answer> answerList = getAnswersForRound(roundNr, getMyLoginentity().getId());
         String tmp = "[";
@@ -336,7 +340,7 @@ public class Quiz implements Serializable {
         }
         tmp = tmp + "]";
         String scriptParams = GoogleAccess.PARAMNAME_DOC_ID + listData.getSheetDocID() + GoogleAccess.PARAM_CONCATENATOR +
-                GoogleAccess.PARAMNAME_USERID + "Rupert" + GoogleAccess.PARAM_CONCATENATOR +
+                GoogleAccess.PARAMNAME_USERID + myLoginentity.getName() + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_ROUNDID + roundNr + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_ROUND_PREFIX + QuizGenerator.ROUNDS_PREFIX + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_FIRSTQUESTION + getRound(roundNr).getQuestion(1).getQuestionID() + GoogleAccess.PARAM_CONCATENATOR +
@@ -344,9 +348,24 @@ public class Quiz implements Serializable {
                 GoogleAccess.PARAMNAME_TEAM_PREFIX + QuizGenerator.TEAMS_PREFIX + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_ANSWERS + tmp + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_SUBMITANSWERS;
-        GoogleAccessSet submitAnswers = new GoogleAccessSet(context, scriptParams, getListData().getDebugLevel());
+        GoogleAccessSet submitAnswers = new GoogleAccessSet(context, scriptParams);
         submitAnswers.setData(new LoadingListenerNotify(context, myLoginentity.getName(),
                 "Submitting answers for round " + roundNr));
+    }
+
+
+    //Triggered in the onCreate of ParticipantHome - marks this team as Logged In
+    public void setLoggedIn(Context context, int teamNr, boolean isLoggedIn) {
+        String tmp = "[[" + isLoggedIn + "]]";
+        String scriptParams = GoogleAccess.PARAMNAME_DOC_ID + getListData().getSheetDocID() + GoogleAccess.PARAM_CONCATENATOR +
+                GoogleAccess.PARAMNAME_USERID + "Rupert" + GoogleAccess.PARAM_CONCATENATOR +
+                GoogleAccess.PARAMNAME_SHEET + QuizGenerator.SHEET_TEAMS + GoogleAccess.PARAM_CONCATENATOR +
+                GoogleAccess.PARAMNAME_RECORDID + teamNr + GoogleAccess.PARAM_CONCATENATOR +
+                GoogleAccess.PARAMNAME_FIELDNAME + QuizGenerator.TEAM_LOGGED_IN + GoogleAccess.PARAM_CONCATENATOR +
+                GoogleAccess.PARAMNAME_NEWVALUES + tmp + GoogleAccess.PARAM_CONCATENATOR +
+                GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_SETDATA;
+        GoogleAccessSet setLoggedIn = new GoogleAccessSet(context, scriptParams);
+        setLoggedIn.setData(new LoadingListenerSilent());
     }
 
 

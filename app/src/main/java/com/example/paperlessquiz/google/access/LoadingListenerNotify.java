@@ -22,7 +22,7 @@ public class LoadingListenerNotify implements LoadingListener {
     @Override
     public void loadingStarted() {
         Toast.makeText(context, startMessage, Toast.LENGTH_SHORT).show();
-        MyApplication.eventLogger.logEvent(userName,startMessage);
+        MyApplication.eventLogger.logEvent(userName,EventLogger.LEVEL_INFO,startMessage);
     }
 
     @Override

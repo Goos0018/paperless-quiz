@@ -62,7 +62,7 @@ public class FragSpinner extends Fragment {
                 moveUp();
             }
         });
-        //positionChanged();
+        positionChanged();
         return v;
     }
 

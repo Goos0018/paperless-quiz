@@ -20,17 +20,20 @@ public class GoogleAccess {
     public static final String PARAMNAME_ANSWERS = "answers=";
     public static final String PARAMNAME_TEAMID = "teamID=";
     public static final String PARAMNAME_FIRSTQUESTION = "FirstQuestion=";
+    public static final String PARAMNAME_ROUND_PREFIX = "roundPrefix=";
+    public static final String PARAMNAME_TEAM_PREFIX = "teamPrefix=";
+    public static final String PARAMNAME_RECORD_ID = "RecordID=";
+    public static final String PARAMNAME_KEEPLOGS = "keepLogs=";
     //Possible parameter values
     public static final String PARAMVALUE_GETDATA = "getdata";
     public static final String PARAMVALUE_SETDATA = "setdata";
     public static final String PARAMVALUE_SUBMITANSWERS = "submitAnswers";
     public static final String PARAMVALUE_ADDLINE = "addline";
     public static final String PARAMVALUE_FIRST_TEAM_NR = "1";
-
-    public static final String PARAMNAME_RECORD_ID = "RecordID=";
     public static final String PARAMVALUE_FIRST_ROUNDNR = "1";
-    public static final String PARAMNAME_ROUND_PREFIX = "roundPrefix";
-    public static final String PARAMNAME_TEAM_PREFIX = "teamPrefix";
+
+    //Fieldnames that are used by the SetData GScript to return result of the action
     public static final String GASET_FIELDNAME_RESULT = "result";
     public static final String GASET_FIELDNAME_RESULT_EXPLANATION = "explanation";
+
 }

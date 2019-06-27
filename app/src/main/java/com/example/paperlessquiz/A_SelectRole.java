@@ -102,6 +102,8 @@ public class A_SelectRole extends AppCompatActivity implements LoadingActivity {
         thisQuiz.setAllCorrectionsPerQuestion(quizLoader.quizCorrectionsLPL.getAllCorrectionsPerRound());    //this will work because the Quiz should have all questions for each round initialized
         thisQuiz.initializeResultsForTeams();
         thisQuiz.loadingCompleted = true; //So now we know we can update rounds, questions, ...
+        MyApplication.setDebugLevel(thisQuiz.getListData().getDebugLevel());
+        MyApplication.setKeepLogs(thisQuiz.getListData().isKeepLogs());
         intent = new Intent(A_SelectRole.this, B_LoginMain.class);
         //intent.putExtra(Quiz.INTENT_EXTRANAME_THIS_QUIZ, thisQuiz);
         intent.putExtra(LoginEntity.INTENT_EXTRA_NAME_THIS_LOGIN_TYPE, selection);

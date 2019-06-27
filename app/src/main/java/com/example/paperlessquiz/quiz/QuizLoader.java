@@ -86,7 +86,7 @@ public class QuizLoader {
     //Get extra data for the quiz
     public void loadExtradata() {
         String scriptParams = generateParams(QuizGenerator.SHEET_QUIZDATA);
-        GoogleAccessGet<QuizExtraData> googleAccessGetQuizExtraData = new GoogleAccessGet<QuizExtraData>(context, scriptParams, MyApplication.theQuiz.getListData().getDebugLevel());
+        GoogleAccessGet<QuizExtraData> googleAccessGetQuizExtraData = new GoogleAccessGet<QuizExtraData>(context, scriptParams);
         googleAccessGetQuizExtraData.getItems(new QuizExtraDataParser(), quizExtraDataLPL,
                 new LoadingListenerShowProgress(context, "Please wait", "Loading quiz data",
                         "Something went wrong: ", false));
@@ -95,7 +95,7 @@ public class QuizLoader {
     public void loadTeams() {
         //Get the list of participating teams
         String scriptParams = generateParams(QuizGenerator.SHEET_TEAMS);
-        GoogleAccessGet<LoginEntity> googleAccessGetTeams = new GoogleAccessGet<LoginEntity>(context, scriptParams, MyApplication.theQuiz.getListData().getDebugLevel());
+        GoogleAccessGet<LoginEntity> googleAccessGetTeams = new GoogleAccessGet<LoginEntity>(context, scriptParams);
         googleAccessGetTeams.getItems(new LoginEntityParser(), quizTeamsLPL,
                 new LoadingListenerShowProgress(context, "Please wait", "Updating quiz team info...",
                         "Something went wrong: ", false));
@@ -114,7 +114,7 @@ public class QuizLoader {
     public void loadOrganizers() {
         //Get the list of organizers
         String scriptParams = generateParams(QuizGenerator.SHEET_ORGANIZERS);
-        GoogleAccessGet<LoginEntity> googleAccessGetOrganizers = new GoogleAccessGet<LoginEntity>(context, scriptParams, MyApplication.theQuiz.getListData().getDebugLevel());
+        GoogleAccessGet<LoginEntity> googleAccessGetOrganizers = new GoogleAccessGet<LoginEntity>(context, scriptParams);
         googleAccessGetOrganizers.getItems(new LoginEntityParser(), quizOrganizersLPL,
                 new LoadingListenerShowProgress(context, "Please wait", "Loading quiz organizers...",
                         "Something went wrong: ", false));
@@ -133,7 +133,7 @@ public class QuizLoader {
     public void loadRounds() {
         //Get the rounds
         String scriptParams = generateParams(QuizGenerator.SHEET_ROUNDS);
-        GoogleAccessGet<Round> googleAccessGet = new GoogleAccessGet<Round>(context, scriptParams, MyApplication.theQuiz.getListData().getDebugLevel());
+        GoogleAccessGet<Round> googleAccessGet = new GoogleAccessGet<Round>(context, scriptParams);
         googleAccessGet.getItems(new RoundParser(), quizRoundsLPL,
                 new LoadingListenerShowProgress(context, "Please wait", "Updating rounds information",
                         "Something went wrong: ", false));
@@ -142,7 +142,7 @@ public class QuizLoader {
     public void loadQuestions() {
         //Get the list of questions
         String scriptParams = generateParams(QuizGenerator.SHEET_QUESTIONS);
-        GoogleAccessGet<Question> googleAccessGetQuestions = new GoogleAccessGet<Question>(context, scriptParams, MyApplication.theQuiz.getListData().getDebugLevel());
+        GoogleAccessGet<Question> googleAccessGetQuestions = new GoogleAccessGet<Question>(context, scriptParams);
         googleAccessGetQuestions.getItems(new QuestionParser(), quizQuestionsLPL,
                 new LoadingListenerShowProgress(context, "Please wait", "Loading questions",
                         "Something went wrong: ", false));
@@ -168,7 +168,7 @@ public class QuizLoader {
     public void loadAllAnswers() {
         //Get the list of ALL answers per question
         String scriptParams = generateParams(QuizGenerator.SHEET_ANSWERS);
-        GoogleAccessGet<AnswersList> googleAccessGetAnswers = new GoogleAccessGet<AnswersList>(context, scriptParams, MyApplication.theQuiz.getListData().getDebugLevel());
+        GoogleAccessGet<AnswersList> googleAccessGetAnswers = new GoogleAccessGet<AnswersList>(context, scriptParams);
         googleAccessGetAnswers.getItems(new AnswersListParser(), quizAnswersLPL,
                 new LoadingListenerShowProgress(context, "Please wait", "Loading other info",
                         "Something went wrong: ", false));
@@ -177,7 +177,7 @@ public class QuizLoader {
     public void loadAllCorrections() {
         //Get the list of ALL answers per question
         String scriptParams = generateParams(QuizGenerator.SHEET_CORRECTIONS);
-        GoogleAccessGet<CorrectionsList> googleAccessGetScores = new GoogleAccessGet<CorrectionsList>(context, scriptParams, MyApplication.theQuiz.getListData().getDebugLevel());
+        GoogleAccessGet<CorrectionsList> googleAccessGetScores = new GoogleAccessGet<CorrectionsList>(context, scriptParams);
         googleAccessGetScores.getItems(new CorrectionsListParser(), quizCorrectionsLPL,
                 new LoadingListenerShowProgress(context, "Please wait", "Loading corrections",
                         "Something went wrong: ", false));

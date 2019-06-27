@@ -23,6 +23,10 @@ public class MyApplication extends Application {
     public static String deviceID;                                  //Contains an ID of the device on which the app runs
     public static Quiz theQuiz;                                     //The quiz for which the app is being used
     public static ArrayList<String> googleLog = new ArrayList<>();  //An arraylist that will contain a log of all transactions to and from a Google sheet (=the back-end of this app)
+    public static boolean loggedIn;                                 //Tracks that user is logged in
+    public static boolean appPaused;                                //Tracks that app was paused
+    public static int debugLevel = 3;                               //Overall debug level, initialized here but later overwritten with what is configured for the Quiz
+    public static boolean keepLogs = true;                                 //Indicates if you want to overwrite logs of the GScript each time
 
     @Override
     public void onCreate() {
@@ -30,7 +34,7 @@ public class MyApplication extends Application {
         logDocID = "1A4CGyeZZk2LW-xvh_P1dyeufZhV0qpBgCIQdrNEIDgk";
         eventLogger = new EventLogger(this, logDocID, QuizGenerator.SHEET_EVENTLOG);
         deviceID = getUniquePsuedoID();
-        eventLogger.logEvent(deviceID, "Starting application");
+        //eventLogger.logEvent(deviceID, EventLogger.LEVEL_INFO,"Starting application");
         theQuiz=new Quiz();
         //Make sure the app always runs in portrait mode TODO: make landscape for tablet
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
@@ -102,5 +106,37 @@ public class MyApplication extends Application {
         // https://stackoverflow.com/a/2853253/950427
         // Finally, combine the values we have found by using the UUID class to create a unique identifier
         return new UUID(m_szDevIDShort.hashCode(), serial.hashCode()).toString();
+    }
+
+    public static boolean isLoggedIn() {
+        return loggedIn;
+    }
+
+    public static void setLoggedIn(boolean loggedIn) {
+        MyApplication.loggedIn = loggedIn;
+    }
+
+    public static boolean isAppPaused() {
+        return appPaused;
+    }
+
+    public static void setAppPaused(boolean appPaused) {
+        MyApplication.appPaused = appPaused;
+    }
+
+    public static int getDebugLevel() {
+        return debugLevel;
+    }
+
+    public static void setDebugLevel(int debugLevel) {
+        MyApplication.debugLevel = debugLevel;
+    }
+
+    public static boolean isKeepLogs() {
+        return keepLogs;
+    }
+
+    public static void setKeepLogs(boolean keepLogs) {
+        MyApplication.keepLogs = keepLogs;
     }
 }

@@ -10,6 +10,7 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.paperlessquiz.MyApplication;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,17 +27,18 @@ public class GoogleAccessGet<T> {
     private String parameters;
     int debugLevel;
 
-    public GoogleAccessGet(Context context, String parameters,int debugLevel) {
+    public GoogleAccessGet(Context context, String parameters) {
         this.context = context;
         this.parameters = parameters;
-        this.debugLevel=debugLevel;
+        //this.debugLevel=debugLevel;
     }
 
     //For each type of object/specific use, you need to create an implementation of JsonParser and ListParsedListener
     public void getItems(JsonParser<T> parser, final ListParsedListener<T> listParsedListener, LoadingListener loadingListener) {
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, GoogleAccess.SCRIPT_URL+parameters +
-                GoogleAccess.PARAM_CONCATENATOR + GoogleAccess.PARAMNAME_DEBUGLEVEL + debugLevel,
+                GoogleAccess.PARAM_CONCATENATOR + GoogleAccess.PARAMNAME_DEBUGLEVEL + MyApplication.getDebugLevel()
+                + GoogleAccess.PARAM_CONCATENATOR + GoogleAccess.PARAMNAME_KEEPLOGS + MyApplication.isKeepLogs(),
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {

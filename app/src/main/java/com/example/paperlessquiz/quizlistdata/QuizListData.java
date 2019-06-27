@@ -23,12 +23,14 @@ public class QuizListData implements Serializable {
         this.logoURL = "";
     }
 
-    public QuizListData(String name, String description, String sheetDocID, String logoURL,int debugLevel,boolean clearLogs) {
+    public QuizListData(String name, String description, String sheetDocID, String logoURL,int debugLevel,boolean keepLogs) {
         //this.id = id;
         this.name = name;
         this.description = description;
         this.sheetDocID = sheetDocID;
         this.logoURL = logoURL;
+        this.debugLevel=debugLevel;
+        this.keepLogs=keepLogs;
     }
 
     /*

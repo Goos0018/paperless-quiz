@@ -1,6 +1,7 @@
 package com.example.paperlessquiz.google.access;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -22,16 +23,17 @@ public class GoogleAccessSet {
     private boolean resultOK;             //indicates whether the results was OK or not
     int debugLevel;
 
-    public GoogleAccessSet(Context context, String parameters, int debugLevel) {
+    public GoogleAccessSet(Context context, String parameters) {
         this.context = context;
         this.parameters = parameters;
-        this.debugLevel = debugLevel;
+        //this.debugLevel = debugLevel;
     }
 
     //This method will add a line at the bottom of the sheet that was passed via parameters, using the other fields that were given
     public void setData(LoadingListener loadingListener) {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, GoogleAccess.SCRIPT_URL + parameters
-                + GoogleAccess.PARAM_CONCATENATOR + GoogleAccess.PARAMNAME_DEBUGLEVEL + debugLevel,
+                + GoogleAccess.PARAM_CONCATENATOR + GoogleAccess.PARAMNAME_DEBUGLEVEL + MyApplication.getDebugLevel()
+                + GoogleAccess.PARAM_CONCATENATOR + GoogleAccess.PARAMNAME_KEEPLOGS + MyApplication.isKeepLogs(),
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -40,6 +42,9 @@ public class GoogleAccessSet {
                             resultOK = jo.getBoolean(GoogleAccess.GASET_FIELDNAME_RESULT);
                             resultExplanation = jo.getString(GoogleAccess.GASET_FIELDNAME_RESULT_EXPLANATION);
                             MyApplication.googleLog.add(Boolean.toString(resultOK) + ": " + resultExplanation);
+                            if (!resultOK){
+                                Toast.makeText(context, "Error: " + resultExplanation, Toast.LENGTH_LONG).show();
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

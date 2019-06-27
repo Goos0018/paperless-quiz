@@ -1,6 +1,8 @@
 package com.example.paperlessquiz.google.access;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -43,7 +45,12 @@ public class GoogleAccessSet {
                             resultExplanation = jo.getString(GoogleAccess.GASET_FIELDNAME_RESULT_EXPLANATION);
                             MyApplication.googleLog.add(Boolean.toString(resultOK) + ": " + resultExplanation);
                             if (!resultOK){
-                                Toast.makeText(context, "Error: " + resultExplanation, Toast.LENGTH_LONG).show();
+                                Toast toast = Toast.makeText(context, "Error: " + resultExplanation, Toast.LENGTH_LONG);
+                                TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                                v.setBackgroundColor(Color.RED);
+                                toast.show();
+                                //toast.getView().setBackgroundColor(Color.RED)
+                                //Toast.makeText(context, "Error: " + resultExplanation, Toast.LENGTH_LONG).getView().setBackgroundColor(Color.RED).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

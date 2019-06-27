@@ -80,7 +80,7 @@ public class QuizGenerator {
 
 
     //Other static stuff
-    public static final String SEPARATOR_ROUND_QUESTION = ". ";
+    public static final String SEPARATOR_ROUND_QUESTION = ".";
     public static final String QUESTION_STRING = "Vraag ";
     public static final String ROUND_STRING = "Ronde ";
     public static final String SELECTION_PARTICIPANT = "Participant";

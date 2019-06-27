@@ -277,6 +277,7 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
     public void onBackPressed() {
         if (true) {
             Toast.makeText(this, "Back button is disabled", Toast.LENGTH_SHORT).show();
+            super.onBackPressed();
         } else {
             super.onBackPressed();
         }

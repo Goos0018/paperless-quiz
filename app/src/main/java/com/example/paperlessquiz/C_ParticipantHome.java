@@ -1,6 +1,7 @@
 package com.example.paperlessquiz;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
@@ -195,6 +196,10 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
                 quizLoader.loadAllCorrections();
                 roundResultFrag.refresh();
                 break;
+
+            case R.id.help:
+                Intent intentDisplayPDF = new Intent(C_ParticipantHome.this, DisplayPDF.class);
+                startActivity(intentDisplayPDF);
         }
         return super.onOptionsItemSelected(item);
     }

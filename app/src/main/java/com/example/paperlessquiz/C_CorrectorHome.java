@@ -260,6 +260,7 @@ public class C_CorrectorHome extends MyActivity implements LoadingActivity, Frag
         //OnRoundChange and onSpinnerChanged are called by the respective fragments
     }
 
+    /*
     protected void toggleFragments(int placeHolderID, Fragment fragToShow, Fragment fragToHide1, Fragment fragToHide2) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         if (fragToShow.isAdded()) { // if the fragment is already in container
@@ -278,4 +279,6 @@ public class C_CorrectorHome extends MyActivity implements LoadingActivity, Frag
         // Commit changes
         ft.commit();
     }
+    */
+
 }

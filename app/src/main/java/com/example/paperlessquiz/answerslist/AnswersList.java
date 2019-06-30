@@ -29,6 +29,8 @@ public class AnswersList implements Serializable {
         this.allAnswers = allAnswers;
     }
 
+
+
     public int getRoundNr() {
         return roundNr;
     }

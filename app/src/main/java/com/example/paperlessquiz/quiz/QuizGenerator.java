@@ -65,6 +65,7 @@ public class QuizGenerator {
     public static final String QUIZ_LOGO_URL = "QuizLogoURL";
     public static final String QUIZ_DEBUGLEVEL = "DebugLevel";
     public static final String QUIZ_KEEPLOGS = "KeepLogs";
+    public static final String QUIZ_APPDEBUGLEVEL = "AppDebugLevel";
 
     //Names of the different mandatory tabs in a Quiz sheet
     public static final String SHEET_ANSWERS = "Answers";
@@ -105,8 +106,9 @@ public class QuizGenerator {
     //This is what we need to generate all mandatory tabs - these data are entered in the activity X_GenerateQuiz
     public String quizDocID; //Initialized when sheet is created
     public String quizName, quizDescription, quizLogoURL;
-    public int quizDebugLevel = 10;
-    public boolean quizKeepLogs;
+    public int quizDebugLevelDefault = 0;
+    public int quizAppDebugLevelDefault = 0;
+    public boolean quizKeepLogsDefault = false;
     private int standardScore = 2;
     private int nrOfRounds;
     private ArrayList<Integer> roundNrOfQuestions;
@@ -173,11 +175,9 @@ public class QuizGenerator {
     public void initializeAllSheets() {
         initializeRows(SHEET_ANSWERS, stdContentForAnswersTab);
         initializeRows(SHEET_CORRECTIONS, stdContentForAnswersTab);
-        //initializeRows(SHEET_EVENTLOG, headersForEventLogTab);
         initializeRows(SHEET_ORGANIZERS, stdContentForOrganizersTab);
         initializeRows(SHEET_QUESTIONS, stdContentForQuestionsTab);
         initializeRows(SHEET_ROUNDS, stdContentForRoundsTab);
-        //initializeRows(SHEET_SCORES, headersForScoresTab);
         initializeRows(SHEET_TEAMS, stdContentForTeamsTab);
         initializeRows(SHEET_QUIZLISTDATA, stdContentForQuizListDataTab);
     }
@@ -295,7 +295,7 @@ public class QuizGenerator {
         this.quizDescription = quizDescription;
         this.quizLogoURL = "";
         allTabs = new ArrayList<>(Arrays.asList(SHEET_QUIZLISTDATA, SHEET_TEAMS, SHEET_ORGANIZERS, SHEET_ROUNDS, SHEET_QUESTIONS, SHEET_ANSWERS, SHEET_CORRECTIONS, SHEET_SCORES, SHEET_EVENTLOG));
-        headersForQuizListDataTab = new ArrayList<>(Arrays.asList(QUIZ_NAME, QUIZ_DESCRIPTION, QUIZ_SHEET_DOC_ID, QUIZ_LOGO_URL, QUIZ_DEBUGLEVEL, QUIZ_KEEPLOGS));
+        headersForQuizListDataTab = new ArrayList<>(Arrays.asList(QUIZ_NAME, QUIZ_DESCRIPTION, QUIZ_SHEET_DOC_ID, QUIZ_LOGO_URL, QUIZ_DEBUGLEVEL, QUIZ_KEEPLOGS,QUIZ_APPDEBUGLEVEL));
         headersForAnswersTab = new ArrayList<>(Arrays.asList(QUESTION_ID, ROUND_NR, QUESTION_NR));
         for (int i = 1; i < nrOfTeams + 1; i++) {
             headersForAnswersTab.add(TEAMS_PREFIX + i);
@@ -353,7 +353,7 @@ public class QuizGenerator {
             stdContentForTeamsTab.add(new ArrayList<>(Arrays.asList("" + teamnr, TYPE_PARTICIPANT, TEAM_STRING + teamnr, generatePIN(nrOfDigitsForParticipantPIN))));
         }
         //stdContentForQuizListDataTab => This can only be set when teh docID has been generated
-        //stdContentForQuizListDataTab.add(new ArrayList<>(Arrays.asList(quizName, quizDescription, quizDocID, quizLogoURL, Integer.toString(quizDebugLevel), Boolean.toString(quizKeepLogs))));
+        //stdContentForQuizListDataTab.add(new ArrayList<>(Arrays.asList(quizName, quizDescription, quizDocID, quizLogoURL, Integer.toString(quizDebugLevelDefault), Boolean.toString(quizKeepLogsDefault))));
     }
 
     public void setQuizDocID(String quizDocID) {

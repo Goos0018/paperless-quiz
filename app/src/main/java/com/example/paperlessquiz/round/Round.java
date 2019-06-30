@@ -45,6 +45,7 @@ public class Round implements Serializable, SpinnerData {
         this.corrected = corrected;
     }
 
+    //Used to update a rounds object from info retrieved from the Rounds sheet
     public void UpdateRoundBasics(Round rnd) {
         this.roundNr = rnd.getRoundNr();
         this.name = rnd.getName();

@@ -14,6 +14,7 @@ public class QuizListData implements Serializable {
     private String logoURL;
     private int debugLevel;
     private boolean keepLogs;
+    private int appDebugLevel;
 
     public QuizListData() {
         //this.id = "";
@@ -23,7 +24,7 @@ public class QuizListData implements Serializable {
         this.logoURL = "";
     }
 
-    public QuizListData(String name, String description, String sheetDocID, String logoURL,int debugLevel,boolean keepLogs) {
+    public QuizListData(String name, String description, String sheetDocID, String logoURL,int debugLevel,boolean keepLogs,int appDebugLevel) {
         //this.id = id;
         this.name = name;
         this.description = description;
@@ -31,6 +32,7 @@ public class QuizListData implements Serializable {
         this.logoURL = logoURL;
         this.debugLevel=debugLevel;
         this.keepLogs=keepLogs;
+        this.appDebugLevel=appDebugLevel;
     }
 
     /*
@@ -74,5 +76,9 @@ public class QuizListData implements Serializable {
 
     public void setNrOfRounds(int nrOfRounds) {
         this.nrOfRounds = nrOfRounds;
+    }
+
+    public int getAppDebugLevel() {
+        return appDebugLevel;
     }
 }

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 /**
  * This LPL receives an array of Questions (one for each question in the entire Quiz)
- * We structure them here per round in the allQuestionsPerRound variable.
+ * We structure them here per round in the allQuestionsPerRound variable. We do not load them in the Quiz object, loading questions should be done only once, when the app starts
  */
 public class GetQuestionsLPL implements ListParsedListener<Question> {
 

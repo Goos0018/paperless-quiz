@@ -24,16 +24,17 @@ public class GetRoundsLPL implements ListParsedListener<Round> {
 
     public void listParsed(List<Round> list) {
         //rounds is the list of rounds with only the information from the Rounds sheet
-        //we copy the information here to the central Quiz object
+        //we copy the information here to the central Quiz object if the quiz was loaded completely
         rounds = (ArrayList) list;
-        for (int i = 0; i < rounds.size(); i++) {
-            Round rnd = list.get(i);
-            int rndNr = rnd.getRoundNr();
-            //Update MyApplication.theQuiz with the new info
-            if (rndNr <= MyApplication.theQuiz.getRounds().size()) {
+        if (MyApplication.theQuiz.loadingCompleted) {
+            for (int i = 0; i < rounds.size(); i++) {
+                Round rnd = list.get(i);
+                int rndNr = rnd.getRoundNr();
+                //Update MyApplication.theQuiz with the new info
+                //if (rndNr <= MyApplication.theQuiz.getRounds().size()) {
                 MyApplication.theQuiz.getRound(rndNr).UpdateRoundBasics(rnd);
-            }
-            else{
+                //} else {
+                //}
             }
         }
     }

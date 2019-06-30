@@ -3,6 +3,8 @@ package com.example.paperlessquiz;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -57,4 +59,24 @@ public class MyActivity extends AppCompatActivity {
         actionBar.setTitle(thisQuiz.getMyLoginentity().getName());
     }
 
+
+    //Show one frag and hide two other - used for toggling a holder that can host max three different frags
+    protected void toggleFragments(int placeHolderID, Fragment fragToShow, Fragment fragToHide1, Fragment fragToHide2) {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        if (fragToShow.isAdded()) { // if the fragment is already in container
+            ft.show(fragToShow);
+        } else { // fragment needs to be added to frame container
+            ft.add(placeHolderID, fragToShow);
+            ft.show(fragToShow);
+        }
+        // Hide other fragments
+        if (fragToHide1.isAdded()) {
+            ft.hide(fragToHide1);
+        }
+        if (fragToHide2.isAdded()) {
+            ft.hide(fragToHide2);
+        }
+        // Commit changes
+        ft.commit();
+    }
 }

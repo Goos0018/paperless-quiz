@@ -24,19 +24,15 @@ public class GetLoginEntriesLPL implements ListParsedListener<LoginEntity> {
     public void listParsed(List<LoginEntity> list) {
         loginEntities = (ArrayList) list;
         //We want to update MyApplication.theQuiz.getTeam(teamNr), but only if that team already exists and it is a Team
-        if (loginEntities.get(0).getType().equals(QuizGenerator.SELECTION_PARTICIPANT)){
+        if ((loginEntities.get(0).getType().equals(QuizGenerator.SELECTION_PARTICIPANT)) && MyApplication.theQuiz.loadingCompleted) {
             for (int i = 0; i < loginEntities.size(); i++) {
                 LoginEntity team = list.get(i);
                 int teamNr = team.getId();
                 if (teamNr <= MyApplication.theQuiz.getTeams().size()) {
                     MyApplication.theQuiz.getTeam(teamNr).updateTeamBasics(team);
+                } else {
                 }
-                else{
-
-                }
-
             }
-
         }
 
     }

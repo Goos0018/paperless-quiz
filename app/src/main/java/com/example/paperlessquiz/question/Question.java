@@ -25,11 +25,7 @@ public class Question implements Serializable {
     private int maxScore;
     private boolean allAnswersCorrected;
 
-    public void updateAllAnswersCorrected(){
-        for (int i = 0; i < allAnswers.size(); i++) {
-            allAnswersCorrected=allAnswersCorrected && allAnswers.get(i).isCorrect();
-        }
-    }
+
 
     public Question() {
         this.questionID = "";
@@ -54,7 +50,6 @@ public class Question implements Serializable {
         this.question = question;
         this.correctAnswer = correctAnswer;
         this.maxScore = maxScore;
-        //this.allAnswers=new ArrayList<>();
     }
 
     public void setName(String name) {
@@ -93,17 +88,36 @@ public class Question implements Serializable {
         return correctAnswer;
     }
 
+    /*
     public void setCorrectAnswer(String correctAnswer) {
         this.correctAnswer = correctAnswer;
     }
+    public void setMaxScore(int maxScore) {
+        this.maxScore = maxScore;
+    }
+    public void setQuestionID(String questionID) {
+        this.questionID = questionID;
+    }
+
+
+    public boolean isAllAnswersCorrected() {
+        return allAnswersCorrected;
+    }
+
+    public void setAllAnswersCorrected(boolean allAnswersCorrected) {
+        this.allAnswersCorrected = allAnswersCorrected;
+    }
+     public void updateAllAnswersCorrected(){
+        for (int i = 0; i < allAnswers.size(); i++) {
+            allAnswersCorrected=allAnswersCorrected && allAnswers.get(i).isCorrect();
+        }
+    }
+*/
 
     public int getMaxScore() {
         return maxScore;
     }
 
-    public void setMaxScore(int maxScore) {
-        this.maxScore = maxScore;
-    }
 
 
     public String getHint() {
@@ -118,9 +132,7 @@ public class Question implements Serializable {
         return questionID;
     }
 
-    public void setQuestionID(String questionID) {
-        this.questionID = questionID;
-    }
+
 
     public ArrayList<Answer> getAllAnswers() {
        return allAnswers;
@@ -130,6 +142,14 @@ public class Question implements Serializable {
         this.allAnswers = allAnswers;
    }
 
+    //Given a list of answers (loaded from the Google sheet, update only the theAnswer String without changing the isCorrect and isCorrected boolean
+    public void updateAllAnswers(ArrayList<Answer> allAnswers) {
+        for (int i = 0; i < allAnswers.size(); i++) {
+            this.allAnswers.get(i).setTheAnswer(allAnswers.get(i).getTheAnswer());
+        }
+    }
+
+
     public Answer getAnswerForTeam(int teamNr){
         return allAnswers.get(teamNr-1);
     }
@@ -138,12 +158,5 @@ public class Question implements Serializable {
     }
 
 
-    public boolean isAllAnswersCorrected() {
-        return allAnswersCorrected;
-    }
-
-    public void setAllAnswersCorrected(boolean allAnswersCorrected) {
-        this.allAnswersCorrected = allAnswersCorrected;
-    }
 
 }

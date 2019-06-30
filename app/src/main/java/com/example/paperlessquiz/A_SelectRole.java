@@ -90,23 +90,20 @@ public class A_SelectRole extends AppCompatActivity implements LoadingActivity {
     public void commonActions(String selection) {
         //if we are here, all loading actions should be finished, so we can set the result in the central Quiz object and make sure this is properly initialized
         //TODO: put this as a method of the QuizLoader class
-        //thisQuiz.setListData(thisQuizListData); //=> Already done in the main activity
-        thisQuiz.setTeams(quizLoader.quizTeamsLPL.getLoginEntities());
-        //thisQuiz.getAdditionalData().setNrOfParticipants(thisQuiz.getTeams().size());
-        thisQuiz.setOrganizers(quizLoader.quizOrganizersLPL.getLoginEntities());
-        thisQuiz.setRounds(quizLoader.quizRoundsLPL.getRounds()); //=> not necessary, always done inside the LPL when retrieving rounds info
-        //thisQuiz.getAdditionalData().setNrOfRounds(thisQuiz.getRounds().size());
-        //thisQuiz.setAllScoresPerTeam();=> not necessary, done in the LPL
-        thisQuiz.setAllQuestionsPerRound(quizLoader.quizQuestionsLPL.getAllQuestionsPerRound()); //this will work because the Quiz should have all rounds initialized
-        thisQuiz.setAllAnswersPerQuestion(quizLoader.quizAnswersLPL.getAllAnswersPerRound());    //this will work because the Quiz should have all questions for each round initialized
-        thisQuiz.setAllCorrectionsPerQuestion(quizLoader.quizCorrectionsLPL.getAllCorrectionsPerRound());    //this will work because the Quiz should have all questions for each round initialized
-        thisQuiz.initializeResultsForTeams();
-        thisQuiz.loadingCompleted = true; //So now we know we can update rounds, questions, ...
+        //thisQuiz.setListData(thisQuizListData);                                                           //=> Already done in the main activity - is done only once
+        thisQuiz.setTeams(quizLoader.quizTeamsLPL.getLoginEntities());                                      //=> Set the teams here, LPL will update them on subsequent loads
+        thisQuiz.setOrganizers(quizLoader.quizOrganizersLPL.getLoginEntities());                            //=> Not in LPL, only done once
+        thisQuiz.setRounds(quizLoader.quizRoundsLPL.getRounds());                                           //=> Set the rounds here, LPL will update them on subsequent loads
+        thisQuiz.setAllQuestionsPerRound(quizLoader.quizQuestionsLPL.getAllQuestionsPerRound());            //=> Rounds exist now. Questions are only loaded here.
+        thisQuiz.setAllAnswersPerQuestion(quizLoader.quizAnswersLPL.getAllAnswersPerRound());               //=> Questions exist now. LPL will update the answer strings on subsequent loads.
+        thisQuiz.setAllCorrectionsPerQuestion(quizLoader.quizCorrectionsLPL.getAllCorrectionsPerRound());   //=> Questions exist now. LPL will update the answer booleans on subsequent loads.
+        thisQuiz.initializeResultsForTeams();                                                               //=> Initialize this simply. Calculation done based on corrections.
+        thisQuiz.loadingCompleted = true;                                                                   //=> Log this so the LPL's know it
         MyApplication.setDebugLevel(thisQuiz.getListData().getDebugLevel());
         MyApplication.setKeepLogs(thisQuiz.getListData().isKeepLogs());
+        MyApplication.setAppDebugLevel(thisQuiz.getListData().getAppDebugLevel());
         intent = new Intent(A_SelectRole.this, B_LoginMain.class);
-        //intent.putExtra(Quiz.INTENT_EXTRANAME_THIS_QUIZ, thisQuiz);
-        intent.putExtra(LoginEntity.INTENT_EXTRA_NAME_THIS_LOGIN_TYPE, selection);
+        intent.putExtra(LoginEntity.INTENT_EXTRA_NAME_THIS_LOGIN_TYPE, selection);      //Proceed to login and pass if this is a Team or an Organizer
         startActivity(intent);
     }
 

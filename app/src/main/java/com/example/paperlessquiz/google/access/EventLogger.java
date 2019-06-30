@@ -8,7 +8,8 @@ import java.util.Date;
 
 public class EventLogger {
 
-    public static final int LEVEL_INFO = 5;
+    public static final int LEVEL_DEBUG = 5;
+    public static final int LEVEL_INFO = 3;
     public static final int LEVEL_WARNING = 1;
     public static final int LEVEL_ERROR = 0;
     public static final int LEVEL_ALWAYS = -1;
@@ -25,7 +26,7 @@ public class EventLogger {
 
     public void logEvent(String team, int level, String message) {
         try {
-            if (MyApplication.theQuiz.getListData().getDebugLevel() < level) {
+            if (MyApplication.theQuiz.getListData().getAppDebugLevel() < level) {
             } else {
                 String strToday = new Date().toString();
                 String strLevel;
@@ -41,6 +42,9 @@ public class EventLogger {
                         break;
                     case LEVEL_WARNING:
                         strLevel = "WARNING";
+                        break;
+                    case LEVEL_DEBUG:
+                        strLevel = "DEBUG";
                         break;
                     default:
                         strLevel = "DEFAULT";

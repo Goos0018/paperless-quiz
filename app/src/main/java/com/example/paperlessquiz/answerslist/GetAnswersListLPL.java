@@ -1,13 +1,14 @@
 package com.example.paperlessquiz.answerslist;
 
+import com.example.paperlessquiz.MyApplication;
 import com.example.paperlessquiz.google.access.ListParsedListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This LPL receives an array of Answerslists (one for each question in the entire Quiz)
- * We structure them here per round in the allAnswersPerRound variable.
+ * This LPL receives an array of Answerslists (one for each question in the entire Quiz). Each answerslist contains the answers to a specific question of all teams.
+ * We structure them here per round in the allAnswersPerRound variable. If the quiz was loaded already, we update just the answer strings.
  */
 public class GetAnswersListLPL implements ListParsedListener<AnswersList> {
 
@@ -42,6 +43,10 @@ public class GetAnswersListLPL implements ListParsedListener<AnswersList> {
             //Now we are sure that this will work
             allAnswersPerRound.get(rndNr -1).set(qNr-1,answersList);
         }
+        if (MyApplication.theQuiz.loadingCompleted){
+            MyApplication.theQuiz.updateAllAnswersPerQuestion(allAnswersPerRound);
+        }
     }
+
 
 }

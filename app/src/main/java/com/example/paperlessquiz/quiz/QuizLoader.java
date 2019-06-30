@@ -84,13 +84,15 @@ public class QuizLoader {
     }
 
     //Get extra data for the quiz
+    /*
     public void loadExtradata() {
         String scriptParams = generateParams(QuizGenerator.SHEET_QUIZDATA);
         GoogleAccessGet<QuizExtraData> googleAccessGetQuizExtraData = new GoogleAccessGet<QuizExtraData>(context, scriptParams);
         googleAccessGetQuizExtraData.getItems(new QuizExtraDataParser(), quizExtraDataLPL,
-                new LoadingListenerShowProgress(context, "Please wait", "Loading quiz data",
+                new LoadingListenerShowProgress(context, "Please wait", "Loading quiz ...",
                         "Something went wrong: ", false));
     }
+    */
 
     public void loadTeams() {
         //Get the list of participating teams

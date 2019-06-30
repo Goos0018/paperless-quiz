@@ -92,11 +92,13 @@ public class LoginEntity implements Serializable {
         return this.answerForRndsSubmitted.get(roundNr - 1).booleanValue();
     }
 
+    //This function is used to update existing teams from data that is loaded from the Google sheet
     public void updateTeamBasics(LoginEntity team) {
         if (team.getType().equals(QuizGenerator.SELECTION_PARTICIPANT)) {
             setPresent(team.isPresent());
             setLoggedIn(team.isLoggedIn());
             setAnswerForRndsSubmitted(team.getAnswerForRndsSubmitted());
+            setName(team.getName());
         }
     }
 

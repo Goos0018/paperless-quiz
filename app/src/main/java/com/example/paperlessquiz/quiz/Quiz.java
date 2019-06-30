@@ -17,6 +17,23 @@ import com.example.paperlessquiz.round.Round;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ * This class contains all data we need for a quiz:
+ * - Arrylists of teams, rounds and organizers
+ * - Organizers are simply used to do things like open and lcose roudns, correct rounds, ... .
+ * - Each Round object contains status information for that round (corrected, closed, ...), and most importantly, a list of questions for that round.
+ * - Each question contains some general information about that question (for example, the correct answer), but also an arraylist of al answers that were given.
+ *      Here, answer(i) is the answer from the team with teamnumber i, and the Asnwer object not only contains the String that is the answser,
+ *      but also an indication whether it is corrected, and if the answer is correct or not.
+ *  - Each Team (LoginEntity)finally, has two arraylists, where each memeber cooresponds to a round:
+ *      * An indication whether or not answers were subnmitted for this round
+ *      * A RoundResults object, that contains the score for this round, the total score until this round, and the position of this team in the standings for the round and in ttoal after the round
+ *
+ * A Quiz is created by loading it from a Google sheet that contains various sheets. The QuizLoader object is responsible for loading al data.
+ * When the quiz is initially loaded, we properly initiliaze the central quiz object that is part of the MyApplication class.
+ * After that, the loader automatically updates the quiz object.
+ */
+
 public class Quiz implements Serializable {
     public static final int TARGET_WIDTH = 200;
     public static final int TARGET_HEIGHT = 200;
@@ -27,64 +44,19 @@ public class Quiz implements Serializable {
     private ArrayList<LoginEntity> organizers;
     private ArrayList<Round> rounds;
     private LoginEntity myLoginentity;
-    //public QuizLoader loader;
     public boolean loadingCompleted = false;
-    //public ArrayList<ArrayList<Integer>> totalScoreAfterEachRoundPerTeam;
+
 
     //We only need an empty constructor, the QuizLoader class will populate all fields of the quiz
     public Quiz() {
         this.listData = new QuizListData();
-        //this.additionalData = new QuizExtraData();
         this.teams = new ArrayList<>();
         this.organizers = new ArrayList<>();
         this.rounds = new ArrayList<>();
-        //this.totalScoreAfterEachRoundPerTeam = new ArrayList<>();
-        //this.allScoresPerTeam = new ArrayList<>();
-        //for (int i = 0; i < this.additionalData.getNrOfRounds(); i++) {
-        //    rounds.add(i, new Round());
-        //}
     }
 
 
-    /*
-        public void setTotalScoreAfterRound(int teamNr, int roundNr,int score){
-            totalScoreAfterEachRoundPerTeam.get(teamNr-1).set(roundNr - 1, new Integer(score));
-        }
-
-            //Get the total score for team after round roundNr
-    public int getTotalScoreForTeam(int teamId, int roundNr) {
-        return totalScoreAfterEachRoundPerTeam.get(teamId - 1).get(roundNr - 1);
-    }
-
-    //Get round score for team
-    public int getRoundScoreForTeam(int teamId, int roundId) {
-        return allScoresPerTeam.get(teamId - 1).getScorePerRoundForTeam().get(roundId - 1);
-    }
-
-    //Set round score for team
-    public void setRoundScoreForTeam(int teamId, int roundNr, int score) {
-        allScoresPerTeam.get(teamId - 1).setScoreForRound(roundNr, score);
-    }
-
-    public ArrayList<Score> getAllScoresPerTeam() {
-        return allScoresPerTeam;
-    }
-
-    public void setAllScoresPerTeam(ArrayList<Score> allScoresPerTeam) {
-        this.allScoresPerTeam = allScoresPerTeam;
-    }
-
-    public void initializeTotalScoreAfterEachRound() {
-        for (int i = 0; i < this.teams.size(); i++) {
-            totalScoreAfterEachRoundPerTeam.add(new ArrayList<>());
-            for (int j = 0; j < this.rounds.size(); j++) {
-                totalScoreAfterEachRoundPerTeam.get(i).add(new Integer(0));
-            }
-        }
-    }
-
-    */
-    //Initialize the Results for each team
+    //Initialize the Results for each team - just make sure the necessary array elements exist so they can be used later
     public void initializeResultsForTeams(){
         for (int i = 0; i < teams.size() ; i++) {
             //Make sure we already have something - should not be necessary since included in constructor for Team
@@ -101,9 +73,7 @@ public class Quiz implements Serializable {
         }
     }
 
-
-
-    //Add the questions information we have from an array of array of questions.
+    //Add the questions information we have from an array of array of questions, first dimension is the round.
     public void setAllQuestionsPerRound(ArrayList<ArrayList<Question>> allQuestionsPerRound) {
         //For each entry in the allQuestionsPerRound array (=for each round)
         for (int i = 0; i < allQuestionsPerRound.size(); i++) {
@@ -112,14 +82,30 @@ public class Quiz implements Serializable {
         }
     }
 
-    //Add the answers for each question from an array of array of AnswersLists
-    public void setAllAnswersPerQuestion(ArrayList<ArrayList<AnswersList>> allAnswersPerRound) {
+
+    //Add the answers for each question from an array of array of AnswersLists. Answers here means simply the Strings, not the Answer object
+    public void updateAllAnswersPerQuestion(ArrayList<ArrayList<AnswersList>> allAnswersPerRound) {
         //For each entry in the allAnswersPerRound array (=for each round)
         for (int i = 0; i < allAnswersPerRound.size(); i++) {
             ArrayList<AnswersList> allAnswersForThisRound = allAnswersPerRound.get(i);
             //For each question in this round
             for (int j = 0; j < allAnswersForThisRound.size(); j++) {
                 AnswersList allAnswersForThisQuestion = allAnswersForThisRound.get(j);
+                this.getRounds().get(i).getQuestions().get(j).updateAllAnswers(allAnswersForThisQuestion.getAllAnswers());
+            }
+
+        }
+    }
+
+
+    //Add the answers for each question from an array of array of AnswersLists. Answers here means the entire Answer object
+    public void setAllAnswersPerQuestion(ArrayList<ArrayList<AnswersList>> allAnswersPerRound) {
+        //For each entry in the allAnswersPerRound array (=for each round)
+        for (int i = 0; i < allAnswersPerRound.size(); i++) {
+            ArrayList<AnswersList> allAnswersForThisRound = allAnswersPerRound.get(i);
+            //For each question in this round
+            for (int j = 0; j < allAnswersForThisRound.size(); j++) {
+                AnswersList allAnswersForThisQuestion = allAnswersForThisRound.get(j); //This contains all answers for each team for this question
                 this.getRounds().get(i).getQuestions().get(j).setAllAnswers(allAnswersForThisQuestion.getAllAnswers());
             }
 

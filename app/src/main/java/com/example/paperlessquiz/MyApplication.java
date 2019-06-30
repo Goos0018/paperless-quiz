@@ -25,8 +25,9 @@ public class MyApplication extends Application {
     public static ArrayList<String> googleLog = new ArrayList<>();  //An arraylist that will contain a log of all transactions to and from a Google sheet (=the back-end of this app)
     public static boolean loggedIn;                                 //Tracks that user is logged in
     public static boolean appPaused;                                //Tracks that app was paused
-    public static int debugLevel = 3;                               //Overall debug level, initialized here but later overwritten with what is configured for the Quiz
-    public static boolean keepLogs = true;                                 //Indicates if you want to overwrite logs of the GScript each time
+    public static int debugLevel = 3;                               //Overall debug level for the google interaction, initialized here but later overwritten with what is configured for the Quiz
+    public static boolean keepLogs = true;                          //Indicates if you want to overwrite logs of the GScript each time
+    public static int appDebugLevel = 3;                            //Overall debug level for the app itself, initialized here but later overwritten with what is configured for the Quiz
 
     @Override
     public void onCreate() {
@@ -34,7 +35,6 @@ public class MyApplication extends Application {
         logDocID = "1A4CGyeZZk2LW-xvh_P1dyeufZhV0qpBgCIQdrNEIDgk";
         eventLogger = new EventLogger(this, logDocID, QuizGenerator.SHEET_EVENTLOG);
         deviceID = getUniquePsuedoID();
-        //eventLogger.logEvent(deviceID, EventLogger.LEVEL_INFO,"Starting application");
         theQuiz=new Quiz();
         //Make sure the app always runs in portrait mode TODO: make landscape for tablet
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
@@ -138,5 +138,13 @@ public class MyApplication extends Application {
 
     public static void setKeepLogs(boolean keepLogs) {
         MyApplication.keepLogs = keepLogs;
+    }
+
+    public static int getAppDebugLevel() {
+        return appDebugLevel;
+    }
+
+    public static void setAppDebugLevel(int appDebugLevel) {
+        MyApplication.appDebugLevel = appDebugLevel;
     }
 }

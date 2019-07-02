@@ -82,7 +82,8 @@ public class FragRoundSpinner extends Fragment {
     public void positionChanged() {
         tvRoundName.setText(thisQuiz.getRound(position).getName());
         tvRoundDescription.setText(thisQuiz.getRound(position).getDescription());
-        Round thisRound = thisQuiz.getRound(position);
+        refreshIcons();
+        /*Round thisRound = thisQuiz.getRound(position);
         //Set the icon that shows the round status
         if (!thisRound.getAcceptsAnswers() && !thisRound.getAcceptsCorrections() && !thisRound.isCorrected()) {
             ivRoundStatusL.setImageResource(R.drawable.rnd_not_yet_open);
@@ -100,7 +101,29 @@ public class FragRoundSpinner extends Fragment {
             ivRoundStatusL.setImageResource(R.drawable.rnd_corrected);
             ivRoundStatusR.setImageResource(R.drawable.rnd_corrected);
         }
+        */
         activity.onRoundChanged(oldPosition, position);
+    }
+
+    public void refreshIcons(){
+        //Set the icon that shows the round status
+        Round thisRound = thisQuiz.getRound(position);
+        if (!thisRound.getAcceptsAnswers() && !thisRound.getAcceptsCorrections() && !thisRound.isCorrected()) {
+            ivRoundStatusL.setImageResource(R.drawable.rnd_not_yet_open);
+            ivRoundStatusR.setImageResource(R.drawable.rnd_not_yet_open);
+        }
+        if (thisRound.getAcceptsAnswers()) {
+            ivRoundStatusL.setImageResource(R.drawable.rnd_open);
+            ivRoundStatusR.setImageResource(R.drawable.rnd_open);
+        }
+        if (thisRound.getAcceptsCorrections()) {
+            ivRoundStatusL.setImageResource(R.drawable.rnd_closed);
+            ivRoundStatusR.setImageResource(R.drawable.rnd_closed);
+        }
+        if (thisRound.isCorrected()) {
+            ivRoundStatusL.setImageResource(R.drawable.rnd_corrected);
+            ivRoundStatusR.setImageResource(R.drawable.rnd_corrected);
+        }
     }
 
     public void moveTo(int newRoundNr) {

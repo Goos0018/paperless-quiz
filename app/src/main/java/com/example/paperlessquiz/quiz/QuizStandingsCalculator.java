@@ -71,7 +71,7 @@ public class QuizStandingsCalculator {
             }
             for (int i = 0; i < allTotalScoresAfterThisRound.size(); i++) {
                 LoginEntity theTeam;
-                theTeam = thisQuiz.getTeam(allScoresForThisRound.get(i).teamNr);
+                theTeam = thisQuiz.getTeam(allTotalScoresAfterThisRound.get(i).teamNr);
                 theTeam.getResultAfterRound(roundNr).setPosInStandingAfterThisRound(i + 1);
             }
         }

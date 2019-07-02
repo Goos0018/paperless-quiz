@@ -2,9 +2,12 @@ package com.example.paperlessquiz;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.Context;
 import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 
 import com.example.paperlessquiz.google.access.EventLogger;
 import com.example.paperlessquiz.quiz.Quiz;
@@ -35,14 +38,17 @@ public class MyApplication extends Application {
         logDocID = "1A4CGyeZZk2LW-xvh_P1dyeufZhV0qpBgCIQdrNEIDgk";
         eventLogger = new EventLogger(this, logDocID, QuizGenerator.SHEET_EVENTLOG);
         deviceID = getUniquePsuedoID();
-        theQuiz=new Quiz();
+        theQuiz = new Quiz();
         //Make sure the app always runs in portrait mode TODO: make landscape for tablet
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
             @Override
             public void onActivityCreated(Activity activity, Bundle bundle) {
-                activity.setRequestedOrientation(
-                        ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-                        // for each activity this function is called and so it is set to portrait mode
+                if (isTabletDevice(activity)) {
+                    activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                } else {
+                    activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                }
+                // for each activity this function is called and so it is set to portrait mode
             }
 
             @Override
@@ -66,8 +72,40 @@ public class MyApplication extends Application {
             }
 
             @Override
-            public void onActivityDestroyed(Activity activity) { }
+            public void onActivityDestroyed(Activity activity) {
+            }
         });
+    }
+
+    public static boolean isTabletDevice(Context activityContext) {
+        // Verifies if the Generalized Size of the device is XLARGE to be
+        // considered a Tablet
+        boolean xlarge = ((activityContext.getResources().getConfiguration().screenLayout &
+                Configuration.SCREENLAYOUT_SIZE_MASK) ==
+                Configuration.SCREENLAYOUT_SIZE_XLARGE);
+
+        // If XLarge, checks if the Generalized Density is at least MDPI
+        // (160dpi)
+        if (xlarge) {
+            DisplayMetrics metrics = new DisplayMetrics();
+            Activity activity = (Activity) activityContext;
+            activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
+
+            // MDPI=160, DEFAULT=160, DENSITY_HIGH=240, DENSITY_MEDIUM=160,
+            // DENSITY_TV=213, DENSITY_XHIGH=320
+            if (metrics.densityDpi == DisplayMetrics.DENSITY_DEFAULT
+                    || metrics.densityDpi == DisplayMetrics.DENSITY_HIGH
+                    || metrics.densityDpi == DisplayMetrics.DENSITY_MEDIUM
+                    || metrics.densityDpi == DisplayMetrics.DENSITY_TV
+                    || metrics.densityDpi == DisplayMetrics.DENSITY_XHIGH) {
+
+                // Yes, this is a tablet!
+                return true;
+            }
+        }
+
+        // No, this is not a tablet!
+        return false;
     }
 
     public static void setLogDocID(String logDocID) {
@@ -75,7 +113,7 @@ public class MyApplication extends Application {
     }
 
     //Return pseudo unique ID
-     public static String getUniquePsuedoID() {
+    public static String getUniquePsuedoID() {
         // If all else fails, if the user does have lower than API 9 (lower
         // than Gingerbread), has reset their device or 'Secure.ANDROID_ID'
         // returns 'null', then simply the ID returned will be solely based
@@ -147,4 +185,6 @@ public class MyApplication extends Application {
     public static void setAppDebugLevel(int appDebugLevel) {
         MyApplication.appDebugLevel = appDebugLevel;
     }
+
+
 }

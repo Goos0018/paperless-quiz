@@ -3,21 +3,21 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="please_select_a_quiz">Please select a quiz</string>
-    <string name="loadingtitle">Please wait</string>
-    <string name="loadingmsg_list">Loading list of available quizzes</string>
-    <string name="loadingerror">Something went wrong:</string>
-    <string name="btn_participant">I am a participant</string>
-    <string name="btn_organizer">I am an organizer</string>
-    <string name="main_selectteamprompt">Select your team in the list below</string>
-    <string name="main_selectorganizerprompt">Select your role in the list below</string>
-    <string name="main_wrongpswdentered">Please enter the passkey provided by the organizers</string>
-    <string name="main_registeratreceptionfirst">Please register at the reception first</string>
-    <string name="main_wrongpassword">Passkey is incorrect - please enter the passkey provided by the organizers</string>
-    <string name="corrector_waitforroundopen">Please wait for this round to be opened</string>
-    <string name="corrector_waitforallanswers">Please wait until all answers for this round are submitted</string>
-    <string name="corrector_roundalreadycorrected">This round has already been corrected</string>
-    <string name="participant_waitforroundopen">Please wait for this round to be opened</string>
-    <string name="participant_waitforroundcorrection">Please wait for this round to be corrected</string>
+    <string name="please_select_a_quiz">Selecteer de quiz waaraan u wil deelnemen</string>
+    <string name="loadingtitle">Even geduld</string>
+    <string name="loadingmsg_list">Lijst van beschikbare quizzen ophalen</string>
+    <string name="loadingerror">Dit ging niet goed:</string>
+    <string name="btn_participant">Ik neem deel aan de quiz</string>
+    <string name="btn_organizer">Ik organizeer de quiz</string>
+    <string name="main_selectteamprompt">Tik op je ploegnaam hieronder</string>
+    <string name="main_selectorganizerprompt">Tik op je rol</string>
+    <string name="main_wrongpswdentered">Geef de code in die je van de organizatie kreeg</string>
+    <string name="main_registeratreceptionfirst">Gelieve eerst aan te melden bij de receptie</string>
+    <string name="main_wrongpassword">Deze code klopt niet - Geef de code in die je van de organizatie kreeg</string>
+    <string name="corrector_waitforroundopen">Deze ronde is nog niet geopend</string>
+    <string name="corrector_waitforallanswers">Nog niet alle antwoorden voor deze ronde zijn ingegeven</string>
+    <string name="corrector_roundalreadycorrected">Deze ronde werd al verbeterd</string>
+    <string name="participant_waitforroundopen">Deze ronde is nog niet geopend</string>
+    <string name="participant_waitforroundcorrection">We zijn deze ronde aan het verbeteren...</string>
 
 </resources>

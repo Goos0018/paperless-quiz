@@ -106,7 +106,8 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
     @Override
     public void loadingComplete() {
         //Actions do do when we are completed (re)loading data from the Google sheet
-        roundSpinner.moveUp();roundSpinner.moveDown(); // TODO: App crashes when calling positionChanged - needed to make sure the correct round status icons are shown
+        //roundSpinner.moveUp();roundSpinner.moveDown(); // Replaced with refreshIcons since moveUp and MoveDown crashed the app sometimes? Issue with Fragment mgr?
+        roundSpinner.refreshIcons();
         roundResultFrag.refresh();  //This will recalculate scores based on the re-loaded corrections
         refreshDisplayFragments();  //Display the correct fragments based on new round status etc.
     }

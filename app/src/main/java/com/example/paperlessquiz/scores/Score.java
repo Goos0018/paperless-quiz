@@ -1,7 +1,5 @@
 package com.example.paperlessquiz.scores;
 
-import java.util.ArrayList;
-
 public class Score {
     /*
     private ArrayList<Integer> scorePerRoundForTeam; //This array contains the score for a team after each round

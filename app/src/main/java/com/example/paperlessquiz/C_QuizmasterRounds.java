@@ -1,11 +1,6 @@
 package com.example.paperlessquiz;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,10 +8,7 @@ import android.widget.ListView;
 
 import com.example.paperlessquiz.adapters.RoundsAdapter;
 import com.example.paperlessquiz.google.access.LoadingActivity;
-import com.example.paperlessquiz.quiz.Quiz;
 import com.example.paperlessquiz.quiz.QuizLoader;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 /**
  * This shows the Rounds to the QM and allows to set status'es for them.

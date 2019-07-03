@@ -1,9 +1,7 @@
 package com.example.paperlessquiz.quizextradata;
 
 import com.example.paperlessquiz.google.access.ListParsedListener;
-import com.example.paperlessquiz.quiz.Quiz;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

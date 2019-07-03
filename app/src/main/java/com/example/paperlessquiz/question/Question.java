@@ -1,7 +1,6 @@
 package com.example.paperlessquiz.question;
 
 import com.example.paperlessquiz.answer.Answer;
-import com.example.paperlessquiz.spinners.SpinnerData;
 
 import java.io.Serializable;
 import java.util.ArrayList;

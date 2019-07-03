@@ -5,7 +5,6 @@ import android.content.Context;
 import com.example.paperlessquiz.corrections.CorrectionsList;
 import com.example.paperlessquiz.corrections.CorrectionsListParser;
 import com.example.paperlessquiz.corrections.GetCorrectionsListLPL;
-import com.example.paperlessquiz.MyApplication;
 import com.example.paperlessquiz.answer.Answer;
 import com.example.paperlessquiz.answerslist.AnswersList;
 import com.example.paperlessquiz.answerslist.AnswersListParser;
@@ -20,14 +19,9 @@ import com.example.paperlessquiz.question.GetQuestionsLPL;
 import com.example.paperlessquiz.question.Question;
 import com.example.paperlessquiz.question.QuestionParser;
 import com.example.paperlessquiz.quizextradata.GetQuizExtraDataLPL;
-import com.example.paperlessquiz.quizextradata.QuizExtraData;
-import com.example.paperlessquiz.quizextradata.QuizExtraDataParser;
 import com.example.paperlessquiz.round.GetRoundsLPL;
 import com.example.paperlessquiz.round.Round;
 import com.example.paperlessquiz.round.RoundParser;
-import com.example.paperlessquiz.scores.GetScoresLPL;
-import com.example.paperlessquiz.scores.Score;
-import com.example.paperlessquiz.scores.ScoreParser;
 
 import java.util.ArrayList;
 

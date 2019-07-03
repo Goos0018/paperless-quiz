@@ -1,12 +1,5 @@
 package com.example.paperlessquiz.scores;
 
-import com.example.paperlessquiz.google.access.JsonParser;
-import com.example.paperlessquiz.quiz.QuizGenerator;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 //TODO:addlogtoQuizsettingsoverviewiferroristhrown
 
 public class ScoreParser {/*implements JsonParser<Score> {

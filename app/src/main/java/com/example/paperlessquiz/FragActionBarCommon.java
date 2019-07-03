@@ -1,13 +1,8 @@
 package com.example.paperlessquiz;
 
 
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,10 +10,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import com.example.paperlessquiz.quiz.Quiz;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 /**
  * A simple {@link Fragment} subclass.

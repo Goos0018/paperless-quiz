@@ -1,10 +1,5 @@
 package com.example.paperlessquiz;
 
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,10 +8,7 @@ import android.view.MenuItem;
 
 import com.example.paperlessquiz.adapters.EditTeamsAdapter;
 import com.example.paperlessquiz.google.access.LoadingActivity;
-import com.example.paperlessquiz.quiz.Quiz;
 import com.example.paperlessquiz.quiz.QuizLoader;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 /**
  * Home screen for receptionist. Allows setting team status and change team names.

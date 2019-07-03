@@ -3,9 +3,6 @@ package com.example.paperlessquiz.spinners;
 import android.widget.TextView;
 
 import com.example.paperlessquiz.quiz.Quiz;
-import com.example.paperlessquiz.round.Round;
-
-import java.util.ArrayList;
 
 public class RoundSpinner {
 

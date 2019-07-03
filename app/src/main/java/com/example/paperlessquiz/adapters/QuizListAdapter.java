@@ -1,7 +1,6 @@
 package com.example.paperlessquiz.adapters;
 
 import android.content.Context;
-import android.graphics.BitmapFactory;
 import android.media.Image;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
@@ -16,7 +15,6 @@ import com.example.paperlessquiz.quiz.Quiz;
 import com.example.paperlessquiz.quizlistdata.QuizListData;
 import com.squareup.picasso.Picasso;
 
-import java.net.URL;
 import java.util.ArrayList;
 
 public class QuizListAdapter extends ArrayAdapter<QuizListData>

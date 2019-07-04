@@ -1,4 +1,4 @@
-package com.paperlessquiz.activities;
+package com.paperlessquiz;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,14 +7,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.paperlessquiz.A_SelectRole;
-import com.paperlessquiz.MyApplication;
 import com.paperlessquiz.R;
 import com.paperlessquiz.adapters.QuizListAdapter;
 import com.paperlessquiz.googleaccess.GoogleAccess;
 import com.paperlessquiz.googleaccess.GoogleAccessGet;
 import com.paperlessquiz.googleaccess.LoadingActivity;
-import com.paperlessquiz.googleaccess.LoadingListenerShowProgress;
+import com.paperlessquiz.googleaccess.LoadingListenerShowProgressAndActWhenComplete;
 import com.paperlessquiz.quiz.Quiz;
 import com.paperlessquiz.quiz.QuizGenerator;
 import com.paperlessquiz.quizlistdata.GetQuizListDataLPL;
@@ -53,7 +51,7 @@ public class A_Main extends AppCompatActivity implements LoadingActivity {
                 GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_GETDATA;
         GoogleAccessGet<QuizListData> googleAccessGet = new GoogleAccessGet<QuizListData>(this, scriptParams);
         googleAccessGet.getItems(new QuizListDataParser(), new GetQuizListDataLPL(adapter),
-                new LoadingListenerShowProgress(this, this.getString(R.string.loadingtitle), this.getString(R.string.loadingmsg_list),
+                new LoadingListenerShowProgressAndActWhenComplete(this, this.getString(R.string.loadingtitle), this.getString(R.string.loadingmsg_list),
                         this.getString(R.string.loadingerror),false));
 
         lv_QuizList.setAdapter(adapter);

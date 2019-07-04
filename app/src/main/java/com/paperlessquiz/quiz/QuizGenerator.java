@@ -4,15 +4,19 @@ import android.content.Context;
 
 import com.paperlessquiz.googleaccess.GoogleAccess;
 import com.paperlessquiz.googleaccess.GoogleAccessSet;
+import com.paperlessquiz.googleaccess.LLShowProgressOnly;
 import com.paperlessquiz.googleaccess.LoadingListenerNotify;
-import com.paperlessquiz.googleaccess.LoadingListenerShowProgress;
+import com.paperlessquiz.googleaccess.LoadingListenerShowProgressAndActWhenComplete;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
 public class QuizGenerator {
-    //TODO: set data as plain text!!
+    //TODO: Colors for columns that can be changed
+    //TODO: Limitation 2KB!
+    //TODO: QuestionsID's ending on 0 not correctly set!
+
 
     //Headers for the Answers tab of the Quiz sheet
     //Headers for the Corrections sheet - these are identical to those of the answers sheet
@@ -20,7 +24,7 @@ public class QuizGenerator {
     public static final String ROUND_NR = "RoundNr";
     public static final String QUESTION_NR = "QuestionNr";
     public static final int ANSWERSSHEET_START_OF_TEAMS = 3; //From this column onwards, we expect to find the teams in order of teamnr
-    public static final String TEAMS_PREFIX = ""; //This string is used as prefix for the team numbers when used as column headers
+    public static final String TEAMS_PREFIX = "Team"; //This string is used as prefix for the team numbers when used as column headers
 
     //Headers for the Eventlog sheet
     public static final String EVENTLOG_TIME = "Date/Time";
@@ -156,7 +160,7 @@ public class QuizGenerator {
     public GoogleAccessSet googleAccessCreateQuiz;
 
     //General settings for quiz generation
-    public boolean setDummyAnswers = true;
+    public boolean setDummyAnswers = false;
     public boolean generateDummyPIN = true;
     private String dummyPin = "dummy";
     private int nrOfDigitsForParticipantPIN = 3;
@@ -198,7 +202,7 @@ public class QuizGenerator {
                 "quizName=" + quizName + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_ACTION + "createQuizDoc";
         googleAccessCreateQuiz = new GoogleAccessSet(context, parameters);
-        googleAccessCreateQuiz.setData(new LoadingListenerShowProgress(context, "Creating quiz", "Creating " + quizName, "Error", false));
+        googleAccessCreateQuiz.setData(new LoadingListenerShowProgressAndActWhenComplete(context, "Creating quiz", "Creating " + quizName, "Error", false));
         //The quizDocID for the quiz will be in the result property of the googleAccessCreateQuiz
     }
 
@@ -209,7 +213,7 @@ public class QuizGenerator {
                 "headersToSet=" + convertArrayListTo2DString(headersToSet) + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_ACTION + "setHeaders";
         GoogleAccessSet googleAccessSet = new GoogleAccessSet(context, parameters);
-        googleAccessSet.setData(new LoadingListenerNotify(context, "Rupert", "Setting headers for sheet " + sheetName));
+        googleAccessSet.setData(new LLShowProgressOnly(context, "Rupert", "Setting headers for sheet " + sheetName, "",false));
     }
 
     //Initialize rows for the given sheet
@@ -219,7 +223,7 @@ public class QuizGenerator {
                 "dataToSet=" + convert2DArrayListToString(dataToSet) + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_ACTION + "initializeRows";
         GoogleAccessSet googleAccessSet = new GoogleAccessSet(context, parameters);
-        googleAccessSet.setData(new LoadingListenerNotify(context, "Rupert", "Setting headers for sheet " + sheetName));
+        googleAccessSet.setData(new LLShowProgressOnly(context, "Rupert", "Setting data for sheet " + sheetName, "",false));
     }
 
     //Helper functions
@@ -304,7 +308,7 @@ public class QuizGenerator {
         this.quizDescription = quizDescription;
         this.quizLogoURL = "";
         allTabs = new ArrayList<>(Arrays.asList(SHEET_QUIZLISTDATA, SHEET_TEAMS, SHEET_ORGANIZERS, SHEET_ROUNDS, SHEET_QUESTIONS, SHEET_ANSWERS, SHEET_CORRECTIONS, SHEET_SCORES, SHEET_EVENTLOG));
-        headersForQuizListDataTab = new ArrayList<>(Arrays.asList(QUIZ_NAME, QUIZ_DESCRIPTION, QUIZ_SHEET_DOC_ID, QUIZ_LOGO_URL, QUIZ_DEBUGLEVEL, QUIZ_KEEPLOGS,QUIZ_APPDEBUGLEVEL));
+        headersForQuizListDataTab = new ArrayList<>(Arrays.asList(QUIZ_NAME, QUIZ_DESCRIPTION, QUIZ_SHEET_DOC_ID, QUIZ_LOGO_URL, QUIZ_PDF_URL,QUIZ_DEBUGLEVEL, QUIZ_KEEPLOGS,QUIZ_APPDEBUGLEVEL));
         headersForAnswersTab = new ArrayList<>(Arrays.asList(QUESTION_ID, ROUND_NR, QUESTION_NR));
         for (int i = 1; i < nrOfTeams + 1; i++) {
             headersForAnswersTab.add(TEAMS_PREFIX + i);

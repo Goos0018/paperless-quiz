@@ -4,7 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.widget.Toast;
 
-public class LoadingListenerShowProgress implements LoadingListener {
+public class LoadingListenerShowProgressAndActWhenComplete implements LoadingListener {
 
     //This loadinglistener will display a message while loading is in progress.
     //When loading is complete, we will call the onLoaded interface in the calling activity
@@ -19,7 +19,7 @@ public class LoadingListenerShowProgress implements LoadingListener {
     LoadingActivity activity;
 
 
-    public LoadingListenerShowProgress(Context context, String loadingTitle, String loadingMessage, String errorMessage, boolean cancellable) {
+    public LoadingListenerShowProgressAndActWhenComplete(Context context, String loadingTitle, String loadingMessage, String errorMessage, boolean cancellable) {
         this.context = context;
         this.loadingTitle = loadingTitle;
         this.loadingMessage = loadingMessage;
@@ -42,6 +42,7 @@ public class LoadingListenerShowProgress implements LoadingListener {
     @Override
     public void loadingError(String error) {
         Toast.makeText(context, errorMessage + error, Toast.LENGTH_LONG).show();
+        loading.dismiss();
     }
 
 }

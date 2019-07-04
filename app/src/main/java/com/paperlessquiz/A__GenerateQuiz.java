@@ -32,7 +32,7 @@ public class A__GenerateQuiz extends AppCompatActivity implements FragSpinner.Ha
         generator.setQuizDocID(generator.googleAccessCreateQuiz.getResultExplanation());
         //stdContentForQuizListDataTab
         generator.stdContentForQuizListDataTab.add(new ArrayList<>(Arrays.asList(generator.quizName, generator.quizDescription,
-                generator.quizDocID, generator.quizLogoURL, Integer.toString(generator.quizDebugLevelDefault),
+                generator.quizDocID, generator.quizLogoURL, "", Integer.toString(generator.quizDebugLevelDefault),
                 Boolean.toString(generator.quizKeepLogsDefault),Integer.toString(generator.quizAppDebugLevelDefault))));
         generator.setAllHeaders();
         generator.initializeAllSheets();

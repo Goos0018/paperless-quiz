@@ -11,4 +11,6 @@
     <color name="correctGreen">#388E3C</color>
     <color name="wrongRed">#D32F2F</color>
     <color name="halfwayOrange">#F57C00</color>
+    <color name="niceBlue">#3F51B5</color>
+    <color name="niceAmber">#FFC107</color>
 </resources>

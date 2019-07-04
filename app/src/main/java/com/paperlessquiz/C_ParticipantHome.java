@@ -175,10 +175,6 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
                 //quizLoader.loadAllAnswers();        //Not needed, teams only need to know their own answers, and those are anyhow loaded on restart
                 //The LoadingCompleted triggers refresh of the interface
                 break;
-
-            case R.id.help:
-                //Intent intentDisplayPDF = new Intent(C_ParticipantHome.this, DisplayPDF.class);
-                //startActivity(intentDisplayPDF);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -249,8 +245,8 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
     @Override
     public void onBackPressed() {
         if (true) {
-            Toast.makeText(this, "Back button to be disabled still", Toast.LENGTH_SHORT).show();
-            super.onBackPressed();
+            Toast.makeText(this, C_ParticipantHome.this.getString(R.string.participant_nobackallowed), Toast.LENGTH_SHORT).show();
+            //super.onBackPressed();
         } else {
             super.onBackPressed();
         }

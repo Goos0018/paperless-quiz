@@ -19,5 +19,9 @@
     <string name="corrector_roundalreadycorrected">Deze ronde werd al verbeterd</string>
     <string name="participant_waitforroundopen">Deze ronde is nog niet geopend</string>
     <string name="participant_waitforroundcorrection">We zijn deze ronde aan het verbeteren...</string>
+    <string name="enter_passkey">Paswoord?</string>
+    <string name="loader_pleasewait">Even geduld...</string>
+    <string name="loader_updatingquiz">Ophalen gegevens...</string>
+    <string name="participant_nobackallowed">Sluit en herstart de app als je opnieuw will aanmelden</string>
 
 </resources>

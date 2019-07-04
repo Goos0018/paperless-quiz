@@ -14,6 +14,7 @@ import com.paperlessquiz.quiz.Quiz;
 import com.paperlessquiz.quiz.QuizGenerator;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.UUID;
 
 /**
@@ -31,6 +32,7 @@ public class MyApplication extends Application {
     public static int debugLevel = 3;                               //Overall debug level for the google interaction, initialized here but later overwritten with what is configured for the Quiz
     public static boolean keepLogs = true;                          //Indicates if you want to overwrite logs of the GScript each time
     public static int appDebugLevel = 3;                            //Overall debug level for the app itself, initialized here but later overwritten with what is configured for the Quiz
+    public static HashMap<String,String> helpFiles;
 
     @Override
     public void onCreate() {
@@ -39,7 +41,13 @@ public class MyApplication extends Application {
         eventLogger = new EventLogger(this, logDocID, QuizGenerator.SHEET_EVENTLOG);
         deviceID = getUniquePsuedoID();
         theQuiz = new Quiz();
-        //Make sure the app always runs in portrait mode TODO: make landscape for tablet
+        helpFiles = new HashMap<>();
+        helpFiles.put(QuizGenerator.TYPE_CORRECTOR, QuizGenerator.HELPFILE_CORRECTOR);
+        helpFiles.put(QuizGenerator.TYPE_JUROR, QuizGenerator.HELPFILE_JUROR);
+        helpFiles.put(QuizGenerator.TYPE_PARTICIPANT, QuizGenerator.HELPFILE_PARTICIPANT);
+        helpFiles.put(QuizGenerator.TYPE_QUIZMASTER, QuizGenerator.HELPFILE_QUIZMASTER);
+        helpFiles.put(QuizGenerator.TYPE_RECEPTIONIST, QuizGenerator.HELPFILE_RECEPTIONIST);
+        //Portrait mode or landscape mode depending on screen size
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
             @Override
             public void onActivityCreated(Activity activity, Bundle bundle) {

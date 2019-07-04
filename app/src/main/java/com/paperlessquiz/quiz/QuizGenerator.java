@@ -63,6 +63,7 @@ public class QuizGenerator {
     public static final String QUIZ_DESCRIPTION = "QuizDescription";
     public static final String QUIZ_SHEET_DOC_ID = "QuizSheetDocID";
     public static final String QUIZ_LOGO_URL = "QuizLogoURL";
+    public static final String QUIZ_PDF_URL = "QuizPDFURL";
     public static final String QUIZ_DEBUGLEVEL = "DebugLevel";
     public static final String QUIZ_KEEPLOGS = "KeepLogs";
     public static final String QUIZ_APPDEBUGLEVEL = "AppDebugLevel";
@@ -79,8 +80,15 @@ public class QuizGenerator {
     public static final String SHEET_QUIZDATA = "QuizData";
     public static final String SHEET_QUIZLISTDATA = "QuizListData";
 
+    //Helpfiles
+    public static final String HELPFILE_PARTICIPANT = "ParticipantHelp.pdf";
+    public static final String HELPFILE_CORRECTOR = "CorrectorHelp.pdf";
+    public static final String HELPFILE_QUIZMASTER = "QuizmasterHelp.pdf";
+    public static final String HELPFILE_RECEPTIONIST = "ReceptionistHelp.pdf";
+    public static final String HELPFILE_JUROR = "JurorHelp.pdf";
 
     //Other static stuff
+    public static final String HELPFILE_URL = "http://paperlessquiz.be/onewebmedia/";
     public static final String SEPARATOR_ROUND_QUESTION = ".";
     public static final String QUESTION_STRING = "Vraag ";
     public static final String ROUND_STRING = "Ronde ";
@@ -102,6 +110,7 @@ public class QuizGenerator {
     public static final String SHEET_QUIZLIST = "QuizList";
     //Debuglevel to use when creating stuff
     public static final int debugLevel = 5;
+    public static final String PDF_TO_DISPLAY = "pdfToDisplay";
 
     //This is what we need to generate all mandatory tabs - these data are entered in the activity X_GenerateQuiz
     public String quizDocID; //Initialized when sheet is created

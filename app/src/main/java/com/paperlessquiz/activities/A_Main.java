@@ -9,7 +9,7 @@ import android.widget.ListView;
 
 import com.paperlessquiz.A_SelectRole;
 import com.paperlessquiz.MyApplication;
-import com.example.paperlessquiz.R;
+import com.paperlessquiz.R;
 import com.paperlessquiz.adapters.QuizListAdapter;
 import com.paperlessquiz.googleaccess.GoogleAccess;
 import com.paperlessquiz.googleaccess.GoogleAccessGet;

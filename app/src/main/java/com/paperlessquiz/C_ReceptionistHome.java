@@ -6,7 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.example.paperlessquiz.R;
+import com.paperlessquiz.R;
 import com.paperlessquiz.adapters.EditTeamsAdapter;
 import com.paperlessquiz.googleaccess.LoadingActivity;
 import com.paperlessquiz.quiz.QuizLoader;

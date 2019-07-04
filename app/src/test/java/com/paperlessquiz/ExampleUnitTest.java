@@ -1,4 +1,4 @@
-package com.example.paperlessquiz;
+package com.paperlessquiz;
 
 import org.junit.Test;
 

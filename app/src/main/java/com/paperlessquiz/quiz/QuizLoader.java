@@ -2,7 +2,7 @@ package com.paperlessquiz.quiz;
 
 import android.content.Context;
 
-import com.example.paperlessquiz.R;
+import com.paperlessquiz.R;
 import com.paperlessquiz.corrections.CorrectionsList;
 import com.paperlessquiz.corrections.CorrectionsListParser;
 import com.paperlessquiz.corrections.GetCorrectionsListLPL;

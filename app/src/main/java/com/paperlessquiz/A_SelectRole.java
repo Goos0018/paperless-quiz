@@ -8,7 +8,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.paperlessquiz.R;
+import com.paperlessquiz.R;
 import com.paperlessquiz.googleaccess.LoadingActivity;
 import com.paperlessquiz.loginentity.LoginEntity;
 import com.paperlessquiz.quiz.Quiz;

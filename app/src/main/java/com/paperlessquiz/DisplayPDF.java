@@ -1,8 +1,5 @@
 package com.paperlessquiz;
 
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,11 +7,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebView;
 
-import com.example.paperlessquiz.R;
-import com.paperlessquiz.quiz.Quiz;
+import com.paperlessquiz.R;
 import com.paperlessquiz.quiz.QuizGenerator;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 /**
  * This activity displays a PDF that must be passed via the StringExtra pdfToDisplay

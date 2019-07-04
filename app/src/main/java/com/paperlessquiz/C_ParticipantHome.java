@@ -14,7 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.paperlessquiz.R;
+import com.paperlessquiz.R;
 import com.paperlessquiz.adapters.DisplayAnswersAdapter;
 import com.paperlessquiz.googleaccess.EventLogger;
 import com.paperlessquiz.googleaccess.LoadingActivity;

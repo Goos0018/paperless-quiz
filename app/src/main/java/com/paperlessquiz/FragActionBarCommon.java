@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.paperlessquiz.R;
+import com.paperlessquiz.R;
 
 /**
  * A simple {@link Fragment} subclass.

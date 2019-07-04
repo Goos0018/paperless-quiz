@@ -9,7 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.paperlessquiz.R;
+import com.paperlessquiz.R;
 import com.paperlessquiz.adapters.CorrectAnswersAdapter;
 import com.paperlessquiz.answer.Answer;
 import com.paperlessquiz.googleaccess.LoadingActivity;

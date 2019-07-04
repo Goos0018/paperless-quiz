@@ -11,7 +11,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.paperlessquiz.R;
+import com.paperlessquiz.R;
 import com.paperlessquiz.adapters.ParticipantsAdapter;
 import com.paperlessquiz.loginentity.LoginEntity;
 import com.paperlessquiz.quiz.Quiz;

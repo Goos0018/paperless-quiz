@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryLight"
     android:orientation="vertical"
-    tools:context=".A_Main">
+    tools:context="com.paperlessquiz.activities.A_Main">
 
     <TextView
         android:id="@+id/tv_prompt"

@@ -5,11 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".C_ParticipantHome">
+    tools:context="com.paperlessquiz.C_ParticipantHome">
 
     <fragment
         android:id="@+id/frRoundSpinner"
-        android:name="com.example.paperlessquiz.FragRoundSpinner"
+        android:name="com.paperlessquiz.FragRoundSpinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:layout="@layout/frag_round_spinner" />

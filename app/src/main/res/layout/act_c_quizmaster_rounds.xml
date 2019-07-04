@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".C_QuizmasterRounds">
+    tools:context="com.paperlessquiz.C_QuizmasterRounds">
 
     <ListView
         android:id="@+id/lvRounds"

@@ -5,27 +5,27 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name="com.example.com.paperlessquiz.MyApplication"
+        android:name="com.paperlessquiz.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.example.com.paperlessquiz.DisplayPDF"></activity>
-        <activity android:name="com.example.com.paperlessquiz.A__GenerateQuiz" />
+        <activity android:name="com.paperlessquiz.DisplayPDF"></activity>
+        <activity android:name="com.paperlessquiz.A__GenerateQuiz" />
         <activity
-            android:name="com.example.com.paperlessquiz.C_ParticipantHome"
+            android:name="com.paperlessquiz.C_ParticipantHome"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name="com.example.com.paperlessquiz.C_CorrectorHome" />
-        <activity android:name="com.example.com.paperlessquiz.C_ReceptionistHome" />
-        <activity android:name="com.example.com.paperlessquiz.C_QuizmasterTeams" />
-        <activity android:name="com.example.com.paperlessquiz.C_QuizmasterRounds" />
+        <activity android:name="com.paperlessquiz.C_CorrectorHome" />
+        <activity android:name="com.paperlessquiz.C_ReceptionistHome" />
+        <activity android:name="com.paperlessquiz.C_QuizmasterTeams" />
+        <activity android:name="com.paperlessquiz.C_QuizmasterRounds" />
         <activity
-            android:name="com.example.com.paperlessquiz.B_LoginMain"
+            android:name="com.paperlessquiz.B_LoginMain"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name="com.example.com.paperlessquiz.A_SelectRole" />
-        <activity android:name="com.example.com.paperlessquiz.A_Main">
+        <activity android:name="com.paperlessquiz.A_SelectRole" />
+        <activity android:name="com.paperlessquiz.activities.A_Main">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

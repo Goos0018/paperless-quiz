@@ -82,7 +82,6 @@ public class Quiz implements Serializable {
         }
     }
 
-
     //Add the answers for each question from an array of array of AnswersLists. Answers here means simply the Strings, not the Answer object
     public void updateAllAnswersPerQuestion(ArrayList<ArrayList<AnswersList>> allAnswersPerRound) {
         //For each entry in the allAnswersPerRound array (=for each round)
@@ -96,7 +95,6 @@ public class Quiz implements Serializable {
 
         }
     }
-
 
     //Add the answers for each question from an array of array of AnswersLists. Answers here means the entire Answer object
     public void setAllAnswersPerQuestion(ArrayList<ArrayList<AnswersList>> allAnswersPerRound) {
@@ -132,7 +130,6 @@ public class Quiz implements Serializable {
         }
     }
 
-
     //Return the team/organizer with the given ID
     public LoginEntity getTeam(int teamNr) {
         return teams.get(teamNr - 1);
@@ -154,7 +151,6 @@ public class Quiz implements Serializable {
 
     public void setTeams(ArrayList<LoginEntity> teams) {
         this.teams = teams;
-        //this.additionalData.setNrOfParticipants(teams.size());
     }
 
     public void setOrganizers(ArrayList<LoginEntity> organizers) {
@@ -168,14 +164,6 @@ public class Quiz implements Serializable {
     public void setListData(QuizListData listData) {
         this.listData = listData;
     }
-
-    //public QuizExtraData getAdditionalData() {
-    //    return additionalData;
-    //}
-
-    //public void setAdditionalData(QuizExtraData additionalData) {
-    //    this.additionalData = additionalData;
-    //}
 
     public ArrayList<Round> getRounds() {
         return rounds;
@@ -354,5 +342,19 @@ public class Quiz implements Serializable {
         setLoggedIn.setData(new LoadingListenerSilent());
     }
 
+    public boolean isAnyRoundOpen(){
+        boolean res = false;
+        for (int i = 0; i < rounds.size(); i++) {
+            res = res || rounds.get(i).getAcceptsAnswers();
+        }
+        return res;
+    }
 
+    public int getMaxScoreUntilRound(int roundNr){
+        int res = 0;
+        for (int i = 0; i < roundNr; i++) {
+            res = res + rounds.get(i).getMaxScore();
+        }
+        return res;
+    }
 }

@@ -115,6 +115,8 @@ public class QuizGenerator {
     //Debuglevel to use when creating stuff
     public static final int debugLevel = 5;
     public static final String PDF_TO_DISPLAY = "pdfToDisplay";
+    public static final String TITLE_FOR_PDF_DISPLAY = "TitleForPDFDisplay";
+    public static final String GOOGLE_PDFVIEWER_URL = "https://docs.google.com/gview?embedded=true&url=";
 
     //This is what we need to generate all mandatory tabs - these data are entered in the activity X_GenerateQuiz
     public String quizDocID; //Initialized when sheet is created
@@ -351,7 +353,7 @@ public class QuizGenerator {
                 int questionNr = j + 1;
                 //For question questionNr of round roundNr
                 stdContentForQuestionsTab.add(new ArrayList<>(Arrays.asList(roundNr + SEPARATOR_ROUND_QUESTION + questionNr, "" + roundNr, "" + questionNr,
-                        QUESTION_STRING + questionNr, "(" + HINT_STRING + roundNr + SEPARATOR_ROUND_QUESTION + questionNr + ")",
+                        QUESTION_STRING + questionNr, HINT_STRING + roundNr + SEPARATOR_ROUND_QUESTION + questionNr,
                         FULL_QUESTION_STRING + roundNr + SEPARATOR_ROUND_QUESTION + questionNr, "(correct answer)", Integer.toString(standardScore))));
             }
         }
@@ -365,7 +367,7 @@ public class QuizGenerator {
             int teamnr = i + 1;
             stdContentForTeamsTab.add(new ArrayList<>(Arrays.asList("" + teamnr, TYPE_PARTICIPANT, TEAM_STRING + teamnr, generatePIN(nrOfDigitsForParticipantPIN))));
         }
-        //stdContentForQuizListDataTab => This can only be set when teh docID has been generated
+        //stdContentForQuizListDataTab => This can only be set when the docID has been generated
         //stdContentForQuizListDataTab.add(new ArrayList<>(Arrays.asList(quizName, quizDescription, quizDocID, quizLogoURL, Integer.toString(quizDebugLevelDefault), Boolean.toString(quizKeepLogsDefault))));
     }
 

@@ -24,6 +24,13 @@ public class MyActivity extends AppCompatActivity {
 
     public Quiz thisQuiz = MyApplication.theQuiz;
 
+    public void displayPDF(String pdfToDisplay, String title){
+        Intent intentDisplayPDF = new Intent(MyActivity.this, DisplayPDF.class);
+        intentDisplayPDF.putExtra(QuizGenerator.PDF_TO_DISPLAY, pdfToDisplay);
+        intentDisplayPDF.putExtra(QuizGenerator.TITLE_FOR_PDF_DISPLAY, title);
+        startActivity(intentDisplayPDF);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -35,9 +42,10 @@ public class MyActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.help:
-                Intent intentDisplayPDF = new Intent(MyActivity.this, DisplayPDF.class);
-                intentDisplayPDF.putExtra(QuizGenerator.PDF_TO_DISPLAY, MyApplication.helpFiles.get(thisQuiz.getMyLoginentity().getType()));
-                startActivity(intentDisplayPDF);
+                displayPDF(QuizGenerator.HELPFILE_URL + MyApplication.helpFiles.get(thisQuiz.getMyLoginentity().getType()),"HELP!");
+                //Intent intentDisplayPDF = new Intent(MyActivity.this, DisplayPDF.class);
+                //intentDisplayPDF.putExtra(QuizGenerator.PDF_TO_DISPLAY, MyApplication.helpFiles.get(thisQuiz.getMyLoginentity().getType()));
+                //startActivity(intentDisplayPDF);
         }
         return super.onOptionsItemSelected(item);
     }

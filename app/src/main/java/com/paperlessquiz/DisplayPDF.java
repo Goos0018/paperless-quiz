@@ -14,6 +14,7 @@ import com.paperlessquiz.quiz.QuizGenerator;
  * This activity displays a PDF that must be passed via the StringExtra pdfToDisplay
  */
 public class DisplayPDF extends AppCompatActivity {
+    String title;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -29,7 +30,7 @@ public class DisplayPDF extends AppCompatActivity {
 
     public void setActionBarTitle() {
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("HELP!!");
+        actionBar.setTitle(title);
     }
 
     @Override
@@ -53,8 +54,9 @@ public class DisplayPDF extends AppCompatActivity {
 
         try {
             wvDisplay.getSettings().setJavaScriptEnabled(true);
-            String pdfToDisplay = QuizGenerator.HELPFILE_URL + getIntent().getStringExtra(QuizGenerator.PDF_TO_DISPLAY);
-            String URL = "https://docs.google.com/gview?embedded=true&url=" + pdfToDisplay;
+            String pdfToDisplay = getIntent().getStringExtra(QuizGenerator.PDF_TO_DISPLAY);
+            title = getIntent().getStringExtra(QuizGenerator.TITLE_FOR_PDF_DISPLAY);
+            String URL = QuizGenerator.GOOGLE_PDFVIEWER_URL + pdfToDisplay;
             wvDisplay.loadUrl(URL);
         } catch (Exception e) {
             e.printStackTrace();

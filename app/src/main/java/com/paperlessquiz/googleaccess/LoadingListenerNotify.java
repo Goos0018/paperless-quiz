@@ -32,6 +32,9 @@ public class LoadingListenerNotify implements LoadingListener {
 
     @Override
     public void loadingError(String error) {
-
+        String team;
+        if (MyApplication.theQuiz.getMyLoginentity() == null){team = "none";} else {team = MyApplication.theQuiz.getMyLoginentity().getName();}
+        MyApplication.eventLogger.logEvent(team,EventLogger.LEVEL_ERROR,error);
+        Toast.makeText(context, error, Toast.LENGTH_LONG).show();
     }
 }

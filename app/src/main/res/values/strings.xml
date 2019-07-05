@@ -23,5 +23,12 @@
     <string name="loader_pleasewait">Even geduld...</string>
     <string name="loader_updatingquiz">Ophalen gegevens...</string>
     <string name="participant_nobackallowed">Sluit en herstart de app als je opnieuw will aanmelden</string>
+    <string name="participant_aboutquiztitle">Over onze quiz</string>
+    <string name="rnd_score_scoreforround">Jullie score voor deze ronde:</string>
+    <string name="rnd_score_rankafterround">Jullie positie in deze ronde:</string>
+    <string name="rnd_score_totalscore">Jullie totale score na deze ronde:</string>
+    <string name="rnd_score_totalrank">Jullie positie in de totaalstand:</string>
+    <string name="participant_submitanswers">Antwoorden doorsturen</string>
+    <string name="participant_youranswers">Jullie antwoorden:</string>
 
 </resources>

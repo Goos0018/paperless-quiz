@@ -49,7 +49,7 @@ private int teamNr;
     @Override
     public void onBindViewHolder(@NonNull DisplayAnswersAdapter.ViewHolder viewHolder, int i) {
         viewHolder.itemView.setTag(questions.get(i));
-        viewHolder.tvQuestionID.setText(questions.get(i).getQuestionID());
+        viewHolder.tvQuestionID.setText(Integer.toString(questions.get(i).getQuestionNr()));
         viewHolder.tvDisplayAnswer.setText(questions.get(i).getAnswerForTeam(teamNr).getTheAnswer());
         boolean isCorrect = questions.get(i).getAnswerForTeam(teamNr).isCorrect();
         boolean isCorrected = questions.get(i).getAnswerForTeam(teamNr).isCorrected();

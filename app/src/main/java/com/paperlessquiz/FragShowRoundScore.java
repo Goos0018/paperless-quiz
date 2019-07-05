@@ -20,7 +20,7 @@ import com.paperlessquiz.quiz.QuizStandingsCalculator;
  */
 public class FragShowRoundScore extends Fragment {
 
-    TextView tvYourScoreForThisRnd, tvYourRankForThisRnd, tvYourScoreTotal, tvYourRankAfterThisRound;
+    TextView tvYourScoreForThisRnd, tvYourRankForThisRnd, tvYourScoreTotal, tvYourRankAfterThisRound,tvMaxRndScore, tvMaxTotalScore, tvNrOfTeams, tvNrOfTeams2;
     int thisTeamNr, thisRoundNr;
     HasShowRoundScore callingActivity;
     Quiz thisQuiz = MyApplication.theQuiz;
@@ -49,6 +49,10 @@ public class FragShowRoundScore extends Fragment {
             tvYourScoreTotal.setText(Integer.toString(yourTotalScoreAftertHisRound));
             tvYourRankForThisRnd.setText(Integer.toString(yourRankForThisRound));
             tvYourRankAfterThisRound.setText(Integer.toString(yourRankAfterThisRound));
+            tvMaxRndScore.setText("/ " + thisQuiz.getRound(thisRoundNr).getMaxScore());
+            tvMaxTotalScore.setText("/ " + thisQuiz.getMaxScoreUntilRound(thisRoundNr));
+            tvNrOfTeams.setText("/ " + thisQuiz.getTeams().size());
+            tvNrOfTeams2.setText("/ " + thisQuiz.getTeams().size());
         }
     }
 
@@ -61,6 +65,10 @@ public class FragShowRoundScore extends Fragment {
         tvYourRankForThisRnd = v.findViewById(R.id.tvYourRankForThisRnd);
         tvYourScoreTotal = v.findViewById(R.id.tvYourScoreTotal);
         tvYourRankAfterThisRound = v.findViewById(R.id.tvYourRankTotal);
+        tvMaxRndScore = v.findViewById(R.id.tvMaxRndScore);
+        tvMaxTotalScore = v.findViewById(R.id.tvMaxTotalScore);
+        tvNrOfTeams = v.findViewById(R.id.tvNrOfTeams);
+        tvNrOfTeams2 = v.findViewById(R.id.tvNrOfTeams2);
         return v;
     }
 

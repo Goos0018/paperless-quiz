@@ -4,6 +4,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.widget.Toast;
 
+import com.paperlessquiz.MyApplication;
+
 public class LLShowProgressOnly implements LoadingListener {
 
     //This loadinglistener will display a message while loading is in progress.
@@ -37,6 +39,9 @@ public class LLShowProgressOnly implements LoadingListener {
 
     @Override
     public void loadingError(String error) {
+        String team;
+        if (MyApplication.theQuiz.getMyLoginentity() == null){team = "none";} else {team = MyApplication.theQuiz.getMyLoginentity().getName();}
+        MyApplication.eventLogger.logEvent(team,EventLogger.LEVEL_ERROR,error);
         Toast.makeText(context, errorMessage + error, Toast.LENGTH_LONG).show();
         loading.dismiss();
     }

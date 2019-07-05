@@ -118,4 +118,12 @@ public class Round implements Serializable, SpinnerData {
     public void setNrOfQuestions(int nrOfQuestions) {
         this.nrOfQuestions = nrOfQuestions;
     }
+
+    public int getMaxScore(){
+        int res=0;
+        for (int i = 0; i < questions.size(); i++) {
+            res = res + questions.get(i).getMaxScore();
+        }
+        return res;
+    }
 }

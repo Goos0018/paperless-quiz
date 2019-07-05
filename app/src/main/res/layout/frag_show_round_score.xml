@@ -31,7 +31,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_small"
                     android:gravity="right"
-                    android:text="Your score for this round:" />
+                    android:text="@string/rnd_score_scoreforround" />
 
                 <TextView
                     android:id="@+id/tvYourScoreForThisRnd"
@@ -40,6 +40,14 @@
                     android:layout_marginLeft="@dimen/margin_medium"
                     android:layout_marginTop="@dimen/margin_small"
                     android:text="00" />
+
+                <TextView
+                    android:id="@+id/tvMaxRndScore"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_medium"
+                    android:layout_marginTop="@dimen/margin_small"
+                    android:text="/ 00" />
 
             </TableRow>
 
@@ -53,7 +61,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_small"
                     android:gravity="right"
-                    android:text="Your rank for this round:" />
+                    android:text="@string/rnd_score_rankafterround" />
 
                 <TextView
                     android:id="@+id/tvYourRankForThisRnd"
@@ -62,6 +70,13 @@
                     android:layout_marginLeft="@dimen/margin_medium"
                     android:layout_marginTop="@dimen/margin_small"
                     android:text="00" />
+                <TextView
+                    android:id="@+id/tvNrOfTeams"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_medium"
+                    android:layout_marginTop="@dimen/margin_small"
+                    android:text="/ 00" />
             </TableRow>
 
             <TableRow
@@ -74,10 +89,18 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_small"
                     android:gravity="right"
-                    android:text="Your total score after this round:" />
+                    android:text="@string/rnd_score_totalscore" />
 
                 <TextView
                     android:id="@+id/tvYourScoreTotal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_medium"
+                    android:layout_marginTop="@dimen/margin_small"
+                    android:text="00" />
+
+                <TextView
+                    android:id="@+id/tvMaxTotalScore"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/margin_medium"
@@ -96,7 +119,7 @@
                     android:layout_marginTop="@dimen/margin_small"
                     android:layout_marginBottom="@dimen/margin_small"
                     android:gravity="right"
-                    android:text="Your overall rank after this round:" />
+                    android:text="@string/rnd_score_totalrank" />
 
                 <TextView
                     android:id="@+id/tvYourRankTotal"
@@ -106,6 +129,13 @@
                     android:layout_marginBottom="@dimen/margin_small"
                     android:text="00"
                     android:layout_marginLeft="@dimen/margin_medium" />
+                <TextView
+                    android:id="@+id/tvNrOfTeams2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_medium"
+                    android:layout_marginTop="@dimen/margin_small"
+                    android:text="/ 00" />
             </TableRow>
         </TableLayout>
     </android.support.v7.widget.CardView>

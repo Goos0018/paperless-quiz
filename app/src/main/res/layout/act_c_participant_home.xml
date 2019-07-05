@@ -51,7 +51,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="Submit Answers" />
+                android:text="@string/participant_submitanswers" />
 
 
 
@@ -80,7 +80,7 @@
                 android:layout_gravity="center"
                 android:layout_marginLeft="@dimen/margin_medium"
                 android:layout_marginRight="@dimen/margin_medium"
-                android:text="Your answers:" />
+                android:text="@string/participant_youranswers" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rvDisplayAnswers"

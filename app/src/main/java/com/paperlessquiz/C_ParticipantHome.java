@@ -2,6 +2,7 @@ package com.paperlessquiz;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
@@ -20,6 +21,8 @@ import com.paperlessquiz.googleaccess.EventLogger;
 import com.paperlessquiz.googleaccess.LoadingActivity;
 import com.paperlessquiz.quiz.QuizLoader;
 import com.paperlessquiz.round.Round;
+
+import java.util.Date;
 
 /**
  * Home screen for teams. Contains a round spinner and a question spinner + fields that allow to answer the question that is currently selected + button to submit answers.
@@ -41,6 +44,8 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
     DisplayAnswersAdapter displayAnswersAdapter;
     RecyclerView.LayoutManager layoutManager;
     String roundStatusExplanation;
+    long totalTimePaused;
+    Date lastPausedDate;
 
     @Override
     public String getRoundStatusExplanation() {
@@ -82,6 +87,9 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
         thisQuiz.setAnswerForTeam(roundSpinner.getPosition(), oldPos, thisTeamNr, etAnswer.getText().toString().trim());
         //Set the value of the answer for the new question to what we already have
         etAnswer.setText(thisQuiz.getAnswerForTeam(roundSpinner.getPosition(), newPos, thisTeamNr).getTheAnswer());
+        //Dismiss the keyboard if its there
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(etAnswer.getWindowToken(), 0);
         refreshAnswers(); //refresh the field that shows all answers already given for this round
     }
 
@@ -225,10 +233,19 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
     }
 
     @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        displayPDF(thisQuiz.getListData().getQuizPdfURL(), C_ParticipantHome.this.getString(R.string.participant_aboutquiztitle));
+    }
+
+    @Override
     protected void onPause() {
-        MyApplication.eventLogger.logEvent(thisQuiz.getMyLoginentity().getName(), EventLogger.LEVEL_WARNING, "WARNING: Paused the app");
-        thisQuiz.setLoggedIn(C_ParticipantHome.this, thisTeamNr, false);
-        MyApplication.setAppPaused(true);
+        if (thisQuiz.isAnyRoundOpen()) {
+            lastPausedDate = new Date();
+            MyApplication.eventLogger.logEvent(thisQuiz.getMyLoginentity().getName(), EventLogger.LEVEL_INFO, "INFO: Paused the app");
+            thisQuiz.setLoggedIn(C_ParticipantHome.this, thisTeamNr, false);
+            MyApplication.setAppPaused(true);
+        }
         super.onPause();
     }
 
@@ -236,7 +253,11 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
     protected void onPostResume() {
         super.onPostResume();
         if (MyApplication.isAppPaused()) {
-            MyApplication.eventLogger.logEvent(thisQuiz.getMyLoginentity().getName(), EventLogger.LEVEL_WARNING, "WARNING: Resumed the app");
+            Date dateResumed = new Date();
+            long timePaused = (dateResumed.getTime() - lastPausedDate.getTime()) / 1000;
+            totalTimePaused = totalTimePaused + timePaused;
+            MyApplication.eventLogger.logEvent(thisQuiz.getMyLoginentity().getName(), EventLogger.LEVEL_WARNING, "WARNING: Resumed the app after "
+                    + timePaused + " seconds - total time paused is now " + totalTimePaused + " seconds");
             thisQuiz.setLoggedIn(C_ParticipantHome.this, thisTeamNr, true);
             MyApplication.setAppPaused(false);
         }

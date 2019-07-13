@@ -1,7 +1,10 @@
 package com.paperlessquiz.quiz;
 
 import android.content.Context;
+import android.util.EventLog;
 
+import com.paperlessquiz.AnswersSubmitted;
+import com.paperlessquiz.MyApplication;
 import com.paperlessquiz.R;
 import com.paperlessquiz.corrections.CorrectionsList;
 import com.paperlessquiz.corrections.CorrectionsListParser;
@@ -14,15 +17,24 @@ import com.paperlessquiz.googleaccess.GoogleAccess;
 import com.paperlessquiz.googleaccess.GoogleAccessGet;
 import com.paperlessquiz.googleaccess.LLShowProgressActWhenComplete;
 import com.paperlessquiz.loginentity.GetLoginEntriesLPL;
+import com.paperlessquiz.loginentity.Organizer;
 import com.paperlessquiz.loginentity.Team;
 import com.paperlessquiz.loginentity.LoginEntityParser;
+import com.paperlessquiz.parsers.AnswersParser;
+import com.paperlessquiz.parsers.AnswersSubmittedParser;
+import com.paperlessquiz.parsers.JsonParser;
+import com.paperlessquiz.parsers.LogMessageParser;
+import com.paperlessquiz.parsers.OrganizerParser;
+import com.paperlessquiz.parsers.TeamParser;
 import com.paperlessquiz.question.GetQuestionsLPL;
 import com.paperlessquiz.question.Question;
 import com.paperlessquiz.question.QuestionParser;
 //import com.example.paperlessquiz.quizextradata.GetQuizExtraDataLPL;
+import com.paperlessquiz.question.QuestionsList;
 import com.paperlessquiz.round.GetRoundsLPL;
 import com.paperlessquiz.round.Round;
 import com.paperlessquiz.round.RoundParser;
+import com.paperlessquiz.webrequest.HTTPGet;
 
 import java.util.ArrayList;
 
@@ -30,13 +42,21 @@ import java.util.ArrayList;
 public class QuizLoader {
     private Context context;
     private String sheetDocID;
-    //private Quiz quiz;
+    private Quiz thisQuiz = MyApplication.theQuiz;
     //public GetQuizExtraDataLPL quizExtraDataLPL;
     public GetRoundsLPL quizRoundsLPL;
     public GetQuestionsLPL quizQuestionsLPL;
     public GetAnswersListLPL quizAnswersLPL;
     public GetCorrectionsListLPL quizCorrectionsLPL;
     public GetLoginEntriesLPL quizTeamsLPL, quizOrganizersLPL;
+    public HTTPGet<Team> getTeamsRequest;
+    public HTTPGet<Organizer> getOrganizersRequest;
+    public HTTPGet<Answer> getAnswersRequest;
+    public HTTPGet<Question> getQuestionsRequest;
+    public HTTPGet<Round> getRoundsRequest;
+    public HTTPGet<AnswersSubmitted> getAnswersSubmittedRequest;
+    public HTTPGet<EventLog> getEventLogsRequest;
+
     //public GetScoresLPL quizScoresLPL;
 
     public ArrayList<ArrayList<Answer>> myAnswers;
@@ -62,8 +82,18 @@ public class QuizLoader {
                 GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_GETDATA;
     }
 
+    public String generateParamsPHP(String query) {
+        return QuizDatabase.GETDATA_SCRIPT + QuizDatabase.PHP_STARTPARAM +
+                QuizDatabase.PARAMNAME_QUERY + query +
+                QuizDatabase.PARAMNAME_IDQUIZ + thisQuiz.getListData().getIdQuiz();
+    }
+
+
+
+
     //Get the additional data we don't have yet: nr of rounds, nr of participants, status,  ...
     public void loadAll() {
+        /*
         loadRounds();
         //loadExtradata();
         loadTeams();
@@ -72,12 +102,77 @@ public class QuizLoader {
         loadAllAnswers();
         loadAllCorrections();
         //loadScores();
+        */
+        loadRounds();
+        loadQuestions();
+        loadTeams();
+        loadOrganizers();
+        loadAnswers();
+        loadAnswersSubmitted();
+        loadEventLogs();
     }
 
-    public boolean allChecksOK() {
-        return (teamsOK() && organizersOK() && questionsOK());
+
+    //PHP Loaders
+    public void loadRounds(){
+        String scriptParams = generateParamsPHP(QuizDatabase.PARAMVALUE_QRY_ALL_ROUNDS_FOR_QUIZ);
+        getRoundsRequest = new HTTPGet<>(context,scriptParams,QuizDatabase.REQUEST_ID_ROUNDS);
+        getRoundsRequest.getItems(new com.paperlessquiz.parsers.RoundParser(),new LLShowProgressActWhenComplete(context, context.getString(R.string.loader_pleasewait),
+                context.getString(R.string.loader_updatingquiz),
+                "Something went wrong: ", false));
     }
 
+    public void loadQuestions(){
+        String scriptParams = generateParamsPHP(QuizDatabase.PARAMVALUE_QRY_ALL_QUESTIONS_FOR_QUIZ);
+        getQuestionsRequest = new HTTPGet<>(context,scriptParams,QuizDatabase.REQUEST_ID_QUESTIONS);
+        getQuestionsRequest.getItems(new com.paperlessquiz.parsers.QuestionParser(),new LLShowProgressActWhenComplete(context, context.getString(R.string.loader_pleasewait),
+                context.getString(R.string.loader_updatingquiz),
+                "Something went wrong: ", false));
+    }
+
+    public void loadTeams(){
+        String scriptParams = generateParamsPHP(QuizDatabase.PARAMVALUE_QRY_ALL_TEAMS_FOR_QUIZ);
+        getTeamsRequest = new HTTPGet<>(context,scriptParams,QuizDatabase.REQUEST_ID_TEAMS);
+        getTeamsRequest.getItems(new TeamParser(),new LLShowProgressActWhenComplete(context, context.getString(R.string.loader_pleasewait),
+                context.getString(R.string.loader_updatingquiz),
+                "Something went wrong: ", false));
+    }
+
+    public void loadOrganizers(){
+        String scriptParams = generateParamsPHP(QuizDatabase.PARAMVALUE_QRY_ALL_ORGANIZERS_FOR_QUIZ);
+        getOrganizersRequest = new HTTPGet<>(context,scriptParams,QuizDatabase.REQUEST_ID_ORGANIZERS);
+        getOrganizersRequest.getItems(new OrganizerParser(),new LLShowProgressActWhenComplete(context, context.getString(R.string.loader_pleasewait),
+                context.getString(R.string.loader_updatingquiz),
+                "Something went wrong: ", false));
+    }
+
+    public void loadAnswers(){
+        String scriptParams = generateParamsPHP(QuizDatabase.PARAMVALUE_QRY_ALL_ANSWERS_FOR_QUIZ);
+        getAnswersRequest = new HTTPGet<>(context,scriptParams,QuizDatabase.REQUEST_ID_ANSWERS);
+        getAnswersRequest.getItems(new AnswersParser(),new LLShowProgressActWhenComplete(context, context.getString(R.string.loader_pleasewait),
+                context.getString(R.string.loader_updatingquiz),
+                "Something went wrong: ", false));
+    }
+
+
+    public void loadAnswersSubmitted(){
+        String scriptParams = generateParamsPHP(QuizDatabase.PARAMVALUE_QRY_ALL_ANSWERSSUBMITTED_FOR_QUIZ);
+        getAnswersSubmittedRequest = new HTTPGet<>(context,scriptParams,QuizDatabase.REQUEST_ID_ANSWERSSUBMITTED);
+        getAnswersSubmittedRequest.getItems(new AnswersSubmittedParser(),new LLShowProgressActWhenComplete(context, context.getString(R.string.loader_pleasewait),
+                context.getString(R.string.loader_updatingquiz),
+                "Something went wrong: ", false));
+    }
+
+
+    public void loadEventLogs(){
+        String scriptParams = generateParamsPHP(QuizDatabase.PARAMVALUE_QRY_ALL_EVENTLOGS_FOR_QUIZ);
+        getEventLogsRequest = new HTTPGet<>(context,scriptParams,QuizDatabase.REQUEST_ID_EVENTLOGS);
+        getEventLogsRequest.getItems(new LogMessageParser(),new LLShowProgressActWhenComplete(context, context.getString(R.string.loader_pleasewait),
+                context.getString(R.string.loader_updatingquiz),
+                "Something went wrong: ", false));
+    }
+
+    /*
 
     public void loadTeams() {
         //Get the list of participating teams
@@ -135,6 +230,10 @@ public class QuizLoader {
                         "Something went wrong: ", false));
     }
 
+
+    public boolean allChecksOK() {
+        return (teamsOK() && organizersOK() && questionsOK());
+    }
     public boolean questionsOK() {
         //There should be round.NrOfQuestions questions for every round
         /*
@@ -149,6 +248,7 @@ public class QuizLoader {
             }
         }
         */
+    /*
         return true;
     }
 
@@ -169,6 +269,7 @@ public class QuizLoader {
                 new LLShowProgressActWhenComplete(context, context.getString(R.string.loader_pleasewait), context.getString(R.string.loader_updatingquiz),
                         "Something went wrong: ", false));
     }
+*/
 
     public void generateBlankAnswers() {
         //for each round

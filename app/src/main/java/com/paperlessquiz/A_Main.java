@@ -55,7 +55,7 @@ public class A_Main extends AppCompatActivity implements LoadingActivity {
                         this.getString(R.string.loadingerror),false));
         */
 
-        request = new HTTPGet<QuizListData>(this, QuizDatabase.GETDATA_SCRIPT + QuizDatabase.PHP_STARTPARAM +
+        request = new HTTPGet<QuizListData>(this, QuizDatabase.GETALLDATA_SCRIPT + QuizDatabase.PHP_STARTPARAM +
                 QuizDatabase.PARAMNAME_TABLE+QuizDatabase.PARAMVALUE_TBL_QUIZLIST, QuizDatabase.REQUEST_ID_QUIZLIST);
         request.getItems(new QuizListDataParser(),
                 new LLShowProgressActWhenComplete(this, this.getString(R.string.loadingtitle), this.getString(R.string.loadingmsg_list),

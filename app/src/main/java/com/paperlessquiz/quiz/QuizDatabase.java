@@ -4,9 +4,14 @@ public class QuizDatabase {
 
     // Constants needed to retrieve data from the SQL db
     public static final String PHP_URL = "http://paperlessquiz.be/php/";
-    public static final String GETDATA_SCRIPT = "getdata.php";
     public static final String PHP_STARTPARAM = "?";
+    public static final String PHP_PARAMCONCATENATOR = "&";
     public static final String PARAMNAME_TABLE = "table=";
+    public static final String PARAMNAME_IDQUIZ = "idQuiz=";
+    public static final String PARAMNAME_QUERY = "query=";
+    // Available PHP scripts
+    public static final String GETALLDATA_SCRIPT = "getalldata.php";
+    public static final String GETDATA_SCRIPT = "getdata.php";
     //Param values - table names
     public static final String PARAMVALUE_TBL_ANSWERS = "Answers";
     public static final String PARAMVALUE_TBL_ANSWERSSUBMITTED = "AnswersSubmitted";
@@ -16,8 +21,23 @@ public class QuizDatabase {
     public static final String PARAMVALUE_TBL_QUIZLIST = "QuizList";
     public static final String PARAMVALUE_TBL_ROUNDS = "Rounds";
     public static final String PARAMVALUE_TBL_TEAMS = "Teams";
+    //Param values - query names
+    public static final String PARAMVALUE_QRY_ALL_ANSWERS_FOR_QUIZ = "qry_all-answers-for-quiz";
+    public static final String PARAMVALUE_QRY_ALL_ANSWERSSUBMITTED_FOR_QUIZ = "qry_all-answerssubmitted-for-quiz";
+    public static final String PARAMVALUE_QRY_ALL_EVENTLOGS_FOR_QUIZ = "qry_all-eventlogs-for-quiz";
+    public static final String PARAMVALUE_QRY_ALL_ORGANIZERS_FOR_QUIZ = "qry_all-organizers-for-quiz";
+    public static final String PARAMVALUE_QRY_ALL_QUESTIONS_FOR_QUIZ = "qry_all-questions-for-quiz";
+    public static final String PARAMVALUE_QRY_ALL_ROUNDS_FOR_QUIZ = "qry_all-rounds-for-quiz";
+    public static final String PARAMVALUE_QRY_ALL_TEAMS_FOR_QUIZ = "qry_all-teams-for-quiz";
     //Request ID's
     public static final int REQUEST_ID_QUIZLIST = 0;
+    public static final int REQUEST_ID_ROUNDS = 1;
+    public static final int REQUEST_ID_QUESTIONS = 2;
+    public static final int REQUEST_ID_TEAMS = 3;
+    public static final int REQUEST_ID_ORGANIZERS = 4;
+    public static final int REQUEST_ID_ANSWERS = 5;
+    public static final int REQUEST_ID_ANSWERSSUBMITTED = 6;
+    public static final int REQUEST_ID_EVENTLOGS = 7;
 
     //Organizer Types
     public static final int ORGANIZERTYPE_QUIZMASTER = 0;

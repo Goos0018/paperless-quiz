@@ -98,4 +98,8 @@ public class QuizListData implements Serializable {
     public String getQuizPdfURL() {
         return quizPdfURL;
     }
+
+    public int getIdQuiz() {
+        return idQuiz;
+    }
 }

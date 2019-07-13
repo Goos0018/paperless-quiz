@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.paperlessquiz.googleaccess.LoadingActivity;
 import com.paperlessquiz.loginentity.Team;
 import com.paperlessquiz.quiz.Quiz;
+import com.paperlessquiz.quiz.QuizDatabase;
 import com.paperlessquiz.quiz.QuizGenerator;
 import com.paperlessquiz.quiz.QuizLoader;
 import com.squareup.picasso.Picasso;
@@ -33,7 +34,23 @@ public class A_SelectRole extends AppCompatActivity implements LoadingActivity {
 
     @Override
     public void loadingComplete(int requestID) {
-        //Do something when loading is complete - not needed here
+        //Write all the data we retrieved to the Quiz object
+        switch (requestID){
+            case QuizDatabase.REQUEST_ID_ROUNDS:
+                break;
+            case QuizDatabase.REQUEST_ID_QUESTIONS:
+                break;
+            case QuizDatabase.REQUEST_ID_TEAMS:
+                break;
+            case QuizDatabase.REQUEST_ID_ORGANIZERS:
+                break;
+            case QuizDatabase.REQUEST_ID_ANSWERS:
+                break;
+            case QuizDatabase.REQUEST_ID_ANSWERSSUBMITTED:
+                break;
+            case QuizDatabase.REQUEST_ID_EVENTLOGS:
+                break;
+        }
     }
 
     @Override

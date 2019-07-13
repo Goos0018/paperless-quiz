@@ -7,7 +7,7 @@ public class QuizDatabase {
     public static final String PHP_STARTPARAM = "?";
     public static final String PHP_PARAMCONCATENATOR = "&";
     public static final String PARAMNAME_TABLE = "table=";
-    public static final String PARAMNAME_IDQUIZ = "idQuiz=";
+    public static final String PARAMNAME_ID = "id=";
     public static final String PARAMNAME_QUERY = "query=";
     // Available PHP scripts
     public static final String GETALLDATA_SCRIPT = "getalldata.php";

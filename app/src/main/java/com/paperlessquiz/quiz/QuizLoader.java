@@ -6,34 +6,24 @@ import android.util.EventLog;
 import com.paperlessquiz.AnswersSubmitted;
 import com.paperlessquiz.MyApplication;
 import com.paperlessquiz.R;
-import com.paperlessquiz.corrections.CorrectionsList;
-import com.paperlessquiz.corrections.CorrectionsListParser;
 import com.paperlessquiz.corrections.GetCorrectionsListLPL;
 import com.paperlessquiz.answer.Answer;
-import com.paperlessquiz.answer.AnswersList;
-import com.paperlessquiz.answer.AnswersListParser;
 import com.paperlessquiz.answer.GetAnswersListLPL;
 import com.paperlessquiz.googleaccess.GoogleAccess;
-import com.paperlessquiz.googleaccess.GoogleAccessGet;
 import com.paperlessquiz.googleaccess.LLShowProgressActWhenComplete;
 import com.paperlessquiz.loginentity.GetLoginEntriesLPL;
 import com.paperlessquiz.loginentity.Organizer;
 import com.paperlessquiz.loginentity.Team;
-import com.paperlessquiz.loginentity.LoginEntityParser;
 import com.paperlessquiz.parsers.AnswersParser;
 import com.paperlessquiz.parsers.AnswersSubmittedParser;
-import com.paperlessquiz.parsers.JsonParser;
 import com.paperlessquiz.parsers.LogMessageParser;
 import com.paperlessquiz.parsers.OrganizerParser;
 import com.paperlessquiz.parsers.TeamParser;
 import com.paperlessquiz.question.GetQuestionsLPL;
 import com.paperlessquiz.question.Question;
-import com.paperlessquiz.question.QuestionParser;
 //import com.example.paperlessquiz.quizextradata.GetQuizExtraDataLPL;
-import com.paperlessquiz.question.QuestionsList;
 import com.paperlessquiz.round.GetRoundsLPL;
 import com.paperlessquiz.round.Round;
-import com.paperlessquiz.round.RoundParser;
 import com.paperlessquiz.webrequest.HTTPGet;
 
 import java.util.ArrayList;
@@ -85,7 +75,7 @@ public class QuizLoader {
     public String generateParamsPHP(String query) {
         return QuizDatabase.GETDATA_SCRIPT + QuizDatabase.PHP_STARTPARAM +
                 QuizDatabase.PARAMNAME_QUERY + query +
-                QuizDatabase.PARAMNAME_IDQUIZ + thisQuiz.getListData().getIdQuiz();
+                QuizDatabase.PARAMNAME_ID + thisQuiz.getListData().getIdQuiz();
     }
 
 

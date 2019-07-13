@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 
 import com.paperlessquiz.googleaccess.EventLogger;
+import com.paperlessquiz.loginentity.Team;
 import com.paperlessquiz.quiz.Quiz;
 import com.paperlessquiz.quiz.QuizGenerator;
 
@@ -26,6 +27,7 @@ public class MyApplication extends Application {
     public static EventLogger eventLogger;
     public static String deviceID;                                  //Contains an ID of the device on which the app runs
     public static Quiz theQuiz;                                     //The quiz for which the app is being used
+    //public static Team theTeam;                                     //The team that is taking the quiz (null for Organizers)
     public static ArrayList<String> googleLog = new ArrayList<>();  //An arraylist that will contain a log of all transactions to and from a Google sheet (=the back-end of this app)
     public static boolean loggedIn;                                 //Tracks that user is logged in
     public static boolean appPaused;                                //Tracks that app was paused

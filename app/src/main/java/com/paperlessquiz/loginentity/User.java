@@ -5,7 +5,7 @@ This class represents a user that can log in. Will be extended to Team or Organi
  */
 public class User {
     private int idQuiz,idUser;
-    private String name;
+    private String name, description;
     private String passkey;
 
     public User(int idQuiz, int idUser, String name, String passkey) {
@@ -45,5 +45,13 @@ public class User {
 
     public void setPasskey(String passkey) {
         this.passkey = passkey;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

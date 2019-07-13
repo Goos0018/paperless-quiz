@@ -31,7 +31,7 @@ public class C_ReceptionistHome extends MyActivity implements LoadingActivity {
     EditTeamsAdapter editTeamsAdapter;
 
     @Override
-    public void loadingComplete() {
+    public void loadingComplete(int requestID) {
         //Do something when loading is complete
         if (editTeamsAdapter != null) {
             editTeamsAdapter.notifyDataSetChanged();

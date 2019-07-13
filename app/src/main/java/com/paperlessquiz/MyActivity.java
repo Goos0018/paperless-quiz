@@ -11,7 +11,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.paperlessquiz.R;
 import com.paperlessquiz.quiz.Quiz;
 import com.paperlessquiz.quiz.QuizGenerator;
 import com.squareup.picasso.Picasso;
@@ -42,9 +41,9 @@ public class MyActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.help:
-                displayPDF(QuizGenerator.HELPFILE_URL + MyApplication.helpFiles.get(thisQuiz.getMyLoginentity().getType()),"HELP!");
+                //TODO: FIX this given new structure displayPDF(QuizGenerator.HELPFILE_URL + MyApplication.helpFiles.get(thisQuiz.getThisTeam().getType()),"HELP!");
                 //Intent intentDisplayPDF = new Intent(MyActivity.this, DisplayPDF.class);
-                //intentDisplayPDF.putExtra(QuizGenerator.PDF_TO_DISPLAY, MyApplication.helpFiles.get(thisQuiz.getMyLoginentity().getType()));
+                //intentDisplayPDF.putExtra(QuizGenerator.PDF_TO_DISPLAY, MyApplication.helpFiles.get(thisQuiz.getThisTeam().getType()));
                 //startActivity(intentDisplayPDF);
         }
         return super.onOptionsItemSelected(item);
@@ -80,7 +79,7 @@ public class MyActivity extends AppCompatActivity {
 
         public void setActionBarTitle () {
             ActionBar actionBar = getSupportActionBar();
-            actionBar.setTitle(thisQuiz.getMyLoginentity().getName());
+            actionBar.setTitle(thisQuiz.getThisTeam().getName());
         }
 
 

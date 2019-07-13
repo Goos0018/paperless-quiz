@@ -27,7 +27,7 @@ public class A__GenerateQuiz extends AppCompatActivity implements FragSpinner.Ha
     Button btnInitialize, btnGenerateQuiz;
 
     @Override
-    public void loadingComplete() {
+    public void loadingComplete(int requestID) {
         //This is called when the quiz doc has been created
         generator.setQuizDocID(generator.googleAccessCreateQuiz.getResultExplanation());
         //stdContentForQuizListDataTab

@@ -12,7 +12,7 @@ public class LoginEntityParser implements JsonParser<Team> {
     //Headers are taken from the QuizGenerator class and must match those of course
 
     public Team parse(JSONObject jo) throws JSONException {
-        Team team = new Team(jo.getInt(QuizGenerator.LOGIN_ENTITY_ID), jo.getString(QuizGenerator.LOGIN_ENTITY_TYPE),
+/*        Team team = new Team(jo.getInt(QuizGenerator.LOGIN_ENTITY_ID), jo.getString(QuizGenerator.LOGIN_ENTITY_TYPE),
                 jo.getString(QuizGenerator.LOGIN_ENTITY_NAME), jo.getString(QuizGenerator.LOGIN_ENTITY_PASSKEY));
         if (jo.getString(QuizGenerator.LOGIN_ENTITY_TYPE).equals(QuizGenerator.SELECTION_PARTICIPANT)) {
             // If this is a participant, fill out the rest of the info
@@ -38,6 +38,7 @@ public class LoginEntityParser implements JsonParser<Team> {
             }
             team.setAnswerForRndsSubmitted(answersSubmitted);
         }
-        return team;
+        */
+        return new Team(0,0,"","",0,0);
     }
 }

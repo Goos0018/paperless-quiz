@@ -20,7 +20,7 @@ import java.util.ArrayList;
 public class QuizListAdapter extends ArrayAdapter<QuizListData>
 {
     private final Context context;
-    public Image image;
+    //public Image image;
 
     public QuizListAdapter(Context context) {
         super(context, R.layout.row_layout_select_quiz, new ArrayList<QuizListData>());

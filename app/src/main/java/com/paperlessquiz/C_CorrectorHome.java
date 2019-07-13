@@ -109,7 +109,7 @@ public class C_CorrectorHome extends MyActivity implements LoadingActivity, Frag
 
 
     @Override
-    public void loadingComplete() {
+    public void loadingComplete(int requestID) {
         //If this was the quizloader for the rounds, we don't want to set the corrections
         if (quizLoader.quizCorrectionsLPL.getAllCorrectionsPerRound().size() == 0) {
         } else {

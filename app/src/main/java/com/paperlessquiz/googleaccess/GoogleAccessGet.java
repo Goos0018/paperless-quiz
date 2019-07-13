@@ -45,7 +45,7 @@ public class GoogleAccessGet<T> {
                     public void onResponse(String response) {
                         List<T> items =  parseItems(response, parser);
                         listParsedListener.listParsed(items);
-                        loadingListener.loadingEnded();
+                        loadingListener.loadingEnded(0);
                     }
                 },
 
@@ -53,7 +53,7 @@ public class GoogleAccessGet<T> {
                     @Override
                     public void onErrorResponse(VolleyError error)
                     {
-                        loadingListener.loadingError(error.toString());
+                        loadingListener.loadingError(error.toString(),0);
                     }
                 }
         );

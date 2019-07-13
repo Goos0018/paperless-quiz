@@ -54,7 +54,7 @@ public class EventLogger {
                         GoogleAccess.PARAMNAME_LINE_TO_ADD + "[\"" + strToday + "\",\"" + team + "\",\"" + strLevel + "\",\"" + message + "\"]" + GoogleAccess.PARAM_CONCATENATOR +
                         GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_ADDLINE;
                 GoogleAccessSet logger = new GoogleAccessSet(context, scriptParams);
-                logger.setData(new LoadingListenerSilent());
+                logger.setData(new LLSilent());
             }
         } catch (Exception e) {
         }

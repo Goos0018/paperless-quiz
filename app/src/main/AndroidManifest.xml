@@ -22,7 +22,7 @@
         <activity android:name="com.paperlessquiz.C_QuizmasterTeams" />
         <activity android:name="com.paperlessquiz.C_QuizmasterRounds" />
         <activity
-            android:name="com.paperlessquiz.B_LoginMain"
+            android:name="com.paperlessquiz.B_LoginTeam"
             android:windowSoftInputMode="stateHidden" />
         <activity android:name="com.paperlessquiz.A_SelectRole" />
         <activity android:name="com.paperlessquiz.A_Main">

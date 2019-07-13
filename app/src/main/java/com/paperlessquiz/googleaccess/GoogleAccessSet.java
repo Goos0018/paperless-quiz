@@ -55,14 +55,14 @@ public class GoogleAccessSet {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        loadingListener.loadingEnded();
+                        loadingListener.loadingEnded(0);
                     }
                 },
 
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        loadingListener.loadingError("Error posting data: " + parameters);
+                        loadingListener.loadingError("Error posting data: " + parameters,0);
                     }
                 }
         );

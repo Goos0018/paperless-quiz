@@ -50,6 +50,17 @@
                 android:layout_marginBottom="@dimen/margin_tiny"
                 android:text="TextView" />
 
+            <TextView
+                android:id="@+id/tvUserID"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/margin_tiny"
+                android:layout_marginTop="@dimen/margin_tiny"
+                android:layout_marginRight="@dimen/margin_tiny"
+                android:layout_marginBottom="@dimen/margin_tiny"
+                android:visibility="gone" />
+
         </LinearLayout>
 
 

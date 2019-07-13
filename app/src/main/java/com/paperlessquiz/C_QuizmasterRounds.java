@@ -21,7 +21,7 @@ public class C_QuizmasterRounds extends MyActivity implements LoadingActivity {
     RoundsAdapter showRoundsAdapter;
 
     @Override
-    public void loadingComplete() {
+    public void loadingComplete(int requestID) {
         showRoundsAdapter.notifyDataSetChanged();
     }
 

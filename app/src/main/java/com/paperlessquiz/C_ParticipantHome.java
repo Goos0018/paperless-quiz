@@ -108,7 +108,7 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
     }
 
     @Override
-    public void loadingComplete() {
+    public void loadingComplete(int requestID) {
         //Actions do do when we are completed (re)loading data from the Google sheet
         //roundSpinner.moveUp();roundSpinner.moveDown(); // Replaced with refreshIcons since moveUp and MoveDown crashed the app sometimes? Issue with Fragment mgr?
         roundSpinner.refreshIcons();
@@ -199,8 +199,8 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
         setActionBarIcon();
         setActionBarTitle();
         //Log that the user logged in and set LoggedIn to TRUE
-        thisTeamNr = thisQuiz.getMyLoginentity().getIdUser();
-        MyApplication.eventLogger.logEvent(thisQuiz.getMyLoginentity().getName(), EventLogger.LEVEL_INFO, "Logged in");
+        thisTeamNr = thisQuiz.getThisTeam().getIdUser();
+        MyApplication.eventLogger.logEvent(thisQuiz.getThisTeam().getName(), EventLogger.LEVEL_INFO, "Logged in");
         thisQuiz.setLoggedIn(C_ParticipantHome.this, thisTeamNr, true);
         MyApplication.setLoggedIn(true);
         //Get all the stuff from the layout
@@ -241,7 +241,7 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
     protected void onPause() {
         if (thisQuiz.isAnyRoundOpen()) {
             lastPausedDate = new Date();
-            MyApplication.eventLogger.logEvent(thisQuiz.getMyLoginentity().getName(), EventLogger.LEVEL_INFO, "INFO: Paused the app");
+            MyApplication.eventLogger.logEvent(thisQuiz.getThisTeam().getName(), EventLogger.LEVEL_INFO, "INFO: Paused the app");
             thisQuiz.setLoggedIn(C_ParticipantHome.this, thisTeamNr, false);
             MyApplication.setAppPaused(true);
         }
@@ -255,7 +255,7 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
             Date dateResumed = new Date();
             long timePaused = (dateResumed.getTime() - lastPausedDate.getTime()) / 1000;
             totalTimePaused = totalTimePaused + timePaused;
-            MyApplication.eventLogger.logEvent(thisQuiz.getMyLoginentity().getName(), EventLogger.LEVEL_WARNING, "WARNING: Resumed the app after "
+            MyApplication.eventLogger.logEvent(thisQuiz.getThisTeam().getName(), EventLogger.LEVEL_WARNING, "WARNING: Resumed the app after "
                     + timePaused + " seconds - total time paused is now " + totalTimePaused + " seconds");
             thisQuiz.setLoggedIn(C_ParticipantHome.this, thisTeamNr, true);
             MyApplication.setAppPaused(false);

@@ -11,16 +11,14 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.paperlessquiz.parsers.JsonParser;
-import com.paperlessquiz.googleaccess.ListParsedListener;
 import com.paperlessquiz.googleaccess.LoadingListener;
-import com.paperlessquiz.quiz.Quiz;
+import com.paperlessquiz.quiz.QuizDatabase;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This class retrieves data via a HTTP GET request. The expected result is an array of JSON objects that are parsed
@@ -31,23 +29,27 @@ import java.util.List;
 public class HTTPGet<T> {
     private Context context;
     private String parameters;
+    private int requestID;
+    private ArrayList<T> resultsList;
     int debugLevel;
 
-    public HTTPGet(Context context, String parameters) {
+    public HTTPGet(Context context, String parameters,int requestID) {
         this.context = context;
         this.parameters = parameters;
+        this.requestID = requestID;
     }
 
     //For each type of object/specific use, you need to create an implementation of JsonParser and ListParsedListener
-    public void getItems(JsonParser<T> parser, final ListParsedListener<T> listParsedListener, LoadingListener loadingListener) {
+    //public void getItems(JsonParser<T> parser, final ListParsedListener<T> listParsedListener, LoadingListener loadingListener) {
+    public void getItems(JsonParser<T> parser, LoadingListener loadingListener) {
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, Quiz.PHP_URL + parameters,
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, QuizDatabase.PHP_URL + parameters,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        List<T> items =  parseItems(response, parser);
-                        listParsedListener.listParsed(items);
-                        loadingListener.loadingEnded();
+                        resultsList =  parseItems(response, parser);
+                        //listParsedListener.listParsed(resultsList);
+                        loadingListener.loadingEnded(requestID);
                     }
                 },
 
@@ -55,7 +57,7 @@ public class HTTPGet<T> {
                     @Override
                     public void onErrorResponse(VolleyError error)
                     {
-                        loadingListener.loadingError(error.toString());
+                        loadingListener.loadingError(error.toString(), requestID);
                     }
                 }
         );
@@ -84,5 +86,9 @@ public class HTTPGet<T> {
             e.printStackTrace();
         }
         return list;
+    }
+
+    public ArrayList<T> getResultsList() {
+        return resultsList;
     }
 }

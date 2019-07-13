@@ -32,7 +32,7 @@ public class A_SelectRole extends AppCompatActivity implements LoadingActivity {
     int counter = 0;
 
     @Override
-    public void loadingComplete() {
+    public void loadingComplete(int requestID) {
         //Do something when loading is complete - not needed here
     }
 
@@ -76,6 +76,8 @@ public class A_SelectRole extends AppCompatActivity implements LoadingActivity {
             @Override
             public void onClick(View view) {
                 commonActions(QuizGenerator.SELECTION_PARTICIPANT);
+                intent = new Intent(A_SelectRole.this, B_LoginTeam.class);
+                startActivity(intent);
             }
         });
 
@@ -83,6 +85,8 @@ public class A_SelectRole extends AppCompatActivity implements LoadingActivity {
             @Override
             public void onClick(View view) {
                 commonActions(QuizGenerator.SELECTION_ORGANIZER);
+                intent = new Intent(A_SelectRole.this, B_LoginOrganizer.class);
+                startActivity(intent);
             }
         });
     }
@@ -92,7 +96,7 @@ public class A_SelectRole extends AppCompatActivity implements LoadingActivity {
         //TODO: put this as a method of the QuizLoader class
         //thisQuiz.setListData(thisQuizListData);                                                           //=> Already done in the main activity - is done only once
         thisQuiz.setTeams(quizLoader.quizTeamsLPL.getLoginEntities());                                      //=> Set the teams here, LPL will update them on subsequent loads
-        thisQuiz.setOrganizers(quizLoader.quizOrganizersLPL.getLoginEntities());                            //=> Not in LPL, only done once
+        // TODO: thisQuiz.setOrganizers(quizLoader.quizOrganizersLPL.getLoginEntities());                            //=> Not in LPL, only done once
         thisQuiz.setRounds(quizLoader.quizRoundsLPL.getRounds());                                           //=> Set the rounds here, LPL will update them on subsequent loads
         thisQuiz.setAllQuestionsPerRound(quizLoader.quizQuestionsLPL.getAllQuestionsPerRound());            //=> Rounds exist now. Questions are only loaded here.
         thisQuiz.setAllAnswersPerQuestion(quizLoader.quizAnswersLPL.getAllAnswersPerRound());               //=> Questions exist now. LPL will update the answer strings on subsequent loads.
@@ -102,9 +106,7 @@ public class A_SelectRole extends AppCompatActivity implements LoadingActivity {
         MyApplication.setDebugLevel(thisQuiz.getListData().getDebugLevel());
         MyApplication.setKeepLogs(thisQuiz.getListData().isKeepLogs());
         MyApplication.setAppDebugLevel(thisQuiz.getListData().getAppDebugLevel());
-        intent = new Intent(A_SelectRole.this, B_LoginMain.class);
-        intent.putExtra(Team.INTENT_EXTRA_NAME_THIS_LOGIN_TYPE, selection);      //Proceed to login and pass if this is a Team or an Organizer
-        startActivity(intent);
+
     }
 
 }

@@ -4,9 +4,8 @@ import android.content.Context;
 
 import com.paperlessquiz.googleaccess.GoogleAccess;
 import com.paperlessquiz.googleaccess.GoogleAccessSet;
+import com.paperlessquiz.googleaccess.LLShowProgressActWhenComplete;
 import com.paperlessquiz.googleaccess.LLShowProgressOnly;
-import com.paperlessquiz.googleaccess.LoadingListenerNotify;
-import com.paperlessquiz.googleaccess.LoadingListenerShowProgressAndActWhenComplete;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -204,7 +203,7 @@ public class QuizGenerator {
                 "quizName=" + quizName + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_ACTION + "createQuizDoc";
         googleAccessCreateQuiz = new GoogleAccessSet(context, parameters);
-        googleAccessCreateQuiz.setData(new LoadingListenerShowProgressAndActWhenComplete(context, "Creating quiz", "Creating " + quizName, "Error", false));
+        googleAccessCreateQuiz.setData(new LLShowProgressActWhenComplete(context, "Creating quiz", "Creating " + quizName, "Error", false));
         //The quizDocID for the quiz will be in the result property of the googleAccessCreateQuiz
     }
 

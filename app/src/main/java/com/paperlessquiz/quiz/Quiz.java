@@ -7,9 +7,11 @@ import com.paperlessquiz.answer.Answer;
 import com.paperlessquiz.answer.AnswersList;
 import com.paperlessquiz.googleaccess.GoogleAccess;
 import com.paperlessquiz.googleaccess.GoogleAccessSet;
-import com.paperlessquiz.googleaccess.LoadingListenerNotify;
-import com.paperlessquiz.googleaccess.LoadingListenerSilent;
+import com.paperlessquiz.googleaccess.LLNotifyStartOnly;
+import com.paperlessquiz.googleaccess.LLSilent;
+import com.paperlessquiz.loginentity.Organizer;
 import com.paperlessquiz.loginentity.Team;
+import com.paperlessquiz.loginentity.User;
 import com.paperlessquiz.question.Question;
 import com.paperlessquiz.quizlistdata.QuizListData;
 import com.paperlessquiz.round.Round;
@@ -39,18 +41,13 @@ public class Quiz implements Serializable {
     public static final int TARGET_HEIGHT = 200;
     public static final int ACTIONBAR_ICON_WIDTH = 125;
     public static final int ACTIONBAR_ICON_HEIGHT = 125;
-    // Constants needed to retrieve data from the SQL db
-    public static final String PHP_URL = "http://paperlessquiz.be/php/";
-    public static final String GETDATA_SCRIPT = "getdata.php";
-    public static final String PHP_STARTPARAM = "?";
-    public static final String PARAMNAME_TABLE = "table=";
-    public static final String PARAMVALUE_TBL_QUIZLIST = "QuizList";
 
     private QuizListData listData;
     private ArrayList<Team> teams;
-    private ArrayList<Team> organizers;
+    private ArrayList<Organizer> organizers;
     private ArrayList<Round> rounds;
-    private Team myLoginentity;
+    private Team thisTeam;
+    private Organizer thisOrganizer;
     public boolean loadingCompleted = false;
 
 
@@ -143,7 +140,7 @@ public class Quiz implements Serializable {
     }
 
     //Return the team with the given ID
-    public Team getOrganizer(int organizerNr) {
+    public Organizer getOrganizer(int organizerNr) {
         return organizers.get(organizerNr - 1);
     }
 
@@ -152,7 +149,7 @@ public class Quiz implements Serializable {
         return teams;
     }
 
-    public ArrayList<Team> getOrganizers() {
+    public ArrayList<Organizer> getOrganizers() {
         return organizers;
     }
 
@@ -160,7 +157,7 @@ public class Quiz implements Serializable {
         this.teams = teams;
     }
 
-    public void setOrganizers(ArrayList<Team> organizers) {
+    public void setOrganizers(ArrayList<Organizer> organizers) {
         this.organizers = organizers;
     }
 
@@ -210,12 +207,12 @@ public class Quiz implements Serializable {
         return getQuestion(rndNr, questionNr).getAllAnswers();
     }
 
-    public Team getMyLoginentity() {
-        return myLoginentity;
+    public User getThisTeam() {
+        return thisTeam;
     }
 
-    public void setMyLoginentity(Team myLoginentity) {
-        this.myLoginentity = myLoginentity;
+    public void setThisTeam(Team thisTeam) {
+        this.thisTeam = thisTeam;
     }
 
     public void updateRounds(Context context) {
@@ -236,7 +233,7 @@ public class Quiz implements Serializable {
                 GoogleAccess.PARAMNAME_NEWVALUES + tmp + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_SETDATA;
         GoogleAccessSet submitRounds = new GoogleAccessSet(context, scriptParams);
-        submitRounds.setData(new LoadingListenerNotify(context, getMyLoginentity().getName(),
+        submitRounds.setData(new LLNotifyStartOnly(context, getThisTeam().getName(),
                 "Submitting round updates"));
     }
 
@@ -258,7 +255,7 @@ public class Quiz implements Serializable {
                 GoogleAccess.PARAMNAME_NEWVALUES + tmp + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_SETDATA;
         GoogleAccessSet googleAccessSet = new GoogleAccessSet(context, scriptParams);
-        googleAccessSet.setData(new LoadingListenerNotify(context, getMyLoginentity().getName(),
+        googleAccessSet.setData(new LLNotifyStartOnly(context, getThisTeam().getName(),
                 "Submitting team updates"));
     }
 
@@ -282,7 +279,7 @@ public class Quiz implements Serializable {
                 GoogleAccess.PARAMNAME_NEWVALUES + tmp + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_SETDATA;
         GoogleAccessSet submitScores = new GoogleAccessSet(context, scriptParams);
-        submitScores.setData(new LoadingListenerNotify(context, getMyLoginentity().getName(),
+        submitScores.setData(new LLNotifyStartOnly(context, getThisTeam().getName(),
                 "Submitting scores for question " + getQuestion(roundNr, questionNr).getQuestionID()));
     }
 
@@ -305,13 +302,13 @@ public class Quiz implements Serializable {
                 GoogleAccess.PARAMNAME_NEWVALUES + tmp + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_SETDATA;
         GoogleAccessSet submitScores = new GoogleAccessSet(context, scriptParams);
-        submitScores.setData(new LoadingListenerNotify(context, getMyLoginentity().getName(),
+        submitScores.setData(new LLNotifyStartOnly(context, getThisTeam().getName(),
                 "Submitting scores for team " + getTeam(teamNr).getName()));
     }
 
     //Used by the Participant to submit all answers for a single round
     public void submitAnswers(Context context, int roundNr) {
-        ArrayList<Answer> answerList = getAnswersForRound(roundNr, getMyLoginentity().getIdUser());
+        ArrayList<Answer> answerList = getAnswersForRound(roundNr, getThisTeam().getIdUser());
         String tmp = "[";
         for (int i = 0; i < answerList.size(); i++) {
             tmp = tmp + "[\"" + answerList.get(i).getTheAnswer() + "\"]";
@@ -321,16 +318,16 @@ public class Quiz implements Serializable {
         }
         tmp = tmp + "]";
         String scriptParams = GoogleAccess.PARAMNAME_DOC_ID + listData.getSheetDocID() + GoogleAccess.PARAM_CONCATENATOR +
-                GoogleAccess.PARAMNAME_USERID + myLoginentity.getName() + GoogleAccess.PARAM_CONCATENATOR +
+                GoogleAccess.PARAMNAME_USERID + thisTeam.getName() + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_ROUNDID + roundNr + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_ROUND_PREFIX + QuizGenerator.ROUNDS_PREFIX + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_FIRSTQUESTION + getRound(roundNr).getQuestion(1).getQuestionID() + GoogleAccess.PARAM_CONCATENATOR +
-                GoogleAccess.PARAMNAME_TEAMID + myLoginentity.getIdUser() + GoogleAccess.PARAM_CONCATENATOR +
+                GoogleAccess.PARAMNAME_TEAMID + thisTeam.getIdUser() + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_TEAM_PREFIX + QuizGenerator.TEAMS_PREFIX + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_ANSWERS + tmp + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_SUBMITANSWERS;
         GoogleAccessSet submitAnswers = new GoogleAccessSet(context, scriptParams);
-        submitAnswers.setData(new LoadingListenerNotify(context, myLoginentity.getName(),
+        submitAnswers.setData(new LLNotifyStartOnly(context, thisTeam.getName(),
                 "Submitting answers for round " + roundNr));
     }
 
@@ -346,7 +343,7 @@ public class Quiz implements Serializable {
                 GoogleAccess.PARAMNAME_NEWVALUES + tmp + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_SETDATA;
         GoogleAccessSet setLoggedIn = new GoogleAccessSet(context, scriptParams);
-        setLoggedIn.setData(new LoadingListenerSilent());
+        setLoggedIn.setData(new LLSilent());
     }
 
     public boolean isAnyRoundOpen(){
@@ -363,5 +360,29 @@ public class Quiz implements Serializable {
             res = res + rounds.get(i).getMaxScore();
         }
         return res;
+    }
+
+
+    public ArrayList<User> convertOrganizerToUserArray(ArrayList<Organizer> organizers){
+        ArrayList<User> userArray = new ArrayList<>();
+        for (int i = 0; i < organizers.size() ; i++) {
+            userArray.add((User) organizers.get(i));
+        }
+        return userArray;
+    }
+    public ArrayList<User> convertTeamToUserArray(ArrayList<Team> teams){
+        ArrayList<User> userArray = new ArrayList<>();
+        for (int i = 0; i < teams.size() ; i++) {
+            userArray.add((User) teams.get(i));
+        }
+        return userArray;
+    }
+
+    public Organizer getThisOrganizer() {
+        return thisOrganizer;
+    }
+
+    public void setThisOrganizer(Organizer thisOrganizer) {
+        this.thisOrganizer = thisOrganizer;
     }
 }

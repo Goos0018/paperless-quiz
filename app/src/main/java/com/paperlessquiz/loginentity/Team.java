@@ -22,6 +22,7 @@ public class Team extends User implements Serializable {
         super(idQuiz, idUser, name, passkey);
         this.teamNr = teamNr;
         this.teamStatus = teamStatus;
+        setDescription("Ploeg " + teamNr);
         present=false;
         loggedIn=false;
     }
@@ -83,5 +84,17 @@ public class Team extends User implements Serializable {
         }
         tmp = tmp + "\"]";
         return tmp;
+    }
+
+    public int getTeamNr() {
+        return teamNr;
+    }
+
+    public int getTeamStatus() {
+        return teamStatus;
+    }
+
+    public void setTeamStatus(int teamStatus) {
+        this.teamStatus = teamStatus;
     }
 }

@@ -6,11 +6,11 @@ import android.widget.Toast;
 
 import com.paperlessquiz.MyApplication;
 
-public class LoadingListenerShowProgressAndActWhenComplete implements LoadingListener {
+/**
+ * Same as ShowProgressOnly, but also calls an action in the calling activity when complete using interface LoadingActivity
+ */
+public class LLShowProgressActWhenComplete implements LoadingListener {
 
-    //This loadinglistener will display a message while loading is in progress.
-    //When loading is complete, we will call the onLoaded interface in the calling activity
-    //Cancellable indicates whether this message will block the interface until loading has finished or be cancellable
     private Context context;
     private ProgressDialog loading;
     private String loadingTitle;
@@ -20,8 +20,7 @@ public class LoadingListenerShowProgressAndActWhenComplete implements LoadingLis
 
     LoadingActivity activity;
 
-
-    public LoadingListenerShowProgressAndActWhenComplete(Context context, String loadingTitle, String loadingMessage, String errorMessage, boolean cancellable) {
+    public LLShowProgressActWhenComplete(Context context, String loadingTitle, String loadingMessage, String errorMessage, boolean cancellable) {
         this.context = context;
         this.loadingTitle = loadingTitle;
         this.loadingMessage = loadingMessage;
@@ -36,15 +35,15 @@ public class LoadingListenerShowProgressAndActWhenComplete implements LoadingLis
     }
 
     @Override
-    public void loadingEnded() {
+    public void loadingEnded(int callerID) {
         loading.dismiss();
-        activity.loadingComplete();
+        activity.loadingComplete(callerID);
     }
 
     @Override
-    public void loadingError(String error) {
+    public void loadingError(String error, int callerID) {
         String team;
-        if (MyApplication.theQuiz.getMyLoginentity() == null){team = "none";} else {team = MyApplication.theQuiz.getMyLoginentity().getName();}
+        if (MyApplication.theQuiz.getThisTeam() == null){team = "none";} else {team = MyApplication.theQuiz.getThisTeam().getName();}
         MyApplication.eventLogger.logEvent(team,EventLogger.LEVEL_ERROR,error);
         Toast.makeText(context, errorMessage + error, Toast.LENGTH_LONG).show();
         loading.dismiss();

@@ -15,7 +15,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.paperlessquiz.R;
 import com.paperlessquiz.adapters.DisplayAnswersAdapter;
 import com.paperlessquiz.googleaccess.EventLogger;
 import com.paperlessquiz.googleaccess.LoadingActivity;
@@ -200,7 +199,7 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
         setActionBarIcon();
         setActionBarTitle();
         //Log that the user logged in and set LoggedIn to TRUE
-        thisTeamNr = thisQuiz.getMyLoginentity().getId();
+        thisTeamNr = thisQuiz.getMyLoginentity().getIdUser();
         MyApplication.eventLogger.logEvent(thisQuiz.getMyLoginentity().getName(), EventLogger.LEVEL_INFO, "Logged in");
         thisQuiz.setLoggedIn(C_ParticipantHome.this, thisTeamNr, true);
         MyApplication.setLoggedIn(true);

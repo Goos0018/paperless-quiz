@@ -9,7 +9,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.paperlessquiz.R;
 import com.paperlessquiz.adapters.CorrectAnswersAdapter;
 import com.paperlessquiz.answer.Answer;
 import com.paperlessquiz.googleaccess.LoadingActivity;
@@ -95,7 +94,7 @@ public class C_CorrectorHome extends MyActivity implements LoadingActivity, Frag
         if (correctPerQuestion) {
             return thisQuiz.getQuestion(thisRoundNr, spinnerPos).getName();
         } else {
-            return Integer.toString(thisQuiz.getTeam(spinnerPos).getId());
+            return Integer.toString(thisQuiz.getTeam(spinnerPos).getIdUser());
         }
     }
 

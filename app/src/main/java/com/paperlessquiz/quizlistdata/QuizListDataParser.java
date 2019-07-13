@@ -1,6 +1,6 @@
 package com.paperlessquiz.quizlistdata;
 
-import com.paperlessquiz.googleaccess.JsonParser;
+import com.paperlessquiz.parsers.JsonParser;
 import com.paperlessquiz.quiz.QuizGenerator;
 
 import org.json.JSONException;

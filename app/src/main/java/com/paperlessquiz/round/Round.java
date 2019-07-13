@@ -17,11 +17,21 @@ import java.util.ArrayList;
 
 //TODO: Write ToString functions for each class to upload item of the class to QuizSheet
 public class Round implements Serializable, SpinnerData {
-    private int roundNr;
-    private String id, name, description;
+    private int idQuiz,idRound, roundNr, roundStatus;
+    private String name, description;
     private int nrOfQuestions;
     private boolean acceptsAnswers, acceptsCorrections, corrected;
     private ArrayList<Question> questions;
+
+
+    public Round(int idQuiz, int idRound, int roundNr, int roundStatus, String name, String description) {
+        this.idQuiz = idQuiz;
+        this.idRound = idRound;
+        this.roundNr = roundNr;
+        this.roundStatus = roundStatus;
+        this.name = name;
+        this.description = description;
+    }
 
     public Round() {
         this.roundNr = 0;

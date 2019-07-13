@@ -9,16 +9,16 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.paperlessquiz.R;
-import com.paperlessquiz.loginentity.LoginEntity;
+import com.paperlessquiz.loginentity.Team;
 import com.paperlessquiz.quiz.QuizGenerator;
 
 import java.util.ArrayList;
 
-public class ParticipantsAdapter extends ArrayAdapter<LoginEntity> {
+public class ParticipantsAdapter extends ArrayAdapter<Team> {
 
     private final Context context;
 
-    public ParticipantsAdapter(Context context, ArrayList<LoginEntity> list) {
+    public ParticipantsAdapter(Context context, ArrayList<Team> list) {
         //Construct a list from the Hashmap
         super(context, R.layout.row_layout_select_login_name, list);
         this.context = context;
@@ -37,7 +37,7 @@ public class ParticipantsAdapter extends ArrayAdapter<LoginEntity> {
         tvName.setText(getItem(position).getName());
         //tvType.setText(this.getItem(position).getType());
         if (getItem(position).getType().equals(QuizGenerator.TYPE_PARTICIPANT)) {
-            tvType.setText("Team " + getItem(position).getId());
+            tvType.setText("Team " + getItem(position).getIdUser());
         } else {
             tvType.setText(this.getItem(position).getType());
         }

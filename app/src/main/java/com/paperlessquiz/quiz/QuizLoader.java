@@ -14,7 +14,7 @@ import com.paperlessquiz.googleaccess.GoogleAccess;
 import com.paperlessquiz.googleaccess.GoogleAccessGet;
 import com.paperlessquiz.googleaccess.LoadingListenerShowProgressAndActWhenComplete;
 import com.paperlessquiz.loginentity.GetLoginEntriesLPL;
-import com.paperlessquiz.loginentity.LoginEntity;
+import com.paperlessquiz.loginentity.Team;
 import com.paperlessquiz.loginentity.LoginEntityParser;
 import com.paperlessquiz.question.GetQuestionsLPL;
 import com.paperlessquiz.question.Question;
@@ -82,7 +82,7 @@ public class QuizLoader {
     public void loadTeams() {
         //Get the list of participating teams
         String scriptParams = generateParams(QuizGenerator.SHEET_TEAMS);
-        GoogleAccessGet<LoginEntity> googleAccessGetTeams = new GoogleAccessGet<LoginEntity>(context, scriptParams);
+        GoogleAccessGet<Team> googleAccessGetTeams = new GoogleAccessGet<Team>(context, scriptParams);
         googleAccessGetTeams.getItems(new LoginEntityParser(), quizTeamsLPL,
                 new LoadingListenerShowProgressAndActWhenComplete(context, context.getString(R.string.loader_pleasewait), context.getString(R.string.loader_updatingquiz),
                         "Something went wrong: ", false));
@@ -91,7 +91,7 @@ public class QuizLoader {
     public boolean teamsOK() {
         //Every  teams id should correspond with its order number in the array
         for (int i = 0; i < quizTeamsLPL.getLoginEntities().size(); i++) {
-            if (quizTeamsLPL.getLoginEntities().get(i).getId() != i + 1) {
+            if (quizTeamsLPL.getLoginEntities().get(i).getIdUser() != i + 1) {
                 return false;
             }
         }
@@ -101,7 +101,7 @@ public class QuizLoader {
     public void loadOrganizers() {
         //Get the list of organizers
         String scriptParams = generateParams(QuizGenerator.SHEET_ORGANIZERS);
-        GoogleAccessGet<LoginEntity> googleAccessGetOrganizers = new GoogleAccessGet<LoginEntity>(context, scriptParams);
+        GoogleAccessGet<Team> googleAccessGetOrganizers = new GoogleAccessGet<Team>(context, scriptParams);
         googleAccessGetOrganizers.getItems(new LoginEntityParser(), quizOrganizersLPL,
                 new LoadingListenerShowProgressAndActWhenComplete(context, context.getString(R.string.loader_pleasewait), context.getString(R.string.loader_updatingquiz),
                         "Something went wrong: ", false));
@@ -110,7 +110,7 @@ public class QuizLoader {
     public boolean organizersOK() {
         //Every  organizers id should correspond with its order number in the array
         for (int i = 0; i < quizOrganizersLPL.getLoginEntities().size(); i++) {
-            if (quizOrganizersLPL.getLoginEntities().get(i).getId() != i + 1) {
+            if (quizOrganizersLPL.getLoginEntities().get(i).getIdUser() != i + 1) {
                 return false;
             }
         }

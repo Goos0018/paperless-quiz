@@ -1,6 +1,6 @@
 package com.paperlessquiz.loginentity;
 
-import com.paperlessquiz.googleaccess.JsonParser;
+import com.paperlessquiz.parsers.JsonParser;
 import com.paperlessquiz.quiz.QuizGenerator;
 
 import org.json.JSONException;
@@ -8,21 +8,21 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class LoginEntityParser implements JsonParser<LoginEntity> {
+public class LoginEntityParser implements JsonParser<Team> {
     //Headers are taken from the QuizGenerator class and must match those of course
 
-    public LoginEntity parse(JSONObject jo) throws JSONException {
-        LoginEntity loginEntity = new LoginEntity(jo.getInt(QuizGenerator.LOGIN_ENTITY_ID), jo.getString(QuizGenerator.LOGIN_ENTITY_TYPE),
+    public Team parse(JSONObject jo) throws JSONException {
+        Team team = new Team(jo.getInt(QuizGenerator.LOGIN_ENTITY_ID), jo.getString(QuizGenerator.LOGIN_ENTITY_TYPE),
                 jo.getString(QuizGenerator.LOGIN_ENTITY_NAME), jo.getString(QuizGenerator.LOGIN_ENTITY_PASSKEY));
         if (jo.getString(QuizGenerator.LOGIN_ENTITY_TYPE).equals(QuizGenerator.SELECTION_PARTICIPANT)) {
             // If this is a participant, fill out the rest of the info
             try {
-                loginEntity.setPresent(jo.getBoolean(QuizGenerator.TEAM_PRESENT));
-                loginEntity.setLoggedIn(jo.getBoolean(QuizGenerator.TEAM_LOGGED_IN));
+                team.setPresent(jo.getBoolean(QuizGenerator.TEAM_PRESENT));
+                team.setLoggedIn(jo.getBoolean(QuizGenerator.TEAM_LOGGED_IN));
             }
             catch (Exception e){
-                loginEntity.setPresent(false);
-                loginEntity.setLoggedIn(false);
+                team.setPresent(false);
+                team.setLoggedIn(false);
             }
             ArrayList<Boolean> answersSubmitted = new ArrayList<>();
             boolean valueToSet;
@@ -36,8 +36,8 @@ public class LoginEntityParser implements JsonParser<LoginEntity> {
                 }
                 answersSubmitted.add(i - QuizGenerator.TEAMSHEET_START_OF_ROUNDS, Boolean.valueOf(valueToSet));
             }
-            loginEntity.setAnswerForRndsSubmitted(answersSubmitted);
+            team.setAnswerForRndsSubmitted(answersSubmitted);
         }
-        return loginEntity;
+        return team;
     }
 }

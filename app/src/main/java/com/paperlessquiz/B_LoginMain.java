@@ -11,9 +11,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.paperlessquiz.R;
 import com.paperlessquiz.adapters.ParticipantsAdapter;
-import com.paperlessquiz.loginentity.LoginEntity;
+import com.paperlessquiz.loginentity.Team;
 import com.paperlessquiz.quiz.Quiz;
 import com.paperlessquiz.quiz.QuizGenerator;
 
@@ -23,7 +22,7 @@ import com.paperlessquiz.quiz.QuizGenerator;
  */
 public class B_LoginMain extends AppCompatActivity {
     Quiz thisQuiz = MyApplication.theQuiz;
-    LoginEntity thisLoginEntity;
+    Team thisTeam;
     //Local items in interface
     TextView tvLoginPrompt, tvDisplayName, tvDisplayID;
     EditText etPasskey;
@@ -37,11 +36,11 @@ public class B_LoginMain extends AppCompatActivity {
     private void setFields(int position) {
         if (loginType.equals(QuizGenerator.SELECTION_PARTICIPANT)) {
             tvDisplayName.setText(thisQuiz.getTeams().get(position).getName());
-            tvDisplayID.setText(Integer.toString(thisQuiz.getTeams().get(position).getId()));
+            tvDisplayID.setText(Integer.toString(thisQuiz.getTeams().get(position).getIdUser()));
             etPasskey.setText("");
         } else {
             tvDisplayName.setText(thisQuiz.getOrganizers().get(position).getType());
-            tvDisplayID.setText(Integer.toString(thisQuiz.getOrganizers().get(position).getId()));
+            tvDisplayID.setText(Integer.toString(thisQuiz.getOrganizers().get(position).getIdUser()));
             etPasskey.setText("");
         }
     }
@@ -57,7 +56,7 @@ public class B_LoginMain extends AppCompatActivity {
         btnSubmit = findViewById(R.id.btn_submit_login);
         etPasskey = findViewById(R.id.et_passkey);
         lvShowParticipants = findViewById(R.id.lvNamesList);
-        loginType = getIntent().getStringExtra(LoginEntity.INTENT_EXTRA_NAME_THIS_LOGIN_TYPE);
+        loginType = getIntent().getStringExtra(Team.INTENT_EXTRA_NAME_THIS_LOGIN_TYPE);
         if (loginType.equals(QuizGenerator.SELECTION_PARTICIPANT)) {
             adapter = new ParticipantsAdapter(this, thisQuiz.getTeams());
             tvLoginPrompt.setText(this.getString(R.string.main_selectteamprompt));
@@ -80,21 +79,21 @@ public class B_LoginMain extends AppCompatActivity {
                 teamNr = Integer.valueOf(tvDisplayID.getText().toString());
                 String input = etPasskey.getText().toString().trim();
                 if (loginType.equals(QuizGenerator.SELECTION_PARTICIPANT)) {
-                    thisLoginEntity = thisQuiz.getTeam(teamNr);
+                    thisTeam = thisQuiz.getTeam(teamNr);
                 } else {
-                    thisLoginEntity = thisQuiz.getOrganizer(teamNr);
+                    thisTeam = thisQuiz.getOrganizer(teamNr);
                 }
                 if (input.isEmpty()) {
                     //If no password was entered
                     Toast.makeText(B_LoginMain.this, B_LoginMain.this.getString(R.string.main_wrongpswdentered), Toast.LENGTH_SHORT).show();
                 } else {
                     //If the correct password was entered
-                    if (input.equals(thisLoginEntity.getPasskey())) {
+                    if (input.equals(thisTeam.getPasskey())) {
                         //If this is a participant or a corrector or the setFields team
-                        thisQuiz.setMyLoginentity(thisLoginEntity);
-                        switch (thisLoginEntity.getType()) {
+                        thisQuiz.setMyLoginentity(thisTeam);
+                        switch (thisTeam.getType()) {
                             case QuizGenerator.SELECTION_PARTICIPANT:
-                                if (thisLoginEntity.isPresent()) {
+                                if (thisTeam.isPresent()) {
                                     Intent intentP = new Intent(B_LoginMain.this, C_ParticipantHome.class);
                                     startActivity(intentP);
                                 } else {

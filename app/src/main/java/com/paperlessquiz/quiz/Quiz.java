@@ -9,7 +9,7 @@ import com.paperlessquiz.googleaccess.GoogleAccess;
 import com.paperlessquiz.googleaccess.GoogleAccessSet;
 import com.paperlessquiz.googleaccess.LoadingListenerNotify;
 import com.paperlessquiz.googleaccess.LoadingListenerSilent;
-import com.paperlessquiz.loginentity.LoginEntity;
+import com.paperlessquiz.loginentity.Team;
 import com.paperlessquiz.question.Question;
 import com.paperlessquiz.quizlistdata.QuizListData;
 import com.paperlessquiz.round.Round;
@@ -25,7 +25,7 @@ import java.util.ArrayList;
  * - Each question contains some general information about that question (for example, the correct answer), but also an arraylist of al answers that were given.
  *      Here, answer(i) is the answer from the team with teamnumber i, and the Asnwer object not only contains the String that is the answser,
  *      but also an indication whether it is corrected, and if the answer is correct or not.
- *  - Each Team (LoginEntity)finally, has two arraylists, where each memeber cooresponds to a round:
+ *  - Each Team (Team)finally, has two arraylists, where each memeber cooresponds to a round:
  *      * An indication whether or not answers were subnmitted for this round
  *      * A RoundResults object, that contains the score for this round, the total score until this round, and the position of this team in the standings for the round and in ttoal after the round
  *
@@ -39,11 +39,18 @@ public class Quiz implements Serializable {
     public static final int TARGET_HEIGHT = 200;
     public static final int ACTIONBAR_ICON_WIDTH = 125;
     public static final int ACTIONBAR_ICON_HEIGHT = 125;
+    // Constants needed to retrieve data from the SQL db
+    public static final String PHP_URL = "http://paperlessquiz.be/php/";
+    public static final String GETDATA_SCRIPT = "getdata.php";
+    public static final String PHP_STARTPARAM = "?";
+    public static final String PARAMNAME_TABLE = "table=";
+    public static final String PARAMVALUE_TBL_QUIZLIST = "QuizList";
+
     private QuizListData listData;
-    private ArrayList<LoginEntity> teams;
-    private ArrayList<LoginEntity> organizers;
+    private ArrayList<Team> teams;
+    private ArrayList<Team> organizers;
     private ArrayList<Round> rounds;
-    private LoginEntity myLoginentity;
+    private Team myLoginentity;
     public boolean loadingCompleted = false;
 
 
@@ -131,29 +138,29 @@ public class Quiz implements Serializable {
     }
 
     //Return the team/organizer with the given ID
-    public LoginEntity getTeam(int teamNr) {
+    public Team getTeam(int teamNr) {
         return teams.get(teamNr - 1);
     }
 
     //Return the team with the given ID
-    public LoginEntity getOrganizer(int organizerNr) {
+    public Team getOrganizer(int organizerNr) {
         return organizers.get(organizerNr - 1);
     }
 
 
-    public ArrayList<LoginEntity> getTeams() {
+    public ArrayList<Team> getTeams() {
         return teams;
     }
 
-    public ArrayList<LoginEntity> getOrganizers() {
+    public ArrayList<Team> getOrganizers() {
         return organizers;
     }
 
-    public void setTeams(ArrayList<LoginEntity> teams) {
+    public void setTeams(ArrayList<Team> teams) {
         this.teams = teams;
     }
 
-    public void setOrganizers(ArrayList<LoginEntity> organizers) {
+    public void setOrganizers(ArrayList<Team> organizers) {
         this.organizers = organizers;
     }
 
@@ -203,11 +210,11 @@ public class Quiz implements Serializable {
         return getQuestion(rndNr, questionNr).getAllAnswers();
     }
 
-    public LoginEntity getMyLoginentity() {
+    public Team getMyLoginentity() {
         return myLoginentity;
     }
 
-    public void setMyLoginentity(LoginEntity myLoginentity) {
+    public void setMyLoginentity(Team myLoginentity) {
         this.myLoginentity = myLoginentity;
     }
 
@@ -234,7 +241,7 @@ public class Quiz implements Serializable {
     }
 
     public void updateTeams(Context context) {
-        ArrayList<LoginEntity> teamsList = getTeams();
+        ArrayList<Team> teamsList = getTeams();
         String tmp = "[";
         for (int i = 0; i < teamsList.size(); i++) {
             tmp = tmp + teamsList.get(i).toString();
@@ -304,7 +311,7 @@ public class Quiz implements Serializable {
 
     //Used by the Participant to submit all answers for a single round
     public void submitAnswers(Context context, int roundNr) {
-        ArrayList<Answer> answerList = getAnswersForRound(roundNr, getMyLoginentity().getId());
+        ArrayList<Answer> answerList = getAnswersForRound(roundNr, getMyLoginentity().getIdUser());
         String tmp = "[";
         for (int i = 0; i < answerList.size(); i++) {
             tmp = tmp + "[\"" + answerList.get(i).getTheAnswer() + "\"]";
@@ -318,7 +325,7 @@ public class Quiz implements Serializable {
                 GoogleAccess.PARAMNAME_ROUNDID + roundNr + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_ROUND_PREFIX + QuizGenerator.ROUNDS_PREFIX + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_FIRSTQUESTION + getRound(roundNr).getQuestion(1).getQuestionID() + GoogleAccess.PARAM_CONCATENATOR +
-                GoogleAccess.PARAMNAME_TEAMID + myLoginentity.getId() + GoogleAccess.PARAM_CONCATENATOR +
+                GoogleAccess.PARAMNAME_TEAMID + myLoginentity.getIdUser() + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_TEAM_PREFIX + QuizGenerator.TEAMS_PREFIX + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_ANSWERS + tmp + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_SUBMITANSWERS;

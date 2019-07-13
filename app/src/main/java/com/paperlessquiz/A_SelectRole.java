@@ -8,9 +8,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.paperlessquiz.R;
 import com.paperlessquiz.googleaccess.LoadingActivity;
-import com.paperlessquiz.loginentity.LoginEntity;
+import com.paperlessquiz.loginentity.Team;
 import com.paperlessquiz.quiz.Quiz;
 import com.paperlessquiz.quiz.QuizGenerator;
 import com.paperlessquiz.quiz.QuizLoader;
@@ -104,7 +103,7 @@ public class A_SelectRole extends AppCompatActivity implements LoadingActivity {
         MyApplication.setKeepLogs(thisQuiz.getListData().isKeepLogs());
         MyApplication.setAppDebugLevel(thisQuiz.getListData().getAppDebugLevel());
         intent = new Intent(A_SelectRole.this, B_LoginMain.class);
-        intent.putExtra(LoginEntity.INTENT_EXTRA_NAME_THIS_LOGIN_TYPE, selection);      //Proceed to login and pass if this is a Team or an Organizer
+        intent.putExtra(Team.INTENT_EXTRA_NAME_THIS_LOGIN_TYPE, selection);      //Proceed to login and pass if this is a Team or an Organizer
         startActivity(intent);
     }
 

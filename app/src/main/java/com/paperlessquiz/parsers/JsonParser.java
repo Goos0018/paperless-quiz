@@ -1,4 +1,4 @@
-package com.paperlessquiz.googleaccess;
+package com.paperlessquiz.parsers;
 
 import org.json.JSONException;
 import org.json.JSONObject;

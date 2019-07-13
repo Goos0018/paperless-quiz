@@ -11,16 +11,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.paperlessquiz.R;
-import com.paperlessquiz.loginentity.LoginEntity;
+import com.paperlessquiz.loginentity.Team;
 
 import java.util.ArrayList;
 
 public class EditTeamsAdapter extends RecyclerView.Adapter<EditTeamsAdapter.ViewHolder> {
-    private ArrayList<LoginEntity> teams;
+    private ArrayList<Team> teams;
     private EditTeamsAdapter adapter;
 
 
-    public EditTeamsAdapter(Context context, ArrayList<LoginEntity> teams) {
+    public EditTeamsAdapter(Context context, ArrayList<Team> teams) {
         this.teams = teams;
         adapter = this;
 
@@ -52,7 +52,7 @@ public class EditTeamsAdapter extends RecyclerView.Adapter<EditTeamsAdapter.View
     @Override
     public void onBindViewHolder(@NonNull EditTeamsAdapter.ViewHolder viewHolder, int i) {
         viewHolder.itemView.setTag(teams.get(i));
-        viewHolder.tvTeamNr.setText(teams.get(i).getId() + ".");
+        viewHolder.tvTeamNr.setText(teams.get(i).getIdUser() + ".");
         viewHolder.etTeamName.setText(teams.get(i).getName());
         viewHolder.tvTeamName.setText(teams.get(i).getName());
         boolean isPresent = teams.get(i).isPresent();
@@ -92,7 +92,7 @@ public class EditTeamsAdapter extends RecyclerView.Adapter<EditTeamsAdapter.View
         return teams.size();
     }
 
-    public void setTeams(ArrayList<LoginEntity> teams) {
+    public void setTeams(ArrayList<Team> teams) {
         this.teams = teams;
     }
 }

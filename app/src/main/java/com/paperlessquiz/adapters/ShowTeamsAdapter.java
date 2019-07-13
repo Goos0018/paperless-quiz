@@ -10,17 +10,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.paperlessquiz.R;
-import com.paperlessquiz.loginentity.LoginEntity;
+import com.paperlessquiz.loginentity.Team;
 
 import java.util.ArrayList;
 
 public class ShowTeamsAdapter extends RecyclerView.Adapter<ShowTeamsAdapter.ViewHolder> {
-    private ArrayList<LoginEntity> teams;
+    private ArrayList<Team> teams;
     private int roundNr;
     private ShowTeamsAdapter adapter;
 
 
-    public ShowTeamsAdapter(Context context, ArrayList<LoginEntity> teams, int roundNr) {
+    public ShowTeamsAdapter(Context context, ArrayList<Team> teams, int roundNr) {
         this.teams = teams;
         this.roundNr = roundNr;
         adapter = this;
@@ -52,7 +52,7 @@ public class ShowTeamsAdapter extends RecyclerView.Adapter<ShowTeamsAdapter.View
     @Override
     public void onBindViewHolder(@NonNull ShowTeamsAdapter.ViewHolder viewHolder, int i) {
         viewHolder.itemView.setTag(teams.get(i));
-        viewHolder.tvTeamName.setText(teams.get(i).getId() + ". " + teams.get(i).getName());
+        viewHolder.tvTeamName.setText(teams.get(i).getIdUser() + ". " + teams.get(i).getName());
         boolean isPresent = teams.get(i).isPresent();
         boolean isLoggedIn = teams.get(i).isLoggedIn();
         boolean answersForThisRoundSubmitted = teams.get(i).isAnswersForThisRoundSubmitted(roundNr);
@@ -93,7 +93,7 @@ public class ShowTeamsAdapter extends RecyclerView.Adapter<ShowTeamsAdapter.View
             return teams.size();
         }
 
-        public void setTeams (ArrayList < LoginEntity > teams) {
+        public void setTeams (ArrayList <Team> teams) {
             this.teams = teams;
         }
 

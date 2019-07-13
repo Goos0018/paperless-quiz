@@ -1,7 +1,7 @@
 package com.paperlessquiz.quiz;
 
 import com.paperlessquiz.answer.Answer;
-import com.paperlessquiz.loginentity.LoginEntity;
+import com.paperlessquiz.loginentity.Team;
 import com.paperlessquiz.question.Question;
 import com.paperlessquiz.round.Round;
 
@@ -17,7 +17,7 @@ public class QuizStandingsCalculator {
         for (int i = 0; i < thisQuiz.getTeams().size(); i++) {
             int teamNr = i + 1;
             int totalScoreUntilThisRound = 0;
-            LoginEntity thisTeam = thisQuiz.getTeam(teamNr);
+            Team thisTeam = thisQuiz.getTeam(teamNr);
             //for each round
             for (int j = 0; j < thisQuiz.getRounds().size(); j++) {
                 int roundNr = j + 1;
@@ -55,7 +55,7 @@ public class QuizStandingsCalculator {
                 //for each team
                 for (int i = 0; i < thisQuiz.getTeams().size(); i++) {
                     teamNr = i + 1;
-                    LoginEntity thisTeam = thisQuiz.getTeam(teamNr);
+                    Team thisTeam = thisQuiz.getTeam(teamNr);
                     allScoresForThisRound.add(new ScoreForTeam(teamNr, thisTeam.getResultAfterRound(roundNr).getScoreForThisRound()));
                     allTotalScoresAfterThisRound.add(new ScoreForTeam(teamNr, thisTeam.getResultAfterRound(roundNr).getTotalScoreAfterThisRound()));
                 }
@@ -65,12 +65,12 @@ public class QuizStandingsCalculator {
             Collections.sort(allTotalScoresAfterThisRound);
             //Loop over the (sorted) array and assign each team the standing it has
             for (int i = 0; i < allScoresForThisRound.size(); i++) {
-                LoginEntity theTeam;
+                Team theTeam;
                 theTeam = thisQuiz.getTeam(allScoresForThisRound.get(i).teamNr);
                 theTeam.getResultAfterRound(roundNr).setPosInStandingForThisRound(i + 1);
             }
             for (int i = 0; i < allTotalScoresAfterThisRound.size(); i++) {
-                LoginEntity theTeam;
+                Team theTeam;
                 theTeam = thisQuiz.getTeam(allTotalScoresAfterThisRound.get(i).teamNr);
                 theTeam.getResultAfterRound(roundNr).setPosInStandingAfterThisRound(i + 1);
             }

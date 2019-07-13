@@ -13,18 +13,29 @@ import java.util.ArrayList;
  * We foresee methods here to directly get and set answers for a specific team
  */
 public class Question implements Serializable {
-    private String questionID;
-    private int questionNr;
-    private int roundNr;
+    int idRound,idQuestion,questionNr,questionType;
     private String name;
     private String hint;
     private String question;
     private String correctAnswer;
-    private ArrayList<Answer> allAnswers;
     private int maxScore;
+
+    private int roundNr;
+    private ArrayList<Answer> allAnswers;
     private boolean allAnswersCorrected;
+    private String questionID;
 
-
+    public Question(int idRound, int idQuestion, int questionNr, int questionType, String name, String hint, String question, String correctAnswer, int maxScore) {
+        this.idRound = idRound;
+        this.idQuestion = idQuestion;
+        this.questionNr = questionNr;
+        this.questionType = questionType;
+        this.name = name;
+        this.hint = hint;
+        this.question = question;
+        this.correctAnswer = correctAnswer;
+        this.maxScore = maxScore;
+    }
 
     public Question() {
         this.questionID = "";

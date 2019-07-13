@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.paperlessquiz.R;
 import com.paperlessquiz.adapters.QuizListAdapter;
 import com.paperlessquiz.googleaccess.GoogleAccess;
 import com.paperlessquiz.googleaccess.GoogleAccessGet;
@@ -49,6 +48,11 @@ public class A_Main extends AppCompatActivity implements LoadingActivity {
         scriptParams = GoogleAccess.PARAMNAME_DOC_ID + QuizGenerator.QUIZLIST_DOC_ID + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_SHEET + QuizGenerator.SHEET_QUIZLIST + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_GETDATA;
+       /* HTTPGet<QuizListData> getData = new HTTPGet<QuizListData>(this, "");
+        getData.getItems(new QuizListDataParser(), new GetQuizListDataLPL(adapter),
+                new LoadingListenerShowProgressAndActWhenComplete(this, this.getString(R.string.loadingtitle), this.getString(R.string.loadingmsg_list),
+                        this.getString(R.string.loadingerror),false));
+                        */
         GoogleAccessGet<QuizListData> googleAccessGet = new GoogleAccessGet<QuizListData>(this, scriptParams);
         googleAccessGet.getItems(new QuizListDataParser(), new GetQuizListDataLPL(adapter),
                 new LoadingListenerShowProgressAndActWhenComplete(this, this.getString(R.string.loadingtitle), this.getString(R.string.loadingmsg_list),

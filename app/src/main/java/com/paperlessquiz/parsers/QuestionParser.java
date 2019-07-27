@@ -6,6 +6,7 @@ import com.paperlessquiz.quiz.QuizDatabase;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+//TODO: foresee for correctAnswer not to be present!
 public class QuestionParser implements JsonParser<Question> {
 
     @Override

@@ -9,7 +9,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.paperlessquiz.googleaccess.LoadingActivity;
-import com.paperlessquiz.loginentity.Team;
 import com.paperlessquiz.quiz.Quiz;
 import com.paperlessquiz.quiz.QuizDatabase;
 import com.paperlessquiz.quiz.QuizGenerator;
@@ -36,19 +35,19 @@ public class A_SelectRole extends AppCompatActivity implements LoadingActivity {
     public void loadingComplete(int requestID) {
         //Write all the data we retrieved to the Quiz object
         switch (requestID){
-            case QuizDatabase.REQUEST_ID_ROUNDS:
+            case QuizDatabase.REQUEST_ID_GET_ROUNDS:
                 break;
-            case QuizDatabase.REQUEST_ID_QUESTIONS:
+            case QuizDatabase.REQUEST_ID_GET_QUESTIONS:
                 break;
-            case QuizDatabase.REQUEST_ID_TEAMS:
+            case QuizDatabase.REQUEST_ID_GET_TEAMS:
                 break;
-            case QuizDatabase.REQUEST_ID_ORGANIZERS:
+            case QuizDatabase.REQUEST_ID_GET_ORGANIZERS:
                 break;
-            case QuizDatabase.REQUEST_ID_ANSWERS:
+            case QuizDatabase.REQUEST_ID_GET_ANSWERS:
                 break;
-            case QuizDatabase.REQUEST_ID_ANSWERSSUBMITTED:
+            case QuizDatabase.REQUEST_ID_GET_ANSWERSSUBMITTED:
                 break;
-            case QuizDatabase.REQUEST_ID_EVENTLOGS:
+            case QuizDatabase.REQUEST_ID_GET_EVENTLOGS:
                 break;
         }
     }

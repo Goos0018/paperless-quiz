@@ -10,8 +10,9 @@ public class QuizDatabase {
     public static final String PARAMNAME_ID = "id=";
     public static final String PARAMNAME_QUERY = "query=";
     // Available PHP scripts
-    public static final String GETALLDATA_SCRIPT = "getalldata.php";
-    public static final String GETDATA_SCRIPT = "getdata.php";
+    //public static final String GETALLDATA_SCRIPT = "getalldata.php";
+    public static final String GETDATA_SCRIPT = "getquizdata.php";
+    public static final String GETQUIZLIST_SCRIPT = "getquizlist.php";
     //Param values - table names
     public static final String PARAMVALUE_TBL_ANSWERS = "Answers";
     public static final String PARAMVALUE_TBL_ANSWERSSUBMITTED = "AnswersSubmitted";
@@ -25,19 +26,23 @@ public class QuizDatabase {
     public static final String PARAMVALUE_QRY_ALL_ANSWERS_FOR_QUIZ = "qry_all-answers-for-quiz";
     public static final String PARAMVALUE_QRY_ALL_ANSWERSSUBMITTED_FOR_QUIZ = "qry_all-answerssubmitted-for-quiz";
     public static final String PARAMVALUE_QRY_ALL_EVENTLOGS_FOR_QUIZ = "qry_all-eventlogs-for-quiz";
+    public static final String PARAMVALUE_QRY_ALL_EVENTLOGS_FOR_TEAM = "qry_all-eventlogs-for-team";
     public static final String PARAMVALUE_QRY_ALL_ORGANIZERS_FOR_QUIZ = "qry_all-organizers-for-quiz";
     public static final String PARAMVALUE_QRY_ALL_QUESTIONS_FOR_QUIZ = "qry_all-questions-for-quiz";
     public static final String PARAMVALUE_QRY_ALL_ROUNDS_FOR_QUIZ = "qry_all-rounds-for-quiz";
     public static final String PARAMVALUE_QRY_ALL_TEAMS_FOR_QUIZ = "qry_all-teams-for-quiz";
     //Request ID's
-    public static final int REQUEST_ID_QUIZLIST = 0;
-    public static final int REQUEST_ID_ROUNDS = 1;
-    public static final int REQUEST_ID_QUESTIONS = 2;
-    public static final int REQUEST_ID_TEAMS = 3;
-    public static final int REQUEST_ID_ORGANIZERS = 4;
-    public static final int REQUEST_ID_ANSWERS = 5;
-    public static final int REQUEST_ID_ANSWERSSUBMITTED = 6;
-    public static final int REQUEST_ID_EVENTLOGS = 7;
+    //GET Requests
+    public static final int REQUEST_ID_GET_QUIZLIST = 0;
+    public static final int REQUEST_ID_GET_ROUNDS = 1;
+    public static final int REQUEST_ID_GET_QUESTIONS = 2;
+    public static final int REQUEST_ID_GET_TEAMS = 3;
+    public static final int REQUEST_ID_GET_ORGANIZERS = 4;
+    public static final int REQUEST_ID_GET_ANSWERS = 5;
+    public static final int REQUEST_ID_GET_ANSWERSSUBMITTED = 6;
+    public static final int REQUEST_ID_GET_EVENTLOGS = 7;
+    //Submit requests
+    public static final int REQUEST_ID_AUTHENTICATE = 101;
 
     //Organizer Types
     public static final int ORGANIZERTYPE_QUIZMASTER = 0;

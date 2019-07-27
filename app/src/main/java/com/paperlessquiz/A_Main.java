@@ -14,7 +14,7 @@ import com.paperlessquiz.quiz.Quiz;
 import com.paperlessquiz.quiz.QuizDatabase;
 import com.paperlessquiz.quizlistdata.QuizListData;
 import com.paperlessquiz.parsers.QuizListDataParser;
-import com.paperlessquiz.webrequest.HTTPGet;
+import com.paperlessquiz.webrequest.HTTPGetData;
 
 /*
 This class/screen is the first screen of the app. It allows users to select a quiz from a list of available quiz'es.
@@ -29,7 +29,7 @@ public class A_Main extends AppCompatActivity implements LoadingActivity {
     ListView lv_QuizList;
     QuizListAdapter adapter;
     String scriptParams;
-    HTTPGet<QuizListData> request;
+    HTTPGetData<QuizListData> request;
 
     @Override
     public void loadingComplete(int requestID) {
@@ -55,8 +55,7 @@ public class A_Main extends AppCompatActivity implements LoadingActivity {
                         this.getString(R.string.loadingerror),false));
         */
 
-        request = new HTTPGet<QuizListData>(this, QuizDatabase.GETALLDATA_SCRIPT + QuizDatabase.PHP_STARTPARAM +
-                QuizDatabase.PARAMNAME_TABLE+QuizDatabase.PARAMVALUE_TBL_QUIZLIST, QuizDatabase.REQUEST_ID_QUIZLIST);
+        request = new HTTPGetData<QuizListData>(this, QuizDatabase.GETQUIZLIST_SCRIPT, QuizDatabase.REQUEST_ID_GET_QUIZLIST);
         request.getItems(new QuizListDataParser(),
                 new LLShowProgressActWhenComplete(this, this.getString(R.string.loadingtitle), this.getString(R.string.loadingmsg_list),
                         this.getString(R.string.loadingerror),false));

@@ -1,6 +1,9 @@
 package com.paperlessquiz.webrequest;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -21,25 +24,37 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 /**
- * This class retrieves data via a HTTP GET request. The expected result is an array of JSON objects that are parsed
+ * This class executes a HTTP GET request (in practice a PHP script)
+ * The result must be an array of JSON objects that are parsed
  * to a list of objects T via Parser class that is passed as argument to the getItems method.
- * Via the LoadingListener, actions can be done in the calling activity when loading is sompleted.
+ * No error handling is done, if this doesn't work, the app cannot work properly.
+ *
  * @param <T>
  */
-public class HTTPGet<T> {
+public class HTTPGetData<T> {
     private Context context;
     private String parameters;
     private int requestID;
     private ArrayList<T> resultsList;
+
     int debugLevel;
 
-    public HTTPGet(Context context, String parameters,int requestID) {
+    /*
+    //Fieldnames that are used by the SetData GScript to return result of the action
+    public static final String FIELDNAME_RESULT = "result";
+    public static final String FIELDNAME_DATA = "explanation";
+    public static final int TYPE_GET = 0;
+    public static final int TYPE_SUBMIT = 1;
+*/
+
+    public HTTPGetData(Context context, String parameters, int requestID) {
         this.context = context;
         this.parameters = parameters;
         this.requestID = requestID;
     }
 
     //For each type of object/specific use, you need to create an implementation of JsonParser and ListParsedListener
+    //For simple submit requetss where the answer is just confirmation, we use a String parser
     //public void getItems(JsonParser<T> parser, final ListParsedListener<T> listParsedListener, LoadingListener loadingListener) {
     public void getItems(JsonParser<T> parser, LoadingListener loadingListener) {
 
@@ -47,16 +62,34 @@ public class HTTPGet<T> {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        resultsList =  parseItems(response, parser);
-                        //listParsedListener.listParsed(resultsList);
-                        loadingListener.loadingEnded(requestID);
+                        //The response first indicates success or failure, the data itself is in the Explanation
+                        //try {
+                            /*
+                            JSONObject jo = new JSONObject(response);
+                            int resultOK = jo.getInt(FIELDNAME_RESULT);
+                            String data = jo.getString(FIELDNAME_DATA);
+                            //MyApplication.googleLog.add(Boolean.toString(resultOK) + ": " + resultExplanation);
+                            if (!(resultOK == 1)) {
+                                Toast toast = Toast.makeText(context, "Error: " + data, Toast.LENGTH_LONG);
+                                TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                                v.setBackgroundColor(Color.RED);
+                                toast.show();
+                                //toast.getView().setBackgroundColor(Color.RED)
+                                //Toast.makeText(context, "Error: " + resultExplanation, Toast.LENGTH_LONG).getView().setBackgroundColor(Color.RED).show();
+                            } else {
+                            */
+                                resultsList = parseItems(response, parser);
+                                loadingListener.loadingEnded(requestID);
+                            //}
+                        //} catch (JSONException e) {
+                        //    e.printStackTrace();
+                        //}
                     }
                 },
 
                 new Response.ErrorListener() {
                     @Override
-                    public void onErrorResponse(VolleyError error)
-                    {
+                    public void onErrorResponse(VolleyError error) {
                         loadingListener.loadingError(error.toString(), requestID);
                     }
                 }

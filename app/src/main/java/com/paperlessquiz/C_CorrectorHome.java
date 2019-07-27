@@ -152,7 +152,7 @@ public class C_CorrectorHome extends MyActivity implements LoadingActivity, Frag
             case R.id.refresh:
                 quizLoader = new QuizLoader(C_CorrectorHome.this, thisQuiz.getListData().getSheetDocID());
                 quizLoader.loadRounds();
-                quizLoader.loadAllCorrections();
+                //quizLoader.loadAllCorrections();
                 break;
             case R.id.teams:
                 correctPerQuestion = !correctPerQuestion;

@@ -24,7 +24,7 @@ import com.paperlessquiz.question.Question;
 //import com.example.paperlessquiz.quizextradata.GetQuizExtraDataLPL;
 import com.paperlessquiz.round.GetRoundsLPL;
 import com.paperlessquiz.round.Round;
-import com.paperlessquiz.webrequest.HTTPGet;
+import com.paperlessquiz.webrequest.HTTPGetData;
 
 import java.util.ArrayList;
 
@@ -39,13 +39,13 @@ public class QuizLoader {
     public GetAnswersListLPL quizAnswersLPL;
     public GetCorrectionsListLPL quizCorrectionsLPL;
     public GetLoginEntriesLPL quizTeamsLPL, quizOrganizersLPL;
-    public HTTPGet<Team> getTeamsRequest;
-    public HTTPGet<Organizer> getOrganizersRequest;
-    public HTTPGet<Answer> getAnswersRequest;
-    public HTTPGet<Question> getQuestionsRequest;
-    public HTTPGet<Round> getRoundsRequest;
-    public HTTPGet<AnswersSubmitted> getAnswersSubmittedRequest;
-    public HTTPGet<EventLog> getEventLogsRequest;
+    public HTTPGetData<Team> getTeamsRequest;
+    public HTTPGetData<Organizer> getOrganizersRequest;
+    public HTTPGetData<Answer> getAnswersRequest;
+    public HTTPGetData<Question> getQuestionsRequest;
+    public HTTPGetData<Round> getRoundsRequest;
+    public HTTPGetData<AnswersSubmitted> getAnswersSubmittedRequest;
+    public HTTPGetData<EventLog> getEventLogsRequest;
 
     //public GetScoresLPL quizScoresLPL;
 
@@ -106,7 +106,7 @@ public class QuizLoader {
     //PHP Loaders
     public void loadRounds(){
         String scriptParams = generateParamsPHP(QuizDatabase.PARAMVALUE_QRY_ALL_ROUNDS_FOR_QUIZ);
-        getRoundsRequest = new HTTPGet<>(context,scriptParams,QuizDatabase.REQUEST_ID_ROUNDS);
+        getRoundsRequest = new HTTPGetData<>(context,scriptParams,QuizDatabase.REQUEST_ID_GET_ROUNDS);
         getRoundsRequest.getItems(new com.paperlessquiz.parsers.RoundParser(),new LLShowProgressActWhenComplete(context, context.getString(R.string.loader_pleasewait),
                 context.getString(R.string.loader_updatingquiz),
                 "Something went wrong: ", false));
@@ -114,7 +114,7 @@ public class QuizLoader {
 
     public void loadQuestions(){
         String scriptParams = generateParamsPHP(QuizDatabase.PARAMVALUE_QRY_ALL_QUESTIONS_FOR_QUIZ);
-        getQuestionsRequest = new HTTPGet<>(context,scriptParams,QuizDatabase.REQUEST_ID_QUESTIONS);
+        getQuestionsRequest = new HTTPGetData<>(context,scriptParams,QuizDatabase.REQUEST_ID_GET_QUESTIONS);
         getQuestionsRequest.getItems(new com.paperlessquiz.parsers.QuestionParser(),new LLShowProgressActWhenComplete(context, context.getString(R.string.loader_pleasewait),
                 context.getString(R.string.loader_updatingquiz),
                 "Something went wrong: ", false));
@@ -122,7 +122,7 @@ public class QuizLoader {
 
     public void loadTeams(){
         String scriptParams = generateParamsPHP(QuizDatabase.PARAMVALUE_QRY_ALL_TEAMS_FOR_QUIZ);
-        getTeamsRequest = new HTTPGet<>(context,scriptParams,QuizDatabase.REQUEST_ID_TEAMS);
+        getTeamsRequest = new HTTPGetData<>(context,scriptParams,QuizDatabase.REQUEST_ID_GET_TEAMS);
         getTeamsRequest.getItems(new TeamParser(),new LLShowProgressActWhenComplete(context, context.getString(R.string.loader_pleasewait),
                 context.getString(R.string.loader_updatingquiz),
                 "Something went wrong: ", false));
@@ -130,7 +130,7 @@ public class QuizLoader {
 
     public void loadOrganizers(){
         String scriptParams = generateParamsPHP(QuizDatabase.PARAMVALUE_QRY_ALL_ORGANIZERS_FOR_QUIZ);
-        getOrganizersRequest = new HTTPGet<>(context,scriptParams,QuizDatabase.REQUEST_ID_ORGANIZERS);
+        getOrganizersRequest = new HTTPGetData<>(context,scriptParams,QuizDatabase.REQUEST_ID_GET_ORGANIZERS);
         getOrganizersRequest.getItems(new OrganizerParser(),new LLShowProgressActWhenComplete(context, context.getString(R.string.loader_pleasewait),
                 context.getString(R.string.loader_updatingquiz),
                 "Something went wrong: ", false));
@@ -138,7 +138,7 @@ public class QuizLoader {
 
     public void loadAnswers(){
         String scriptParams = generateParamsPHP(QuizDatabase.PARAMVALUE_QRY_ALL_ANSWERS_FOR_QUIZ);
-        getAnswersRequest = new HTTPGet<>(context,scriptParams,QuizDatabase.REQUEST_ID_ANSWERS);
+        getAnswersRequest = new HTTPGetData<>(context,scriptParams,QuizDatabase.REQUEST_ID_GET_ANSWERS);
         getAnswersRequest.getItems(new AnswersParser(),new LLShowProgressActWhenComplete(context, context.getString(R.string.loader_pleasewait),
                 context.getString(R.string.loader_updatingquiz),
                 "Something went wrong: ", false));
@@ -147,7 +147,7 @@ public class QuizLoader {
 
     public void loadAnswersSubmitted(){
         String scriptParams = generateParamsPHP(QuizDatabase.PARAMVALUE_QRY_ALL_ANSWERSSUBMITTED_FOR_QUIZ);
-        getAnswersSubmittedRequest = new HTTPGet<>(context,scriptParams,QuizDatabase.REQUEST_ID_ANSWERSSUBMITTED);
+        getAnswersSubmittedRequest = new HTTPGetData<>(context,scriptParams,QuizDatabase.REQUEST_ID_GET_ANSWERSSUBMITTED);
         getAnswersSubmittedRequest.getItems(new AnswersSubmittedParser(),new LLShowProgressActWhenComplete(context, context.getString(R.string.loader_pleasewait),
                 context.getString(R.string.loader_updatingquiz),
                 "Something went wrong: ", false));
@@ -156,7 +156,7 @@ public class QuizLoader {
 
     public void loadEventLogs(){
         String scriptParams = generateParamsPHP(QuizDatabase.PARAMVALUE_QRY_ALL_EVENTLOGS_FOR_QUIZ);
-        getEventLogsRequest = new HTTPGet<>(context,scriptParams,QuizDatabase.REQUEST_ID_EVENTLOGS);
+        getEventLogsRequest = new HTTPGetData<>(context,scriptParams,QuizDatabase.REQUEST_ID_GET_EVENTLOGS);
         getEventLogsRequest.getItems(new LogMessageParser(),new LLShowProgressActWhenComplete(context, context.getString(R.string.loader_pleasewait),
                 context.getString(R.string.loader_updatingquiz),
                 "Something went wrong: ", false));

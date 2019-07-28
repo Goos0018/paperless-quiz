@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.paperlessquiz.adapters.DisplayAnswersAdapter;
 import com.paperlessquiz.googleaccess.EventLogger;
 import com.paperlessquiz.googleaccess.LoadingActivity;
+import com.paperlessquiz.quiz.QuizDatabase;
 import com.paperlessquiz.quiz.QuizLoader;
 import com.paperlessquiz.round.Round;
 
@@ -125,42 +126,42 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
     private void refreshDisplayFragments() {
         //Refresh what is in the display based on the current values of roundSpinner position
         Round thisRound = thisQuiz.getRound(roundSpinner.getPosition());
-        if (!(thisRound.getAcceptsAnswers() || thisRound.getAcceptsCorrections() || thisRound.isCorrected())) {
-            //Round is not yet open
-            //Just display the fragment that tells you this
-            roundStatusExplanation = C_ParticipantHome.this.getString(R.string.participant_waitforroundopen);
-            explainRoundStatus.setStatus(roundStatusExplanation);
-            toggleFragments(R.id.frPlaceHolder, explainRoundStatus, roundResultFrag, questionSpinner);
-            editAnswerLayout.setVisibility((View.GONE));
-            displayAnswersLayout.setVisibility(View.GONE);
-        }
-        if (thisRound.getAcceptsAnswers()) {
-            //Round is open to enter answers
-            //Show the questionSpinner
-            toggleFragments(R.id.frPlaceHolder, questionSpinner, roundResultFrag, explainRoundStatus);
-            //Show the layouts to edit and display answers
-            editAnswerLayout.setVisibility(View.VISIBLE);
-            displayAnswersLayout.setVisibility(View.VISIBLE);
-            //etAnswer is by default invisible to avoid seeing the keyboard when you shouldn't
-            etAnswer.setVisibility(View.VISIBLE);
-            //Initialize etAnswer with the correct answer
-            etAnswer.setText(thisQuiz.getAnswerForTeam(roundSpinner.getPosition(), questionSpinner.getPosition(), thisTeamNr).getTheAnswer());
-        }
-        if (thisRound.getAcceptsCorrections()) {
-            //Round is closed for answering, but not yet corrected
-            //Just display the fragment that tells you this
-            roundStatusExplanation = C_ParticipantHome.this.getString(R.string.participant_waitforroundcorrection);
-            explainRoundStatus.setStatus(roundStatusExplanation);
-            toggleFragments(R.id.frPlaceHolder, explainRoundStatus, roundResultFrag, questionSpinner);
-            editAnswerLayout.setVisibility((View.GONE));
-            displayAnswersLayout.setVisibility(View.GONE);
-        }
-        if (thisRound.isCorrected()) {
-            //Show the RoundResults Fragment
-            toggleFragments(R.id.frPlaceHolder, roundResultFrag, questionSpinner, explainRoundStatus);
-            //Hide the layout to edit answers
-            editAnswerLayout.setVisibility((View.GONE));
-            displayAnswersLayout.setVisibility(View.VISIBLE);
+        switch (thisRound.getRoundStatus()){
+            case QuizDatabase.ROUNDSTATUS_CLOSED:
+                roundStatusExplanation = C_ParticipantHome.this.getString(R.string.participant_waitforroundopen);
+                explainRoundStatus.setStatus(roundStatusExplanation);
+                toggleFragments(R.id.frPlaceHolder, explainRoundStatus, roundResultFrag, questionSpinner);
+                editAnswerLayout.setVisibility((View.GONE));
+                displayAnswersLayout.setVisibility(View.GONE);
+                break;
+            case QuizDatabase.ROUNDSTATUS_OPENFORANSWERS:
+                //Round is open to enter answers
+                //Show the questionSpinner
+                toggleFragments(R.id.frPlaceHolder, questionSpinner, roundResultFrag, explainRoundStatus);
+                //Show the layouts to edit and display answers
+                editAnswerLayout.setVisibility(View.VISIBLE);
+                displayAnswersLayout.setVisibility(View.VISIBLE);
+                //etAnswer is by default invisible to avoid seeing the keyboard when you shouldn't
+                etAnswer.setVisibility(View.VISIBLE);
+                //Initialize etAnswer with the correct answer
+                etAnswer.setText(thisQuiz.getAnswerForTeam(roundSpinner.getPosition(), questionSpinner.getPosition(), thisTeamNr).getTheAnswer());
+                break;
+            case QuizDatabase.ROUNDSTATUS_OPENFORCORRECTIONS:
+                //Round is closed for answering, but not yet corrected
+                //Just display the fragment that tells you this
+                roundStatusExplanation = C_ParticipantHome.this.getString(R.string.participant_waitforroundcorrection);
+                explainRoundStatus.setStatus(roundStatusExplanation);
+                toggleFragments(R.id.frPlaceHolder, explainRoundStatus, roundResultFrag, questionSpinner);
+                editAnswerLayout.setVisibility((View.GONE));
+                displayAnswersLayout.setVisibility(View.GONE);
+                break;
+            case QuizDatabase.ROUNDSTATUS_CORRECTED:
+                //Show the RoundResults Fragment
+                toggleFragments(R.id.frPlaceHolder, roundResultFrag, questionSpinner, explainRoundStatus);
+                //Hide the layout to edit answers
+                editAnswerLayout.setVisibility((View.GONE));
+                displayAnswersLayout.setVisibility(View.VISIBLE);
+                break;
         }
         refreshAnswers();
     }
@@ -198,8 +199,8 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
         explainRoundStatus = new FragExplainRoundStatus();
         setActionBarIcon();
         setActionBarTitle();
-        //Log that the user logged in and set LoggedIn to TRUE
-        thisTeamNr = thisQuiz.getThisTeam().getIdUser();
+        //Log that the user logged in and set LoggedIn to TRUE so we know this to track if the user pauses the app
+        thisTeamNr = thisQuiz.getThisTeam().getUserNr();
         MyApplication.eventLogger.logEvent(thisQuiz.getThisTeam().getName(), EventLogger.LEVEL_INFO, "Logged in");
         thisQuiz.setLoggedIn(C_ParticipantHome.this, thisTeamNr, true);
         MyApplication.setLoggedIn(true);

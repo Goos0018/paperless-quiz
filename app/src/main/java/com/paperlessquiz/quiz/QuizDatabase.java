@@ -71,6 +71,13 @@ public class QuizDatabase {
     public static final int USERSTATUS_PRESENTNOTLOGGEDIN = 1;
     public static final int USERSTATUS_PRESENTLOGGEDIN = 2;
 
+    //Round Statuses
+    public static final int ROUNDSTATUS_CLOSED = 0;
+    public static final int ROUNDSTATUS_OPENFORANSWERS = 1;
+    public static final int ROUNDSTATUS_OPENFORCORRECTIONS = 2;
+    public static final int ROUNDSTATUS_CORRECTED = 3;
+
+
     //Column names in the SQL database - used to parse the JSON objects
     //Column names table Answers
     public static final String COLNAME_ID_ANSWER = "idAnswer";
@@ -83,14 +90,6 @@ public class QuizDatabase {
     public static final String COLNAME_LEVEL = "Level";
     public static final String COLNAME_DATE_TIME = "DateTime";
     public static final String COLNAME_MESSAGE = "Message";
-    //Column names table Organizers
-    /*
-    public static final String COLNAME_ID_ORGANIZER = "idOrganizer";
-    public static final String COLNAME_ORGANIZER_NR = "OrganizerNr";
-    public static final String COLNAME_ORGANIZER_TYPE = "OrganizerType";
-    public static final String COLNAME_ORGANIZER_PASSWORD = "OrganizerPassword";
-    public static final String COLNAME_ORGANIZER_NAME = "OrganizerName";
-    */
     //Column names table Questions
     public static final String COLNAME_ID_QUESTION = "idQuestion";
     public static final String COLNAME_QUESTION_NR = "QuestionNr";

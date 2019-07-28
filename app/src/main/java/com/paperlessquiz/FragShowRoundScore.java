@@ -35,6 +35,7 @@ public class FragShowRoundScore extends Fragment {
     }
 
     public void refresh() {
+        /*
         QuizStandingsCalculator quizStandingsCalculator = new QuizStandingsCalculator(thisQuiz);
         quizStandingsCalculator.calculateScores();
         quizStandingsCalculator.calculateStandings();
@@ -54,6 +55,7 @@ public class FragShowRoundScore extends Fragment {
             tvNrOfTeams.setText("/ " + thisQuiz.getTeams().size());
             tvNrOfTeams2.setText("/ " + thisQuiz.getTeams().size());
         }
+        */
     }
 
     @Override

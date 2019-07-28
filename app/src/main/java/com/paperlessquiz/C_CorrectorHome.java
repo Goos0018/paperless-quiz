@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.paperlessquiz.adapters.CorrectAnswersAdapter;
 import com.paperlessquiz.answer.Answer;
 import com.paperlessquiz.googleaccess.LoadingActivity;
+import com.paperlessquiz.quiz.QuizDatabase;
 import com.paperlessquiz.quiz.QuizLoader;
 import com.paperlessquiz.round.Round;
 
@@ -128,7 +129,7 @@ public class C_CorrectorHome extends MyActivity implements LoadingActivity, Frag
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.corrector, menu);
         //Hide items for the correction per team/per question button as needed
-        if (thisQuiz.getRound(thisRoundNr).getAcceptsCorrections()) {
+        if (thisQuiz.getRound(thisRoundNr).getRoundStatus() == QuizDatabase.ROUNDSTATUS_OPENFORCORRECTIONS) {
             //Show corrector buttons
             if (correctPerQuestion) {
                 menu.findItem(R.id.rounds).setVisible(false);
@@ -196,36 +197,37 @@ public class C_CorrectorHome extends MyActivity implements LoadingActivity, Frag
     private void refreshDisplayFragments() {
         //Refresh what is in the display based on the current value of roundSpinner position
         Round thisRound = thisQuiz.getRound(thisRoundNr);
-        if (!(thisRound.getAcceptsAnswers() || thisRound.getAcceptsCorrections() || thisRound.isCorrected())) {
-            //Round is not yet open
-            //Just display the fragment that tells you this
-            roundStatusExplanation = C_CorrectorHome.this.getString(R.string.corrector_waitforroundopen);
-            explainRoundStatus.setStatus(roundStatusExplanation);
-            toggleFragments(R.id.frPlaceHolder, explainRoundStatus, spinner, spinner);
-            llCorrectQuestions.setVisibility((View.GONE));
-        }
-        if (thisRound.getAcceptsAnswers()) {
-            //Round is open for the teams
-            //Just display the fragment that tells you this
-            roundStatusExplanation = C_CorrectorHome.this.getString(R.string.corrector_waitforallanswers);
-            explainRoundStatus.setStatus(roundStatusExplanation);
-            toggleFragments(R.id.frPlaceHolder, explainRoundStatus, spinner, spinner);
-            llCorrectQuestions.setVisibility((View.GONE));
-        }
-        if (thisRound.getAcceptsCorrections()) {
-            //Round is open for the corrector
-            toggleFragments(R.id.frPlaceHolder, spinner, explainRoundStatus, explainRoundStatus);
-            llCorrectQuestions.setVisibility((View.VISIBLE));
-            showCorrectAnswerForQuestion(thisRoundNr, thisQuestionNr);
-            refreshAnswers();
-        }
-        if (thisRound.isCorrected()) {
-            //Round is open for the teams
-            //Just display the fragment that tells you this
-            roundStatusExplanation = C_CorrectorHome.this.getString(R.string.corrector_roundalreadycorrected);
-            explainRoundStatus.setStatus(roundStatusExplanation);
-            toggleFragments(R.id.frPlaceHolder, explainRoundStatus, spinner, spinner);
-            llCorrectQuestions.setVisibility((View.GONE));
+        switch (thisRound.getRoundStatus()){
+            case QuizDatabase.ROUNDSTATUS_CLOSED:
+                //Round is not yet open
+                //Just display the fragment that tells you this
+                roundStatusExplanation = C_CorrectorHome.this.getString(R.string.corrector_waitforroundopen);
+                explainRoundStatus.setStatus(roundStatusExplanation);
+                toggleFragments(R.id.frPlaceHolder, explainRoundStatus, spinner, spinner);
+                llCorrectQuestions.setVisibility((View.GONE));
+            case QuizDatabase.ROUNDSTATUS_OPENFORANSWERS:
+                //Round is open for the teams
+                //Just display the fragment that tells you this
+                roundStatusExplanation = C_CorrectorHome.this.getString(R.string.corrector_waitforallanswers);
+                explainRoundStatus.setStatus(roundStatusExplanation);
+                toggleFragments(R.id.frPlaceHolder, explainRoundStatus, spinner, spinner);
+                llCorrectQuestions.setVisibility((View.GONE));
+                break;
+            case QuizDatabase.ROUNDSTATUS_OPENFORCORRECTIONS:
+                //Round is open for the corrector
+                toggleFragments(R.id.frPlaceHolder, spinner, explainRoundStatus, explainRoundStatus);
+                llCorrectQuestions.setVisibility((View.VISIBLE));
+                showCorrectAnswerForQuestion(thisRoundNr, thisQuestionNr);
+                refreshAnswers();
+                break;
+            case QuizDatabase.ROUNDSTATUS_CORRECTED:
+                //Round is open for the teams
+                //Just display the fragment that tells you this
+                roundStatusExplanation = C_CorrectorHome.this.getString(R.string.corrector_roundalreadycorrected);
+                explainRoundStatus.setStatus(roundStatusExplanation);
+                toggleFragments(R.id.frPlaceHolder, explainRoundStatus, spinner, spinner);
+                llCorrectQuestions.setVisibility((View.GONE));
+                break;
         }
         //Force onCreateoptionsMenu to run again
         supportInvalidateOptionsMenu();

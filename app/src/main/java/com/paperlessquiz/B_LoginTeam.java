@@ -1,9 +1,11 @@
 package com.paperlessquiz;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -34,7 +36,7 @@ public class B_LoginTeam extends AppCompatActivity implements LoadingActivity {
     int teamNr;
     QuizLoader quizLoader;
     String password;
-    boolean roundsLoaded,questionsLoaded,answersLoaded;
+    boolean roundsLoaded, questionsLoaded, answersLoaded;
 
     @Override
     public void loadingComplete(int callerID) {
@@ -44,7 +46,7 @@ public class B_LoginTeam extends AppCompatActivity implements LoadingActivity {
                     thisTeam.setUserPassword(password);
                     thisQuiz.setThisTeam(thisTeam);
                     //Load the rest of the quiz
-                    quizLoader.loadQuizForuser(thisTeam.getIdUser(),password,thisQuiz.getListData().getIdQuiz());
+                    quizLoader.loadQuizForuser(thisTeam.getIdUser(), password, thisQuiz.getListData().getIdQuiz());
                 } else {
                     //Authentication failed
                     Toast.makeText(B_LoginTeam.this, B_LoginTeam.this.getString(R.string.main_wrongpassword), Toast.LENGTH_SHORT).show();
@@ -52,16 +54,16 @@ public class B_LoginTeam extends AppCompatActivity implements LoadingActivity {
                 break;
 
             case QuizDatabase.REQUEST_ID_GET_ROUNDS:
-                roundsLoaded=true;
+                roundsLoaded = true;
                 break;
             case QuizDatabase.REQUEST_ID_GET_QUESTIONS:
-                questionsLoaded=true;
+                questionsLoaded = true;
                 break;
             case QuizDatabase.REQUEST_ID_GET_ANSWERS:
-                answersLoaded=true;
+                answersLoaded = true;
                 break;
         }
-        if (roundsLoaded && questionsLoaded && answersLoaded){
+        if (roundsLoaded && questionsLoaded && answersLoaded) {
             quizLoader.loadRoundsIntoQuiz();
             quizLoader.loadQuestionsIntoQuiz();
             quizLoader.loadMyAnswersIntoQuiz();
@@ -105,6 +107,9 @@ public class B_LoginTeam extends AppCompatActivity implements LoadingActivity {
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Dismiss the keyboard if its there
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(etPasskey.getWindowToken(), 0);
                 password = etPasskey.getText().toString().trim();
                 thisTeam = thisQuiz.getTeam(teamNr);
                 if (password.isEmpty()) {

@@ -23,7 +23,12 @@ public class QuestionParser implements JsonParser<Question> {
             questionName = jo.getString(QuizDatabase.COLNAME_QUESTION_NAME);
             questionHint = jo.getString(QuizDatabase.COLNAME_QUESTION_HINT);
             questionFull = jo.getString(QuizDatabase.COLNAME_QUESTION_FULL);
-            questionAnswer = jo.getString(QuizDatabase.COLNAME_QUESTION_ANSWER);
+            try{
+            questionAnswer = jo.getString(QuizDatabase.COLNAME_QUESTION_ANSWER);}
+            catch (Exception e){
+                //20190728: if its not the corrector, its normal that we can't get the correct answers
+                questionAnswer = "";
+            }
         } catch (Exception e) {
             roundNr = 0;
             idQuestion = 0;

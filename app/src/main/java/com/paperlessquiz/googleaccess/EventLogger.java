@@ -49,12 +49,14 @@ public class EventLogger {
                     default:
                         strLevel = "DEFAULT";
                 }
+                /* TODO: replace with SQL logging
                 String scriptParams = GoogleAccess.PARAMNAME_DOC_ID + docID + GoogleAccess.PARAM_CONCATENATOR +
                         GoogleAccess.PARAMNAME_SHEET + sheet + GoogleAccess.PARAM_CONCATENATOR +
                         GoogleAccess.PARAMNAME_LINE_TO_ADD + "[\"" + strToday + "\",\"" + team + "\",\"" + strLevel + "\",\"" + message + "\"]" + GoogleAccess.PARAM_CONCATENATOR +
                         GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_ADDLINE;
                 GoogleAccessSet logger = new GoogleAccessSet(context, scriptParams);
                 logger.setData(new LLSilent());
+                */
             }
         } catch (Exception e) {
         }

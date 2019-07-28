@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.paperlessquiz.R;
+import com.paperlessquiz.quiz.QuizDatabase;
 import com.paperlessquiz.round.Round;
 
 import java.util.ArrayList;
@@ -55,26 +56,35 @@ public class RoundsAdapter extends ArrayAdapter<Round> {
         }
         holder.tvRoundName.setText(getItem(position).getName());
         holder.tvRoundDescription.setText(getItem(position).getDescription());
-        boolean acceptsAnswers = getItem(position).getAcceptsAnswers();
-        boolean acceptsCorrections = getItem(position).getAcceptsCorrections();
-        boolean isCorrected = getItem(position).isCorrected();
-        if (!acceptsAnswers && !acceptsCorrections && !isCorrected){holder.ivRoundStatus.setImageResource(R.drawable.rnd_not_yet_open);}
-        if (acceptsAnswers){holder.ivRoundStatus.setImageResource(R.drawable.rnd_open);}
-        if (acceptsCorrections){holder.ivRoundStatus.setImageResource(R.drawable.rnd_closed);}
-        if (isCorrected){holder.ivRoundStatus.setImageResource(R.drawable.rnd_corrected);}
+
+        switch (getItem(position).getRoundStatus()){
+            case QuizDatabase.ROUNDSTATUS_CLOSED:
+                holder.ivRoundStatus.setImageResource(R.drawable.rnd_not_yet_open);
+                break;
+            case QuizDatabase.ROUNDSTATUS_OPENFORANSWERS:
+                holder.ivRoundStatus.setImageResource(R.drawable.rnd_open);
+                break;
+            case QuizDatabase.ROUNDSTATUS_OPENFORCORRECTIONS:
+                holder.ivRoundStatus.setImageResource(R.drawable.rnd_closed);
+                break;
+            case QuizDatabase.ROUNDSTATUS_CORRECTED:
+                holder.ivRoundStatus.setImageResource(R.drawable.rnd_corrected);
+                break;
+        }
 
         holder.ivRoundStatus.setId(position);
 
         holder.ivRoundStatus.setOnClickListener(new View.OnClickListener()
-                //Toggle isCorrect from true to false
+                //Loop through the round Statuses
         {
             @Override
             public void onClick(View view) {
                 final int position = view.getId();
-                if (!acceptsAnswers && !acceptsCorrections && !isCorrected){getItem(position).setAcceptsAnswers(true);}
-                if (acceptsAnswers && !acceptsCorrections && !isCorrected){getItem(position).setAcceptsAnswers(false);getItem(position).setAcceptsCorrections(true);}
-                if (!acceptsAnswers && acceptsCorrections && !isCorrected){getItem(position).setAcceptsCorrections(false);getItem(position).setCorrected(true);}
-                if (!acceptsAnswers && !acceptsCorrections && isCorrected){getItem(position).setCorrected(false);}
+                if (getItem(position).getRoundStatus() == QuizDatabase.ROUNDSTATUS_CORRECTED){getItem(position).setRoundStatus(QuizDatabase.ROUNDSTATUS_CLOSED);}
+                else
+                {
+                    getItem(position).setRoundStatus(getItem(position).getRoundStatus() + 1);
+                }
                 adapter.notifyDataSetChanged();
             }
 

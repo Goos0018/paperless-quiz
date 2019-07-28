@@ -15,8 +15,8 @@ public class AnswersParser implements JsonParser<Answer> {
         String theAnswer;
         Answer answer;
         try {
-            isCorrect = (jo.getInt(QuizDatabase.COLNAME_ANSWER_CORRECT) == 0);
-            isCorrected = (jo.getInt(QuizDatabase.COLNAME_ANSWER_CORRECTED) == 0);
+            isCorrect = (jo.getInt(QuizDatabase.COLNAME_ANSWER_CORRECT) == 1);
+            isCorrected = (jo.getInt(QuizDatabase.COLNAME_ANSWER_CORRECTED) == 1);
             teamNr = jo.getInt(QuizDatabase.COLNAME_USER_NR);
             theAnswer = jo.getString(QuizDatabase.COLNAME_ANSWER);
             roundNr = jo.getInt(QuizDatabase.COLNAME_ROUND_NR);

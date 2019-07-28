@@ -25,6 +25,7 @@ public class Question implements Serializable {
     private boolean allAnswersCorrected;
     //private String questionID;
 
+    //20190728 - used by the parser
     public Question(int roundNr, int idQuestion, int questionNr, int questionType, String name, String hint, String question, String correctAnswer, int maxScore) {
         this.roundNr = roundNr;
         this.idQuestion = idQuestion;

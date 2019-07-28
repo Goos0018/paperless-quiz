@@ -74,9 +74,9 @@ public class QuizLoader {
 
     public String generateParamsPHP(String query, int idUser, String userPassword, int idQuiz) {
         return QuizDatabase.SCRIPT_GET_QUIZDATA + QuizDatabase.PHP_STARTPARAM +
-                QuizDatabase.PARAMNAME_QUERY + query +
-                QuizDatabase.PARAMNAME_IDUSER + idUser +
-                QuizDatabase.PARAMNAME_USERPASSWORD + userPassword +
+                QuizDatabase.PARAMNAME_QUERY + query + QuizDatabase.PHP_PARAMCONCATENATOR +
+                QuizDatabase.PARAMNAME_IDUSER + idUser + QuizDatabase.PHP_PARAMCONCATENATOR +
+                QuizDatabase.PARAMNAME_USERPASSWORD + userPassword + QuizDatabase.PHP_PARAMCONCATENATOR +
                 QuizDatabase.PARAMNAME_IDQUIZ + idQuiz;
     }
 
@@ -175,7 +175,7 @@ public class QuizLoader {
             //Make sure the user is added on the location that corresponds to its userNr
             switch (thisUser.getUserType()) {
                 case QuizDatabase.USERTYPE_TEAM:
-                    int k = 0;
+                    int k = 1;
                     while (thisQuiz.getTeams().size() < thisUser.getUserNr()) {
                         thisQuiz.getTeams().add(new Team(k));
                         k++;
@@ -183,7 +183,7 @@ public class QuizLoader {
                     thisQuiz.getTeams().set(thisUser.getUserNr() - 1,new Team(thisUser));
                     break;
                 default:
-                    int m = 0;
+                    int m = 1;
                     while (thisQuiz.getOrganizers().size() < thisUser.getUserNr()) {
                         thisQuiz.getOrganizers().add(new Organizer(m));
                         m++;
@@ -197,12 +197,12 @@ public class QuizLoader {
         for (int i = 0; i < getRoundsRequest.getResultsList().size(); i++) {
             Round thisRound = getRoundsRequest.getResultsList().get(i);
             //Make sure the round is added on the location that corresponds to its roundNr
-            int k=0;
+            int k=1;
             while (thisQuiz.getRounds().size() < thisRound.getRoundNr()) {
                 thisQuiz.getRounds().add(new Round(k));
                 k++;
             }
-            thisQuiz.getRounds().set(thisRound.getRoundNr(), thisRound);
+            thisQuiz.getRounds().set(thisRound.getRoundNr()-1, thisRound);
         }
 
     }
@@ -215,12 +215,12 @@ public class QuizLoader {
             } else {
                 Round theRound = thisQuiz.getRound(thisQuestion.getRoundNr());
                 //Make sure the question is added to the correct round and on the location that corresponds to its questionNr
-                int k=0;
+                int k=theRound.getQuestions().size();
                 while (theRound.getQuestions().size() < thisQuestion.getQuestionNr()) {
                     theRound.getQuestions().add(new Question(k));
                     k++;
                 }
-                theRound.getQuestions().set(thisQuestion.getQuestionNr(),thisQuestion);
+                theRound.getQuestions().set(thisQuestion.getQuestionNr()-1,thisQuestion);
             }
         }
     }

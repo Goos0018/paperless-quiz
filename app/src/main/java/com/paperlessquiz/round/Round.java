@@ -20,10 +20,12 @@ public class Round implements Serializable, SpinnerData {
     private int idQuiz,idRound, roundNr, roundStatus;
     private String name, description;
     private int nrOfQuestions;
-    private boolean acceptsAnswers, acceptsCorrections, corrected;
+    //private boolean acceptsAnswers, acceptsCorrections, corrected;
+    private boolean corrected;
     private ArrayList<Question> questions;
 
 
+    //20190728 - used by the rounds parser
     public Round(int idQuiz, int idRound, int roundNr, int roundStatus, String name, String description) {
         this.idQuiz = idQuiz;
         this.idRound = idRound;
@@ -31,6 +33,7 @@ public class Round implements Serializable, SpinnerData {
         this.roundStatus = roundStatus;
         this.name = name;
         this.description = description;
+        this.questions=new ArrayList<>();
     }
 
     //20190728 - Create a dummy round with the given round Nr - used to make sure the Rounds Array always has sufficient elements
@@ -39,21 +42,12 @@ public class Round implements Serializable, SpinnerData {
         this.name = "EMPTY ROUND";
         this.description = "empty round - please check the input that was submitted";
         this.nrOfQuestions = 0;
+        /*
         this.acceptsAnswers = false;
         this.acceptsCorrections = false;
         this.corrected = false;
+        */
         this.questions = new ArrayList<Question>();
-    }
-
-    public Round(int id, String name, String description, int nrOfQuestions,
-                 boolean acceptsAnswers, boolean acceptsCorrections, boolean corrected) {
-        this.roundNr = id;
-        this.name = name;
-        this.description = description;
-        this.nrOfQuestions = nrOfQuestions;
-        this.acceptsAnswers = acceptsAnswers;
-        this.acceptsCorrections = acceptsCorrections;
-        this.corrected = corrected;
     }
 
     //Used to update a rounds object from info retrieved from the Rounds sheet
@@ -62,9 +56,11 @@ public class Round implements Serializable, SpinnerData {
         this.name = rnd.getName();
         this.description = rnd.getDescription();
         this.nrOfQuestions = rnd.getNrOfQuestions();
+        /*
         this.acceptsAnswers = rnd.getAcceptsAnswers();
         this.acceptsCorrections = rnd.getAcceptsCorrections();
         this.corrected = rnd.isCorrected();
+        */
     }
 
     public String getName() {
@@ -79,7 +75,7 @@ public class Round implements Serializable, SpinnerData {
         return nrOfQuestions;
     }
 
-
+/*
     public boolean getAcceptsAnswers() {
         return acceptsAnswers;
     }
@@ -88,10 +84,37 @@ public class Round implements Serializable, SpinnerData {
         return acceptsCorrections;
     }
 
-    public boolean isCorrected() {
-        return corrected;
+
+
+     public void setAcceptsAnswers(boolean acceptsAnswers) {
+        this.acceptsAnswers = acceptsAnswers;
     }
 
+    public void setAcceptsCorrections(boolean acceptsCorrections) {
+        this.acceptsCorrections = acceptsCorrections;
+    }
+
+    @Override
+    public String toString() {
+       String tmp = "[\"" + name + "\",\"" + description + "\",\"" + nrOfQuestions + "\",\"" + Boolean.toString(acceptsAnswers) +
+               "\",\"" + Boolean.toString(acceptsCorrections) + "\",\"" + Boolean.toString(corrected) + "\"]";
+        return tmp;
+    }
+
+public Round(int id, String name, String description, int nrOfQuestions,
+                 boolean acceptsAnswers, boolean acceptsCorrections, boolean corrected) {
+        this.roundNr = id;
+        this.name = name;
+        this.description = description;
+        this.nrOfQuestions = nrOfQuestions;
+
+        this.acceptsAnswers = acceptsAnswers;
+        this.acceptsCorrections = acceptsCorrections;
+        this.corrected = corrected;
+
+}
+
+*/
     public ArrayList<Question> getQuestions() {
         return questions;
     }
@@ -107,25 +130,6 @@ public class Round implements Serializable, SpinnerData {
         return roundNr;
     }
 
-    public void setAcceptsAnswers(boolean acceptsAnswers) {
-        this.acceptsAnswers = acceptsAnswers;
-    }
-
-    public void setAcceptsCorrections(boolean acceptsCorrections) {
-        this.acceptsCorrections = acceptsCorrections;
-    }
-
-    public void setCorrected(boolean corrected) {
-        this.corrected = corrected;
-    }
-
-    @Override
-    public String toString() {
-       String tmp = "[\"" + name + "\",\"" + description + "\",\"" + nrOfQuestions + "\",\"" + Boolean.toString(acceptsAnswers) +
-               "\",\"" + Boolean.toString(acceptsCorrections) + "\",\"" + Boolean.toString(corrected) + "\"]";
-        return tmp;
-    }
-
     public void setNrOfQuestions(int nrOfQuestions) {
         this.nrOfQuestions = nrOfQuestions;
     }
@@ -136,5 +140,21 @@ public class Round implements Serializable, SpinnerData {
             res = res + questions.get(i).getMaxScore();
         }
         return res;
+    }
+
+    public int getRoundStatus() {
+        return roundStatus;
+    }
+
+    public void setRoundStatus(int roundStatus) {
+        this.roundStatus = roundStatus;
+    }
+
+    public boolean isCorrected() {
+        return corrected;
+    }
+
+    public void setCorrected(boolean corrected) {
+        this.corrected = corrected;
     }
 }

@@ -70,7 +70,7 @@ public class Quiz implements Serializable {
                 //For each Team
                 for (int k = 0; k < teams.size(); k++) {
                     Team theTeam = teams.get(k);
-                    theQuestion.getAllAnswers().add(new Answer(theTeam.getIdUser(), theQuestion.getIdQuestion(), 0, "", false, false));
+                    theQuestion.getAllAnswers().add(new Answer(theTeam.getUserNr(), theQuestion.getRoundNr(), theQuestion.getQuestionNr(), "", false, false));
                 }
             }
         }
@@ -370,7 +370,7 @@ public class Quiz implements Serializable {
     public boolean isAnyRoundOpen() {
         boolean res = false;
         for (int i = 0; i < rounds.size(); i++) {
-            res = res || rounds.get(i).getAcceptsAnswers();
+            res = res || (rounds.get(i).getRoundStatus()== QuizDatabase.ROUNDSTATUS_OPENFORANSWERS);
         }
         return res;
     }

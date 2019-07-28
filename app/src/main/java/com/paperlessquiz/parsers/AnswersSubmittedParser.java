@@ -15,7 +15,7 @@ public class AnswersSubmittedParser implements JsonParser<AnswersSubmitted> {
 
         AnswersSubmitted answersSubmitted;
         try {
-            idTeam = jo.getInt(QuizDatabase.COLNAME_ID_TEAM);
+            idTeam = jo.getInt(QuizDatabase.COLNAME_ID_USER);
             idRound = jo.getInt(QuizDatabase.COLNAME_ID_ROUND);
             submitted = !(jo.getInt(QuizDatabase.COLNAME_SUBMITTED)==0);
         } catch (Exception e) {

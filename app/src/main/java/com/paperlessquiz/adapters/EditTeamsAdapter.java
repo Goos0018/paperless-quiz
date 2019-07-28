@@ -11,7 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.paperlessquiz.R;
-import com.paperlessquiz.loginentity.Team;
+import com.paperlessquiz.quiz.QuizDatabase;
+import com.paperlessquiz.users.Team;
 
 import java.util.ArrayList;
 
@@ -55,11 +56,11 @@ public class EditTeamsAdapter extends RecyclerView.Adapter<EditTeamsAdapter.View
         viewHolder.tvTeamNr.setText(teams.get(i).getIdUser() + ".");
         viewHolder.etTeamName.setText(teams.get(i).getName());
         viewHolder.tvTeamName.setText(teams.get(i).getName());
-        boolean isPresent = teams.get(i).isPresent();
-        if (isPresent) {
-            viewHolder.ivPresent.setImageResource(R.drawable.team_present);
-        } else {
+        if (teams.get(i).getUserStatus() == QuizDatabase.USERSTATUS_NOTPRESENT) {
             viewHolder.ivPresent.setImageResource(R.drawable.team_not_present);
+
+        } else {
+            viewHolder.ivPresent.setImageResource(R.drawable.team_present);
         }
 
         viewHolder.tvTeamName.setOnClickListener(new View.OnClickListener()
@@ -78,7 +79,12 @@ public class EditTeamsAdapter extends RecyclerView.Adapter<EditTeamsAdapter.View
             @Override
             public void onClick(View view) {
                 final int position = view.getId();
-                teams.get(i).setPresent(!isPresent);
+                if (teams.get(i).getUserStatus() == QuizDatabase.USERSTATUS_NOTPRESENT) {
+                    teams.get(i).setUserStatus(QuizDatabase.USERSTATUS_PRESENTNOTLOGGEDIN);
+                } else {
+                    teams.get(i).setUserStatus(QuizDatabase.USERSTATUS_NOTPRESENT);
+                }
+
                 teams.get(i).setName(viewHolder.etTeamName.getText().toString().trim());
                 viewHolder.tvTeamName.setVisibility(View.VISIBLE);
                 viewHolder.etTeamName.setVisibility(View.GONE);

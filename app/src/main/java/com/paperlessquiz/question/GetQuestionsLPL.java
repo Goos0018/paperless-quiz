@@ -38,7 +38,7 @@ public class GetQuestionsLPL implements ListParsedListener<Question> {
             //Now add questions until you are sure you have one at the position you need
             while (qList.size() < qNumber)
             {
-                qList.add(new Question());
+                //qList.add(new Question());
             }
             //Replace the (blank) question at the correct position with the one you have here
             qList.set(qNumber-1,q);

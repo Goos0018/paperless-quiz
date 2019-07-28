@@ -13,15 +13,12 @@ import android.widget.Toast;
 
 import com.paperlessquiz.adapters.ParticipantsAdapter;
 import com.paperlessquiz.googleaccess.LoadingActivity;
+import com.paperlessquiz.quiz.Quiz;
 import com.paperlessquiz.quiz.QuizDatabase;
 import com.paperlessquiz.quiz.QuizLoader;
 import com.paperlessquiz.users.Team;
-import com.paperlessquiz.quiz.Quiz;
 
-/**
- * Main login screen for users, allows user to select a team to log in and proceed to the Participant Home screen after authentication
- */
-public class B_LoginTeam extends AppCompatActivity implements LoadingActivity {
+public class B_LoginUser extends AppCompatActivity implements LoadingActivity {
     Quiz thisQuiz = MyApplication.theQuiz;
     Team thisTeam;
     //Local items in interface
@@ -33,53 +30,31 @@ public class B_LoginTeam extends AppCompatActivity implements LoadingActivity {
     //other local variables needed
     int teamNr;
     QuizLoader quizLoader;
-    String password;
-    boolean roundsLoaded,questionsLoaded,answersLoaded;
 
     @Override
     public void loadingComplete(int callerID) {
         switch (callerID) {
             case QuizDatabase.REQUEST_ID_AUTHENTICATE:
                 if (quizLoader.authenticateRequest.isRequestOK()) {
-                    thisTeam.setUserPassword(password);
                     thisQuiz.setThisTeam(thisTeam);
-                    //Load the rest of the quiz
-                    quizLoader.loadQuizForuser(thisTeam.getIdUser(),password,thisQuiz.getListData().getIdQuiz());
+                    Intent intentP = new Intent(B_LoginUser.this, C_ParticipantHome.class);
+                    startActivity(intentP);
                 } else {
                     //Authentication failed
-                    Toast.makeText(B_LoginTeam.this, B_LoginTeam.this.getString(R.string.main_wrongpassword), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(B_LoginUser.this, B_LoginUser.this.getString(R.string.main_wrongpassword), Toast.LENGTH_SHORT).show();
                 }
                 break;
-
-            case QuizDatabase.REQUEST_ID_GET_ROUNDS:
-                roundsLoaded=true;
-                break;
-            case QuizDatabase.REQUEST_ID_GET_QUESTIONS:
-                questionsLoaded=true;
-                break;
-            case QuizDatabase.REQUEST_ID_GET_ANSWERS:
-                answersLoaded=true;
-                break;
-        }
-        if (roundsLoaded && questionsLoaded && answersLoaded){
-            quizLoader.loadRoundsIntoQuiz();
-            quizLoader.loadQuestionsIntoQuiz();
-            quizLoader.loadMyAnswersIntoQuiz();
-            Intent intentP = new Intent(B_LoginTeam.this, C_ParticipantHome.class);
-            startActivity(intentP);
         }
     }
-
-
-    private void setFields(int position) {
+    private void setFields ( int position){
         tvDisplayName.setText(thisQuiz.getTeams().get(position).getName());
         tvDisplayID.setText(thisQuiz.getTeams().get(position).getDescription());
         etPasskey.setText("");
-        teamNr = thisQuiz.getTeams().get(position).getUserNr();
+        teamNr=thisQuiz.getTeams().get(position).getUserNr();
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate (Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_b_login_main);
         quizLoader = new QuizLoader(this);
@@ -105,16 +80,17 @@ public class B_LoginTeam extends AppCompatActivity implements LoadingActivity {
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                password = etPasskey.getText().toString().trim();
+                teamNr = Integer.valueOf(tvDisplayID.getText().toString());
+                String input = etPasskey.getText().toString().trim();
                 thisTeam = thisQuiz.getTeam(teamNr);
-                if (password.isEmpty()) {
+                if (input.isEmpty()) {
                     //If no password was entered
-                    Toast.makeText(B_LoginTeam.this, B_LoginTeam.this.getString(R.string.main_wrongpswdentered), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(B_LoginUser.this, B_LoginUser.this.getString(R.string.main_wrongpswdentered), Toast.LENGTH_SHORT).show();
                 } else {
                     if (thisTeam.getUserStatus() == QuizDatabase.USERSTATUS_NOTPRESENT) {
-                        Toast.makeText(B_LoginTeam.this, B_LoginTeam.this.getString(R.string.main_registeratreceptionfirst), Toast.LENGTH_LONG).show();
+                        Toast.makeText(B_LoginUser.this, B_LoginUser.this.getString(R.string.main_registeratreceptionfirst), Toast.LENGTH_LONG).show();
                     } else {
-                        quizLoader.authenticateUser(thisTeam.getIdUser(), password);
+                        quizLoader.authenticateUser(thisTeam.getIdUser(), input);
                     }
                 }
             }

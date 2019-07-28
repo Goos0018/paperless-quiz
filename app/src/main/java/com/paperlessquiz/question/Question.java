@@ -23,10 +23,10 @@ public class Question implements Serializable {
     private int roundNr;
     private ArrayList<Answer> allAnswers;
     private boolean allAnswersCorrected;
-    private String questionID;
+    //private String questionID;
 
-    public Question(int idRound, int idQuestion, int questionNr, int questionType, String name, String hint, String question, String correctAnswer, int maxScore) {
-        this.idRound = idRound;
+    public Question(int roundNr, int idQuestion, int questionNr, int questionType, String name, String hint, String question, String correctAnswer, int maxScore) {
+        this.roundNr = roundNr;
         this.idQuestion = idQuestion;
         this.questionNr = questionNr;
         this.questionType = questionType;
@@ -35,14 +35,18 @@ public class Question implements Serializable {
         this.question = question;
         this.correctAnswer = correctAnswer;
         this.maxScore = maxScore;
+        this.allAnswers=new ArrayList<>();
     }
 
-    public Question() {
-        this.questionID = "";
-        this.questionNr = 0;
+    //20190728 - Create a dummy question with the given question Nr - used to make sure the Questions Array always has sufficient elements
+    public Question(int questionNr) {
+        //this.questionID = "";
+        this.idQuestion = 0;
+        this.questionNr = questionNr;
+        this.questionType = 0;
         this.roundNr = 0;
-        this.name="";
-        this.hint = "";
+        this.name="EMPTY QUESTION";
+        this.hint = "empty";
         this.question = "";
         this.correctAnswer = "";
         this.maxScore = 0;
@@ -52,7 +56,7 @@ public class Question implements Serializable {
     public Question(String questionID, int questionNr, int roundNr, String name, String hint, String question, String correctAnswer, int maxScore) {
         //This constructor is used when parsing the results from the sheet
         //We only use the data we can get from this sheet
-        this.questionID=questionID;
+        //this.questionID=questionID;
         this.questionNr = questionNr;
         this.roundNr = roundNr;
         this.name=name;
@@ -138,10 +142,11 @@ public class Question implements Serializable {
         return name;
     }
 
+    /*
     public String getQuestionID() {
         return questionID;
     }
-
+*/
 
 
     public ArrayList<Answer> getAllAnswers() {
@@ -165,6 +170,18 @@ public class Question implements Serializable {
     }
     public void setAnswerForTeam(int teamNr, String answer){
         getAnswerForTeam(teamNr).setTheAnswer(answer);
+    }
+
+    public int getIdRound() {
+        return idRound;
+    }
+
+    public int getIdQuestion() {
+        return idQuestion;
+    }
+
+    public int getQuestionType() {
+        return questionType;
     }
 
 

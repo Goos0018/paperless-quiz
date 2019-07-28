@@ -42,8 +42,8 @@ public class C_QuizmasterRounds extends MyActivity implements LoadingActivity {
                 break;
 
             case R.id.refresh:
-                QuizLoader quizLoader = new QuizLoader(C_QuizmasterRounds.this, thisQuiz.getListData().getSheetDocID());
-                quizLoader.loadRounds();
+                QuizLoader quizLoader = new QuizLoader(C_QuizmasterRounds.this);
+                //quizLoader.loadRounds();
 
                 break;
 

@@ -6,17 +6,15 @@ public class Answer implements Serializable{
     //TODO: add question ID here so we can display it when correcting answers
 
     //private int questionNr;
-    private int idTeam;
-    private int idQuestion;
-    private int idAnswer;
+    private int teamNr,roundNr, questionNr;
     private String theAnswer;
     private boolean corrected;
     private boolean correct;
 
-    public Answer(int idTeam, int idQuestion, int idAnswer, String theAnswer, boolean corrected, boolean correct) {
-        this.idTeam = idTeam;
-        this.idQuestion = idQuestion;
-        this.idAnswer = idAnswer;
+    public Answer(int teamNr, int roundNr, int questionNr, String theAnswer, boolean corrected, boolean correct) {
+        this.teamNr = teamNr;
+        this.roundNr = roundNr;
+        this.questionNr = questionNr;
         this.theAnswer = theAnswer;
         this.corrected = corrected;
         this.correct = correct;
@@ -67,5 +65,17 @@ public class Answer implements Serializable{
     public void setCorrect(boolean correct) {
         this.correct = correct;
         this.corrected=true;
+    }
+
+    public int getRoundNr() {
+        return roundNr;
+    }
+
+    public int getQuestionNr() {
+        return questionNr;
+    }
+
+    public int getTeamNr() {
+        return teamNr;
     }
 }

@@ -1,12 +1,9 @@
-package com.paperlessquiz.loginentity;
+package com.paperlessquiz.users;
 
 import com.paperlessquiz.parsers.JsonParser;
-import com.paperlessquiz.quiz.QuizGenerator;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
 
 public class LoginEntityParser implements JsonParser<Team> {
     //Headers are taken from the QuizGenerator class and must match those of course
@@ -39,6 +36,6 @@ public class LoginEntityParser implements JsonParser<Team> {
             team.setAnswerForRndsSubmitted(answersSubmitted);
         }
         */
-        return new Team(0,0,"","",0,0);
+        return new Team(0,0,0,0,0,"");
     }
 }

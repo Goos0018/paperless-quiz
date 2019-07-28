@@ -9,9 +9,9 @@ import com.paperlessquiz.googleaccess.GoogleAccess;
 import com.paperlessquiz.googleaccess.GoogleAccessSet;
 import com.paperlessquiz.googleaccess.LLNotifyStartOnly;
 import com.paperlessquiz.googleaccess.LLSilent;
-import com.paperlessquiz.loginentity.Organizer;
-import com.paperlessquiz.loginentity.Team;
-import com.paperlessquiz.loginentity.User;
+import com.paperlessquiz.users.Organizer;
+import com.paperlessquiz.users.Team;
+import com.paperlessquiz.users.User;
 import com.paperlessquiz.question.Question;
 import com.paperlessquiz.quizlistdata.QuizListData;
 import com.paperlessquiz.round.Round;
@@ -25,12 +25,12 @@ import java.util.ArrayList;
  * - Organizers are simply used to do things like open and lcose roudns, correct rounds, ... .
  * - Each Round object contains status information for that round (corrected, closed, ...), and most importantly, a list of questions for that round.
  * - Each question contains some general information about that question (for example, the correct answer), but also an arraylist of al answers that were given.
- *      Here, answer(i) is the answer from the team with teamnumber i, and the Asnwer object not only contains the String that is the answser,
- *      but also an indication whether it is corrected, and if the answer is correct or not.
- *  - Each Team (Team)finally, has two arraylists, where each memeber cooresponds to a round:
- *      * An indication whether or not answers were subnmitted for this round
- *      * A RoundResults object, that contains the score for this round, the total score until this round, and the position of this team in the standings for the round and in ttoal after the round
- *
+ * Here, answer(i) is the answer from the team with teamnumber i, and the Asnwer object not only contains the String that is the answser,
+ * but also an indication whether it is corrected, and if the answer is correct or not.
+ * - Each Team (Team)finally, has two arraylists, where each memeber cooresponds to a round:
+ * * An indication whether or not answers were subnmitted for this round
+ * * A RoundResults object, that contains the score for this round, the total score until this round, and the position of this team in the standings for the round and in ttoal after the round
+ * <p>
  * A Quiz is created by loading it from a Google sheet that contains various sheets. The QuizLoader object is responsible for loading al data.
  * When the quiz is initially loaded, we properly initiliaze the central quiz object that is part of the MyApplication class.
  * After that, the loader automatically updates the quiz object.
@@ -51,7 +51,7 @@ public class Quiz implements Serializable {
     public boolean loadingCompleted = false;
 
 
-    //We only need an empty constructor, the QuizLoader class will populate all fields of the quiz
+    //20190728 - We only need an empty constructor, the QuizLoader class will populate all fields of the quiz
     public Quiz() {
         this.listData = new QuizListData();
         this.teams = new ArrayList<>();
@@ -59,17 +59,34 @@ public class Quiz implements Serializable {
         this.rounds = new ArrayList<>();
     }
 
+    //20190728 - Make sure that all teams have a blank answer for all questions. Used initially, afterwards, we will overwrite this with the answers that exist in the SQL db
+    public void initializeAllAnswers() {
+        //For each round
+        for (int i = 0; i < rounds.size(); i++) {
+            Round theRound = rounds.get(i);
+            //For each question in this round
+            for (int j = 0; j < theRound.getQuestions().size() ; j++) {
+                Question theQuestion = theRound.getQuestions().get(j);
+                //For each Team
+                for (int k = 0; k < teams.size(); k++) {
+                    Team theTeam = teams.get(k);
+                    theQuestion.getAllAnswers().add(new Answer(theTeam.getIdUser(), theQuestion.getIdQuestion(), 0, "", false, false));
+                }
+            }
+        }
+    }
+
 
     //Initialize the Results for each team - just make sure the necessary array elements exist so they can be used later
-    public void initializeResultsForTeams(){
-        for (int i = 0; i < teams.size() ; i++) {
+    public void initializeResultsForTeams() {
+        for (int i = 0; i < teams.size(); i++) {
             //Make sure we already have something - should not be necessary since included in constructor for Team
-            if (teams.get(i).getResults() == null){
+            if (teams.get(i).getResults() == null) {
                 teams.get(i).setResults(new ArrayList<>());
             }
             //Make sure we have a Results object for each round
             for (int j = 0; j < rounds.size(); j++) {
-                if(teams.get(i).getResults().size() < j+1){
+                if (teams.get(i).getResults().size() < j + 1) {
                     teams.get(i).getResults().add(new ResultAfterRound());
                 }
             }
@@ -259,6 +276,7 @@ public class Quiz implements Serializable {
                 "Submitting team updates"));
     }
 
+    /*
     //Used by the Corrector to submit all corrections for a single question
     public void submitCorrectionsForQuestion(Context context, int roundNr, int questionNr) {
         ArrayList<Answer> answerList = getAllAnswersForQuestion(roundNr, questionNr);
@@ -283,6 +301,8 @@ public class Quiz implements Serializable {
                 "Submitting scores for question " + getQuestion(roundNr, questionNr).getQuestionID()));
     }
 
+
+
     //Used by the Corrector to submit all corrections for a single team
     public void submitCorrectionsForTeam(Context context, int roundNr, int teamNr) {
         ArrayList<Answer> answerList = getAnswersForRound(roundNr, teamNr);
@@ -305,6 +325,7 @@ public class Quiz implements Serializable {
         submitScores.setData(new LLNotifyStartOnly(context, getThisTeam().getName(),
                 "Submitting scores for team " + getTeam(teamNr).getName()));
     }
+
 
     //Used by the Participant to submit all answers for a single round
     public void submitAnswers(Context context, int roundNr) {
@@ -331,7 +352,7 @@ public class Quiz implements Serializable {
                 "Submitting answers for round " + roundNr));
     }
 
-
+*/
     //Triggered in the onCreate of ParticipantHome - marks this team as Logged In
     public void setLoggedIn(Context context, int teamNr, boolean isLoggedIn) {
         String tmp = "[[" + isLoggedIn + "]]";
@@ -346,7 +367,7 @@ public class Quiz implements Serializable {
         setLoggedIn.setData(new LLSilent());
     }
 
-    public boolean isAnyRoundOpen(){
+    public boolean isAnyRoundOpen() {
         boolean res = false;
         for (int i = 0; i < rounds.size(); i++) {
             res = res || rounds.get(i).getAcceptsAnswers();
@@ -354,7 +375,7 @@ public class Quiz implements Serializable {
         return res;
     }
 
-    public int getMaxScoreUntilRound(int roundNr){
+    public int getMaxScoreUntilRound(int roundNr) {
         int res = 0;
         for (int i = 0; i < roundNr; i++) {
             res = res + rounds.get(i).getMaxScore();
@@ -363,16 +384,17 @@ public class Quiz implements Serializable {
     }
 
 
-    public ArrayList<User> convertOrganizerToUserArray(ArrayList<Organizer> organizers){
+    public ArrayList<User> convertOrganizerToUserArray(ArrayList<Organizer> organizers) {
         ArrayList<User> userArray = new ArrayList<>();
-        for (int i = 0; i < organizers.size() ; i++) {
+        for (int i = 0; i < organizers.size(); i++) {
             userArray.add((User) organizers.get(i));
         }
         return userArray;
     }
-    public ArrayList<User> convertTeamToUserArray(ArrayList<Team> teams){
+
+    public ArrayList<User> convertTeamToUserArray(ArrayList<Team> teams) {
         ArrayList<User> userArray = new ArrayList<>();
-        for (int i = 0; i < teams.size() ; i++) {
+        for (int i = 0; i < teams.size(); i++) {
             userArray.add((User) teams.get(i));
         }
         return userArray;

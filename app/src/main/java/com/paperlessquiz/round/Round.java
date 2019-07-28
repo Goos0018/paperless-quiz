@@ -33,10 +33,11 @@ public class Round implements Serializable, SpinnerData {
         this.description = description;
     }
 
-    public Round() {
-        this.roundNr = 0;
-        this.name = "";
-        this.description = "";
+    //20190728 - Create a dummy round with the given round Nr - used to make sure the Rounds Array always has sufficient elements
+    public Round(int roundNr) {
+        this.roundNr = roundNr;
+        this.name = "EMPTY ROUND";
+        this.description = "empty round - please check the input that was submitted";
         this.nrOfQuestions = 0;
         this.acceptsAnswers = false;
         this.acceptsCorrections = false;

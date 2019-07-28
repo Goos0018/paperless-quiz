@@ -11,11 +11,11 @@ public class QuestionParser implements JsonParser<Question> {
 
     @Override
     public Question parse(JSONObject jo) throws JSONException {
-        int idRound, idQuestion,questionNr,questionScore,questionType;
+        int roundNr, idQuestion,questionNr,questionScore,questionType;
         String questionName,questionHint,questionFull,questionAnswer;
         Question question;
         try {
-            idRound = jo.getInt(QuizDatabase.COLNAME_ID_ROUND);
+            roundNr = jo.getInt(QuizDatabase.COLNAME_ROUND_NR);
             idQuestion = jo.getInt(QuizDatabase.COLNAME_ID_QUESTION);
             questionNr = jo.getInt(QuizDatabase.COLNAME_QUESTION_NR);
             questionScore = jo.getInt(QuizDatabase.COLNAME_QUESTION_SCORE);
@@ -25,7 +25,7 @@ public class QuestionParser implements JsonParser<Question> {
             questionFull = jo.getString(QuizDatabase.COLNAME_QUESTION_FULL);
             questionAnswer = jo.getString(QuizDatabase.COLNAME_QUESTION_ANSWER);
         } catch (Exception e) {
-            idRound = 0;
+            roundNr = 0;
             idQuestion = 0;
             questionNr = 0;
             questionScore = 0;
@@ -35,7 +35,7 @@ public class QuestionParser implements JsonParser<Question> {
             questionFull = "";
             questionAnswer = "";
             }
-        question = new Question(idRound, idQuestion, questionNr, questionType, questionName, questionHint, questionFull, questionAnswer, questionScore);
+        question = new Question(roundNr, idQuestion, questionNr, questionType, questionName, questionHint, questionFull, questionAnswer, questionScore);
         return question;
     }
 }

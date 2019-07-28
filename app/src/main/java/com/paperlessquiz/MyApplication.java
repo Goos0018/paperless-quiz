@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 
 import com.paperlessquiz.googleaccess.EventLogger;
-import com.paperlessquiz.loginentity.Team;
 import com.paperlessquiz.quiz.Quiz;
 import com.paperlessquiz.quiz.QuizGenerator;
 

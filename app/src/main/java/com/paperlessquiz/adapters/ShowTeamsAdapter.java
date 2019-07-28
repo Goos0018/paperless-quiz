@@ -10,7 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.paperlessquiz.R;
-import com.paperlessquiz.loginentity.Team;
+import com.paperlessquiz.quiz.QuizDatabase;
+import com.paperlessquiz.users.Team;
 
 import java.util.ArrayList;
 
@@ -53,18 +54,18 @@ public class ShowTeamsAdapter extends RecyclerView.Adapter<ShowTeamsAdapter.View
     public void onBindViewHolder(@NonNull ShowTeamsAdapter.ViewHolder viewHolder, int i) {
         viewHolder.itemView.setTag(teams.get(i));
         viewHolder.tvTeamName.setText(teams.get(i).getIdUser() + ". " + teams.get(i).getName());
-        boolean isPresent = teams.get(i).isPresent();
-        boolean isLoggedIn = teams.get(i).isLoggedIn();
         boolean answersForThisRoundSubmitted = teams.get(i).isAnswersForThisRoundSubmitted(roundNr);
-        if (isPresent) {
-            if (isLoggedIn) {
-                viewHolder.ivPresent.setImageResource(R.drawable.team_logged_in);
-            } else {
+        switch (teams.get(i).getUserStatus()) {
+            case QuizDatabase.USERSTATUS_NOTPRESENT:
+                viewHolder.ivPresent.setImageResource(R.drawable.team_not_present);
+                break;
+            case QuizDatabase.USERSTATUS_PRESENTNOTLOGGEDIN:
                 viewHolder.ivPresent.setImageResource(R.drawable.team_not_logged_in);
-            }
-        } else {
-            viewHolder.ivPresent.setImageResource(R.drawable.team_not_present);
+                break;
+            case QuizDatabase.USERSTATUS_PRESENTLOGGEDIN:
+                viewHolder.ivPresent.setImageResource(R.drawable.team_logged_in);
         }
+
         if (answersForThisRoundSubmitted) {
             viewHolder.ivAnswersSubmitted.setImageResource(R.drawable.answers_submitted);
         } else {
@@ -88,14 +89,14 @@ public class ShowTeamsAdapter extends RecyclerView.Adapter<ShowTeamsAdapter.View
         */
     }
 
-        @Override
-        public int getItemCount() {
-            return teams.size();
-        }
+    @Override
+    public int getItemCount() {
+        return teams.size();
+    }
 
-        public void setTeams (ArrayList <Team> teams) {
-            this.teams = teams;
-        }
+    public void setTeams(ArrayList<Team> teams) {
+        this.teams = teams;
+    }
 
     public void setRoundNr(int roundNr) {
         this.roundNr = roundNr;

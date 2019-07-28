@@ -9,12 +9,13 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.paperlessquiz.R;
-import com.paperlessquiz.loginentity.Team;
-import com.paperlessquiz.loginentity.User;
-import com.paperlessquiz.quiz.QuizGenerator;
+import com.paperlessquiz.users.User;
 
 import java.util.ArrayList;
 
+/**
+ * Show a list of all teams so users can select their team
+ */
 public class ParticipantsAdapter extends ArrayAdapter<User> {
 
     private final Context context;
@@ -39,7 +40,7 @@ public class ParticipantsAdapter extends ArrayAdapter<User> {
         tvName.setText(getItem(position).getName());
         //tvType.setText(this.getItem(position).getType());
         tvType.setText(getItem(position).getDescription());
-        tvUserID.setText(getItem(position).getIdUser());
+        //tvUserID.setText(getItem(position).getUserNr());
 
         return rowView;
     }

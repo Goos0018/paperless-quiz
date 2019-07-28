@@ -1,7 +1,7 @@
 package com.paperlessquiz.quiz;
 
 import com.paperlessquiz.answer.Answer;
-import com.paperlessquiz.loginentity.Team;
+import com.paperlessquiz.users.Team;
 import com.paperlessquiz.question.Question;
 import com.paperlessquiz.round.Round;
 

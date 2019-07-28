@@ -6,33 +6,30 @@ import com.paperlessquiz.quiz.QuizDatabase;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.time.chrono.IsoChronology;
-import java.util.ArrayList;
-
 public class AnswersParser implements JsonParser<Answer> {
 
     @Override
     public Answer parse(JSONObject jo) throws JSONException {
         boolean isCorrect, isCorrected;
-        int idTeam, idQuestion, idAnswer;
+        int teamNr, roundNr,questionNr;
         String theAnswer;
         Answer answer;
         try {
             isCorrect = (jo.getInt(QuizDatabase.COLNAME_ANSWER_CORRECT) == 0);
             isCorrected = (jo.getInt(QuizDatabase.COLNAME_ANSWER_CORRECTED) == 0);
-            idTeam = jo.getInt(QuizDatabase.COLNAME_ID_TEAM);
-            idQuestion = jo.getInt(QuizDatabase.COLNAME_ID_QUESTION);
-            idAnswer = jo.getInt(QuizDatabase.COLNAME_ID_ANSWER);
+            teamNr = jo.getInt(QuizDatabase.COLNAME_USER_NR);
             theAnswer = jo.getString(QuizDatabase.COLNAME_ANSWER);
+            roundNr = jo.getInt(QuizDatabase.COLNAME_ROUND_NR);
+            questionNr = jo.getInt(QuizDatabase.COLNAME_QUESTION_NR);
         } catch (Exception e) {
             isCorrect = false;
             isCorrected = false;
-            idTeam=0;
-            idQuestion=0;
-            idAnswer=0;
+            teamNr =0;
             theAnswer = "Error parsing " + jo.toString();
+            roundNr=0;
+            questionNr=0;
         }
-        answer = new Answer(idTeam, idQuestion, idAnswer, theAnswer, isCorrected, isCorrect);
+        answer = new Answer(teamNr, roundNr,questionNr, theAnswer, isCorrected, isCorrect);
         return answer;
     }
 }

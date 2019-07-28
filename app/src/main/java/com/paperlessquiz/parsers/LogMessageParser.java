@@ -15,7 +15,7 @@ public class LogMessageParser implements JsonParser {
         String message;
         LogMessage logMessage;
         try {
-            idTeam = jo.getInt(QuizDatabase.COLNAME_ID_TEAM);
+            idTeam = jo.getInt(QuizDatabase.COLNAME_ID_USER);
             level = jo.getInt(QuizDatabase.COLNAME_LEVEL);
             dateTime = jo.getString(QuizDatabase.COLNAME_DATE_TIME);
             message = jo.getString(QuizDatabase.COLNAME_MESSAGE);

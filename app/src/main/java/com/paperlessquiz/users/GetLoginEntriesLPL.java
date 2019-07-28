@@ -1,8 +1,6 @@
-package com.paperlessquiz.loginentity;
+package com.paperlessquiz.users;
 
-import com.paperlessquiz.MyApplication;
 import com.paperlessquiz.googleaccess.ListParsedListener;
-import com.paperlessquiz.quiz.QuizGenerator;
 
 import java.util.ArrayList;
 import java.util.List;

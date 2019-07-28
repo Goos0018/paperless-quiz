@@ -17,7 +17,7 @@ import com.squareup.picasso.Picasso;
 
 /**
  * This screen allows you to select if you are an organizer or a participant.
- * All data about the quiz is loaded and stored in a Quiz object
+ * Because you are not authenticated yet, we only load the list of participants
  */
 
 public class A_SelectRole extends AppCompatActivity implements LoadingActivity {
@@ -35,14 +35,15 @@ public class A_SelectRole extends AppCompatActivity implements LoadingActivity {
     public void loadingComplete(int requestID) {
         //Write all the data we retrieved to the Quiz object
         switch (requestID){
+            case QuizDatabase.REQUEST_ID_GET_USERS:
+                //Load the users that were retrieved into the Organizers and the Teams
+                quizLoader.loadUsersIntoQuiz();
+                break;
             case QuizDatabase.REQUEST_ID_GET_ROUNDS:
                 break;
             case QuizDatabase.REQUEST_ID_GET_QUESTIONS:
                 break;
-            case QuizDatabase.REQUEST_ID_GET_TEAMS:
-                break;
-            case QuizDatabase.REQUEST_ID_GET_ORGANIZERS:
-                break;
+
             case QuizDatabase.REQUEST_ID_GET_ANSWERS:
                 break;
             case QuizDatabase.REQUEST_ID_GET_ANSWERSSUBMITTED:
@@ -75,8 +76,9 @@ public class A_SelectRole extends AppCompatActivity implements LoadingActivity {
                     .centerCrop()
                     .into(ivQuizLogo);
         }
-        quizLoader = new QuizLoader(this, thisQuiz.getListData().getSheetDocID());
-        quizLoader.loadAll();
+        quizLoader = new QuizLoader(this);
+        quizLoader.loadUsers();
+        //quizLoader.loadAll();
         //Access the Generator screen by tapping the logo 5 times
         ivQuizLogo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,17 +113,17 @@ public class A_SelectRole extends AppCompatActivity implements LoadingActivity {
         //if we are here, all loading actions should be finished, so we can set the result in the central Quiz object and make sure this is properly initialized
         //TODO: put this as a method of the QuizLoader class
         //thisQuiz.setListData(thisQuizListData);                                                           //=> Already done in the main activity - is done only once
-        thisQuiz.setTeams(quizLoader.quizTeamsLPL.getLoginEntities());                                      //=> Set the teams here, LPL will update them on subsequent loads
+        //thisQuiz.setTeams(quizLoader.quizTeamsLPL.getLoginEntities());                                      //=> Set the teams here, LPL will update them on subsequent loads
         // TODO: thisQuiz.setOrganizers(quizLoader.quizOrganizersLPL.getLoginEntities());                            //=> Not in LPL, only done once
-        thisQuiz.setRounds(quizLoader.quizRoundsLPL.getRounds());                                           //=> Set the rounds here, LPL will update them on subsequent loads
-        thisQuiz.setAllQuestionsPerRound(quizLoader.quizQuestionsLPL.getAllQuestionsPerRound());            //=> Rounds exist now. Questions are only loaded here.
-        thisQuiz.setAllAnswersPerQuestion(quizLoader.quizAnswersLPL.getAllAnswersPerRound());               //=> Questions exist now. LPL will update the answer strings on subsequent loads.
-        thisQuiz.setAllCorrectionsPerQuestion(quizLoader.quizCorrectionsLPL.getAllCorrectionsPerRound());   //=> Questions exist now. LPL will update the answer booleans on subsequent loads.
-        thisQuiz.initializeResultsForTeams();                                                               //=> Initialize this simply. Calculation done based on corrections.
-        thisQuiz.loadingCompleted = true;                                                                   //=> Log this so the LPL's know it
+        //thisQuiz.setRounds(quizLoader.quizRoundsLPL.getRounds());                                           //=> Set the rounds here, LPL will update them on subsequent loads
+        //thisQuiz.setAllQuestionsPerRound(quizLoader.quizQuestionsLPL.getAllQuestionsPerRound());            //=> Rounds exist now. Questions are only loaded here.
+        //thisQuiz.setAllAnswersPerQuestion(quizLoader.quizAnswersLPL.getAllAnswersPerRound());               //=> Questions exist now. LPL will update the answer strings on subsequent loads.
+        //thisQuiz.setAllCorrectionsPerQuestion(quizLoader.quizCorrectionsLPL.getAllCorrectionsPerRound());   //=> Questions exist now. LPL will update the answer booleans on subsequent loads.
+        //thisQuiz.initializeResultsForTeams();                                                               //=> Initialize this simply. Calculation done based on corrections.
+        //thisQuiz.loadingCompleted = true;                                                                   //=> Log this so the LPL's know it
         MyApplication.setDebugLevel(thisQuiz.getListData().getDebugLevel());
-        MyApplication.setKeepLogs(thisQuiz.getListData().isKeepLogs());
-        MyApplication.setAppDebugLevel(thisQuiz.getListData().getAppDebugLevel());
+        //MyApplication.setKeepLogs(thisQuiz.getListData().isKeepLogs());
+        //MyApplication.setAppDebugLevel(thisQuiz.getListData().getAppDebugLevel());
 
     }
 

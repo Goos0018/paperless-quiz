@@ -52,8 +52,8 @@ public class C_ReceptionistHome extends MyActivity implements LoadingActivity {
                 break;
 
             case R.id.refresh:
-                QuizLoader quizLoader = new QuizLoader(C_ReceptionistHome.this, thisQuiz.getListData().getSheetDocID());
-                quizLoader.loadTeams();
+                QuizLoader quizLoader = new QuizLoader(C_ReceptionistHome.this);
+                //quizLoader.loadTeams();
                 break;
 
         }

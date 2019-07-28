@@ -176,8 +176,8 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
         switch (item.getItemId()) {
             case R.id.refresh:
                 //Reload the data that is needed for participants
-                QuizLoader quizLoader = new QuizLoader(C_ParticipantHome.this, thisQuiz.getListData().getSheetDocID());
-                quizLoader.loadRounds();            //To get the latest rounds status
+                QuizLoader quizLoader = new QuizLoader(C_ParticipantHome.this);
+                //quizLoader.loadRounds();            //To get the latest rounds status
                 //quizLoader.loadAllCorrections();    //To know if the previously submitted answers were correct and be able to calculate scores and standings
                 //quizLoader.loadAllAnswers();        //Not needed, teams only need to know their own answers, and those are anyhow loaded on restart
                 //The LoadingCompleted triggers refresh of the interface
@@ -226,7 +226,7 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
                 //First store the answer to the last question
                 thisQuiz.setAnswerForTeam(roundSpinner.getPosition(), questionSpinner.getPosition(), thisTeamNr, etAnswer.getText().toString().trim());
                 refreshDisplayFragments();
-                thisQuiz.submitAnswers(C_ParticipantHome.this, roundSpinner.getPosition());
+                //thisQuiz.submitAnswers(C_ParticipantHome.this, roundSpinner.getPosition());
             }
         });
     }

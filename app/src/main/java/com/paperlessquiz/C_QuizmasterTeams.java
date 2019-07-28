@@ -59,8 +59,8 @@ public class C_QuizmasterTeams extends MyActivity implements FragRoundSpinner.Ha
                 break;
 
             case R.id.refresh:
-                QuizLoader quizLoader = new QuizLoader(C_QuizmasterTeams.this, thisQuiz.getListData().getSheetDocID());
-                quizLoader.loadTeams();
+                QuizLoader quizLoader = new QuizLoader(C_QuizmasterTeams.this);
+                //quizLoader.loadTeams();
                 break;
 
             case R.id.rounds:

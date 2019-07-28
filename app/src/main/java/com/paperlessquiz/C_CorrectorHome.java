@@ -111,10 +111,12 @@ public class C_CorrectorHome extends MyActivity implements LoadingActivity, Frag
     @Override
     public void loadingComplete(int requestID) {
         //If this was the quizloader for the rounds, we don't want to set the corrections
+        /*
         if (quizLoader.quizCorrectionsLPL.getAllCorrectionsPerRound().size() == 0) {
         } else {
             thisQuiz.setAllCorrectionsPerQuestion(quizLoader.quizCorrectionsLPL.getAllCorrectionsPerRound());
         }
+        */
         rndSpinner.positionChanged();
         if (spinner.callingActivity != null) {
             spinner.positionChanged();
@@ -150,8 +152,8 @@ public class C_CorrectorHome extends MyActivity implements LoadingActivity, Frag
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.refresh:
-                quizLoader = new QuizLoader(C_CorrectorHome.this, thisQuiz.getListData().getSheetDocID());
-                quizLoader.loadRounds();
+                quizLoader = new QuizLoader(C_CorrectorHome.this);
+                //quizLoader.loadRounds();
                 //quizLoader.loadAllCorrections();
                 break;
             case R.id.teams:
@@ -188,7 +190,7 @@ public class C_CorrectorHome extends MyActivity implements LoadingActivity, Frag
     }
 
     private void showCorrectAnswerForQuestion(int roundNr, int questionNr) {
-        tvCorrectAnswer.setText(thisQuiz.getQuestion(thisRoundNr, thisQuestionNr).getQuestionID() + ": " + thisQuiz.getQuestion(thisRoundNr, thisQuestionNr).getCorrectAnswer());
+        tvCorrectAnswer.setText(thisQuiz.getQuestion(thisRoundNr, thisQuestionNr).getQuestionNr() + ": " + thisQuiz.getQuestion(thisRoundNr, thisQuestionNr).getCorrectAnswer());
     }
 
     private void refreshDisplayFragments() {
@@ -249,9 +251,9 @@ public class C_CorrectorHome extends MyActivity implements LoadingActivity, Frag
             @Override
             public void onClick(View view) {
                 if (correctPerQuestion) {
-                    thisQuiz.submitCorrectionsForQuestion(C_CorrectorHome.this, thisRoundNr, thisQuestionNr);
+                    //thisQuiz.submitCorrectionsForQuestion(C_CorrectorHome.this, thisRoundNr, thisQuestionNr);
                 } else {
-                    thisQuiz.submitCorrectionsForTeam(C_CorrectorHome.this, thisRoundNr, thisTeamNr);
+                    //thisQuiz.submitCorrectionsForTeam(C_CorrectorHome.this, thisRoundNr, thisTeamNr);
                 }
             }
         });

@@ -1,6 +1,6 @@
 package com.paperlessquiz.parsers;
 
-import com.paperlessquiz.AnswersSubmitted;
+import com.paperlessquiz.answer.AnswersSubmitted;
 import com.paperlessquiz.quiz.QuizDatabase;
 
 import org.json.JSONException;
@@ -10,20 +10,20 @@ public class AnswersSubmittedParser implements JsonParser<AnswersSubmitted> {
 
     @Override
     public AnswersSubmitted parse(JSONObject jo) throws JSONException {
-        int idTeam, idRound;
+        int teamNr, roundNr;
         boolean submitted;
 
         AnswersSubmitted answersSubmitted;
         try {
-            idTeam = jo.getInt(QuizDatabase.COLNAME_ID_USER);
-            idRound = jo.getInt(QuizDatabase.COLNAME_ID_ROUND);
-            submitted = !(jo.getInt(QuizDatabase.COLNAME_SUBMITTED)==0);
+            teamNr = jo.getInt(QuizDatabase.COLNAME_USER_NR);
+            roundNr = jo.getInt(QuizDatabase.COLNAME_ROUND_NR);
+            submitted = true;
         } catch (Exception e) {
-            idTeam = 0;
-            idRound=0;
+            teamNr = 1;
+            roundNr =1;
             submitted=false;
         }
-        answersSubmitted = new AnswersSubmitted(idRound,idTeam,submitted);
+        answersSubmitted = new AnswersSubmitted(roundNr,teamNr,submitted);
         return answersSubmitted;
     }
 }

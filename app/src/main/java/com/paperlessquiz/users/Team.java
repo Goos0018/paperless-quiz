@@ -8,6 +8,7 @@ import com.paperlessquiz.quiz.ResultAfterRound;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /*
 This class represents a user that can log in. Either a participant team or one of the organizers.
@@ -18,7 +19,8 @@ public class Team extends User implements Serializable {
     //int teamNr, teamStatus;
     //private boolean present;
     //private boolean loggedIn;
-    private ArrayList<Boolean> answerForRndsSubmitted;
+    //private ArrayList<Boolean> answerForRndsSubmitted;
+    private HashMap<Integer, Boolean> answersForRndSubmitted;
     private ArrayList<ResultAfterRound> results;
 
 
@@ -38,16 +40,16 @@ public class Team extends User implements Serializable {
         super(idQuiz, idUser, userNr, userType, userStatus, name);
     }
 
-    public Team(User user){
+    public Team(User user) {
         super(user.getIdQuiz(), user.getIdUser(), user.getUserNr(), user.getUserType(), user.getUserStatus(), user.getName());
-        answerForRndsSubmitted = new ArrayList<>();
+        answersForRndSubmitted = new HashMap<>();
         results = new ArrayList<>();
         setDescription("Ploeg " + getUserNr());
     }
 
     //20190728 - Create a dummy team with team nr given
-    public Team(int teamNr){
-        super(MyApplication.theQuiz.getListData().getIdQuiz(),0,teamNr, QuizDatabase.USERTYPE_TEAM,QuizDatabase.USERSTATUS_NOTPRESENT,"EMPTY");
+    public Team(int teamNr) {
+        super(MyApplication.theQuiz.getListData().getIdQuiz(), 0, teamNr, QuizDatabase.USERTYPE_TEAM, QuizDatabase.USERSTATUS_NOTPRESENT, "EMPTY");
     }
 
     /*
@@ -90,18 +92,12 @@ public class Team extends User implements Serializable {
         public void setTeamStatus(int teamStatus) {
             this.teamStatus = teamStatus;
         }
-
-        */
-    public ArrayList<Boolean> getAnswerForRndsSubmitted() {
+  public ArrayList<Boolean> getAnswerForRndsSubmitted() {
         return answerForRndsSubmitted;
     }
 
-    public void setAnswerForRndsSubmitted(ArrayList<Boolean> answerForRndsSubmitted) {
+        public void setAnswerForRndsSubmitted(ArrayList<Boolean> answerForRndsSubmitted) {
         this.answerForRndsSubmitted = answerForRndsSubmitted;
-    }
-
-    public boolean isAnswersForThisRoundSubmitted(int roundNr) {
-        return this.answerForRndsSubmitted.get(roundNr - 1).booleanValue();
     }
 
     //This function is used to update existing teams from data that is loaded from the Google sheet
@@ -112,4 +108,20 @@ public class Team extends User implements Serializable {
         setName(team.getName());
     }
 
+        */
+
+
+    public void setAnswersForRoundSubmitted(int roundNr) {
+        answersForRndSubmitted.put(Integer.valueOf(roundNr), Boolean.valueOf(true));
+    }
+
+    public boolean isAnswersForThisRoundSubmitted(int roundNr) {
+        boolean res;
+        try {
+            res = answersForRndSubmitted.get(roundNr);
+        } catch (Exception e) {
+            res = false;
+        }
+        return res;
+    }
 }

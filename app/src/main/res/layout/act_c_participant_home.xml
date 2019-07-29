@@ -40,6 +40,7 @@
                 android:id="@+id/etAnswer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_medium"
                 android:ems="10"
                 android:gravity="center"
                 android:hint="Your answer"
@@ -51,6 +52,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/margin_medium"
+                android:background="@color/correctGreen"
                 android:text="@string/participant_submitanswers" />
 
 

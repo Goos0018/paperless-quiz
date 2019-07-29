@@ -5,7 +5,7 @@ This class represents a user that can log in. Will be extended to Team or Organi
  */
 public class User {
     private int idQuiz,idUser, userNr,userType,userStatus;
-    private String Name, description;
+    private String name, description;
     private String userPassword;
 
     public User(int idQuiz, int idUser, int userNr, int userType, int userStatus, String name) {
@@ -14,7 +14,7 @@ public class User {
         this.userNr = userNr;
         this.userType = userType;
         this.userStatus = userStatus;
-        Name = name;
+        this.name = name;
     }
 
     public int getIdQuiz() {
@@ -34,11 +34,11 @@ public class User {
     }
 
     public String getName() {
-        return Name;
+        return name;
     }
 
     public void setName(String name) {
-        this.Name = name;
+        this.name = name;
     }
 
     public String getUserPassword() {
@@ -79,5 +79,11 @@ public class User {
 
     public void setUserStatus(int userStatus) {
         this.userStatus = userStatus;
+    }
+
+    public void updateUserBasics(User user){
+        this.description = user.getDescription();
+        this.name = user.getName();
+        this.userStatus=user.getUserStatus();
     }
 }

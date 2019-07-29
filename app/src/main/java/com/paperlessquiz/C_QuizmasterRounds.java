@@ -19,9 +19,11 @@ public class C_QuizmasterRounds extends MyActivity implements LoadingActivity {
 
     ListView lvRounds, lvTeams;
     RoundsAdapter showRoundsAdapter;
+    QuizLoader quizLoader;
 
     @Override
     public void loadingComplete(int requestID) {
+        quizLoader.updateRounds();
         showRoundsAdapter.notifyDataSetChanged();
     }
 
@@ -37,10 +39,6 @@ public class C_QuizmasterRounds extends MyActivity implements LoadingActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.upload:
-                thisQuiz.updateRounds(C_QuizmasterRounds.this);
-                break;
-
             case R.id.refresh:
                 QuizLoader quizLoader = new QuizLoader(C_QuizmasterRounds.this);
                 //quizLoader.loadRounds();
@@ -65,7 +63,7 @@ public class C_QuizmasterRounds extends MyActivity implements LoadingActivity {
         lvRounds = findViewById(R.id.lvRounds);
         showRoundsAdapter = new RoundsAdapter(this, thisQuiz.getRounds());
         lvRounds.setAdapter(showRoundsAdapter);
-
-
+        quizLoader = new QuizLoader(this);
+        quizLoader.loadRounds();
     }
 }

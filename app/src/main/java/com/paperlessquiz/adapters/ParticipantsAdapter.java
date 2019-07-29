@@ -35,7 +35,7 @@ public class ParticipantsAdapter extends ArrayAdapter<User> {
         View rowView = inflater.inflate(R.layout.row_layout_select_login_name, parent, false);
         TextView tvName = (TextView) rowView.findViewById(R.id.tvName);
         TextView tvType = (TextView) rowView.findViewById(R.id.tvType);
-        TextView tvUserID = rowView.findViewById(R.id.tvUserID);
+        //TextView tvUserID = rowView.findViewById(R.id.tvUserID);
         //ImageView ivleft = (ImageView) rowView.findViewById(R.id.ivQuizLogo);
         tvName.setText(getItem(position).getName());
         //tvType.setText(this.getItem(position).getType());

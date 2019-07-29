@@ -6,13 +6,18 @@ public class QuizDatabase {
     public static final String PHP_URL = "http://paperlessquiz.be/php/";
     public static final String PHP_STARTPARAM = "?";
     public static final String PHP_PARAMCONCATENATOR = "&";
-    //Parameter names
+    //Parameter names - must match those defined in constants.php
     public static final String PARAMNAME_IDQUIZ = "idQuiz=";
     public static final String PARAMNAME_IDUSER = "idUser=";
+    public static final String PARAMNAME_IDQUESTION = "idQuestion=";
+    public static final String PARAMNAME_IDROUND = "idRound=";
     public static final String PARAMNAME_USERPASSWORD = "userPassword=";
     public static final String PARAMNAME_QUERY = "query=";
-    public static final String PARAMNAME_IDQUESTION = "idQuestion=";
     public static final String PARAMNAME_THEANSWER = "answer=";
+    public static final String PARAMNAME_THEIDFORTHEQUERY = "theId=";
+    public static final String PARAMNAME_NEWROUNDSTATUS = "newRoundStatus=";
+    public static final String PARAMNAME_USERTOUPDATE = "userToUpdate=";
+    public static final String PARAMNAME_NEWUSERSTATUS = "newUserStatus=";
     // Available PHP scripts
     //public static final String GETALLDATA_SCRIPT = "getalldata.php";
     public static final String SCRIPT_GET_QUIZLIST = "getquizlist.php";
@@ -20,6 +25,9 @@ public class QuizDatabase {
     public static final String SCRIPT_AUTHENTICATE = "authenticate.php";
     public static final String SCRIPT_GET_QUIZDATA = "getquizdata.php";
     public static final String SCRIPT_SUBMITANSWER = "submitanswer.php";
+    public static final String SCRIPT_SETANSWERSSUBMITTED = "setanswerssubmitted.php";
+    public static final String SCRIPT_UPDATEROUNDSTATUS = "updateroundstatus.php";
+    public static final String SCRIPT_UPDATEUSERSTATUS = "updateuserstatus.php";
 
 
 
@@ -37,6 +45,7 @@ public class QuizDatabase {
     public static final String PARAMVALUE_QRY_ALL_ROUNDS = "rounds";
     public static final String PARAMVALUE_QRY_ALL_QUESTIONS = "questions";
     public static final String PARAMVALUE_QRY_MY_ANSWERS = "myanswers";
+    public static final String PARAMVALUE_QRY_ALL_ANSWERS = "allanswers";
     public static final String PARAMVALUE_QRY_ALL_ANSWERSSUBMITTED = "answerssubmitted";
     public static final String PARAMVALUE_QRY_MY_EVENTLOGS = "myevents";
 
@@ -54,6 +63,8 @@ public class QuizDatabase {
     //Submit requests
     public static final int REQUEST_ID_AUTHENTICATE = 100;
     public static final int REQUEST_ID_SUBMITANSWER = 101;
+    public static final int REQUEST_ID_SETANSWERSSUBMITTED = 102;
+    public static final int REQUEST_ID_UPDATEROUNDSTATUS = 103;
 
     //Organizer Types
     public static final int ORGANIZERTYPE_QUIZMASTER = 0;
@@ -123,4 +134,6 @@ public class QuizDatabase {
     //public static final String COLNAME_TEAM_PASSWORD = "TeamPassword";
     public static final String COLNAME_USER_NAME = "UserName";
 
+    //Various other constants
+    public static final String INTENT_EXTRANAME_IS_ORGANIZER = "isOrganizer";
 }

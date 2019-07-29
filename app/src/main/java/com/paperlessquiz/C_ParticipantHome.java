@@ -21,7 +21,7 @@ import com.paperlessquiz.googleaccess.LoadingActivity;
 import com.paperlessquiz.quiz.QuizDatabase;
 import com.paperlessquiz.quiz.QuizLoader;
 import com.paperlessquiz.round.Round;
-import com.paperlessquiz.users.Team;
+import com.paperlessquiz.users.User;
 
 import java.util.Date;
 
@@ -36,7 +36,7 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
         FragRoundSpinner.HasRoundSpinner, FragShowRoundScore.HasShowRoundScore, FragExplainRoundStatus.HasExplainRoundStatus {
 
     int thisTeamNr;
-    Team thisTeam;
+    User thisTeam;
     FragRoundSpinner roundSpinner;
     FragSpinner questionSpinner;
     FragShowRoundScore roundResultFrag;
@@ -70,7 +70,7 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
             roundsLoaded = false;
             answersLoaded = false;
             quizLoader.updateRounds();
-            quizLoader.loadMyAnswersIntoQuiz();
+            quizLoader.updateMyAnswersIntoQuiz();
             roundSpinner.refreshIcons();
             roundResultFrag.refresh();  //This will recalculate scores based on the re-loaded corrections
             refreshDisplayFragments();  //Display the correct fragments based on new round status etc.
@@ -78,7 +78,7 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
     }
 
     private void updateQuiz() {
-        quizLoader.updateQuizForUser(thisTeam.getIdUser(), thisTeam.getUserPassword(), thisQuiz.getListData().getIdQuiz());
+        quizLoader.updateQuizForUser();
         //The rest is done when loading is complete
     }
 
@@ -102,7 +102,15 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
     public void onRoundChanged(int oldRoundNr, int roundNr) {
         //Similar as with a questionSpinner change, we save the answer that we have and load the new answer - only do this if the field was visible
         if (etAnswer.getVisibility() == View.VISIBLE) {
-            thisQuiz.setAnswerForTeam(oldRoundNr, questionSpinner.getPosition(), thisTeamNr, etAnswer.getText().toString().trim());
+            //Update the answer if it was changed
+            String oldAnswer = thisQuiz.getAnswerForTeam(oldRoundNr, questionSpinner.getPosition(), thisTeamNr).getTheAnswer();
+            String newAnswer = etAnswer.getText().toString().trim();
+            if (!(oldAnswer.equals(newAnswer))) {
+                int questionID = thisQuiz.getQuestionID(oldRoundNr, questionSpinner.getPosition());
+                thisQuiz.setAnswerForTeam(oldRoundNr, questionSpinner.getPosition(), thisTeamNr, newAnswer);
+                //Store the answer in the central quiz db
+                quizLoader.submitAnswer(questionID, newAnswer);
+            }
         }
         //Set the value of the answer for the new question to what we already have in the central Quiz object
         //Move the QuestionSpinner to position 1 to make sure we have something at that position
@@ -128,7 +136,7 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
             int questionID = thisQuiz.getQuestionID(roundSpinner.getPosition(), oldPos);
             thisQuiz.setAnswerForTeam(roundSpinner.getPosition(), oldPos, thisTeamNr, newAnswer);
             //Store the answer in the central quiz db
-            quizLoader.submitAnswer(thisTeam.getIdUser(), thisTeam.getUserPassword(), questionID, newAnswer);
+            quizLoader.submitAnswer(questionID, newAnswer);
         }
         //Set the value of the answer for the new question to what we already have in the Quiz object
         etAnswer.setText(thisQuiz.getAnswerForTeam(roundSpinner.getPosition(), newPos, thisTeamNr).getTheAnswer());
@@ -250,14 +258,26 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
         displayAnswersAdapter = new DisplayAnswersAdapter(this, thisQuiz.getRound(1).getQuestions(), thisTeamNr);
         quizLoader = new QuizLoader(C_ParticipantHome.this);
         thisTeam = thisQuiz.getThisUser();
+        quizLoader.updateUserStatus(thisTeamNr,QuizDatabase.USERSTATUS_PRESENTLOGGEDIN);
 
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //First store the answer to the last question
-                thisQuiz.setAnswerForTeam(roundSpinner.getPosition(), questionSpinner.getPosition(), thisTeamNr, etAnswer.getText().toString().trim());
-                refreshDisplayFragments();
-                //thisQuiz.submitAnswers(C_ParticipantHome.this, roundSpinner.getPosition());
+                //Dismiss the keyboard if its there
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(etAnswer.getWindowToken(), 0);
+                //Update the answer if it was changed
+                String oldAnswer = thisQuiz.getAnswerForTeam(roundSpinner.getPosition(), questionSpinner.getPosition(), thisTeamNr).getTheAnswer();
+                String newAnswer = etAnswer.getText().toString().trim();
+                if (!(oldAnswer.equals(newAnswer))) {
+                    int questionID = thisQuiz.getQuestionID(roundSpinner.getPosition(), questionSpinner.getPosition());
+                    thisQuiz.setAnswerForTeam(roundSpinner.getPosition(), questionSpinner.getPosition(), thisTeamNr, newAnswer);
+                    //Store the answer in the central quiz db
+                    quizLoader.submitAnswer(questionID, newAnswer);
+                    refreshDisplayFragments();
+                    //thisQuiz.submitAnswers(C_ParticipantHome.this, roundSpinner.getPosition());
+                    quizLoader.setAnswersSubmitted(roundSpinner.getPosition());
+                }
             }
         });
     }
@@ -276,6 +296,7 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
             thisQuiz.setLoggedIn(C_ParticipantHome.this, thisTeamNr, false);
             MyApplication.setAppPaused(true);
         }
+        quizLoader.updateUserStatus(thisTeamNr,QuizDatabase.USERSTATUS_PRESENTNOTLOGGEDIN);
         super.onPause();
     }
 
@@ -291,6 +312,7 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
             thisQuiz.setLoggedIn(C_ParticipantHome.this, thisTeamNr, true);
             MyApplication.setAppPaused(false);
         }
+        quizLoader.updateUserStatus(thisTeamNr,QuizDatabase.USERSTATUS_PRESENTLOGGEDIN);
     }
 
     @Override

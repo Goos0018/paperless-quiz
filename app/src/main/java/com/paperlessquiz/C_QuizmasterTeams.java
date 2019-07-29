@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import com.paperlessquiz.R;
 import com.paperlessquiz.adapters.ShowTeamsAdapter;
 import com.paperlessquiz.googleaccess.LoadingActivity;
+import com.paperlessquiz.quiz.QuizDatabase;
 import com.paperlessquiz.quiz.QuizGenerator;
 import com.paperlessquiz.quiz.QuizLoader;
 
@@ -23,6 +24,8 @@ public class C_QuizmasterTeams extends MyActivity implements FragRoundSpinner.Ha
     RecyclerView.LayoutManager layoutManager;
     ShowTeamsAdapter showTeamsAdapter;
     int roundNr;
+    QuizLoader quizLoader;
+    boolean usersLoaded,answersSubmittedLoaded;
 
     @Override
     public void onRoundChanged(int oldRoundnNr, int roundNr) {
@@ -36,9 +39,24 @@ public class C_QuizmasterTeams extends MyActivity implements FragRoundSpinner.Ha
 
     @Override
     public void loadingComplete(int requestID) {
-        //Do something when loading is complete
-        if (showTeamsAdapter != null) {
-            showTeamsAdapter.notifyDataSetChanged();
+        switch (requestID) {
+            case QuizDatabase.REQUEST_ID_GET_USERS:
+                usersLoaded = true;
+                break;
+            case QuizDatabase.REQUEST_ID_GET_ANSWERSSUBMITTED:
+                answersSubmittedLoaded = true;
+                break;
+        }
+        //If everything is properly loaded, we can start populating the central Quiz object
+        if (usersLoaded && answersSubmittedLoaded) {
+            //reset the loading statuses
+            usersLoaded = false;
+            answersSubmittedLoaded = false;
+            quizLoader.updateTeams();
+            quizLoader.updateAnswersSubmittedIntoQuiz();
+            if (showTeamsAdapter != null) {
+                showTeamsAdapter.notifyDataSetChanged();
+            }
         }
     }
 
@@ -47,7 +65,7 @@ public class C_QuizmasterTeams extends MyActivity implements FragRoundSpinner.Ha
         getMenuInflater().inflate(R.menu.quizmaster, menu);
         //Hide item for the Teams button and also the upload button
         menu.findItem(R.id.teams).setVisible(false);
-        menu.findItem(R.id.upload).setVisible(false);
+        //menu.findItem(R.id.upload).setVisible(false);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -59,8 +77,9 @@ public class C_QuizmasterTeams extends MyActivity implements FragRoundSpinner.Ha
                 break;
 
             case R.id.refresh:
-                QuizLoader quizLoader = new QuizLoader(C_QuizmasterTeams.this);
-                //quizLoader.loadTeams();
+                //QuizLoader quizLoader = new QuizLoader(C_QuizmasterTeams.this);
+                quizLoader.loadUsers();
+                quizLoader.loadAnswersSubmitted();
                 break;
 
             case R.id.rounds:
@@ -84,5 +103,8 @@ public class C_QuizmasterTeams extends MyActivity implements FragRoundSpinner.Ha
         rvTeams.setLayoutManager(layoutManager);
         showTeamsAdapter = new ShowTeamsAdapter(this, thisQuiz.getTeams(), roundNr);
         rvTeams.setAdapter(showTeamsAdapter);
+        quizLoader = new QuizLoader(this);
+        quizLoader.loadUsers();
+        quizLoader.loadAnswersSubmitted();
     }
 }

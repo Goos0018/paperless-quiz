@@ -9,8 +9,11 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.paperlessquiz.MyApplication;
 import com.paperlessquiz.R;
+import com.paperlessquiz.quiz.Quiz;
 import com.paperlessquiz.quiz.QuizDatabase;
+import com.paperlessquiz.quiz.QuizLoader;
 import com.paperlessquiz.round.Round;
 
 import java.util.ArrayList;
@@ -20,12 +23,14 @@ public class RoundsAdapter extends ArrayAdapter<Round> {
     public final Context context;
     //private final ArrayList<Round> rounds;
     private RoundsAdapter adapter;
+    private QuizLoader quizLoader;
 
     public RoundsAdapter(Context context, ArrayList<Round> rounds) {
         super(context, R.layout.row_layout_show_rounds,rounds);
         this.context = context;
         //this.rounds = rounds;
         adapter = this;
+        this.quizLoader=new QuizLoader(context);
     }
 
     //Viewholder is an object that holds everything that is displayed in the ListView
@@ -85,6 +90,7 @@ public class RoundsAdapter extends ArrayAdapter<Round> {
                 {
                     getItem(position).setRoundStatus(getItem(position).getRoundStatus() + 1);
                 }
+                quizLoader.updateRoundStatus(getItem(position).getRoundNr(),getItem(position).getRoundStatus());
                 adapter.notifyDataSetChanged();
             }
 

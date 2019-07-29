@@ -53,7 +53,7 @@ public class ShowTeamsAdapter extends RecyclerView.Adapter<ShowTeamsAdapter.View
     @Override
     public void onBindViewHolder(@NonNull ShowTeamsAdapter.ViewHolder viewHolder, int i) {
         viewHolder.itemView.setTag(teams.get(i));
-        viewHolder.tvTeamName.setText(teams.get(i).getIdUser() + ". " + teams.get(i).getName());
+        viewHolder.tvTeamName.setText(teams.get(i).getUserNr() + ". " + teams.get(i).getName());
         boolean answersForThisRoundSubmitted = teams.get(i).isAnswersForThisRoundSubmitted(roundNr);
         switch (teams.get(i).getUserStatus()) {
             case QuizDatabase.USERSTATUS_NOTPRESENT:

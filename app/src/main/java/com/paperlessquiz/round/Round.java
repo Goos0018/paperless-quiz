@@ -73,6 +73,10 @@ public class Round implements Serializable, SpinnerData {
         return description;
     }
 
+    public int getIdRound() {
+        return idRound;
+    }
+
     /*
     public int getNrOfQuestions() {
         return nrOfQuestions;

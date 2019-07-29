@@ -87,6 +87,7 @@ public class A_SelectRole extends AppCompatActivity implements LoadingActivity {
             public void onClick(View view) {
                 counter++;
                 if (counter == 5) {
+                    counter=0;
                     Intent intentG = new Intent(A_SelectRole.this, A__GenerateQuiz.class);
                     startActivity(intentG);
                 }
@@ -96,8 +97,9 @@ public class A_SelectRole extends AppCompatActivity implements LoadingActivity {
         btnParticipant.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                commonActions(QuizGenerator.SELECTION_PARTICIPANT);
+               // commonActions(QuizGenerator.SELECTION_PARTICIPANT);
                 intent = new Intent(A_SelectRole.this, B_LoginTeam.class);
+                intent.putExtra(QuizDatabase.INTENT_EXTRANAME_IS_ORGANIZER,false);
                 startActivity(intent);
             }
         });
@@ -105,8 +107,9 @@ public class A_SelectRole extends AppCompatActivity implements LoadingActivity {
         btnOrganizer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                commonActions(QuizGenerator.SELECTION_ORGANIZER);
-                intent = new Intent(A_SelectRole.this, B_LoginOrganizer.class);
+                //commonActions(QuizGenerator.SELECTION_ORGANIZER);
+                intent = new Intent(A_SelectRole.this, B_LoginTeam.class);
+                intent.putExtra(QuizDatabase.INTENT_EXTRANAME_IS_ORGANIZER,true);
                 startActivity(intent);
             }
         });

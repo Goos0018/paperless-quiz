@@ -46,7 +46,7 @@ public class Quiz implements Serializable {
     private ArrayList<Team> teams;
     private ArrayList<Organizer> organizers;
     private ArrayList<Round> rounds;
-    private Team thisTeam;
+    private User thisUser;
     private Organizer thisOrganizer;
     public boolean loadingCompleted = false;
 
@@ -76,6 +76,10 @@ public class Quiz implements Serializable {
         }
     }
 
+    //Get the question ID for the specified question
+    public int getQuestionID(int roundNr, int questionNr){
+        return getQuestion(roundNr,questionNr).getIdQuestion();
+    }
 
     //Initialize the Results for each team - just make sure the necessary array elements exist so they can be used later
     public void initializeResultsForTeams() {
@@ -94,6 +98,7 @@ public class Quiz implements Serializable {
         }
     }
 
+    /*
     //Add the questions information we have from an array of array of questions, first dimension is the round.
     public void setAllQuestionsPerRound(ArrayList<ArrayList<Question>> allQuestionsPerRound) {
         //For each entry in the allQuestionsPerRound array (=for each round)
@@ -102,6 +107,7 @@ public class Quiz implements Serializable {
             this.getRounds().get(i).setNrOfQuestions(allQuestionsPerRound.get(i).size());
         }
     }
+    */
 
     //Add the answers for each question from an array of array of AnswersLists. Answers here means simply the Strings, not the Answer object
     public void updateAllAnswersPerQuestion(ArrayList<ArrayList<AnswersList>> allAnswersPerRound) {
@@ -224,12 +230,12 @@ public class Quiz implements Serializable {
         return getQuestion(rndNr, questionNr).getAllAnswers();
     }
 
-    public User getThisTeam() {
-        return thisTeam;
+    public User getThisUser() {
+        return thisUser;
     }
 
-    public void setThisTeam(Team thisTeam) {
-        this.thisTeam = thisTeam;
+    public void setThisUser(User thisUser) {
+        this.thisUser = thisUser;
     }
 
     public void updateRounds(Context context) {
@@ -250,7 +256,7 @@ public class Quiz implements Serializable {
                 GoogleAccess.PARAMNAME_NEWVALUES + tmp + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_SETDATA;
         GoogleAccessSet submitRounds = new GoogleAccessSet(context, scriptParams);
-        submitRounds.setData(new LLNotifyStartOnly(context, getThisTeam().getName(),
+        submitRounds.setData(new LLNotifyStartOnly(context, getThisUser().getName(),
                 "Submitting round updates"));
     }
 
@@ -272,7 +278,7 @@ public class Quiz implements Serializable {
                 GoogleAccess.PARAMNAME_NEWVALUES + tmp + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_SETDATA;
         GoogleAccessSet googleAccessSet = new GoogleAccessSet(context, scriptParams);
-        googleAccessSet.setData(new LLNotifyStartOnly(context, getThisTeam().getName(),
+        googleAccessSet.setData(new LLNotifyStartOnly(context, getThisUser().getName(),
                 "Submitting team updates"));
     }
 
@@ -297,7 +303,7 @@ public class Quiz implements Serializable {
                 GoogleAccess.PARAMNAME_NEWVALUES + tmp + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_SETDATA;
         GoogleAccessSet submitScores = new GoogleAccessSet(context, scriptParams);
-        submitScores.setData(new LLNotifyStartOnly(context, getThisTeam().getName(),
+        submitScores.setData(new LLNotifyStartOnly(context, getThisUser().getName(),
                 "Submitting scores for question " + getQuestion(roundNr, questionNr).getQuestionID()));
     }
 
@@ -322,14 +328,14 @@ public class Quiz implements Serializable {
                 GoogleAccess.PARAMNAME_NEWVALUES + tmp + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_SETDATA;
         GoogleAccessSet submitScores = new GoogleAccessSet(context, scriptParams);
-        submitScores.setData(new LLNotifyStartOnly(context, getThisTeam().getName(),
+        submitScores.setData(new LLNotifyStartOnly(context, getThisUser().getName(),
                 "Submitting scores for team " + getTeam(teamNr).getName()));
     }
 
 
     //Used by the Participant to submit all answers for a single round
     public void submitAnswers(Context context, int roundNr) {
-        ArrayList<Answer> answerList = getAnswersForRound(roundNr, getThisTeam().getIdUser());
+        ArrayList<Answer> answerList = getAnswersForRound(roundNr, getThisUser().getIdUser());
         String tmp = "[";
         for (int i = 0; i < answerList.size(); i++) {
             tmp = tmp + "[\"" + answerList.get(i).getTheAnswer() + "\"]";
@@ -339,16 +345,16 @@ public class Quiz implements Serializable {
         }
         tmp = tmp + "]";
         String scriptParams = GoogleAccess.PARAMNAME_DOC_ID + listData.getSheetDocID() + GoogleAccess.PARAM_CONCATENATOR +
-                GoogleAccess.PARAMNAME_USERID + thisTeam.getName() + GoogleAccess.PARAM_CONCATENATOR +
+                GoogleAccess.PARAMNAME_USERID + thisUser.getName() + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_ROUNDID + roundNr + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_ROUND_PREFIX + QuizGenerator.ROUNDS_PREFIX + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_FIRSTQUESTION + getRound(roundNr).getQuestion(1).getQuestionID() + GoogleAccess.PARAM_CONCATENATOR +
-                GoogleAccess.PARAMNAME_TEAMID + thisTeam.getIdUser() + GoogleAccess.PARAM_CONCATENATOR +
+                GoogleAccess.PARAMNAME_TEAMID + thisUser.getIdUser() + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_TEAM_PREFIX + QuizGenerator.TEAMS_PREFIX + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_ANSWERS + tmp + GoogleAccess.PARAM_CONCATENATOR +
                 GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_SUBMITANSWERS;
         GoogleAccessSet submitAnswers = new GoogleAccessSet(context, scriptParams);
-        submitAnswers.setData(new LLNotifyStartOnly(context, thisTeam.getName(),
+        submitAnswers.setData(new LLNotifyStartOnly(context, thisUser.getName(),
                 "Submitting answers for round " + roundNr));
     }
 

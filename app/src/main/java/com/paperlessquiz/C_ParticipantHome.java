@@ -21,17 +21,22 @@ import com.paperlessquiz.googleaccess.LoadingActivity;
 import com.paperlessquiz.quiz.QuizDatabase;
 import com.paperlessquiz.quiz.QuizLoader;
 import com.paperlessquiz.round.Round;
+import com.paperlessquiz.users.Team;
 
 import java.util.Date;
 
 /**
- * Home screen for teams. Contains a round spinner and a question spinner + fields that allow to answer the question that is currently selected + button to submit answers.
- * Parts of the screen are hidden based on round settings.
+ * Home screen for teams. Contains a round spinner and a question spinner + fields that allow to answer the question that is currently selected
+ * + button to indicate you are done answering the questions for this round.
+ * Parts of the screen are hidden based on round status.
+ * Answers are sent to the central db when spinning through the questions
+ * Info is refreshed from the central db when spinning through the rounds
  */
 public class C_ParticipantHome extends MyActivity implements LoadingActivity, FragSpinner.HasSpinner,
         FragRoundSpinner.HasRoundSpinner, FragShowRoundScore.HasShowRoundScore, FragExplainRoundStatus.HasExplainRoundStatus {
 
     int thisTeamNr;
+    Team thisTeam;
     FragRoundSpinner roundSpinner;
     FragSpinner questionSpinner;
     FragShowRoundScore roundResultFrag;
@@ -46,6 +51,36 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
     String roundStatusExplanation;
     long totalTimePaused;
     Date lastPausedDate;
+    QuizLoader quizLoader;
+    boolean roundsLoaded, answersLoaded;
+
+    @Override
+    public void loadingComplete(int requestID) {
+        switch (requestID) {
+            case QuizDatabase.REQUEST_ID_GET_ROUNDS:
+                roundsLoaded = true;
+                break;
+            case QuizDatabase.REQUEST_ID_GET_ANSWERS:
+                answersLoaded = true;
+                break;
+        }
+        //If everything is properly loaded, we can start populating the central Quiz object
+        if (roundsLoaded && answersLoaded) {
+            //reset the loading statuses
+            roundsLoaded = false;
+            answersLoaded = false;
+            quizLoader.updateRounds();
+            quizLoader.loadMyAnswersIntoQuiz();
+            roundSpinner.refreshIcons();
+            roundResultFrag.refresh();  //This will recalculate scores based on the re-loaded corrections
+            refreshDisplayFragments();  //Display the correct fragments based on new round status etc.
+        }
+    }
+
+    private void updateQuiz() {
+        quizLoader.updateQuizForUser(thisTeam.getIdUser(), thisTeam.getUserPassword(), thisQuiz.getListData().getIdQuiz());
+        //The rest is done when loading is complete
+    }
 
     @Override
     public String getRoundStatusExplanation() {
@@ -63,9 +98,9 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
     }
 
     @Override
-    //This is for the round spinner
+    //This is called from the round spinner
     public void onRoundChanged(int oldRoundNr, int roundNr) {
-        //Similar as with a questionSpinner change, we save the answer that we have and load the new answer - only do this if the field is visible
+        //Similar as with a questionSpinner change, we save the answer that we have and load the new answer - only do this if the field was visible
         if (etAnswer.getVisibility() == View.VISIBLE) {
             thisQuiz.setAnswerForTeam(oldRoundNr, questionSpinner.getPosition(), thisTeamNr, etAnswer.getText().toString().trim());
         }
@@ -76,16 +111,26 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
         //Dismiss the keyboard if its there
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(etAnswer.getWindowToken(), 0);
-        refreshDisplayFragments();
-        roundResultFrag.refresh();
+        //Update info from the central database
+        updateQuiz();
+        //Rest is done when loading is complete
+        //refreshDisplayFragments();
+        //roundResultFrag.refresh();
     }
 
     @Override
-    //This is for the Question spinner
+    //This is called from the Question spinner
     public void onSpinnerChange(int oldPos, int newPos) {
-        //Save the answer that was given
-        thisQuiz.setAnswerForTeam(roundSpinner.getPosition(), oldPos, thisTeamNr, etAnswer.getText().toString().trim());
-        //Set the value of the answer for the new question to what we already have
+        //Update the answer if it was changed
+        String oldAnswer = thisQuiz.getAnswerForTeam(roundSpinner.getPosition(), oldPos, thisTeamNr).getTheAnswer();
+        String newAnswer = etAnswer.getText().toString().trim();
+        if (!(oldAnswer.equals(newAnswer))) {
+            int questionID = thisQuiz.getQuestionID(roundSpinner.getPosition(), oldPos);
+            thisQuiz.setAnswerForTeam(roundSpinner.getPosition(), oldPos, thisTeamNr, newAnswer);
+            //Store the answer in the central quiz db
+            quizLoader.submitAnswer(thisTeam.getIdUser(), thisTeam.getUserPassword(), questionID, newAnswer);
+        }
+        //Set the value of the answer for the new question to what we already have in the Quiz object
         etAnswer.setText(thisQuiz.getAnswerForTeam(roundSpinner.getPosition(), newPos, thisTeamNr).getTheAnswer());
         //Dismiss the keyboard if its there
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -107,15 +152,7 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
     public String getValueToSetForSecondaryField(int newPos) {
         return "(" + thisQuiz.getQuestion(roundSpinner.getPosition(), newPos).getHint() + ")";
     }
-
-    @Override
-    public void loadingComplete(int requestID) {
-        //Actions do do when we are completed (re)loading data from the Google sheet
-        //roundSpinner.moveUp();roundSpinner.moveDown(); // Replaced with refreshIcons since moveUp and MoveDown crashed the app sometimes? Issue with Fragment mgr?
-        roundSpinner.refreshIcons();
-        roundResultFrag.refresh();  //This will recalculate scores based on the re-loaded corrections
-        refreshDisplayFragments();  //Display the correct fragments based on new round status etc.
-    }
+    //End stuff for the QuestionSpinner
 
     private void refreshAnswers() {
         //Update the displayed answers for this round as needed
@@ -126,7 +163,7 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
     private void refreshDisplayFragments() {
         //Refresh what is in the display based on the current values of roundSpinner position
         Round thisRound = thisQuiz.getRound(roundSpinner.getPosition());
-        switch (thisRound.getRoundStatus()){
+        switch (thisRound.getRoundStatus()) {
             case QuizDatabase.ROUNDSTATUS_CLOSED:
                 roundStatusExplanation = C_ParticipantHome.this.getString(R.string.participant_waitforroundopen);
                 explainRoundStatus.setStatus(roundStatusExplanation);
@@ -176,12 +213,7 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.refresh:
-                //Reload the data that is needed for participants
-                QuizLoader quizLoader = new QuizLoader(C_ParticipantHome.this);
-                //quizLoader.loadRounds();            //To get the latest rounds status
-                //quizLoader.loadAllCorrections();    //To know if the previously submitted answers were correct and be able to calculate scores and standings
-                //quizLoader.loadAllAnswers();        //Not needed, teams only need to know their own answers, and those are anyhow loaded on restart
-                //The LoadingCompleted triggers refresh of the interface
+                updateQuiz();
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -200,8 +232,8 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
         setActionBarIcon();
         setActionBarTitle();
         //Log that the user logged in and set LoggedIn to TRUE so we know this to track if the user pauses the app
-        thisTeamNr = thisQuiz.getThisTeam().getUserNr();
-        MyApplication.eventLogger.logEvent(thisQuiz.getThisTeam().getName(), EventLogger.LEVEL_INFO, "Logged in");
+        thisTeamNr = thisQuiz.getThisUser().getUserNr();
+        MyApplication.eventLogger.logEvent(thisQuiz.getThisUser().getName(), EventLogger.LEVEL_INFO, "Logged in");
         thisQuiz.setLoggedIn(C_ParticipantHome.this, thisTeamNr, true);
         MyApplication.setLoggedIn(true);
         //Get all the stuff from the layout
@@ -214,12 +246,10 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
         rvDisplayAnswers.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         rvDisplayAnswers.setLayoutManager(layoutManager);
-        //Initialize the adapter, we will change the questionsList later on
+        //Initialize the adapter
         displayAnswersAdapter = new DisplayAnswersAdapter(this, thisQuiz.getRound(1).getQuestions(), thisTeamNr);
-        //Initially, we start with question 1 of round 1, so set the text of the editText to this answer
-        //etAnswer.setText(thisQuiz.getQuestion(1, 1).getAnswerForTeam(thisTeamNr).getTheAnswer());
-        //RefreshDisplay will make sure we are seeing the correct fragments
-        //refreshDisplayFragments();
+        quizLoader = new QuizLoader(C_ParticipantHome.this);
+        thisTeam = thisQuiz.getThisUser();
 
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -242,7 +272,7 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
     protected void onPause() {
         if (thisQuiz.isAnyRoundOpen()) {
             lastPausedDate = new Date();
-            MyApplication.eventLogger.logEvent(thisQuiz.getThisTeam().getName(), EventLogger.LEVEL_INFO, "INFO: Paused the app");
+            MyApplication.eventLogger.logEvent(thisQuiz.getThisUser().getName(), EventLogger.LEVEL_INFO, "INFO: Paused the app");
             thisQuiz.setLoggedIn(C_ParticipantHome.this, thisTeamNr, false);
             MyApplication.setAppPaused(true);
         }
@@ -256,7 +286,7 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
             Date dateResumed = new Date();
             long timePaused = (dateResumed.getTime() - lastPausedDate.getTime()) / 1000;
             totalTimePaused = totalTimePaused + timePaused;
-            MyApplication.eventLogger.logEvent(thisQuiz.getThisTeam().getName(), EventLogger.LEVEL_WARNING, "WARNING: Resumed the app after "
+            MyApplication.eventLogger.logEvent(thisQuiz.getThisUser().getName(), EventLogger.LEVEL_WARNING, "WARNING: Resumed the app after "
                     + timePaused + " seconds - total time paused is now " + totalTimePaused + " seconds");
             thisQuiz.setLoggedIn(C_ParticipantHome.this, thisTeamNr, true);
             MyApplication.setAppPaused(false);

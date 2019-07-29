@@ -9,6 +9,7 @@ import com.paperlessquiz.R;
 import com.paperlessquiz.answer.Answer;
 import com.paperlessquiz.googleaccess.GoogleAccess;
 import com.paperlessquiz.googleaccess.LLShowProgressActWhenComplete;
+import com.paperlessquiz.googleaccess.LLSilent;
 import com.paperlessquiz.users.Organizer;
 import com.paperlessquiz.users.Team;
 import com.paperlessquiz.users.User;
@@ -22,6 +23,8 @@ import com.paperlessquiz.round.Round;
 import com.paperlessquiz.webrequest.HTTPGetData;
 import com.paperlessquiz.webrequest.HTTPSubmit;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
 //This class is used to populates a quiz from the SQL database
@@ -44,6 +47,7 @@ public class QuizLoader {
     public HTTPGetData<AnswersSubmitted> getAnswersSubmittedRequest;
     public HTTPGetData<EventLog> getMyEventLogsRequest;
     public HTTPSubmit authenticateRequest;
+    public HTTPSubmit submitAnswerRequest;
 
     //public GetScoresLPL quizScoresLPL;
 
@@ -92,6 +96,14 @@ public class QuizLoader {
         //TODO: updateUserStatuses(idUser, userPassword,  idQuiz);
     }
 
+    public void updateQuizForUser(int idUser, String userPassword, int idQuiz) {
+        loadRounds(idUser, userPassword, idQuiz);
+        //loadQuestions(idUser, userPassword, idQuiz);
+        loadMyAnswers(idUser, userPassword, idQuiz);
+        //TODO: loadMyAnswersSubmitted(idUser, userPassword, idQuiz);
+        //TODO: loadMyEvents(idUser, userPassword, idQuiz);
+        //TODO: updateUserStatuses(idUser, userPassword,  idQuiz);
+    }
 
     public void loadUsers() {
         String scriptParams = QuizDatabase.SCRIPT_GET_QUIZUSERS + QuizDatabase.PHP_STARTPARAM + QuizDatabase.PARAMNAME_IDQUIZ + thisQuiz.getListData().getIdQuiz();
@@ -109,6 +121,22 @@ public class QuizLoader {
         authenticateRequest.sendRequest(new LLShowProgressActWhenComplete(context, context.getString(R.string.loader_pleasewait),
                 context.getString(R.string.loader_updatingquiz),
                 context.getString(R.string.loadingerror), false));
+    }
+
+    public void submitAnswer(int idUser, String userPassword, int idQuestion, String theAnswer){
+        String encodedAnswer;
+        try {
+            encodedAnswer = URLEncoder.encode(theAnswer.replaceAll("'","\""), "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            encodedAnswer="Answer contains illegal characters";
+        }
+        String scriptParams = QuizDatabase.SCRIPT_SUBMITANSWER + QuizDatabase.PHP_STARTPARAM + QuizDatabase.PARAMNAME_IDUSER + idUser +
+                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_USERPASSWORD + userPassword +
+                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_IDQUESTION + idQuestion +
+                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_THEANSWER + encodedAnswer;
+                submitAnswerRequest = new HTTPSubmit(context, scriptParams, QuizDatabase.REQUEST_ID_SUBMITANSWER);
+        submitAnswerRequest.sendRequest(new LLSilent());
     }
 
     public void loadRounds(int idUser, String userPassword, int idQuiz) {
@@ -143,7 +171,6 @@ public class QuizLoader {
                 "Something went wrong: ", false));
     }
 
-
     public void loadMyEvents(int idUser, String userPassword, int idQuiz) {
         String scriptParams = generateParamsPHP(QuizDatabase.PARAMVALUE_QRY_MY_EVENTLOGS, idUser, userPassword, idQuiz);
         getMyEventLogsRequest = new HTTPGetData<>(context, scriptParams, QuizDatabase.REQUEST_ID_GET_EVENTLOGS);
@@ -151,22 +178,6 @@ public class QuizLoader {
                 context.getString(R.string.loader_updatingquiz),
                 "Something went wrong: ", false));
     }
-
-    /*
-    public void generateBlankAnswers() {
-        //for each round
-        for (int i = 0; i < getQuestionsRequest.getResultsList().size(); i++) {
-            myAnswers.add(i, new ArrayList<>());
-            //ArrayList<Answer> answers = new ArrayList<>();
-            //Create an array with the correct nr of answers
-            for (int j = 0; j < getQuestionsRequest.getResultsList().size(); j++) {
-                //answers.add(j, new Answer(j, ""));
-                myAnswers.get(i).add(j, new Answer(j, ""));
-            }
-        }
-
-    }
-    */
 
     //Get all the users and put them into the Teams resp. Organizers array of the Quiz
     public void loadUsersIntoQuiz() {
@@ -193,6 +204,7 @@ public class QuizLoader {
         }
     }
 
+    //Get all the rounds and load them in the quiz
     public void loadRoundsIntoQuiz() {
         for (int i = 0; i < getRoundsRequest.getResultsList().size(); i++) {
             Round thisRound = getRoundsRequest.getResultsList().get(i);
@@ -204,7 +216,16 @@ public class QuizLoader {
             }
             thisQuiz.getRounds().set(thisRound.getRoundNr()-1, thisRound);
         }
+    }
 
+    //Assumes rounds are already loaded in the quiz, this sub just updates the relevant information
+    public void updateRounds() {
+        for (int i = 0; i < getRoundsRequest.getResultsList().size(); i++) {
+            Round thisRound = getRoundsRequest.getResultsList().get(i);
+            //Rounds are already loaded, we can simply get the round from the Quiz object
+            Round roundToUpdate = thisQuiz.getRound(thisRound.getRoundNr());
+            roundToUpdate.updateRoundBasics(thisRound);
+        }
     }
 
     public void loadQuestionsIntoQuiz() {
@@ -225,13 +246,11 @@ public class QuizLoader {
         }
     }
 
+    //Make sure all answers are correctly initialized before calling this!
     public void loadMyAnswersIntoQuiz(){
-        //Make sure we have answers for all teams and all questions
-        thisQuiz.initializeAllAnswers();
         for (int i = 0; i < getMyAnswersRequest.getResultsList().size(); i++) {
             Answer theAnswer = getMyAnswersRequest.getResultsList().get(i);
             thisQuiz.getRound(theAnswer.getRoundNr()).getQuestion(theAnswer.getQuestionNr()).getAllAnswers().set(theAnswer.getTeamNr() - 1,theAnswer);
         }
-
     }
 }

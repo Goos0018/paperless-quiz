@@ -35,7 +35,7 @@ public class LLNotifyStartOnly implements LoadingListener {
     @Override
     public void loadingError(String error, int callerID) {
         String team;
-        if (MyApplication.theQuiz.getThisTeam() == null){team = "none";} else {team = MyApplication.theQuiz.getThisTeam().getName();}
+        if (MyApplication.theQuiz.getThisUser() == null){team = "none";} else {team = MyApplication.theQuiz.getThisUser().getName();}
         MyApplication.eventLogger.logEvent(team,EventLogger.LEVEL_ERROR,error);
         Toast.makeText(context, error, Toast.LENGTH_LONG).show();
     }

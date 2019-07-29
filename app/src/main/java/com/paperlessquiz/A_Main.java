@@ -16,19 +16,17 @@ import com.paperlessquiz.quizlistdata.QuizListData;
 import com.paperlessquiz.parsers.QuizListDataParser;
 import com.paperlessquiz.webrequest.HTTPGetData;
 
-/*
-This class/screen is the first screen of the app. It allows users to select a quiz from a list of available quiz'es.
-The list of the available quizzes comes from a central Google Sheet (docID is in the GoogleAccess class
-Basic details of the selected quiz are stored and passed via a thisQuiz variable
-TODO: extract string resources + constants
-TODO: layout
+/**
+ * This class/screen is the first screen of the app. It allows users to select a quiz from a list of available quiz'es.
+ * The list of the available quizzes is loaded from the central SQL db, no authentication is needed to retrieve it
+ * Basic details of the selected quiz are stored in the central Quiz object
  */
 
 public class A_Main extends AppCompatActivity implements LoadingActivity {
     Quiz thisQuiz = MyApplication.theQuiz;
     ListView lv_QuizList;
     QuizListAdapter adapter;
-    String scriptParams;
+    //String scriptParams;
     HTTPGetData<QuizListData> request;
 
     @Override

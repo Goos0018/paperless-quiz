@@ -17,42 +17,47 @@ import com.paperlessquiz.adapters.ParticipantsAdapter;
 import com.paperlessquiz.googleaccess.LoadingActivity;
 import com.paperlessquiz.quiz.QuizDatabase;
 import com.paperlessquiz.quiz.QuizLoader;
-import com.paperlessquiz.users.Team;
 import com.paperlessquiz.quiz.Quiz;
+import com.paperlessquiz.users.User;
+
+import java.util.ArrayList;
 
 /**
  * Main login screen for users, allows user to select a team to log in and proceed to the Participant Home screen after authentication
+ * Here, we load all info needed for a participant: list of rounds, questions, answers, own event logs
  */
 public class B_LoginTeam extends AppCompatActivity implements LoadingActivity {
     Quiz thisQuiz = MyApplication.theQuiz;
-    Team thisTeam;
+    User thisUser;
+    boolean isOrganizer;
+    ArrayList<User> userList;
+    String loginPrompt;
     //Local items in interface
     TextView tvLoginPrompt, tvDisplayName, tvDisplayID;
     EditText etPasskey;
     Button btnSubmit;
-    ListView lvShowParticipants;
+    ListView lvShowUsers;
     ParticipantsAdapter adapter;
     //other local variables needed
-    int teamNr;
+    int userNr;
     QuizLoader quizLoader;
     String password;
-    boolean roundsLoaded, questionsLoaded, answersLoaded;
+    boolean roundsLoaded, questionsLoaded, answersLoaded; //False by default
 
     @Override
-    public void loadingComplete(int callerID) {
-        switch (callerID) {
+    public void loadingComplete(int requestId) {
+        switch (requestId) {
             case QuizDatabase.REQUEST_ID_AUTHENTICATE:
                 if (quizLoader.authenticateRequest.isRequestOK()) {
-                    thisTeam.setUserPassword(password);
-                    thisQuiz.setThisTeam(thisTeam);
+                    thisUser.setUserPassword(password);
+                    thisQuiz.setThisUser(thisUser);
                     //Load the rest of the quiz
-                    quizLoader.loadQuizForuser(thisTeam.getIdUser(), password, thisQuiz.getListData().getIdQuiz());
+                    quizLoader.loadQuizForuser(thisUser.getIdUser(), password, thisQuiz.getListData().getIdQuiz());
                 } else {
                     //Authentication failed
                     Toast.makeText(B_LoginTeam.this, B_LoginTeam.this.getString(R.string.main_wrongpassword), Toast.LENGTH_SHORT).show();
                 }
                 break;
-
             case QuizDatabase.REQUEST_ID_GET_ROUNDS:
                 roundsLoaded = true;
                 break;
@@ -63,9 +68,14 @@ public class B_LoginTeam extends AppCompatActivity implements LoadingActivity {
                 answersLoaded = true;
                 break;
         }
+        //Only if everything is properly loaded, we can start populating the central Quiz object
         if (roundsLoaded && questionsLoaded && answersLoaded) {
+            //reset the loading statuses
+            roundsLoaded=false;questionsLoaded=false;answersLoaded=false;
             quizLoader.loadRoundsIntoQuiz();
             quizLoader.loadQuestionsIntoQuiz();
+            //Make sure we have answers for all teams and all questions before we start setting the answers
+            thisQuiz.initializeAllAnswers();
             quizLoader.loadMyAnswersIntoQuiz();
             Intent intentP = new Intent(B_LoginTeam.this, C_ParticipantHome.class);
             startActivity(intentP);
@@ -77,33 +87,42 @@ public class B_LoginTeam extends AppCompatActivity implements LoadingActivity {
         tvDisplayName.setText(thisQuiz.getTeams().get(position).getName());
         tvDisplayID.setText(thisQuiz.getTeams().get(position).getDescription());
         etPasskey.setText("");
-        teamNr = thisQuiz.getTeams().get(position).getUserNr();
+        userNr = thisQuiz.getTeams().get(position).getUserNr();
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_b_login_main);
-        quizLoader = new QuizLoader(this);
-
+        //Get stuff from the interface
         tvLoginPrompt = findViewById(R.id.tvLoginPrompt);
         tvDisplayName = findViewById(R.id.tvDisplayName);
         tvDisplayID = findViewById(R.id.tvDisplayID);
         btnSubmit = findViewById(R.id.btn_submit_login);
         etPasskey = findViewById(R.id.et_passkey);
-        lvShowParticipants = findViewById(R.id.lvNamesList);
-        adapter = new ParticipantsAdapter(this, thisQuiz.convertTeamToUserArray(thisQuiz.getTeams()));
-        tvLoginPrompt.setText(this.getString(R.string.main_selectteamprompt));
-
+        lvShowUsers = findViewById(R.id.lvNamesList);
+        //All the rest
+        quizLoader = new QuizLoader(this);
+        if (isOrganizer){
+            userList = thisQuiz.convertOrganizerToUserArray(thisQuiz.getOrganizers());
+            loginPrompt = this.getString(R.string.main_selectorganizerprompt);
+        }
+        else
+        {
+            userList = thisQuiz.convertTeamToUserArray(thisQuiz.getTeams());
+            loginPrompt = this.getString(R.string.main_selectteamprompt);
+        }
+        adapter = new ParticipantsAdapter(this, userList);
+        tvLoginPrompt.setText(loginPrompt);
         setFields(0);
-        lvShowParticipants.setAdapter(adapter);
-        lvShowParticipants.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        lvShowUsers.setAdapter(adapter);
+        lvShowUsers.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 setFields(position);
             }
         });
-
+        //Login button
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -111,15 +130,16 @@ public class B_LoginTeam extends AppCompatActivity implements LoadingActivity {
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(etPasskey.getWindowToken(), 0);
                 password = etPasskey.getText().toString().trim();
-                thisTeam = thisQuiz.getTeam(teamNr);
+                thisUser = thisQuiz.getTeam(userNr);
                 if (password.isEmpty()) {
                     //If no password was entered
                     Toast.makeText(B_LoginTeam.this, B_LoginTeam.this.getString(R.string.main_wrongpswdentered), Toast.LENGTH_SHORT).show();
                 } else {
-                    if (thisTeam.getUserStatus() == QuizDatabase.USERSTATUS_NOTPRESENT) {
+                    if (thisUser.getUserStatus() == QuizDatabase.USERSTATUS_NOTPRESENT) {
                         Toast.makeText(B_LoginTeam.this, B_LoginTeam.this.getString(R.string.main_registeratreceptionfirst), Toast.LENGTH_LONG).show();
                     } else {
-                        quizLoader.authenticateUser(thisTeam.getIdUser(), password);
+                        quizLoader.authenticateUser(thisUser.getIdUser(), password);
+                        //The rest is done when loading is complete
                     }
                 }
             }

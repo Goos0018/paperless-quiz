@@ -16,8 +16,9 @@ import com.paperlessquiz.quiz.QuizLoader;
 import com.squareup.picasso.Picasso;
 
 /**
- * This screen allows you to select if you are an organizer or a participant.
- * Because you are not authenticated yet, we only load the list of participants
+ * After having selected a Quiz, this screen allows you to select if you are an organizer or a participant.
+ * We also load the list of Quiz users (teams and organizers) into the central Quiz object, so they can be selected in the next screen.
+ * This userlist can also be retrieved anonymously.
  */
 
 public class A_SelectRole extends AppCompatActivity implements LoadingActivity {
@@ -57,7 +58,7 @@ public class A_SelectRole extends AppCompatActivity implements LoadingActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_a_select_role);
-
+        //Get the stuff from the interface
         btnParticipant = findViewById(R.id.btn_participant);
         btnOrganizer = findViewById(R.id.btn_organizer);
         tvQuizName = findViewById(R.id.tvQuizName);
@@ -66,6 +67,7 @@ public class A_SelectRole extends AppCompatActivity implements LoadingActivity {
         thisQuiz = MyApplication.theQuiz;
         tvQuizName.setText(thisQuiz.getListData().getName());
         tvWelcome.setText(thisQuiz.getListData().getDescription());
+        //Get the quiz logo
         String URL = thisQuiz.getListData().getLogoURL();
         if (URL.equals("")) {
             ivQuizLogo.setImageResource(R.mipmap.placeholder);
@@ -76,9 +78,9 @@ public class A_SelectRole extends AppCompatActivity implements LoadingActivity {
                     .centerCrop()
                     .into(ivQuizLogo);
         }
+        //Load the users from the Quiz
         quizLoader = new QuizLoader(this);
         quizLoader.loadUsers();
-        //quizLoader.loadAll();
         //Access the Generator screen by tapping the logo 5 times
         ivQuizLogo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,6 +92,7 @@ public class A_SelectRole extends AppCompatActivity implements LoadingActivity {
                 }
             }
         });
+        //Login as participant
         btnParticipant.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -98,7 +101,7 @@ public class A_SelectRole extends AppCompatActivity implements LoadingActivity {
                 startActivity(intent);
             }
         });
-
+        //Login as organizer
         btnOrganizer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

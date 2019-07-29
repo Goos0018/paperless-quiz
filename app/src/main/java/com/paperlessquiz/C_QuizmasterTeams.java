@@ -27,7 +27,7 @@ public class C_QuizmasterTeams extends MyActivity implements FragRoundSpinner.Ha
     @Override
     public void onRoundChanged(int oldRoundnNr, int roundNr) {
         this.roundNr = roundNr;
-        //if (thisQuiz.getThisTeam().getType().equals(QuizGenerator.TYPE_QUIZMASTER) && showTeamsAdapter != null) {
+        //if (thisQuiz.getThisUser().getType().equals(QuizGenerator.TYPE_QUIZMASTER) && showTeamsAdapter != null) {
         if (showTeamsAdapter != null) {
             showTeamsAdapter.setRoundNr(roundNr);
             showTeamsAdapter.notifyDataSetChanged();

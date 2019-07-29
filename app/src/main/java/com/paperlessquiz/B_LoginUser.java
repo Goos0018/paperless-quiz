@@ -36,7 +36,7 @@ public class B_LoginUser extends AppCompatActivity implements LoadingActivity {
         switch (callerID) {
             case QuizDatabase.REQUEST_ID_AUTHENTICATE:
                 if (quizLoader.authenticateRequest.isRequestOK()) {
-                    thisQuiz.setThisTeam(thisTeam);
+                    thisQuiz.setThisUser(thisTeam);
                     Intent intentP = new Intent(B_LoginUser.this, C_ParticipantHome.class);
                     startActivity(intentP);
                 } else {

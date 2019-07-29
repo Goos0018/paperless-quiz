@@ -17,9 +17,10 @@ import java.util.ArrayList;
 
 //TODO: Write ToString functions for each class to upload item of the class to QuizSheet
 public class Round implements Serializable, SpinnerData {
-    private int idQuiz,idRound, roundNr, roundStatus;
+    private int idQuiz,idRound;
+    private int roundNr, roundStatus;
     private String name, description;
-    private int nrOfQuestions;
+    //private int nrOfQuestions;
     //private boolean acceptsAnswers, acceptsCorrections, corrected;
     private boolean corrected;
     private ArrayList<Question> questions;
@@ -41,7 +42,7 @@ public class Round implements Serializable, SpinnerData {
         this.roundNr = roundNr;
         this.name = "EMPTY ROUND";
         this.description = "empty round - please check the input that was submitted";
-        this.nrOfQuestions = 0;
+        //this.nrOfQuestions = 0;
         /*
         this.acceptsAnswers = false;
         this.acceptsCorrections = false;
@@ -50,12 +51,13 @@ public class Round implements Serializable, SpinnerData {
         this.questions = new ArrayList<Question>();
     }
 
-    //Used to update a rounds object from info retrieved from the Rounds sheet
-    public void UpdateRoundBasics(Round rnd) {
-        this.roundNr = rnd.getRoundNr();
+    //20190728 - Used to update a rounds object from info retrieved from the database
+    public void updateRoundBasics(Round rnd) {
+        //this.roundNr = rnd.getRoundNr();
         this.name = rnd.getName();
         this.description = rnd.getDescription();
-        this.nrOfQuestions = rnd.getNrOfQuestions();
+        this.roundStatus = rnd.getRoundStatus();
+        //this.nrOfQuestions = rnd.getNrOfQuestions();
         /*
         this.acceptsAnswers = rnd.getAcceptsAnswers();
         this.acceptsCorrections = rnd.getAcceptsCorrections();
@@ -71,9 +73,15 @@ public class Round implements Serializable, SpinnerData {
         return description;
     }
 
+    /*
     public int getNrOfQuestions() {
         return nrOfQuestions;
     }
+
+        public void setNrOfQuestions(int nrOfQuestions) {
+        this.nrOfQuestions = nrOfQuestions;
+    }
+    */
 
 /*
     public boolean getAcceptsAnswers() {
@@ -130,9 +138,7 @@ public Round(int id, String name, String description, int nrOfQuestions,
         return roundNr;
     }
 
-    public void setNrOfQuestions(int nrOfQuestions) {
-        this.nrOfQuestions = nrOfQuestions;
-    }
+
 
     public int getMaxScore(){
         int res=0;
@@ -151,6 +157,7 @@ public Round(int id, String name, String description, int nrOfQuestions,
     }
 
     public boolean isCorrected() {
+
         return corrected;
     }
 

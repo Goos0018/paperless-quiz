@@ -41,9 +41,9 @@ public class MyActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.help:
-                //TODO: FIX this given new structure displayPDF(QuizGenerator.HELPFILE_URL + MyApplication.helpFiles.get(thisQuiz.getThisTeam().getType()),"HELP!");
+                //TODO: FIX this given new structure displayPDF(QuizGenerator.HELPFILE_URL + MyApplication.helpFiles.get(thisQuiz.getThisUser().getType()),"HELP!");
                 //Intent intentDisplayPDF = new Intent(MyActivity.this, DisplayPDF.class);
-                //intentDisplayPDF.putExtra(QuizGenerator.PDF_TO_DISPLAY, MyApplication.helpFiles.get(thisQuiz.getThisTeam().getType()));
+                //intentDisplayPDF.putExtra(QuizGenerator.PDF_TO_DISPLAY, MyApplication.helpFiles.get(thisQuiz.getThisUser().getType()));
                 //startActivity(intentDisplayPDF);
         }
         return super.onOptionsItemSelected(item);
@@ -79,7 +79,7 @@ public class MyActivity extends AppCompatActivity {
 
         public void setActionBarTitle () {
             ActionBar actionBar = getSupportActionBar();
-            actionBar.setTitle(thisQuiz.getThisTeam().getName());
+            actionBar.setTitle(thisQuiz.getThisUser().getName());
         }
 
 

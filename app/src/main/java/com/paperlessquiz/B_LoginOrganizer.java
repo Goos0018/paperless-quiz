@@ -1,9 +1,11 @@
 package com.paperlessquiz;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,10 +20,11 @@ import com.paperlessquiz.users.Organizer;
 import com.paperlessquiz.users.Team;
 import com.paperlessquiz.quiz.Quiz;
 import com.paperlessquiz.quiz.QuizDatabase;
-import com.paperlessquiz.quiz.QuizGenerator;
+
 
 /**
- * Main login screen for users, allows user to select a team to log in and proceed to the Participant Home screen
+ * Main login screen for organizers, allows user to select a role/name to log with and then opens the corresponding home screen after authentication
+ * Here, we load all info needed for a participant: list of rounds, questions, answers, own event logs
  */
 public class B_LoginOrganizer extends AppCompatActivity implements LoadingActivity {
     Quiz thisQuiz = MyApplication.theQuiz;
@@ -32,37 +35,49 @@ public class B_LoginOrganizer extends AppCompatActivity implements LoadingActivi
     Button btnSubmit;
     ListView lvShowParticipants;
     ParticipantsAdapter adapter;
-    String loginType;
+    //String loginType;
     //other local variables needed
     int organizerNr;
     QuizLoader quizLoader;
+    String password;
+    boolean roundsLoaded, questionsLoaded, answersLoaded; //False by default
 
     @Override
     public void loadingComplete(int callerID) {
         switch (callerID) {
             case QuizDatabase.REQUEST_ID_AUTHENTICATE:
                 if (quizLoader.authenticateRequest.isRequestOK()) {
+                    thisOrganizer.setUserPassword(password);
                     thisQuiz.setThisOrganizer(thisOrganizer);
-                    switch (thisOrganizer.getUserType()) {
-                        case QuizDatabase.USERTYPE_QUIZMASTER:
-                            Intent intentQM = new Intent(B_LoginOrganizer.this, C_QuizmasterRounds.class);
-                            startActivity(intentQM);
-                            break;
-                        case QuizDatabase.USERTYPE_CORRECTOR:
-                            Intent intentC = new Intent(B_LoginOrganizer.this, C_CorrectorHome.class);
-                            startActivity(intentC);
-                            break;
-                        case QuizDatabase.USERTYPE_RECEPTIONIST:
-                            Intent intentR = new Intent(B_LoginOrganizer.this, C_ReceptionistHome.class);
-                            startActivity(intentR);
-                            break;
-                    }
+                    //Load the rest of the quiz
+
                 } else {
                     //Authentication failed
                     Toast.makeText(B_LoginOrganizer.this, B_LoginOrganizer.this.getString(R.string.main_wrongpassword), Toast.LENGTH_SHORT).show();
                 }
                 break;
         }
+        if (roundsLoaded && questionsLoaded && answersLoaded) {
+            //reset the loading statuses
+            roundsLoaded=false;questionsLoaded=false;answersLoaded=false;
+
+            switch (thisOrganizer.getUserType()) {
+                case QuizDatabase.USERTYPE_QUIZMASTER:
+                    Intent intentQM = new Intent(B_LoginOrganizer.this, C_QuizmasterRounds.class);
+                    startActivity(intentQM);
+                    break;
+                case QuizDatabase.USERTYPE_CORRECTOR:
+                    Intent intentC = new Intent(B_LoginOrganizer.this, C_CorrectorHome.class);
+                    startActivity(intentC);
+                    break;
+                case QuizDatabase.USERTYPE_RECEPTIONIST:
+                    Intent intentR = new Intent(B_LoginOrganizer.this, C_ReceptionistHome.class);
+                    startActivity(intentR);
+                    break;
+            }
+        }
+
+
     }
 
     private void setFields(int position) {
@@ -76,19 +91,18 @@ public class B_LoginOrganizer extends AppCompatActivity implements LoadingActivi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_b_login_main);
-        quizLoader = new QuizLoader(this);
-
+        //Get stuff from the interface
         tvLoginPrompt = findViewById(R.id.tvLoginPrompt);
         tvDisplayName = findViewById(R.id.tvDisplayName);
         tvDisplayID = findViewById(R.id.tvDisplayID);
         btnSubmit = findViewById(R.id.btn_submit_login);
         etPasskey = findViewById(R.id.et_passkey);
         lvShowParticipants = findViewById(R.id.lvNamesList);
-        loginType = getIntent().getStringExtra(Team.INTENT_EXTRA_NAME_THIS_LOGIN_TYPE);
-
+        //All the rest
+        //loginType = getIntent().getStringExtra(Team.INTENT_EXTRA_NAME_THIS_LOGIN_TYPE);
+        quizLoader = new QuizLoader(this);
         adapter = new ParticipantsAdapter(this, thisQuiz.convertOrganizerToUserArray(thisQuiz.getOrganizers()));
         tvLoginPrompt.setText(this.getString(R.string.main_selectorganizerprompt));
-
         setFields(0);
         lvShowParticipants.setAdapter(adapter);
         lvShowParticipants.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -97,17 +111,21 @@ public class B_LoginOrganizer extends AppCompatActivity implements LoadingActivi
                 setFields(position);
             }
         });
-
+        //Login button
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String input = etPasskey.getText().toString().trim();
+                //Dismiss the keyboard if its there
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(etPasskey.getWindowToken(), 0);
+                password = etPasskey.getText().toString().trim();
                 thisOrganizer = thisQuiz.getOrganizer(organizerNr);
-                if (input.isEmpty()) {
+                if (password.isEmpty()) {
                     //If no password was entered
                     Toast.makeText(B_LoginOrganizer.this, B_LoginOrganizer.this.getString(R.string.main_wrongpswdentered), Toast.LENGTH_SHORT).show();
                 } else {
-                   quizLoader.authenticateUser(thisOrganizer.getIdUser(),input);
+                    quizLoader.authenticateUser(thisOrganizer.getIdUser(), password);
+                    //The rest is done when loading is complete
                 }
             }
         });

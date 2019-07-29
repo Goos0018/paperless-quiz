@@ -32,7 +32,7 @@ public class GetRoundsLPL implements ListParsedListener<Round> {
                 int rndNr = rnd.getRoundNr();
                 //Update MyApplication.theQuiz with the new info
                 //if (rndNr <= MyApplication.theQuiz.getRounds().size()) {
-                MyApplication.theQuiz.getRound(rndNr).UpdateRoundBasics(rnd);
+                MyApplication.theQuiz.getRound(rndNr).updateRoundBasics(rnd);
                 //} else {
                 //}
             }

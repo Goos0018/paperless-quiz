@@ -6,17 +6,20 @@ public class QuizDatabase {
     public static final String PHP_URL = "http://paperlessquiz.be/php/";
     public static final String PHP_STARTPARAM = "?";
     public static final String PHP_PARAMCONCATENATOR = "&";
+    //Parameter names
     public static final String PARAMNAME_IDQUIZ = "idQuiz=";
-    //public static final String PARAMNAME_TABLE = "table=";
     public static final String PARAMNAME_IDUSER = "idUser=";
     public static final String PARAMNAME_USERPASSWORD = "userPassword=";
     public static final String PARAMNAME_QUERY = "query=";
+    public static final String PARAMNAME_IDQUESTION = "idQuestion=";
+    public static final String PARAMNAME_THEANSWER = "answer=";
     // Available PHP scripts
     //public static final String GETALLDATA_SCRIPT = "getalldata.php";
     public static final String SCRIPT_GET_QUIZLIST = "getquizlist.php";
     public static final String SCRIPT_GET_QUIZUSERS = "getuserlist.php";
     public static final String SCRIPT_AUTHENTICATE = "authenticate.php";
     public static final String SCRIPT_GET_QUIZDATA = "getquizdata.php";
+    public static final String SCRIPT_SUBMITANSWER = "submitanswer.php";
 
 
 
@@ -45,13 +48,12 @@ public class QuizDatabase {
     public static final int REQUEST_ID_GET_USERS = 1;
     public static final int REQUEST_ID_GET_ROUNDS = 2;
     public static final int REQUEST_ID_GET_QUESTIONS = 3;
-
-    //public static final int REQUEST_ID_GET_ORGANIZERS = 4;
     public static final int REQUEST_ID_GET_ANSWERS = 4;
     public static final int REQUEST_ID_GET_ANSWERSSUBMITTED = 5;
     public static final int REQUEST_ID_GET_EVENTLOGS = 6;
     //Submit requests
     public static final int REQUEST_ID_AUTHENTICATE = 100;
+    public static final int REQUEST_ID_SUBMITANSWER = 101;
 
     //Organizer Types
     public static final int ORGANIZERTYPE_QUIZMASTER = 0;

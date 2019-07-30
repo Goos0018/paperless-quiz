@@ -10,11 +10,4 @@
         android:title="Refresh"
         app:showAsAction="always" />
 
-    <item
-        android:id="@+id/upload"
-        android:icon="@drawable/upload"
-        android:orderInCategory="100"
-        android:title="Upload"
-        app:showAsAction="always" />
-
 </menu>

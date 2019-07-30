@@ -43,7 +43,7 @@
                 android:layout_marginBottom="@dimen/margin_medium"
                 android:ems="10"
                 android:gravity="center"
-                android:hint="Your answer"
+                android:hint="@string/parthome_your_answer"
                 android:inputType="textVisiblePassword"
                 android:visibility="invisible" />
 

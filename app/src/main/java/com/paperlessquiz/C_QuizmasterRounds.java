@@ -6,7 +6,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 
-import com.paperlessquiz.R;
 import com.paperlessquiz.adapters.RoundsAdapter;
 import com.paperlessquiz.googleaccess.LoadingActivity;
 import com.paperlessquiz.quiz.QuizLoader;
@@ -14,6 +13,7 @@ import com.paperlessquiz.quiz.QuizLoader;
 /**
  * This shows the Rounds to the QM and allows to set status'es for them.
  * Actionbar:Refresh/Upload/Teams/Dorst
+ * TODO: delete, not needed anymore
  */
 public class C_QuizmasterRounds extends MyActivity implements LoadingActivity {
 
@@ -46,7 +46,7 @@ public class C_QuizmasterRounds extends MyActivity implements LoadingActivity {
                 break;
 
             case R.id.teams:
-                Intent intent = new Intent(C_QuizmasterRounds.this, C_QuizmasterTeams.class);
+                Intent intent = new Intent(C_QuizmasterRounds.this, C_QuizmasterHome.class);
                 startActivity(intent);
 
         }

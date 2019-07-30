@@ -9,17 +9,4 @@
         android:title="Refresh"
         app:showAsAction="always" />
 
-    <item android:id="@+id/teams"
-        android:title="Teams"
-        android:orderInCategory="100"
-        app:showAsAction="always"
-        android:icon="@drawable/teams"/>
-
-    <item android:id="@+id/rounds"
-        android:title="Rounds"
-        android:orderInCategory="100"
-        app:showAsAction="always"
-        android:icon="@drawable/rounds"/>
-
-
 </menu>

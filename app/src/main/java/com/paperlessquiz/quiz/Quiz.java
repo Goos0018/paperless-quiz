@@ -50,7 +50,6 @@ public class Quiz implements Serializable {
     private Organizer thisOrganizer;
     public boolean loadingCompleted = false;
 
-
     //20190728 - We only need an empty constructor, the QuizLoader class will populate all fields of the quiz
     public Quiz() {
         this.listData = new QuizListData();

@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.paperlessquiz.R;
 import com.paperlessquiz.quiz.Quiz;
 import com.paperlessquiz.quiz.QuizDatabase;
+import com.paperlessquiz.quiz.QuizLoader;
 import com.paperlessquiz.round.Round;
 
 
@@ -26,10 +27,11 @@ public class FragRoundSpinner extends Fragment {
     private Quiz thisQuiz = MyApplication.theQuiz;
     private int position = 1;
     private int oldPosition;
-    private TextView tvRoundName,tvRoundDescription;
-    ImageView ivRoundStatusL,ivRoundStatusR;
+    private TextView tvRoundName, tvRoundDescription;
+    ImageView ivRoundStatusL, ivRoundStatusR;
     Button btnRndUp, btnRndDown;
     HasRoundSpinner activity;
+    QuizLoader quizLoader;
 
     public interface HasRoundSpinner {
         public void onRoundChanged(int oldRoundNr, int roundNr);
@@ -47,8 +49,8 @@ public class FragRoundSpinner extends Fragment {
         View v = inflater.inflate(R.layout.frag_round_spinner, container, false);
         tvRoundName = v.findViewById(R.id.tvRoundName);
         tvRoundDescription = v.findViewById(R.id.tvRoundDescription);
-        ivRoundStatusL=v.findViewById(R.id.ivRndStatusL);
-        ivRoundStatusR=v.findViewById(R.id.ivRndStatusR);
+        ivRoundStatusL = v.findViewById(R.id.ivRndStatusL);
+        ivRoundStatusR = v.findViewById(R.id.ivRndStatusR);
         btnRndDown = v.findViewById(R.id.btnRndDown);
         btnRndUp = v.findViewById(R.id.btnRndUp);
 
@@ -65,14 +67,42 @@ public class FragRoundSpinner extends Fragment {
                 moveUp();
             }
         });
+
+        ivRoundStatusL.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toggleRoundStatus();
+            }
+        });
+
+        ivRoundStatusR.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toggleRoundStatus();
+            }
+        });
+
         return v;
+    }
+
+    public void toggleRoundStatus() {
+        if (thisQuiz.getThisUser().getUserType() == QuizDatabase.USERTYPE_QUIZMASTER) {
+            Round thisRound = thisQuiz.getRound(position);
+            if (thisRound.getRoundStatus() == QuizDatabase.ROUNDSTATUS_CORRECTED) {
+                thisRound.setRoundStatus(QuizDatabase.ROUNDSTATUS_CLOSED);
+            } else {
+                thisRound.setRoundStatus(thisRound.getRoundStatus() + 1);
+            }
+            refreshIcons();
+            quizLoader.updateRoundStatus(thisRound.getRoundNr(), thisRound.getRoundStatus());
+        }
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         activity = (HasRoundSpinner) context;
-
+        quizLoader = new QuizLoader(context);
     }
 
     @Override
@@ -88,10 +118,10 @@ public class FragRoundSpinner extends Fragment {
         activity.onRoundChanged(oldPosition, position);
     }
 
-    public void refreshIcons(){
+    public void refreshIcons() {
         //Set the icon that shows the round status
         Round thisRound = thisQuiz.getRound(position);
-        switch (thisRound.getRoundStatus()){
+        switch (thisRound.getRoundStatus()) {
             case QuizDatabase.ROUNDSTATUS_CLOSED:
                 ivRoundStatusL.setImageResource(R.drawable.rnd_not_yet_open);
                 ivRoundStatusR.setImageResource(R.drawable.rnd_not_yet_open);

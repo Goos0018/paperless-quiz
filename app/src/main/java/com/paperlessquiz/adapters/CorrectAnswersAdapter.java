@@ -74,7 +74,7 @@ public class CorrectAnswersAdapter extends ArrayAdapter<Answer> {
         holder.ivToggle.setId(position);
 
         holder.ivToggle.setOnClickListener(new View.OnClickListener()
-            //Toggle isCorrect from true to false
+            //Toggle isCorrect from true to false + submit to database
         {
             @Override
             public void onClick(View view) {

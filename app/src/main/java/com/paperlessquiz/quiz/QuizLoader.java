@@ -41,9 +41,10 @@ public class QuizLoader {
     public GetLoginEntriesLPL quizTeamsLPL, quizOrganizersLPL;
     */
     public HTTPGetData<User> getUsersRequest;
-    public HTTPGetData<Answer> getMyAnswersRequest;
-    public HTTPGetData<Answer> getAllAnswersRequest;
+    public HTTPGetData<Answer> getAnswersRequest;
+    //public HTTPGetData<Answer> getAllAnswersRequest;
     public HTTPGetData<Question> getQuestionsRequest;
+    //public HTTPGetData<Question> getFullQuestionsRequest;
     public HTTPGetData<Round> getRoundsRequest;
     public HTTPGetData<AnswersSubmitted> getAnswersSubmittedRequest;
     public HTTPGetData<EventLog> getMyEventLogsRequest;
@@ -134,13 +135,25 @@ public class QuizLoader {
                 context.getString(R.string.loadingerror), false));
     }
 
+    public void loadFullQuestions() {
+        int idUser = thisQuiz.getThisUser().getIdUser();
+        String userPassword = thisQuiz.getThisUser().getUserPassword();
+        int idQuiz = thisQuiz.getListData().getIdQuiz();
+        String scriptParams = generateParamsPHP(QuizDatabase.PARAMVALUE_QRY_FULL_QUESTIONS, idUser, userPassword, idQuiz, idQuiz);
+        getQuestionsRequest = new HTTPGetData<>(context, scriptParams, QuizDatabase.REQUEST_ID_GET_FULLQUESTIONS);
+        getQuestionsRequest.getItems(new com.paperlessquiz.parsers.QuestionParser(), new LLShowProgressActWhenComplete(context, context.getString(R.string.loader_pleasewait),
+                context.getString(R.string.loader_updatingquiz),
+                context.getString(R.string.loadingerror), false));
+    }
+
+
     public void loadMyAnswers() {
         int idUser = thisQuiz.getThisUser().getIdUser();
         String userPassword = thisQuiz.getThisUser().getUserPassword();
         int idQuiz = thisQuiz.getListData().getIdQuiz();
         String scriptParams = generateParamsPHP(QuizDatabase.PARAMVALUE_QRY_MY_ANSWERS, idUser, userPassword, idQuiz, idUser);
-        getMyAnswersRequest = new HTTPGetData<>(context, scriptParams, QuizDatabase.REQUEST_ID_GET_ANSWERS);
-        getMyAnswersRequest.getItems(new AnswersParser(), new LLShowProgressActWhenComplete(context, context.getString(R.string.loader_pleasewait),
+        getAnswersRequest = new HTTPGetData<>(context, scriptParams, QuizDatabase.REQUEST_ID_GET_ANSWERS);
+        getAnswersRequest.getItems(new AnswersParser(), new LLShowProgressActWhenComplete(context, context.getString(R.string.loader_pleasewait),
                 context.getString(R.string.loader_updatingquiz),
                 "Something went wrong: ", false));
     }
@@ -150,11 +163,12 @@ public class QuizLoader {
         String userPassword = thisQuiz.getThisUser().getUserPassword();
         int idQuiz = thisQuiz.getListData().getIdQuiz();
         String scriptParams = generateParamsPHP(QuizDatabase.PARAMVALUE_QRY_ALL_ANSWERS, idUser, userPassword, idQuiz, idQuiz);
-        getAllAnswersRequest = new HTTPGetData<>(context, scriptParams, QuizDatabase.REQUEST_ID_GET_ANSWERS);
-        getAllAnswersRequest.getItems(new AnswersParser(), new LLShowProgressActWhenComplete(context, context.getString(R.string.loader_pleasewait),
+        getAnswersRequest = new HTTPGetData<>(context, scriptParams, QuizDatabase.REQUEST_ID_GET_ALLANSWERS);
+        getAnswersRequest.getItems(new AnswersParser(), new LLShowProgressActWhenComplete(context, context.getString(R.string.loader_pleasewait),
                 context.getString(R.string.loader_updatingquiz),
                 "Something went wrong: ", false));
     }
+
 
     public void loadAnswersSubmitted() {
         int idUser = thisQuiz.getThisUser().getIdUser();
@@ -258,10 +272,24 @@ public class QuizLoader {
         }
     }
 
+
+    //When this is run, all questions are already correctly added
+    public void updateFullQuestionsIntoQuiz() {
+        for (int i = 0; i < getQuestionsRequest.getResultsList().size(); i++) {
+            Question thisQuestion = getQuestionsRequest.getResultsList().get(i);
+            if (thisQuestion.getRoundNr() > thisQuiz.getRounds().size() + 1) {
+                //TODO: LOG EVENT
+            } else {
+                Round theRound = thisQuiz.getRound(thisQuestion.getRoundNr());
+                theRound.getQuestion(thisQuestion.getQuestionNr()).setCorrectAnswer(thisQuestion.getCorrectAnswer());
+            }
+        }
+    }
+
     //Make sure all answers are correctly initialized before calling this!
-    public void updateMyAnswersIntoQuiz() {
-        for (int i = 0; i < getMyAnswersRequest.getResultsList().size(); i++) {
-            Answer theAnswer = getMyAnswersRequest.getResultsList().get(i);
+    public void updateAnswersIntoQuiz() {
+        for (int i = 0; i < getAnswersRequest.getResultsList().size(); i++) {
+            Answer theAnswer = getAnswersRequest.getResultsList().get(i);
             thisQuiz.getRound(theAnswer.getRoundNr()).getQuestion(theAnswer.getQuestionNr()).getAllAnswers().set(theAnswer.getTeamNr() - 1, theAnswer);
         }
     }
@@ -329,16 +357,26 @@ public class QuizLoader {
         updateRoundStatusRequest.sendRequest(new LLSilent());
     }
 
+    public void updateMyStatus(int newStatus) {
+        int idUser = thisQuiz.getThisUser().getIdUser();
+        String userPassword = thisQuiz.getThisUser().getUserPassword();
+        String scriptParams = QuizDatabase.SCRIPT_UPDATEMYSTATUS + QuizDatabase.PHP_STARTPARAM + QuizDatabase.PARAMNAME_IDUSER + idUser +
+                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_USERPASSWORD + userPassword +
+                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_NEWUSERSTATUS + newStatus;
+        updateUserStatusRequest = new HTTPSubmit(context, scriptParams, QuizDatabase.REQUEST_ID_UPDATEMYSTATUS);
+        updateUserStatusRequest.sendRequest(new LLSilent());
+    }
 
-    public void updateUserStatus(int userNr, int newStatus) {
+    public void updateTeam(int userNr, int newStatus, String newName) {
         int idUser = thisQuiz.getThisUser().getIdUser();
         String userPassword = thisQuiz.getThisUser().getUserPassword();
         int userToUpdate = thisQuiz.getTeam(userNr).getIdUser();
-        String scriptParams = QuizDatabase.SCRIPT_UPDATEUSERSTATUS + QuizDatabase.PHP_STARTPARAM + QuizDatabase.PARAMNAME_IDUSER + idUser +
+        String scriptParams = QuizDatabase.SCRIPT_UPDATETEAM + QuizDatabase.PHP_STARTPARAM + QuizDatabase.PARAMNAME_IDUSER + idUser +
                 QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_USERPASSWORD + userPassword +
                 QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_USERTOUPDATE + userToUpdate +
-                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_NEWUSERSTATUS + newStatus;
-        updateUserStatusRequest = new HTTPSubmit(context, scriptParams, QuizDatabase.REQUEST_ID_UPDATEROUNDSTATUS);
+                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_NEWUSERSTATUS + newStatus +
+                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_NEWUSERNAME + newName;
+        updateUserStatusRequest = new HTTPSubmit(context, scriptParams, QuizDatabase.REQUEST_ID_UPDATETEAM);
         updateUserStatusRequest.sendRequest(new LLSilent());
     }
 }

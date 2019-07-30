@@ -82,7 +82,7 @@ public class B_LoginTeam extends AppCompatActivity implements LoadingActivity {
             quizLoader.updateQuestionsIntoQuiz();
             //Make sure we have answers for all teams and all questions before we start setting the answers
             thisQuiz.initializeAllAnswers();
-            quizLoader.updateMyAnswersIntoQuiz();
+            quizLoader.updateAnswersIntoQuiz();
             quizLoader.updateAnswersSubmittedIntoQuiz();
             //Now open the appropriate home screen
             switch (thisUser.getUserType()) {
@@ -91,7 +91,7 @@ public class B_LoginTeam extends AppCompatActivity implements LoadingActivity {
                     startActivity(intentP);
                     break;
                 case QuizDatabase.USERTYPE_QUIZMASTER:
-                    Intent intentQM = new Intent(B_LoginTeam.this, C_QuizmasterRounds.class);
+                    Intent intentQM = new Intent(B_LoginTeam.this, C_QuizmasterHome.class);
                     startActivity(intentQM);
                     break;
                 case QuizDatabase.USERTYPE_CORRECTOR:

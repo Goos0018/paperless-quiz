@@ -87,9 +87,7 @@ public class Question implements Serializable {
         this.roundNr = roundNr;
     }
 
-    public void setHint(String hint) {
-        this.hint = hint;
-    }
+
 
     public String getQuestion() {
         return question;
@@ -103,10 +101,15 @@ public class Question implements Serializable {
         return correctAnswer;
     }
 
-    /*
     public void setCorrectAnswer(String correctAnswer) {
         this.correctAnswer = correctAnswer;
     }
+    /*
+        public void setHint(String hint) {
+        this.hint = hint;
+    }
+
+
     public void setMaxScore(int maxScore) {
         this.maxScore = maxScore;
     }

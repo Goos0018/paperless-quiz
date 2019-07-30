@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.paperlessquiz.R;
 import com.paperlessquiz.quiz.QuizDatabase;
+import com.paperlessquiz.quiz.QuizLoader;
 import com.paperlessquiz.users.Team;
 
 import java.util.ArrayList;
@@ -19,12 +20,15 @@ import java.util.ArrayList;
 public class EditTeamsAdapter extends RecyclerView.Adapter<EditTeamsAdapter.ViewHolder> {
     private ArrayList<Team> teams;
     private EditTeamsAdapter adapter;
+    private QuizLoader quizLoader;
+    private Context context;
 
 
     public EditTeamsAdapter(Context context, ArrayList<Team> teams) {
         this.teams = teams;
+        this.context = context;
         adapter = this;
-
+        this.quizLoader = new QuizLoader(context);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -53,7 +57,7 @@ public class EditTeamsAdapter extends RecyclerView.Adapter<EditTeamsAdapter.View
     @Override
     public void onBindViewHolder(@NonNull EditTeamsAdapter.ViewHolder viewHolder, int i) {
         viewHolder.itemView.setTag(teams.get(i));
-        viewHolder.tvTeamNr.setText(teams.get(i).getIdUser() + ".");
+        viewHolder.tvTeamNr.setText(teams.get(i).getUserNr() + ".");
         viewHolder.etTeamName.setText(teams.get(i).getName());
         viewHolder.tvTeamName.setText(teams.get(i).getName());
         if (teams.get(i).getUserStatus() == QuizDatabase.USERSTATUS_NOTPRESENT) {
@@ -84,8 +88,9 @@ public class EditTeamsAdapter extends RecyclerView.Adapter<EditTeamsAdapter.View
                 } else {
                     teams.get(i).setUserStatus(QuizDatabase.USERSTATUS_NOTPRESENT);
                 }
-
                 teams.get(i).setName(viewHolder.etTeamName.getText().toString().trim());
+                //Send the update to the database
+                quizLoader.updateTeam(teams.get(i).getUserNr(),teams.get(i).getUserStatus(),teams.get(i).getName());
                 viewHolder.tvTeamName.setVisibility(View.VISIBLE);
                 viewHolder.etTeamName.setVisibility(View.GONE);
                 adapter.notifyDataSetChanged();

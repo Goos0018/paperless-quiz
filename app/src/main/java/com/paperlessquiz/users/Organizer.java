@@ -36,7 +36,7 @@ public class Organizer extends User {
 
     //20190728 - Create a dummy organizer with the nr given
     public Organizer(int organizerNr){
-        super(MyApplication.theQuiz.getListData().getIdQuiz(),0,organizerNr, QuizDatabase.ORGANIZERTYPE_RECEPTIONIST,QuizDatabase.USERSTATUS_NOTPRESENT,"EMPTY");
+        super(MyApplication.theQuiz.getListData().getIdQuiz(),0,organizerNr, QuizDatabase.USERTYPE_RECEPTIONIST,QuizDatabase.USERSTATUS_NOTPRESENT,"EMPTY");
     }
 
 

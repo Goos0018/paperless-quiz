@@ -12,7 +12,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".B_LoginUser"></activity>
         <activity android:name=".DisplayPDF" />
         <activity android:name=".A__GenerateQuiz" />
         <activity
@@ -20,7 +19,7 @@
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".C_CorrectorHome" />
         <activity android:name=".C_ReceptionistHome" />
-        <activity android:name=".C_QuizmasterTeams" />
+        <activity android:name=".C_QuizmasterHome" />
         <activity android:name=".C_QuizmasterRounds" />
         <activity
             android:name=".B_LoginTeam"

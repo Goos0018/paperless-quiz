@@ -18,34 +18,26 @@ public class QuizDatabase {
     public static final String PARAMNAME_NEWROUNDSTATUS = "newRoundStatus=";
     public static final String PARAMNAME_USERTOUPDATE = "userToUpdate=";
     public static final String PARAMNAME_NEWUSERSTATUS = "newUserStatus=";
+    public static final String PARAMNAME_NEWUSERNAME = "newUserName=";
     // Available PHP scripts
     //public static final String GETALLDATA_SCRIPT = "getalldata.php";
     public static final String SCRIPT_GET_QUIZLIST = "getquizlist.php";
     public static final String SCRIPT_GET_QUIZUSERS = "getuserlist.php";
-    public static final String SCRIPT_AUTHENTICATE = "authenticate.php";
     public static final String SCRIPT_GET_QUIZDATA = "getquizdata.php";
+    //public static final String SCRIPT_GET_ALLANSWERS = "getallanswers.php";
+    public static final String SCRIPT_AUTHENTICATE = "authenticate.php";
     public static final String SCRIPT_SUBMITANSWER = "submitanswer.php";
     public static final String SCRIPT_SETANSWERSSUBMITTED = "setanswerssubmitted.php";
     public static final String SCRIPT_UPDATEROUNDSTATUS = "updateroundstatus.php";
-    public static final String SCRIPT_UPDATEUSERSTATUS = "updateuserstatus.php";
+    public static final String SCRIPT_UPDATEMYSTATUS = "updatemystatus.php";
+    public static final String SCRIPT_UPDATETEAM = "updateteam.php";
 
-
-
-
-    //Param values - table names
-    public static final String PARAMVALUE_TBL_ANSWERS = "Answers";
-    public static final String PARAMVALUE_TBL_ANSWERSSUBMITTED = "AnswersSubmitted";
-    public static final String PARAMVALUE_TBL_EVENTLOG = "EventLog";
-    public static final String PARAMVALUE_TBL_ORGANIZERS = "Organizers";
-    public static final String PARAMVALUE_TBL_QUESTIONS = "Questions";
-    public static final String PARAMVALUE_TBL_QUIZLIST = "QuizList";
-    public static final String PARAMVALUE_TBL_ROUNDS = "Rounds";
-    public static final String PARAMVALUE_TBL_TEAMS = "Teams";
     //Param values - query names
     public static final String PARAMVALUE_QRY_ALL_ROUNDS = "rounds";
     public static final String PARAMVALUE_QRY_ALL_QUESTIONS = "questions";
     public static final String PARAMVALUE_QRY_MY_ANSWERS = "myanswers";
     public static final String PARAMVALUE_QRY_ALL_ANSWERS = "allanswers";
+    public static final String PARAMVALUE_QRY_FULL_QUESTIONS = "fullquestions";
     public static final String PARAMVALUE_QRY_ALL_ANSWERSSUBMITTED = "answerssubmitted";
     public static final String PARAMVALUE_QRY_MY_EVENTLOGS = "myevents";
 
@@ -60,17 +52,15 @@ public class QuizDatabase {
     public static final int REQUEST_ID_GET_ANSWERS = 4;
     public static final int REQUEST_ID_GET_ANSWERSSUBMITTED = 5;
     public static final int REQUEST_ID_GET_EVENTLOGS = 6;
+    public static final int REQUEST_ID_GET_ALLANSWERS = 7;
+    public static final int REQUEST_ID_GET_FULLQUESTIONS = 8;
     //Submit requests
     public static final int REQUEST_ID_AUTHENTICATE = 100;
     public static final int REQUEST_ID_SUBMITANSWER = 101;
     public static final int REQUEST_ID_SETANSWERSSUBMITTED = 102;
     public static final int REQUEST_ID_UPDATEROUNDSTATUS = 103;
-
-    //Organizer Types
-    public static final int ORGANIZERTYPE_QUIZMASTER = 0;
-    public static final int ORGANIZERTYPE_RECEPTIONIST = 1;
-    public static final int ORGANIZERTYPE_CORRECTOR = 2;
-    public static final int ORGANIZERTYPE_JUROR = 3;
+    public static final int REQUEST_ID_UPDATEMYSTATUS = 104;
+    public static final int REQUEST_ID_UPDATETEAM = 105;
 
     //User types - these must match what is defined in the constants.php
     public static final int USERTYPE_TEAM = 0;

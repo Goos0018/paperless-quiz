@@ -70,7 +70,7 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
             roundsLoaded = false;
             answersLoaded = false;
             quizLoader.updateRounds();
-            quizLoader.updateMyAnswersIntoQuiz();
+            quizLoader.updateAnswersIntoQuiz();
             roundSpinner.refreshIcons();
             roundResultFrag.refresh();  //This will recalculate scores based on the re-loaded corrections
             refreshDisplayFragments();  //Display the correct fragments based on new round status etc.
@@ -258,7 +258,7 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
         displayAnswersAdapter = new DisplayAnswersAdapter(this, thisQuiz.getRound(1).getQuestions(), thisTeamNr);
         quizLoader = new QuizLoader(C_ParticipantHome.this);
         thisTeam = thisQuiz.getThisUser();
-        quizLoader.updateUserStatus(thisTeamNr,QuizDatabase.USERSTATUS_PRESENTLOGGEDIN);
+        quizLoader.updateMyStatus(QuizDatabase.USERSTATUS_PRESENTLOGGEDIN);
 
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -296,7 +296,7 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
             thisQuiz.setLoggedIn(C_ParticipantHome.this, thisTeamNr, false);
             MyApplication.setAppPaused(true);
         }
-        quizLoader.updateUserStatus(thisTeamNr,QuizDatabase.USERSTATUS_PRESENTNOTLOGGEDIN);
+        quizLoader.updateMyStatus(QuizDatabase.USERSTATUS_PRESENTNOTLOGGEDIN);
         super.onPause();
     }
 
@@ -312,7 +312,7 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
             thisQuiz.setLoggedIn(C_ParticipantHome.this, thisTeamNr, true);
             MyApplication.setAppPaused(false);
         }
-        quizLoader.updateUserStatus(thisTeamNr,QuizDatabase.USERSTATUS_PRESENTLOGGEDIN);
+        quizLoader.updateMyStatus(QuizDatabase.USERSTATUS_PRESENTLOGGEDIN);
     }
 
     @Override

@@ -44,6 +44,7 @@ public class C_CorrectorHome extends MyActivity implements LoadingActivity, Frag
     ArrayList<Answer> allAnswers;
     boolean correctPerQuestion = true;
     QuizLoader quizLoader;
+    boolean roundsLoaded,answersLoaded,fullQuestionsLoaded;
 
     @Override
     public String getRoundStatusExplanation() {
@@ -62,14 +63,12 @@ public class C_CorrectorHome extends MyActivity implements LoadingActivity, Frag
         if (correctPerQuestion) {
             thisQuestionNr = newPos;
             showCorrectAnswerForQuestion(thisRoundNr, thisQuestionNr);
+            tvCorrectAnswer.setVisibility(View.VISIBLE);
         } else {
             thisTeamNr = newPos;
+            tvCorrectAnswer.setVisibility(View.GONE);
         }
         refreshAnswers();
-        if (correctPerQuestion) {
-        } else {
-
-        }
         /*
         if (myAdapter.allAnswersCorrected){
             spinner.changeSpinnerColor(R.color.correctGreen);
@@ -95,7 +94,7 @@ public class C_CorrectorHome extends MyActivity implements LoadingActivity, Frag
         if (correctPerQuestion) {
             return thisQuiz.getQuestion(thisRoundNr, spinnerPos).getName();
         } else {
-            return Integer.toString(thisQuiz.getTeam(spinnerPos).getIdUser());
+            return Integer.toString(thisQuiz.getTeam(spinnerPos).getUserNr());
         }
     }
 
@@ -111,18 +110,39 @@ public class C_CorrectorHome extends MyActivity implements LoadingActivity, Frag
 
     @Override
     public void loadingComplete(int requestID) {
-        //If this was the quizloader for the rounds, we don't want to set the corrections
-        /*
-        if (quizLoader.quizCorrectionsLPL.getAllCorrectionsPerRound().size() == 0) {
-        } else {
-            thisQuiz.setAllCorrectionsPerQuestion(quizLoader.quizCorrectionsLPL.getAllCorrectionsPerRound());
+
+        switch (requestID) {
+            case QuizDatabase.REQUEST_ID_GET_ROUNDS:
+                roundsLoaded = true;
+                break;
+            case QuizDatabase.REQUEST_ID_GET_ALLANSWERS:
+                answersLoaded = true;
+                break;
+            case QuizDatabase.REQUEST_ID_GET_FULLQUESTIONS:
+                fullQuestionsLoaded = true;
+                break;
         }
-        */
-        rndSpinner.positionChanged();
-        if (spinner.callingActivity != null) {
-            spinner.positionChanged();
+        //If everything is properly loaded, we can start populating the central Quiz object
+        if (roundsLoaded && answersLoaded && fullQuestionsLoaded) {
+            //reset the loading statuses
+            roundsLoaded = false;
+            answersLoaded = false;
+            fullQuestionsLoaded = false;
+            quizLoader.updateRounds();
+            quizLoader.updateAnswersIntoQuiz();
+            quizLoader.updateFullQuestionsIntoQuiz();
+            rndSpinner.positionChanged();
+            if (spinner.callingActivity != null) {
+                spinner.positionChanged();
+            }
+            refreshDisplayFragments();
         }
-        refreshDisplayFragments();
+    }
+
+    private void loadQuiz(){
+        quizLoader.loadRounds();
+        quizLoader.loadAllAnswers();
+        quizLoader.loadFullQuestions();
     }
 
     @Override
@@ -153,9 +173,7 @@ public class C_CorrectorHome extends MyActivity implements LoadingActivity, Frag
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.refresh:
-                quizLoader = new QuizLoader(C_CorrectorHome.this);
-                //quizLoader.loadRounds();
-                //quizLoader.loadAllCorrections();
+                loadQuiz();
                 break;
             case R.id.teams:
                 correctPerQuestion = !correctPerQuestion;
@@ -164,6 +182,14 @@ public class C_CorrectorHome extends MyActivity implements LoadingActivity, Frag
                 showCorrectAnswerForQuestion(thisRoundNr, 1);
                 //spinner.positionChanged();
                 break;
+            case R.id.rounds:
+                correctPerQuestion = !correctPerQuestion;
+                spinner.moveToFirstPos();
+                refreshAnswers();
+                showCorrectAnswerForQuestion(thisRoundNr, 1);
+                //spinner.positionChanged();
+                break;
+
             case R.id.allcorrect:
                 for (int i = 0; i < allAnswers.size(); i++) {
                     allAnswers.get(i).setCorrect(true);
@@ -205,6 +231,7 @@ public class C_CorrectorHome extends MyActivity implements LoadingActivity, Frag
                 explainRoundStatus.setStatus(roundStatusExplanation);
                 toggleFragments(R.id.frPlaceHolder, explainRoundStatus, spinner, spinner);
                 llCorrectQuestions.setVisibility((View.GONE));
+                break;
             case QuizDatabase.ROUNDSTATUS_OPENFORANSWERS:
                 //Round is open for the teams
                 //Just display the fragment that tells you this
@@ -260,27 +287,8 @@ public class C_CorrectorHome extends MyActivity implements LoadingActivity, Frag
             }
         });
         //OnRoundChange and onSpinnerChanged are called by the respective fragments
+        quizLoader = new QuizLoader(this);
+        loadQuiz();
     }
-
-    /*
-    protected void toggleFragments(int placeHolderID, Fragment fragToShow, Fragment fragToHide1, Fragment fragToHide2) {
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        if (fragToShow.isAdded()) { // if the fragment is already in container
-            ft.show(fragToShow);
-        } else { // fragment needs to be added to frame container
-            ft.add(placeHolderID, fragToShow);
-            ft.show(fragToShow);
-        }
-        // Hide other fragments
-        if (fragToHide1.isAdded()) {
-            ft.hide(fragToHide1);
-        }
-        if (fragToHide2.isAdded()) {
-            ft.hide(fragToHide2);
-        }
-        // Commit changes
-        ft.commit();
-    }
-    */
 
 }

@@ -47,10 +47,6 @@ public class C_ReceptionistHome extends MyActivity implements LoadingActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.upload:
-                thisQuiz.updateTeams(C_ReceptionistHome.this);
-                break;
-
             case R.id.refresh:
                 QuizLoader quizLoader = new QuizLoader(C_ReceptionistHome.this);
                 //quizLoader.loadTeams();

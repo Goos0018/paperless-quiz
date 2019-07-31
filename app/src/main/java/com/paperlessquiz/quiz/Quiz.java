@@ -18,6 +18,7 @@ import com.paperlessquiz.round.Round;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * This class contains all data we need for a quiz:
@@ -49,6 +50,7 @@ public class Quiz implements Serializable {
     private User thisUser;
     private Organizer thisOrganizer;
     public boolean loadingCompleted = false;
+    private HashMap<String,ResultAfterRound> resultsForTeamAfterRound;
 
     //20190728 - We only need an empty constructor, the QuizLoader class will populate all fields of the quiz
     public Quiz() {
@@ -56,6 +58,7 @@ public class Quiz implements Serializable {
         this.teams = new ArrayList<>();
         this.organizers = new ArrayList<>();
         this.rounds = new ArrayList<>();
+        resultsForTeamAfterRound = new HashMap<>();
     }
 
     //20190728 - Make sure that all teams have a blank answer for all questions. Used initially, afterwards, we will overwrite this with the answers that exist in the SQL db
@@ -74,6 +77,18 @@ public class Quiz implements Serializable {
             }
         }
     }
+
+    //20190730 - Add a result for a given team and Round
+public void addResult(ResultAfterRound resultAfterRound){
+    //Create an index
+    String index = resultAfterRound.getTeamNr() + "." + resultAfterRound.getRoundNr();
+        resultsForTeamAfterRound.put(index,resultAfterRound);
+}
+
+public ResultAfterRound getResultForTeam(int teamNr, int roundNr){
+        String index = teamNr + "." + roundNr;
+        return resultsForTeamAfterRound.get(index);
+}
 
     //Get the question ID for the specified question
     public int getQuestionID(int roundNr, int questionNr){

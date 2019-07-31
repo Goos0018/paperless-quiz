@@ -52,7 +52,7 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
     long totalTimePaused;
     Date lastPausedDate;
     QuizLoader quizLoader;
-    boolean roundsLoaded, answersLoaded;
+    boolean roundsLoaded, answersLoaded, scoresLoaded;
 
     @Override
     public void loadingComplete(int requestID) {
@@ -63,14 +63,19 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
             case QuizDatabase.REQUEST_ID_GET_ANSWERS:
                 answersLoaded = true;
                 break;
+            case QuizDatabase.REQUEST_ID_GET_RESULTS:
+                scoresLoaded = true;
+                break;
         }
         //If everything is properly loaded, we can start populating the central Quiz object
-        if (roundsLoaded && answersLoaded) {
+        if (roundsLoaded && answersLoaded && scoresLoaded) {
             //reset the loading statuses
             roundsLoaded = false;
             answersLoaded = false;
+            scoresLoaded = false;
             quizLoader.updateRounds();
             quizLoader.updateAnswersIntoQuiz();
+            quizLoader.loadResultsIntoQuiz();
             roundSpinner.refreshIcons();
             roundResultFrag.refresh();  //This will recalculate scores based on the re-loaded corrections
             refreshDisplayFragments();  //Display the correct fragments based on new round status etc.

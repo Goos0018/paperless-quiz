@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.paperlessquiz.R;
 import com.paperlessquiz.quiz.Quiz;
 import com.paperlessquiz.quiz.QuizStandingsCalculator;
+import com.paperlessquiz.quiz.ResultAfterRound;
 
 
 /**
@@ -35,27 +36,26 @@ public class FragShowRoundScore extends Fragment {
     }
 
     public void refresh() {
-        /*
-        QuizStandingsCalculator quizStandingsCalculator = new QuizStandingsCalculator(thisQuiz);
-        quizStandingsCalculator.calculateScores();
-        quizStandingsCalculator.calculateStandings();
+
         if (tvYourScoreForThisRnd !=null && callingActivity!=null) {
-            thisRoundNr= callingActivity.getRound();
-            thisTeamNr=callingActivity.getTeam();
-            int yourScoreForThisRound = thisQuiz.getTeam(thisTeamNr).getResultAfterRound(thisRoundNr).getScoreForThisRound();
-            int yourTotalScoreAftertHisRound = thisQuiz.getTeam(thisTeamNr).getResultAfterRound(thisRoundNr).getTotalScoreAfterThisRound();
-            int yourRankForThisRound = thisQuiz.getTeam(thisTeamNr).getResultAfterRound(thisRoundNr).getPosInStandingForThisRound();
-            int yourRankAfterThisRound = thisQuiz.getTeam(thisTeamNr).getResultAfterRound(thisRoundNr).getPosInStandingAfterThisRound();
-            tvYourScoreForThisRnd.setText(Integer.toString(yourScoreForThisRound));
-            tvYourScoreTotal.setText(Integer.toString(yourTotalScoreAftertHisRound));
-            tvYourRankForThisRnd.setText(Integer.toString(yourRankForThisRound));
-            tvYourRankAfterThisRound.setText(Integer.toString(yourRankAfterThisRound));
-            tvMaxRndScore.setText("/ " + thisQuiz.getRound(thisRoundNr).getMaxScore());
-            tvMaxTotalScore.setText("/ " + thisQuiz.getMaxScoreUntilRound(thisRoundNr));
-            tvNrOfTeams.setText("/ " + thisQuiz.getTeams().size());
-            tvNrOfTeams2.setText("/ " + thisQuiz.getTeams().size());
+            thisRoundNr = callingActivity.getRound();
+            thisTeamNr = callingActivity.getTeam();
+            ResultAfterRound resultAfterRound = thisQuiz.getResultForTeam(thisTeamNr, thisRoundNr);
+            if (resultAfterRound != null) {
+                int yourScoreForThisRound = resultAfterRound.getScoreForThisRound();
+                int yourTotalScoreAfterThisRound = resultAfterRound.getTotalScoreAfterThisRound();
+                int yourRankForThisRound = resultAfterRound.getPosInStandingForThisRound();
+                int yourRankAfterThisRound = resultAfterRound.getPosInStandingAfterThisRound();
+                tvYourScoreForThisRnd.setText(Integer.toString(yourScoreForThisRound));
+                tvYourScoreTotal.setText(Integer.toString(yourTotalScoreAfterThisRound));
+                tvYourRankForThisRnd.setText(Integer.toString(yourRankForThisRound));
+                tvYourRankAfterThisRound.setText(Integer.toString(yourRankAfterThisRound));
+                tvMaxRndScore.setText("/ " + thisQuiz.getRound(thisRoundNr).getMaxScore());
+                tvMaxTotalScore.setText("/ " + thisQuiz.getMaxScoreUntilRound(thisRoundNr));
+                tvNrOfTeams.setText("/ " + thisQuiz.getTeams().size());
+                tvNrOfTeams2.setText("/ " + thisQuiz.getTeams().size());
+            }
         }
-        */
     }
 
     @Override

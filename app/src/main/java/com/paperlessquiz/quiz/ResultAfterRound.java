@@ -1,10 +1,20 @@
 package com.paperlessquiz.quiz;
 
 public class ResultAfterRound {
+    private int teamNr, roundNr;
     private int scoreForThisRound;
     private int posInStandingForThisRound;
     private int totalScoreAfterThisRound;
     private int posInStandingAfterThisRound;
+
+    public ResultAfterRound(int teamNr, int roundNr, int scoreForThisRound, int posInStandingForThisRound, int totalScoreAfterThisRound, int posInStandingAfterThisRound) {
+        this.teamNr = teamNr;
+        this.roundNr = roundNr;
+        this.scoreForThisRound = scoreForThisRound;
+        this.posInStandingForThisRound = posInStandingForThisRound;
+        this.totalScoreAfterThisRound = totalScoreAfterThisRound;
+        this.posInStandingAfterThisRound = posInStandingAfterThisRound;
+    }
 
     public ResultAfterRound() {
         scoreForThisRound=0;
@@ -43,5 +53,13 @@ public class ResultAfterRound {
 
     public void setPosInStandingAfterThisRound(int posInStandingAfterThisRound) {
         this.posInStandingAfterThisRound = posInStandingAfterThisRound;
+    }
+
+    public int getTeamNr() {
+        return teamNr;
+    }
+
+    public int getRoundNr() {
+        return roundNr;
     }
 }

@@ -34,6 +34,7 @@ public class QuizDatabase {
     public static final String SCRIPT_UPDATEMYSTATUS = "updatemystatus.php";
     public static final String SCRIPT_UPDATETEAM = "updateteam.php";
     public static final String SCRIPT_CORRECTQUESTION = "correctquestion.php";
+    public static final String SCRIPT_CALCULATESCORESFORROUND = "calculatescoresforround.php";
 
     //Param values - query names
     public static final String PARAMVALUE_QRY_ALL_ROUNDS = "rounds";
@@ -43,6 +44,7 @@ public class QuizDatabase {
     public static final String PARAMVALUE_QRY_FULL_QUESTIONS = "fullquestions";
     public static final String PARAMVALUE_QRY_ALL_ANSWERSSUBMITTED = "answerssubmitted";
     public static final String PARAMVALUE_QRY_MY_EVENTLOGS = "myevents";
+    public static final String PARAMVALUE_QRY_SCORES = "scores";
 
 
     public static final String PARAMVALUE_QRY_ALL_TEAMS_FOR_QUIZ = "qry_all-teams-for-quiz";
@@ -57,6 +59,7 @@ public class QuizDatabase {
     public static final int REQUEST_ID_GET_EVENTLOGS = 6;
     public static final int REQUEST_ID_GET_ALLANSWERS = 7;
     public static final int REQUEST_ID_GET_FULLQUESTIONS = 8;
+    public static final int REQUEST_ID_GET_RESULTS = 9;
     //Submit requests
     public static final int REQUEST_ID_AUTHENTICATE = 100;
     public static final int REQUEST_ID_SUBMITANSWER = 101;
@@ -65,6 +68,7 @@ public class QuizDatabase {
     public static final int REQUEST_ID_UPDATEMYSTATUS = 104;
     public static final int REQUEST_ID_UPDATETEAM = 105;
     public static final int REQUEST_ID_CORRECTQUESTION = 106;
+    public static final int REQUEST_ID_CALCULATESCORES = 107;
 
     //User types - these must match what is defined in the constants.php
     public static final int USERTYPE_TEAM = 0;
@@ -125,8 +129,15 @@ public class QuizDatabase {
     public static final String COLNAME_USER_NR = "UserNr";
     public static final String COLNAME_USER_STATUS = "UserStatus";
     public static final String COLNAME_USER_TYPE = "UserType";
-    //public static final String COLNAME_TEAM_PASSWORD = "TeamPassword";
     public static final String COLNAME_USER_NAME = "UserName";
+    //Column names table ScoreForRound
+    public static final String COLNAME_SCOREFORROUND = "ScoreForRound";
+    //Column names table ScoreAfterRound
+    public static final String COLNAME_SCOREAFTERROUND = "ScoreAfterRound";
+    //Column names table ScoreForRound
+    public static final String COLNAME_STANDINGFORROUND = "StandingForRound";
+    //Column names table ScoreForRound
+    public static final String COLNAME_STANDINGAFTERROUND = "StandingAfterRound";
 
     //Various other constants
     public static final String INTENT_EXTRANAME_IS_ORGANIZER = "isOrganizer";

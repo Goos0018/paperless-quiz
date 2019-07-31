@@ -12,7 +12,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.paperlessquiz.R;
 import com.paperlessquiz.quiz.Quiz;
 import com.paperlessquiz.quiz.QuizDatabase;
 import com.paperlessquiz.quiz.QuizLoader;
@@ -92,6 +91,10 @@ public class FragRoundSpinner extends Fragment {
                 thisRound.setRoundStatus(QuizDatabase.ROUNDSTATUS_CLOSED);
             } else {
                 thisRound.setRoundStatus(thisRound.getRoundStatus() + 1);
+            }
+            //Calculate standings of the round is corrected now
+            if (thisRound.getRoundStatus() == QuizDatabase.ROUNDSTATUS_CORRECTED) {
+                quizLoader.calculateStandings(position);
             }
             refreshIcons();
             quizLoader.updateRoundStatus(thisRound.getRoundNr(), thisRound.getRoundStatus());

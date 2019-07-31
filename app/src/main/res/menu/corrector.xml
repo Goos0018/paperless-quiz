@@ -10,19 +10,6 @@
         android:title="Refresh"
         app:showAsAction="always" />
 
-    <item
-        android:id="@+id/allcorrect"
-        android:icon="@drawable/answer_ok"
-        android:orderInCategory="100"
-        android:title="Rounds"
-        app:showAsAction="always" />
-    <item
-        android:id="@+id/allwrong"
-        android:icon="@drawable/answer_nok"
-        android:orderInCategory="100"
-        android:title="Rounds"
-        app:showAsAction="always" />
-
     <item android:id="@+id/teams"
         android:title="Teams"
         android:orderInCategory="100"

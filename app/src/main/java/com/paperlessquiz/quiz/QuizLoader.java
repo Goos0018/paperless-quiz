@@ -53,6 +53,7 @@ public class QuizLoader {
     public HTTPSubmit submitAnswersSubmittedRequest;
     public HTTPSubmit updateRoundStatusRequest;
     public HTTPSubmit updateUserStatusRequest;
+    public HTTPSubmit correctQuestionRequest;
 
     //public GetScoresLPL quizScoresLPL;
 
@@ -379,4 +380,17 @@ public class QuizLoader {
         updateUserStatusRequest = new HTTPSubmit(context, scriptParams, QuizDatabase.REQUEST_ID_UPDATETEAM);
         updateUserStatusRequest.sendRequest(new LLSilent());
     }
+
+    public void correctQuestion(int roundNr, int idQuestion, int isCorrect, String teamIds) {
+        int idUser = thisQuiz.getThisUser().getIdUser();
+        String userPassword = thisQuiz.getThisUser().getUserPassword();
+        String scriptParams = QuizDatabase.SCRIPT_CORRECTQUESTION + QuizDatabase.PHP_STARTPARAM + QuizDatabase.PARAMNAME_IDUSER + idUser +
+                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_USERPASSWORD + userPassword +
+                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_IDQUESTION + idQuestion +
+                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_ISCORRECT + isCorrect +
+                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_IDTEAMS + teamIds;
+        correctQuestionRequest = new HTTPSubmit(context, scriptParams, QuizDatabase.REQUEST_ID_CORRECTQUESTION);
+        correctQuestionRequest.sendRequest(new LLSilent());
+    }
+
 }

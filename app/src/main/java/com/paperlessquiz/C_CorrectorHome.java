@@ -34,7 +34,7 @@ public class C_CorrectorHome extends MyActivity implements LoadingActivity, Frag
     int thisTeamNr = 1, thisRoundNr = 1, thisQuestionNr = 1;
     String roundStatusExplanation;
     TextView tvCorrectAnswer;
-    Button btnSubmitCorrections;
+    //Button btnSubmitCorrections;
     LinearLayout llCorrectQuestions;
     ListView lvCorrectQuestions;
     CorrectAnswersAdapter myAdapter;
@@ -56,6 +56,10 @@ public class C_CorrectorHome extends MyActivity implements LoadingActivity, Frag
         this.thisRoundNr = roundNr;
         refreshDisplayFragments();
         spinner.moveToFirstPos();
+        if (myAdapter != null){
+            myAdapter.setThisRoundNr(roundNr);
+        }
+        showCorrectAnswerForQuestion(thisRoundNr, 1);
     }
 
     @Override
@@ -63,10 +67,8 @@ public class C_CorrectorHome extends MyActivity implements LoadingActivity, Frag
         if (correctPerQuestion) {
             thisQuestionNr = newPos;
             showCorrectAnswerForQuestion(thisRoundNr, thisQuestionNr);
-            tvCorrectAnswer.setVisibility(View.VISIBLE);
         } else {
             thisTeamNr = newPos;
-            tvCorrectAnswer.setVisibility(View.GONE);
         }
         refreshAnswers();
         /*
@@ -131,11 +133,13 @@ public class C_CorrectorHome extends MyActivity implements LoadingActivity, Frag
             quizLoader.updateRounds();
             quizLoader.updateAnswersIntoQuiz();
             quizLoader.updateFullQuestionsIntoQuiz();
-            rndSpinner.positionChanged();
+            /*rndSpinner.positionChanged();
             if (spinner.callingActivity != null) {
                 spinner.positionChanged();
             }
+            */
             refreshDisplayFragments();
+            rndSpinner.refreshIcons();
         }
     }
 
@@ -153,16 +157,14 @@ public class C_CorrectorHome extends MyActivity implements LoadingActivity, Frag
             //Show corrector buttons
             if (correctPerQuestion) {
                 menu.findItem(R.id.rounds).setVisible(false);
+                menu.findItem(R.id.teams).setVisible(true);
             } else {
+                menu.findItem(R.id.rounds).setVisible(true);
                 menu.findItem(R.id.teams).setVisible(false);
             }
-            menu.findItem(R.id.allcorrect).setVisible(true);
-            menu.findItem(R.id.allwrong).setVisible(true);
         } else {
             menu.findItem(R.id.rounds).setVisible(false);
             menu.findItem(R.id.teams).setVisible(false);
-            menu.findItem(R.id.allcorrect).setVisible(false);
-            menu.findItem(R.id.allwrong).setVisible(false);
         }
         //MenuItem correctPerRndItem = menu.findItem(R.id.rounds);
         //MenuItem correctPerTeamItem = menu.findItem(R.id.teams);
@@ -189,7 +191,7 @@ public class C_CorrectorHome extends MyActivity implements LoadingActivity, Frag
                 showCorrectAnswerForQuestion(thisRoundNr, 1);
                 //spinner.positionChanged();
                 break;
-
+/*
             case R.id.allcorrect:
                 for (int i = 0; i < allAnswers.size(); i++) {
                     allAnswers.get(i).setCorrect(true);
@@ -202,7 +204,10 @@ public class C_CorrectorHome extends MyActivity implements LoadingActivity, Frag
                     myAdapter.notifyDataSetChanged();
                 }
                 break;
+                */
         }
+        //Force onCreateoptionsMenu to run again to make sure buttons are hidden and shown as needed
+        supportInvalidateOptionsMenu();
         return super.onOptionsItemSelected(item);
     }
 
@@ -214,10 +219,19 @@ public class C_CorrectorHome extends MyActivity implements LoadingActivity, Frag
         }
         myAdapter = new CorrectAnswersAdapter(this, allAnswers);
         lvCorrectQuestions.setAdapter(myAdapter);
+        myAdapter.setThisRoundNr(thisRoundNr);
+        myAdapter.setThisTeamNr(thisTeamNr);
+        myAdapter.setCorrectPerQuestion(correctPerQuestion);
+
     }
 
     private void showCorrectAnswerForQuestion(int roundNr, int questionNr) {
-        tvCorrectAnswer.setText(thisQuiz.getQuestion(thisRoundNr, thisQuestionNr).getQuestionNr() + ": " + thisQuiz.getQuestion(thisRoundNr, thisQuestionNr).getCorrectAnswer());
+        tvCorrectAnswer.setText(thisQuiz.getQuestion(roundNr, questionNr).getQuestionNr() + ": " + thisQuiz.getQuestion(roundNr, questionNr).getCorrectAnswer());
+        if (correctPerQuestion) {
+            tvCorrectAnswer.setVisibility(View.VISIBLE);
+        } else {
+            tvCorrectAnswer.setVisibility(View.GONE);
+        }
     }
 
     private void refreshDisplayFragments() {
@@ -263,6 +277,8 @@ public class C_CorrectorHome extends MyActivity implements LoadingActivity, Frag
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //allAnswers = new ArrayList<>();
+
         setContentView(R.layout.act_c_corrector_home);
         //RoundSpinner is in the layout, create the dynamic fragments that will be used
         rndSpinner = (FragRoundSpinner) getSupportFragmentManager().findFragmentById(R.id.frRoundSpinner);
@@ -274,8 +290,9 @@ public class C_CorrectorHome extends MyActivity implements LoadingActivity, Frag
         //Get handles to everything in the layout
         llCorrectQuestions = findViewById(R.id.llCorrectQuestions);
         tvCorrectAnswer = findViewById(R.id.tvCorrectAnswer);
-        btnSubmitCorrections = findViewById(R.id.btnSubmitCorrections);
+        //btnSubmitCorrections = findViewById(R.id.btnSubmitCorrections);
         lvCorrectQuestions = findViewById(R.id.lvCorrectQuestions);
+/*
         btnSubmitCorrections.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -286,6 +303,7 @@ public class C_CorrectorHome extends MyActivity implements LoadingActivity, Frag
                 }
             }
         });
+        */
         //OnRoundChange and onSpinnerChanged are called by the respective fragments
         quizLoader = new QuizLoader(this);
         loadQuiz();

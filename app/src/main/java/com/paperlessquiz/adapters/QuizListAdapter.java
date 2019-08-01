@@ -17,10 +17,12 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+/**
+ * Used to display the list of available quizzes in the start screen
+ */
 public class QuizListAdapter extends ArrayAdapter<QuizListData>
 {
     private final Context context;
-    //public Image image;
 
     public QuizListAdapter(Context context) {
         super(context, R.layout.row_layout_select_quiz, new ArrayList<QuizListData>());
@@ -31,7 +33,6 @@ public class QuizListAdapter extends ArrayAdapter<QuizListData>
     @Override
     // This runs for every item in the view
     public View getView(int position, View convertView, ViewGroup parent) {
-
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.row_layout_select_quiz,parent,false);
         TextView tvTitle = (TextView) rowView.findViewById(R.id.tv_title);
@@ -40,7 +41,7 @@ public class QuizListAdapter extends ArrayAdapter<QuizListData>
         tvTitle.setText(getItem(position).getName());
         tvDescription.setText(this.getItem(position).getDescription());
         String URL = this.getItem(position).getLogoURL();
-        //URL ="http://i.imgur.com/DvpvklR.png";
+        //Test URL ="http://i.imgur.com/DvpvklR.png";
         if (URL.equals(""))
         {
             ivQuizLogo.setImageResource(R.mipmap.placeholder);

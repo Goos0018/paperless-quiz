@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryLight"
     android:orientation="vertical"
-    tools:context="com.paperlessquiz.B_LoginTeam">
+    tools:context="com.paperlessquiz.B_Login">
 
     <TextView
         android:id="@+id/tvLoginPrompt"

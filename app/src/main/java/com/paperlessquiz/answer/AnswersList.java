@@ -7,6 +7,8 @@ import java.util.ArrayList;
  * The AnswersList object also contains the questionID, roundNr and questionNr, so we can associate it with the correct question
  */
 public class AnswersList implements Serializable {
+    //TODO: delete, not needed anymore
+    /*
     private String questionID;
     private int roundNr;
     private int questionNr;
@@ -36,4 +38,5 @@ public class AnswersList implements Serializable {
     public int getQuestionNr() {
         return questionNr;
     }
+    */
 }

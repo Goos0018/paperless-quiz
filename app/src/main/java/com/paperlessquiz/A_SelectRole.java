@@ -11,7 +11,6 @@ import android.widget.TextView;
 import com.paperlessquiz.googleaccess.LoadingActivity;
 import com.paperlessquiz.quiz.Quiz;
 import com.paperlessquiz.quiz.QuizDatabase;
-import com.paperlessquiz.quiz.QuizGenerator;
 import com.paperlessquiz.quiz.QuizLoader;
 import com.squareup.picasso.Picasso;
 
@@ -98,7 +97,7 @@ public class A_SelectRole extends AppCompatActivity implements LoadingActivity {
             @Override
             public void onClick(View view) {
                // commonActions(QuizGenerator.SELECTION_PARTICIPANT);
-                intent = new Intent(A_SelectRole.this, B_LoginTeam.class);
+                intent = new Intent(A_SelectRole.this, B_Login.class);
                 intent.putExtra(QuizDatabase.INTENT_EXTRANAME_IS_ORGANIZER,false);
                 startActivity(intent);
             }
@@ -108,7 +107,7 @@ public class A_SelectRole extends AppCompatActivity implements LoadingActivity {
             @Override
             public void onClick(View view) {
                 //commonActions(QuizGenerator.SELECTION_ORGANIZER);
-                intent = new Intent(A_SelectRole.this, B_LoginTeam.class);
+                intent = new Intent(A_SelectRole.this, B_Login.class);
                 intent.putExtra(QuizDatabase.INTENT_EXTRANAME_IS_ORGANIZER,true);
                 startActivity(intent);
             }

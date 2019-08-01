@@ -52,6 +52,7 @@ public class C_CorrectorHome extends MyActivity implements LoadingActivity, Frag
     }
 
     @Override
+    //TODO: update round status when spinning through rounds
     public void onRoundChanged(int oldRoundNr, int roundNr) {
         this.thisRoundNr = roundNr;
         refreshDisplayFragments();

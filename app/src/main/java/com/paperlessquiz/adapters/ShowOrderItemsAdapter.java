@@ -16,6 +16,11 @@ import com.paperlessquiz.quiz.QuizDatabase;
 
 import java.util.ArrayList;
 
+/**
+ * Adapter used to display the items that can be ordered.
+ * TODO: finalize
+ */
+
 public class ShowOrderItemsAdapter extends RecyclerView.Adapter<ShowOrderItemsAdapter.ViewHolder> {
     private ArrayList<OrderItem> orderItems;
     private ShowOrderItemsAdapter adapter;

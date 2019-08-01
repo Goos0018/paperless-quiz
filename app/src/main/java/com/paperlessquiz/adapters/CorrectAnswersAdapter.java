@@ -18,7 +18,7 @@ import com.paperlessquiz.quiz.QuizLoader;
 import java.util.ArrayList;
 
 //This class is used to correct all answers given by the participating teams for a specific question
-//test
+//Option to correct questions per team is also available
 public class CorrectAnswersAdapter extends ArrayAdapter<Answer> {
 
     //TODO: fix bug: if correcting per team, don't score questions with the same answer as having the same score.
@@ -77,8 +77,8 @@ public class CorrectAnswersAdapter extends ArrayAdapter<Answer> {
         }
         holder.ivToggle.setId(position);
 
+        //Toggle isCorrect property of the answer from true to false + submit to database
         holder.ivToggle.setOnClickListener(new View.OnClickListener()
-                //Toggle isCorrect from true to false + submit to database
         {
             @Override
             public void onClick(View view) {

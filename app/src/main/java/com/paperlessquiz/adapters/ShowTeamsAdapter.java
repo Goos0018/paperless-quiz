@@ -15,17 +15,19 @@ import com.paperlessquiz.users.Team;
 
 import java.util.ArrayList;
 
+/**
+ * This adapter is used by the QuizMaster to show the teams with their status + whether or not they submitted answers for the round
+ * that is passed as a parameter or set by the calling activity
+ */
 public class ShowTeamsAdapter extends RecyclerView.Adapter<ShowTeamsAdapter.ViewHolder> {
     private ArrayList<Team> teams;
     private int roundNr;
     private ShowTeamsAdapter adapter;
 
-
     public ShowTeamsAdapter(Context context, ArrayList<Team> teams, int roundNr) {
         this.teams = teams;
         this.roundNr = roundNr;
         adapter = this;
-
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -37,10 +39,8 @@ public class ShowTeamsAdapter extends RecyclerView.Adapter<ShowTeamsAdapter.View
             tvTeamName = itemView.findViewById(R.id.tvTeamName);
             ivPresent = itemView.findViewById(R.id.ivTeamPresent);
             ivAnswersSubmitted = itemView.findViewById(R.id.ivAnswersSubmitted);
-
         }
     }
-
 
     @NonNull
     @Override
@@ -65,28 +65,11 @@ public class ShowTeamsAdapter extends RecyclerView.Adapter<ShowTeamsAdapter.View
             case QuizDatabase.USERSTATUS_PRESENTLOGGEDIN:
                 viewHolder.ivPresent.setImageResource(R.drawable.team_logged_in);
         }
-
         if (answersForThisRoundSubmitted) {
             viewHolder.ivAnswersSubmitted.setImageResource(R.drawable.answers_submitted);
         } else {
             viewHolder.ivAnswersSubmitted.setImageResource(R.drawable.answers_not_submitted);
         }
-
-        /*
-        viewHolder.ivPresent.setOnClickListener(new View.OnClickListener()
-                //Toggle isPresent from true to false
-        {
-            @Override
-            public void onClick(View view) {
-                final int position = view.getId();
-                teams.get(i).setPresent(!isPresent);
-                adapter.notifyDataSetChanged();
-
-            }
-
-
-        });
-        */
     }
 
     @Override

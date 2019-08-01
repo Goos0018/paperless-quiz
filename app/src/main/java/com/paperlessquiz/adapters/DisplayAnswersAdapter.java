@@ -14,10 +14,8 @@ import com.paperlessquiz.question.Question;
 
 import java.util.ArrayList;
 
-//TODO: check to add rounds status to make sure corrections are not displayed if not applicable
-
 /**
- *  20190728: Used by the participaqnt to display the answers the user has given
+ *  20190728: Used by the participant to display the answers the user has given
  */
 public class DisplayAnswersAdapter extends RecyclerView.Adapter<DisplayAnswersAdapter.ViewHolder> {
     private ArrayList<Question> questions;
@@ -39,7 +37,6 @@ private int teamNr;
             ivIsCorrect = itemView.findViewById(R.id.ivIsCorrect);
         }
     }
-
 
     @NonNull
     @Override

@@ -26,7 +26,7 @@ import java.util.ArrayList;
  * Main login screen for users, allows user to select a team to log in and proceed to the Participant Home screen after authentication
  * Here, we load all info needed for a participant: list of rounds, questions, answers, own event logs
  */
-public class B_LoginTeam extends AppCompatActivity implements LoadingActivity {
+public class B_Login extends AppCompatActivity implements LoadingActivity {
     Quiz thisQuiz = MyApplication.theQuiz;
     User thisUser;
     boolean isOrganizer;
@@ -55,7 +55,7 @@ public class B_LoginTeam extends AppCompatActivity implements LoadingActivity {
                     quizLoader.loadQuizFromDb();
                 } else {
                     //Authentication failed
-                    Toast.makeText(B_LoginTeam.this, B_LoginTeam.this.getString(R.string.main_wrongpassword), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(B_Login.this, B_Login.this.getString(R.string.main_wrongpassword), Toast.LENGTH_SHORT).show();
                 }
                 break;
             case QuizDatabase.REQUEST_ID_GET_ROUNDS:
@@ -92,19 +92,19 @@ public class B_LoginTeam extends AppCompatActivity implements LoadingActivity {
             //Now open the appropriate home screen
             switch (thisUser.getUserType()) {
                 case QuizDatabase.USERTYPE_TEAM:
-                    Intent intentP = new Intent(B_LoginTeam.this, C_ParticipantHome.class);
+                    Intent intentP = new Intent(B_Login.this, C_ParticipantHome.class);
                     startActivity(intentP);
                     break;
                 case QuizDatabase.USERTYPE_QUIZMASTER:
-                    Intent intentQM = new Intent(B_LoginTeam.this, C_QuizmasterHome.class);
+                    Intent intentQM = new Intent(B_Login.this, C_QuizmasterHome.class);
                     startActivity(intentQM);
                     break;
                 case QuizDatabase.USERTYPE_CORRECTOR:
-                    Intent intentC = new Intent(B_LoginTeam.this, C_CorrectorHome.class);
+                    Intent intentC = new Intent(B_Login.this, C_CorrectorHome.class);
                     startActivity(intentC);
                     break;
                 case QuizDatabase.USERTYPE_RECEPTIONIST:
-                    Intent intentR = new Intent(B_LoginTeam.this, C_ReceptionistHome.class);
+                    Intent intentR = new Intent(B_Login.this, C_ReceptionistHome.class);
                     startActivity(intentR);
                     break;
             }
@@ -131,7 +131,7 @@ public class B_LoginTeam extends AppCompatActivity implements LoadingActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.act_b_login_main);
+        setContentView(R.layout.act_b_login);
         //Get stuff from the interface
         tvLoginPrompt = findViewById(R.id.tvLoginPrompt);
         tvDisplayName = findViewById(R.id.tvDisplayName);
@@ -169,7 +169,7 @@ public class B_LoginTeam extends AppCompatActivity implements LoadingActivity {
                 password = etPasskey.getText().toString().trim();
                 if (password.isEmpty()) {
                     //If no password was entered
-                    Toast.makeText(B_LoginTeam.this, B_LoginTeam.this.getString(R.string.main_wrongpswdentered), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(B_Login.this, B_Login.this.getString(R.string.main_wrongpswdentered), Toast.LENGTH_SHORT).show();
                 } else {
                     if (isOrganizer) {
                         thisUser = (User) thisQuiz.getOrganizer(userNr);
@@ -178,7 +178,7 @@ public class B_LoginTeam extends AppCompatActivity implements LoadingActivity {
                     } else {
                         thisUser = (User) thisQuiz.getTeam(userNr);
                         if (thisUser.getUserStatus() == QuizDatabase.USERSTATUS_NOTPRESENT) {
-                            Toast.makeText(B_LoginTeam.this, B_LoginTeam.this.getString(R.string.main_registeratreceptionfirst), Toast.LENGTH_LONG).show();
+                            Toast.makeText(B_Login.this, B_Login.this.getString(R.string.main_registeratreceptionfirst), Toast.LENGTH_LONG).show();
                         } else {
                             quizLoader.authenticateUser(thisUser.getIdUser(), password);
                             //The rest is done when loading is complete

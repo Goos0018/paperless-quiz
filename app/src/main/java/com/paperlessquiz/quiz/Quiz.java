@@ -124,6 +124,7 @@ public ResultAfterRound getResultForTeam(int teamNr, int roundNr){
     }
     */
 
+    /*
     //Add the answers for each question from an array of array of AnswersLists. Answers here means simply the Strings, not the Answer object
     public void updateAllAnswersPerQuestion(ArrayList<ArrayList<AnswersList>> allAnswersPerRound) {
         //For each entry in the allAnswersPerRound array (=for each round)
@@ -137,7 +138,9 @@ public ResultAfterRound getResultForTeam(int teamNr, int roundNr){
 
         }
     }
+    */
 
+    /*
     //Add the answers for each question from an array of array of AnswersLists. Answers here means the entire Answer object
     public void setAllAnswersPerQuestion(ArrayList<ArrayList<AnswersList>> allAnswersPerRound) {
         //For each entry in the allAnswersPerRound array (=for each round)
@@ -151,6 +154,7 @@ public ResultAfterRound getResultForTeam(int teamNr, int roundNr){
 
         }
     }
+    */
 
     //Add the answers for each question from an array of array of AnswersLists
     public void setAllCorrectionsPerQuestion(ArrayList<ArrayList<CorrectionsList>> allCorrectionsPerRound) {

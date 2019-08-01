@@ -17,6 +17,10 @@ import com.paperlessquiz.users.Team;
 
 import java.util.ArrayList;
 
+/**
+ * Used by the receptionist to view and edit team names/statuses
+ * TODO: check to sumbit changes also when user exits the edittext
+ */
 public class EditTeamsAdapter extends RecyclerView.Adapter<EditTeamsAdapter.ViewHolder> {
     private ArrayList<Team> teams;
     private EditTeamsAdapter adapter;
@@ -44,7 +48,6 @@ public class EditTeamsAdapter extends RecyclerView.Adapter<EditTeamsAdapter.View
             ivPresent = itemView.findViewById(R.id.ivTeamPresent);
         }
     }
-
 
     @NonNull
     @Override

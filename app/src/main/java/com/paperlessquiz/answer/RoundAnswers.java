@@ -3,6 +3,8 @@ package com.paperlessquiz.answer;
 import java.util.ArrayList;
 
 public class RoundAnswers {
+//TODO: delete, not needed anymore
+    /*
     private ArrayList<Answer> answersForRound;
 
     public RoundAnswers(int size) {
@@ -20,4 +22,5 @@ public class RoundAnswers {
     public void setAnswersForRound(ArrayList<Answer> answersForRound) {
         this.answersForRound = answersForRound;
     }
+    */
 }

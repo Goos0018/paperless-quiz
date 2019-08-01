@@ -21,9 +21,8 @@
         <activity android:name=".C_CorrectorHome" />
         <activity android:name=".C_ReceptionistHome" />
         <activity android:name=".C_QuizmasterHome" />
-        <activity android:name=".C_QuizmasterRounds" />
         <activity
-            android:name=".B_LoginTeam"
+            android:name=".B_Login"
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".A_SelectRole" />
         <activity android:name=".A_Main">

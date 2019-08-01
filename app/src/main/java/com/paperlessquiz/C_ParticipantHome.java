@@ -83,6 +83,7 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
     }
 
     private void updateQuiz() {
+        //TODO: show a toast when starting this and dismiss it when loading is completely done
         quizLoader.updateQuizForUser();
         //The rest is done when loading is complete
     }

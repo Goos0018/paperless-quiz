@@ -88,6 +88,7 @@ public class C_QuizmasterHome extends MyActivity implements FragRoundSpinner.Has
                 break;
             case R.id.minus1:
                 //QuizLoader quizLoader = new QuizLoader(C_QuizmasterHome.this);
+                //TODO: upload this to the Quiz and include in quizlist data?
                 thisQuiz.setHideTopRows(thisQuiz.getHideTopRows()-1);
                 showHideTop();
                 break;

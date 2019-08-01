@@ -42,7 +42,7 @@ public class B_LoginTeam extends AppCompatActivity implements LoadingActivity {
     int userNr;
     QuizLoader quizLoader;
     String password;
-    boolean roundsLoaded, questionsLoaded, answersLoaded, answersSubmittedLoaded; //False by default
+    boolean roundsLoaded, questionsLoaded, answersLoaded, answersSubmittedLoaded, ordersLoaded; //False by default
 
     @Override
     public void loadingComplete(int requestId) {
@@ -70,20 +70,25 @@ public class B_LoginTeam extends AppCompatActivity implements LoadingActivity {
             case QuizDatabase.REQUEST_ID_GET_ANSWERSSUBMITTED:
                 answersSubmittedLoaded = true;
                 break;
+            case QuizDatabase.REQUEST_ID_GET_ORDERITEMS:
+                ordersLoaded = true;
+                break;
         }
         //Only if everything is properly loaded, we can start populating the central Quiz object
-        if (roundsLoaded && questionsLoaded && answersLoaded && answersSubmittedLoaded) {
+        if (roundsLoaded && questionsLoaded && answersLoaded && answersSubmittedLoaded && ordersLoaded) {
             //reset the loading statuses
             roundsLoaded = false;
             questionsLoaded = false;
             answersLoaded = false;
             answersSubmittedLoaded = false;
+            ordersLoaded = false;
             quizLoader.loadRoundsIntoQuiz();
             quizLoader.updateQuestionsIntoQuiz();
             //Make sure we have answers for all teams and all questions before we start setting the answers
             thisQuiz.initializeAllAnswers();
             quizLoader.updateAnswersIntoQuiz();
             quizLoader.updateAnswersSubmittedIntoQuiz();
+            quizLoader.loadItemsToOrderIntoQuiz();
             //Now open the appropriate home screen
             switch (thisUser.getUserType()) {
                 case QuizDatabase.USERTYPE_TEAM:

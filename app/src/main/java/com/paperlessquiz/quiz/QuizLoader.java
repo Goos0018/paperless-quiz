@@ -10,6 +10,8 @@ import com.paperlessquiz.answer.Answer;
 import com.paperlessquiz.googleaccess.GoogleAccess;
 import com.paperlessquiz.googleaccess.LLShowProgressActWhenComplete;
 import com.paperlessquiz.googleaccess.LLSilent;
+import com.paperlessquiz.orders.OrderItem;
+import com.paperlessquiz.parsers.OrderItemParser;
 import com.paperlessquiz.users.Organizer;
 import com.paperlessquiz.users.Team;
 import com.paperlessquiz.users.User;
@@ -49,6 +51,7 @@ public class QuizLoader {
     public HTTPGetData<AnswersSubmitted> getAnswersSubmittedRequest;
     public HTTPGetData<EventLog> getMyEventLogsRequest;
     public HTTPGetData<ResultAfterRound> getResultsRequest;
+    public HTTPGetData<OrderItem> getOrderItems;
     public HTTPSubmit authenticateRequest;
     public HTTPSubmit submitAnswerRequest;
     public HTTPSubmit submitAnswersSubmittedRequest;
@@ -100,6 +103,7 @@ public class QuizLoader {
         loadQuestions();
         loadMyAnswers();
         loadAnswersSubmitted();
+        loadOrderItems();
     }
 
     public void updateQuizForUser() {
@@ -184,7 +188,7 @@ public class QuizLoader {
                 "Something went wrong: ", false));
     }
 
-    public void loadScoresAndStandings(){
+    public void loadScoresAndStandings() {
         int idUser = thisQuiz.getThisUser().getIdUser();
         String userPassword = thisQuiz.getThisUser().getUserPassword();
         int idQuiz = thisQuiz.getListData().getIdQuiz();
@@ -205,6 +209,28 @@ public class QuizLoader {
                 context.getString(R.string.loader_updatingquiz),
                 "Something went wrong: ", false));
     }
+
+    public void loadOrderItems() {
+        int idUser = thisQuiz.getThisUser().getIdUser();
+        String userPassword = thisQuiz.getThisUser().getUserPassword();
+        int idQuiz = thisQuiz.getListData().getIdQuiz();
+        String scriptParams = generateParamsPHP(QuizDatabase.PARAMVALUE_QRY_ORDERITEMS, idUser, userPassword, idQuiz, idQuiz);
+        getOrderItems = new HTTPGetData<>(context, scriptParams, QuizDatabase.REQUEST_ID_GET_ORDERITEMS);
+        getOrderItems.getItems(new OrderItemParser(), new LLShowProgressActWhenComplete(context, context.getString(R.string.loader_pleasewait),
+                context.getString(R.string.loader_updatingquiz),
+                "Something went wrong: ", false));
+    }
+
+    //Get the items you can order and put them in the MyApplication itemsToOrderArray object
+    public void loadItemsToOrderIntoQuiz() {
+        for (int i = 0; i < getOrderItems.getResultsList().size(); i++) {
+            OrderItem thisItem = getOrderItems.getResultsList().get(i);
+            //Add this to the HashMap and the array
+            MyApplication.itemsToOrderArray.add(thisItem);
+            MyApplication.itemsToOrder.put(Integer.valueOf(thisItem.getIdOrderItem()), thisItem);
+        }
+    }
+
 
     //Get all the users and put them into the Teams resp. Organizers array of the Quiz
     public void loadUsersIntoQuiz() {
@@ -313,7 +339,7 @@ public class QuizLoader {
         }
     }
 
-    public void loadResultsIntoQuiz(){
+    public void loadResultsIntoQuiz() {
         for (int i = 0; i < getResultsRequest.getResultsList().size(); i++) {
             ResultAfterRound thisResult = getResultsRequest.getResultsList().get(i);
             thisQuiz.addResult(thisResult);
@@ -321,7 +347,6 @@ public class QuizLoader {
     }
 
     /**
-     *
      * Submit activities
      */
 

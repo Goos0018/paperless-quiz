@@ -45,6 +45,7 @@ public class QuizDatabase {
     public static final String PARAMVALUE_QRY_ALL_ANSWERSSUBMITTED = "answerssubmitted";
     public static final String PARAMVALUE_QRY_MY_EVENTLOGS = "myevents";
     public static final String PARAMVALUE_QRY_SCORES = "scores";
+    public static final String PARAMVALUE_QRY_ORDERITEMS = "orderitems";
 
 
     public static final String PARAMVALUE_QRY_ALL_TEAMS_FOR_QUIZ = "qry_all-teams-for-quiz";
@@ -60,6 +61,7 @@ public class QuizDatabase {
     public static final int REQUEST_ID_GET_ALLANSWERS = 7;
     public static final int REQUEST_ID_GET_FULLQUESTIONS = 8;
     public static final int REQUEST_ID_GET_RESULTS = 9;
+    public static final int REQUEST_ID_GET_ORDERITEMS = 10;
     //Submit requests
     public static final int REQUEST_ID_AUTHENTICATE = 100;
     public static final int REQUEST_ID_SUBMITANSWER = 101;
@@ -134,10 +136,19 @@ public class QuizDatabase {
     public static final String COLNAME_SCOREFORROUND = "ScoreForRound";
     //Column names table ScoreAfterRound
     public static final String COLNAME_SCOREAFTERROUND = "ScoreAfterRound";
-    //Column names table ScoreForRound
+    //Column names table StandingForRound
     public static final String COLNAME_STANDINGFORROUND = "StandingForRound";
-    //Column names table ScoreForRound
+    //Column names table StandingAfterRound
     public static final String COLNAME_STANDINGAFTERROUND = "StandingAfterRound";
+    //Column names table OrderItem
+    public static final String COLNAME_IDORDERITEM = "idOrderItem";
+    public static final String COLNAME_ITEMCATEGORY = "ItemCategory";
+    public static final String COLNAME_ITEMNAME = "ItemName";
+    public static final String COLNAME_ITEMDESCRIPTION = "ItemDescription";
+    public static final String COLNAME_ITEMCOST = "ItemCost";
+    public static final String COLNAME_ITEMUNITSAVAIALABLE = "ItemUnitsAvailable";
+    public static final String COLNAME_ITEMSOLDOUT = "ItemSoldOut";
+
 
     //Various other constants
     public static final String INTENT_EXTRANAME_IS_ORGANIZER = "isOrganizer";

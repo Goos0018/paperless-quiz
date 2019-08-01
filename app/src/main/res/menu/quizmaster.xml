@@ -8,5 +8,18 @@
         android:orderInCategory="100"
         android:title="Refresh"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/plus1"
+        android:icon="@drawable/plus1"
+        android:orderInCategory="100"
+        android:title="Plus1"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/minus1"
+        android:icon="@drawable/minus1"
+        android:orderInCategory="100"
+        android:title="minus1"
+        app:showAsAction="always" />
+
 
 </menu>

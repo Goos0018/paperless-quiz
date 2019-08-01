@@ -1,10 +1,13 @@
 package com.paperlessquiz;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.paperlessquiz.adapters.ShowTeamsAdapter;
 import com.paperlessquiz.googleaccess.LoadingActivity;
@@ -63,6 +66,13 @@ public class C_QuizmasterHome extends MyActivity implements FragRoundSpinner.Has
         return super.onCreateOptionsMenu(menu);
     }
 
+    public void showHideTop(){
+        Toast toast = Toast.makeText(this, "Top " + thisQuiz.getHideTopRows(), Toast.LENGTH_LONG);
+        TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+        v.setBackgroundColor(Color.RED);
+        toast.show();
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -71,7 +81,16 @@ public class C_QuizmasterHome extends MyActivity implements FragRoundSpinner.Has
                 quizLoader.loadUsers();
                 quizLoader.loadAnswersSubmitted();
                 break;
-
+            case R.id.plus1:
+                //QuizLoader quizLoader = new QuizLoader(C_QuizmasterHome.this);
+                thisQuiz.setHideTopRows(thisQuiz.getHideTopRows()+1);
+                showHideTop();
+                break;
+            case R.id.minus1:
+                //QuizLoader quizLoader = new QuizLoader(C_QuizmasterHome.this);
+                thisQuiz.setHideTopRows(thisQuiz.getHideTopRows()-1);
+                showHideTop();
+                break;
             /*
             case R.id.rounds:
                 Intent intent = new Intent(C_QuizmasterHome.this, C_QuizmasterRounds.class);

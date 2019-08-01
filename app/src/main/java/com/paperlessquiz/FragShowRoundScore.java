@@ -46,6 +46,7 @@ public class FragShowRoundScore extends Fragment {
                 int yourTotalScoreAfterThisRound = resultAfterRound.getTotalScoreAfterThisRound();
                 int yourRankForThisRound = resultAfterRound.getPosInStandingForThisRound();
                 int yourRankAfterThisRound = resultAfterRound.getPosInStandingAfterThisRound();
+                //If you are in the top X, we just report this instead of your actual position
                 tvYourScoreForThisRnd.setText(Integer.toString(yourScoreForThisRound));
                 tvYourScoreTotal.setText(Integer.toString(yourTotalScoreAfterThisRound));
                 tvYourRankForThisRnd.setText(Integer.toString(yourRankForThisRound));
@@ -54,6 +55,17 @@ public class FragShowRoundScore extends Fragment {
                 tvMaxTotalScore.setText("/ " + thisQuiz.getMaxScoreUntilRound(thisRoundNr));
                 tvNrOfTeams.setText("/ " + thisQuiz.getTeams().size());
                 tvNrOfTeams2.setText("/ " + thisQuiz.getTeams().size());
+
+                if (thisQuiz.getHideTopRows() > yourRankAfterThisRound)
+                {
+                    //tvYourScoreTotal.setText("Top " + thisQuiz.getHideTopRows());
+                    tvYourRankAfterThisRound.setText("Top " + thisQuiz.getHideTopRows() + "!!!");
+                    tvNrOfTeams2.setText(" ");
+                    //tvYourScoreForThisRnd.setText("Top " + thisQuiz.getHideTopRows());
+                    //tvYourRankForThisRnd.setText("Top " + thisQuiz.getHideTopRows());
+                }
+
+
             }
         }
     }

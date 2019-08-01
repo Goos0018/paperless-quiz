@@ -281,8 +281,8 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
                     quizLoader.submitAnswer(questionID, newAnswer);
                     refreshDisplayFragments();
                     //thisQuiz.submitAnswers(C_ParticipantHome.this, roundSpinner.getPosition());
-                    quizLoader.setAnswersSubmitted(roundSpinner.getPosition());
                 }
+                quizLoader.setAnswersSubmitted(roundSpinner.getPosition());
             }
         });
     }

@@ -1,6 +1,12 @@
 package com.paperlessquiz.orders;
 
 public class OrderItem {
+    /**
+     * An OrderItem is an item that can be ordered.
+     * Reflects the similar table in the database, and is simply loaded once and never modified.
+     * Except for the itemSoldOut?
+     * TODO: complete
+     */
     int idOrderItem, itemCost, itemUnitsAvailable;
     String itemCategory, itemName, itemDescription;
     boolean itemSoldOut;

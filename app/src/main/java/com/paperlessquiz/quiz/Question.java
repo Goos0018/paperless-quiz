@@ -1,4 +1,4 @@
-package com.paperlessquiz.question;
+package com.paperlessquiz.quiz;
 
 import com.paperlessquiz.answer.Answer;
 
@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
- * QuestionID identifies the question uniquely and is used to locate questions in the Question Sheet
+ * QuestionID identifies the question uniquely and is used to locate questions SQL database
  * RoundNr and QuestionNr are used to locate it in the ArrayLists we have in the Quiz object
  * All answers contains all answers (for each team) for this question. This ArrayList is initialized with the data from the GetAnswersListLPL
  * The rest comes from the GetQuestionsLPL

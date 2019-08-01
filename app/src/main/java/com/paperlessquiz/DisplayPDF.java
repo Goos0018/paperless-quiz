@@ -7,7 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebView;
 
-import com.paperlessquiz.R;
+import com.paperlessquiz.quiz.QuizDatabase;
 import com.paperlessquiz.quiz.QuizGenerator;
 
 /**
@@ -46,7 +46,7 @@ public class DisplayPDF extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_display_pdf);
+        setContentView(R.layout.act_display_pdf);
         WebView wvDisplay;
         wvDisplay = findViewById(R.id.wvDisplay);
         setActionBarIcon();
@@ -54,9 +54,9 @@ public class DisplayPDF extends AppCompatActivity {
 
         try {
             wvDisplay.getSettings().setJavaScriptEnabled(true);
-            String pdfToDisplay = getIntent().getStringExtra(QuizGenerator.PDF_TO_DISPLAY);
-            title = getIntent().getStringExtra(QuizGenerator.TITLE_FOR_PDF_DISPLAY);
-            String URL = QuizGenerator.GOOGLE_PDFVIEWER_URL + pdfToDisplay;
+            String pdfToDisplay = getIntent().getStringExtra(QuizDatabase.PDF_TO_DISPLAY);
+            title = getIntent().getStringExtra(QuizDatabase.TITLE_FOR_PDF_DISPLAY);
+            String URL = QuizDatabase.GOOGLE_PDFVIEWER_URL + pdfToDisplay;
             wvDisplay.loadUrl(URL);
         } catch (Exception e) {
             e.printStackTrace();

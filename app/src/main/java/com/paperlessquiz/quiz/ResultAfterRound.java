@@ -1,6 +1,12 @@
 package com.paperlessquiz.quiz;
 
 public class ResultAfterRound {
+
+    /**
+     * This class represnts the result after a round for a team
+     * It contains scores for this round, total score after this round and standings info
+     */
+
     private int teamNr, roundNr;
     private int scoreForThisRound;
     private int posInStandingForThisRound;

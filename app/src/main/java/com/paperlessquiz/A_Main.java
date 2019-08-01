@@ -8,11 +8,11 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.paperlessquiz.adapters.QuizListAdapter;
-import com.paperlessquiz.googleaccess.LLShowProgressActWhenComplete;
-import com.paperlessquiz.googleaccess.LoadingActivity;
+import com.paperlessquiz.loadinglisteners.LLShowProgressActWhenComplete;
+import com.paperlessquiz.loadinglisteners.LoadingActivity;
 import com.paperlessquiz.quiz.Quiz;
 import com.paperlessquiz.quiz.QuizDatabase;
-import com.paperlessquiz.quizlistdata.QuizListData;
+import com.paperlessquiz.quiz.QuizListData;
 import com.paperlessquiz.parsers.QuizListDataParser;
 import com.paperlessquiz.webrequest.HTTPGetData;
 

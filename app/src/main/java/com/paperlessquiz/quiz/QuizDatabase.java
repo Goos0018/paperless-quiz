@@ -1,6 +1,9 @@
 package com.paperlessquiz.quiz;
 
 public class QuizDatabase {
+    /**
+     * Contains only constants reflecting the SQL db structure and usage here
+     */
 
     // Constants needed to retrieve data from the SQL db
     public static final String PHP_URL = "http://paperlessquiz.be/php/";
@@ -22,11 +25,9 @@ public class QuizDatabase {
     public static final String PARAMNAME_ISCORRECT = "isCorrect=";
     public static final String PARAMNAME_IDTEAMS = "idTeams=";
     // Available PHP scripts
-    //public static final String GETALLDATA_SCRIPT = "getalldata.php";
     public static final String SCRIPT_GET_QUIZLIST = "getquizlist.php";
     public static final String SCRIPT_GET_QUIZUSERS = "getuserlist.php";
     public static final String SCRIPT_GET_QUIZDATA = "getquizdata.php";
-    //public static final String SCRIPT_GET_ALLANSWERS = "getallanswers.php";
     public static final String SCRIPT_AUTHENTICATE = "authenticate.php";
     public static final String SCRIPT_SUBMITANSWER = "submitanswer.php";
     public static final String SCRIPT_SETANSWERSSUBMITTED = "setanswerssubmitted.php";
@@ -47,8 +48,6 @@ public class QuizDatabase {
     public static final String PARAMVALUE_QRY_SCORES = "scores";
     public static final String PARAMVALUE_QRY_ORDERITEMS = "orderitems";
 
-
-    public static final String PARAMVALUE_QRY_ALL_TEAMS_FOR_QUIZ = "qry_all-teams-for-quiz";
     //Request ID's
     //GET Requests
     public static final int REQUEST_ID_GET_QUIZLIST = 0;
@@ -78,6 +77,7 @@ public class QuizDatabase {
     public static final int USERTYPE_RECEPTIONIST = 2;
     public static final int USERTYPE_CORRECTOR = 3;
     public static final int USERTYPE_JUROR = 4;
+    public static final int USERTYPE_SALES = 5;
 
     //User Statuses  - these must match what is defined in the constants.php
     public static final int USERSTATUS_NOTPRESENT = 0;
@@ -89,7 +89,6 @@ public class QuizDatabase {
     public static final int ROUNDSTATUS_OPENFORANSWERS = 1;
     public static final int ROUNDSTATUS_OPENFORCORRECTIONS = 2;
     public static final int ROUNDSTATUS_CORRECTED = 3;
-
 
     //Column names in the SQL database - used to parse the JSON objects
     //Column names table Answers
@@ -149,6 +148,15 @@ public class QuizDatabase {
     public static final String COLNAME_ITEMUNITSAVAIALABLE = "ItemUnitsAvailable";
     public static final String COLNAME_ITEMSOLDOUT = "ItemSoldOut";
 
+    //Helpfiles
+    public static final String HELPFILE_PARTICIPANT = "ParticipantHelp.pdf";
+    public static final String HELPFILE_CORRECTOR = "CorrectorHelp.pdf";
+    public static final String HELPFILE_QUIZMASTER = "QuizmasterHelp.pdf";
+    public static final String HELPFILE_RECEPTIONIST = "ReceptionistHelp.pdf";
+    public static final String HELPFILE_JUROR = "JurorHelp.pdf";
+    public static final String PDF_TO_DISPLAY = "pdfToDisplay";
+    public static final String TITLE_FOR_PDF_DISPLAY = "TitleForPDFDisplay";
+    public static final String GOOGLE_PDFVIEWER_URL = "https://docs.google.com/gview?embedded=true&url=";
 
     //Various other constants
     public static final String INTENT_EXTRANAME_IS_ORGANIZER = "isOrganizer";

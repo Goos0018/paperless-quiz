@@ -1,6 +1,8 @@
 package com.paperlessquiz.orders;
 
 public class ItemOrdered {
+    //TODO: delete not needed
+    /*
     int idOrderItem, nrOfItemsOrdered, totalCost;
 
     public ItemOrdered(int idOrderItem, int nrOfItemsOrdered, int totalCost) {
@@ -32,4 +34,5 @@ public class ItemOrdered {
     public void setTotalCost(int totalCost) {
         this.totalCost = totalCost;
     }
+    */
 }

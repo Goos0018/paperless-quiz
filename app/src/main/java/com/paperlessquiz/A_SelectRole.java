@@ -8,7 +8,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.paperlessquiz.googleaccess.LoadingActivity;
+import com.paperlessquiz.loadinglisteners.LoadingActivity;
 import com.paperlessquiz.quiz.Quiz;
 import com.paperlessquiz.quiz.QuizDatabase;
 import com.paperlessquiz.quiz.QuizLoader;
@@ -87,8 +87,8 @@ public class A_SelectRole extends AppCompatActivity implements LoadingActivity {
                 counter++;
                 if (counter == 5) {
                     counter=0;
-                    Intent intentG = new Intent(A_SelectRole.this, A__GenerateQuiz.class);
-                    startActivity(intentG);
+                    //Intent intentG = new Intent(A_SelectRole.this, A__GenerateQuiz.class);
+                    //startActivity(intentG);
                 }
             }
         });

@@ -9,7 +9,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 
-import com.paperlessquiz.googleaccess.EventLogger;
+import com.paperlessquiz.quiz.QuizDatabase;
+import com.paperlessquiz.webrequest.EventLogger;
 import com.paperlessquiz.orders.OrderItem;
 import com.paperlessquiz.quiz.Quiz;
 import com.paperlessquiz.quiz.QuizGenerator;
@@ -36,23 +37,23 @@ public class MyApplication extends Application {
     public static int debugLevel = 3;                               //Overall debug level for the google interaction, initialized here but later overwritten with what is configured for the Quiz
     public static boolean keepLogs = true;                          //Indicates if you want to overwrite logs of the GScript each time
     public static int appDebugLevel = 3;                            //Overall debug level for the app itself, initialized here but later overwritten with what is configured for the Quiz
-    public static HashMap<String,String> helpFiles;
+    public static HashMap<Integer,String> helpFiles;
 
     @Override
     public void onCreate() {
         super.onCreate();
         logDocID = "1A4CGyeZZk2LW-xvh_P1dyeufZhV0qpBgCIQdrNEIDgk";
-        eventLogger = new EventLogger(this, logDocID, QuizGenerator.SHEET_EVENTLOG);
+        eventLogger = new EventLogger(this, logDocID, "EventLog");
         deviceID = getUniquePsuedoID();
         theQuiz = new Quiz();
         itemsToOrderArray =new ArrayList<>();
         itemsToOrder = new HashMap<>();
         helpFiles = new HashMap<>();
-        helpFiles.put(QuizGenerator.TYPE_CORRECTOR, QuizGenerator.HELPFILE_CORRECTOR);
-        helpFiles.put(QuizGenerator.TYPE_JUROR, QuizGenerator.HELPFILE_JUROR);
-        helpFiles.put(QuizGenerator.TYPE_PARTICIPANT, QuizGenerator.HELPFILE_PARTICIPANT);
-        helpFiles.put(QuizGenerator.TYPE_QUIZMASTER, QuizGenerator.HELPFILE_QUIZMASTER);
-        helpFiles.put(QuizGenerator.TYPE_RECEPTIONIST, QuizGenerator.HELPFILE_RECEPTIONIST);
+        helpFiles.put(QuizDatabase.USERTYPE_CORRECTOR, QuizDatabase.HELPFILE_CORRECTOR);
+        helpFiles.put(QuizDatabase.USERTYPE_JUROR, QuizDatabase.HELPFILE_JUROR);
+        helpFiles.put(QuizDatabase.USERTYPE_TEAM, QuizDatabase.HELPFILE_PARTICIPANT);
+        helpFiles.put(QuizDatabase.USERTYPE_QUIZMASTER, QuizDatabase.HELPFILE_QUIZMASTER);
+        helpFiles.put(QuizDatabase.USERTYPE_RECEPTIONIST, QuizDatabase.HELPFILE_RECEPTIONIST);
         //Portrait mode or landscape mode depending on screen size
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
             @Override

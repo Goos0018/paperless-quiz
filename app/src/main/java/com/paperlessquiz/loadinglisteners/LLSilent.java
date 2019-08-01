@@ -1,12 +1,11 @@
-package com.paperlessquiz.googleaccess;
+package com.paperlessquiz.loadinglisteners;
 
-import com.paperlessquiz.MyApplication;
+import com.paperlessquiz.loadinglisteners.LoadingListener;
 
 /**
  * This loadinglistener simply does nothing - allows for silent "fire and forget" logging
  */
 public class LLSilent implements LoadingListener {
-
 
     public LLSilent() {
     }

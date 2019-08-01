@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.paperlessquiz.quiz.Quiz;
+import com.paperlessquiz.quiz.QuizDatabase;
 import com.paperlessquiz.quiz.QuizGenerator;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
@@ -25,8 +26,8 @@ public class MyActivity extends AppCompatActivity {
 
     public void displayPDF(String pdfToDisplay, String title){
         Intent intentDisplayPDF = new Intent(MyActivity.this, DisplayPDF.class);
-        intentDisplayPDF.putExtra(QuizGenerator.PDF_TO_DISPLAY, pdfToDisplay);
-        intentDisplayPDF.putExtra(QuizGenerator.TITLE_FOR_PDF_DISPLAY, title);
+        intentDisplayPDF.putExtra(QuizDatabase.PDF_TO_DISPLAY, pdfToDisplay);
+        intentDisplayPDF.putExtra(QuizDatabase.TITLE_FOR_PDF_DISPLAY, title);
         startActivity(intentDisplayPDF);
     }
 

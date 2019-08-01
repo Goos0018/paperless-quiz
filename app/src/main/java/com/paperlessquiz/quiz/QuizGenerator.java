@@ -4,14 +4,15 @@ import android.content.Context;
 
 import com.paperlessquiz.googleaccess.GoogleAccess;
 import com.paperlessquiz.googleaccess.GoogleAccessSet;
-import com.paperlessquiz.googleaccess.LLShowProgressActWhenComplete;
-import com.paperlessquiz.googleaccess.LLShowProgressOnly;
+import com.paperlessquiz.loadinglisteners.LLShowProgressActWhenComplete;
+import com.paperlessquiz.loadinglisteners.LLShowProgressOnly;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
 public class QuizGenerator {
+    /*
     //TODO: Colors for columns that can be changed
     //TODO: Limitation 2KB!
     //TODO: QuestionsID's ending on 0 not correctly set!
@@ -244,7 +245,7 @@ public class QuizGenerator {
             }
         }
         return tmp;
-        */
+
     }
 
     //Convert ArrayList to something like ["value1","value2",...,"valuen"]
@@ -373,5 +374,6 @@ public class QuizGenerator {
     public void setQuizDocID(String quizDocID) {
         this.quizDocID = quizDocID;
     }
+    */
 }
 

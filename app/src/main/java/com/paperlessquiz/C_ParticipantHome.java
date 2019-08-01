@@ -16,11 +16,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.paperlessquiz.adapters.DisplayAnswersAdapter;
-import com.paperlessquiz.googleaccess.EventLogger;
-import com.paperlessquiz.googleaccess.LoadingActivity;
+import com.paperlessquiz.webrequest.EventLogger;
+import com.paperlessquiz.loadinglisteners.LoadingActivity;
 import com.paperlessquiz.quiz.QuizDatabase;
 import com.paperlessquiz.quiz.QuizLoader;
-import com.paperlessquiz.round.Round;
+import com.paperlessquiz.quiz.Round;
 import com.paperlessquiz.users.User;
 
 import java.util.Date;
@@ -248,7 +248,6 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
         //Log that the user logged in and set LoggedIn to TRUE so we know this to track if the user pauses the app
         thisTeamNr = thisQuiz.getThisUser().getUserNr();
         MyApplication.eventLogger.logEvent(thisQuiz.getThisUser().getName(), EventLogger.LEVEL_INFO, "Logged in");
-        thisQuiz.setLoggedIn(C_ParticipantHome.this, thisTeamNr, true);
         MyApplication.setLoggedIn(true);
         //Get all the stuff from the layout
         displayAnswersLayout = findViewById(R.id.llDisplay);
@@ -299,7 +298,7 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
         if (thisQuiz.isAnyRoundOpen()) {
             lastPausedDate = new Date();
             MyApplication.eventLogger.logEvent(thisQuiz.getThisUser().getName(), EventLogger.LEVEL_INFO, "INFO: Paused the app");
-            thisQuiz.setLoggedIn(C_ParticipantHome.this, thisTeamNr, false);
+            //thisQuiz.setLoggedIn(C_ParticipantHome.this, thisTeamNr, false);
             MyApplication.setAppPaused(true);
         }
         quizLoader.updateMyStatus(QuizDatabase.USERSTATUS_PRESENTNOTLOGGEDIN);
@@ -315,7 +314,7 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
             totalTimePaused = totalTimePaused + timePaused;
             MyApplication.eventLogger.logEvent(thisQuiz.getThisUser().getName(), EventLogger.LEVEL_WARNING, "WARNING: Resumed the app after "
                     + timePaused + " seconds - total time paused is now " + totalTimePaused + " seconds");
-            thisQuiz.setLoggedIn(C_ParticipantHome.this, thisTeamNr, true);
+            //thisQuiz.setLoggedIn(C_ParticipantHome.this, thisTeamNr, true);
             MyApplication.setAppPaused(false);
         }
         quizLoader.updateMyStatus(QuizDatabase.USERSTATUS_PRESENTLOGGEDIN);

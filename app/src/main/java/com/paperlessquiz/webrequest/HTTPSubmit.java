@@ -13,15 +13,11 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.paperlessquiz.googleaccess.LoadingListener;
-import com.paperlessquiz.parsers.JsonParser;
+import com.paperlessquiz.loadinglisteners.LoadingListener;
 import com.paperlessquiz.quiz.QuizDatabase;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
 
 /**
  * The class is used to send a request to the back-end. Expected result is indication of success or failure and some text explanation

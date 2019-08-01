@@ -1,7 +1,4 @@
-package com.paperlessquiz.round;
-
-import com.paperlessquiz.question.Question;
-import com.paperlessquiz.spinners.spinners.SpinnerData;
+package com.paperlessquiz.quiz;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -16,7 +13,7 @@ import java.util.ArrayList;
  */
 
 //TODO: Write ToString functions for each class to upload item of the class to QuizSheet
-public class Round implements Serializable, SpinnerData {
+public class Round implements Serializable {
     private int idQuiz,idRound;
     private int roundNr, roundStatus;
     private String name, description;

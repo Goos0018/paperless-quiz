@@ -1,7 +1,7 @@
 package com.paperlessquiz.parsers;
 
 import com.paperlessquiz.quiz.QuizDatabase;
-import com.paperlessquiz.round.Round;
+import com.paperlessquiz.quiz.Round;
 
 import org.json.JSONException;
 import org.json.JSONObject;

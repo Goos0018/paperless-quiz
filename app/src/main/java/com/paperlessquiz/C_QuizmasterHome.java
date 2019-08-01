@@ -10,7 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.paperlessquiz.adapters.ShowTeamsAdapter;
-import com.paperlessquiz.googleaccess.LoadingActivity;
+import com.paperlessquiz.loadinglisteners.LoadingActivity;
 import com.paperlessquiz.quiz.QuizDatabase;
 import com.paperlessquiz.quiz.QuizLoader;
 

@@ -19,6 +19,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class GoogleAccessSet {
+    /*
     private Context context;
     private String parameters;
     private String resultExplanation; //explanation of what was the result
@@ -84,4 +85,5 @@ public class GoogleAccessSet {
     public boolean isResultOK() {
         return resultOK;
     }
+    */
 }

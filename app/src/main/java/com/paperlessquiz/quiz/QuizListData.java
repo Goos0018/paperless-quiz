@@ -1,4 +1,4 @@
-package com.paperlessquiz.quizlistdata;
+package com.paperlessquiz.quiz;
 
 import java.io.Serializable;
 import java.util.Date;

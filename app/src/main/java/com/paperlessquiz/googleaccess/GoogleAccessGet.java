@@ -23,6 +23,7 @@ import java.util.List;
 //This class is used to get data from a Google sheet.
 //TODO: foresee proper tracking and error handling
 public class GoogleAccessGet<T> {
+    /*
 
     private Context context;
     private String parameters;
@@ -89,5 +90,6 @@ public class GoogleAccessGet<T> {
         }
         return list;
     }
+    */
 
 }

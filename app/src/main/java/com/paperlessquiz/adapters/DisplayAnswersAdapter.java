@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.paperlessquiz.R;
-import com.paperlessquiz.question.Question;
+import com.paperlessquiz.quiz.Question;
 
 import java.util.ArrayList;
 

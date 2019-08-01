@@ -1,7 +1,6 @@
 package com.paperlessquiz.adapters;
 
 import android.content.Context;
-import android.media.Image;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +11,7 @@ import android.widget.TextView;
 
 import com.paperlessquiz.R;
 import com.paperlessquiz.quiz.Quiz;
-import com.paperlessquiz.quizlistdata.QuizListData;
+import com.paperlessquiz.quiz.QuizListData;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

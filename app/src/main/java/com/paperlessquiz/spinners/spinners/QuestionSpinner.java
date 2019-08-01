@@ -6,6 +6,7 @@ import android.widget.TextView;
 import com.paperlessquiz.quiz.Quiz;
 
 public class QuestionSpinner {
+    /*
     private Quiz quiz;
     private int questionNr;
     private int oldQuestionNr;
@@ -86,4 +87,5 @@ public class QuestionSpinner {
     public int getQuestionNr() {
         return questionNr;
     }
+    */
 }

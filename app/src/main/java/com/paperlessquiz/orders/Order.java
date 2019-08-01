@@ -2,9 +2,12 @@ package com.paperlessquiz.orders;
 
 import java.util.HashMap;
 
+/**
+ * This class represents and order, a hashmap of <idOrderItem,amountOrdered>
+ *     TODO: complete, remove Empty probably not needed
+ */
 public class Order {
     HashMap<Integer,Integer> theOrder;
-    //<idOrderItem,amountOrdered>
     
     //Remove items where amountOrdered = 0
     public void removeEmpty(){

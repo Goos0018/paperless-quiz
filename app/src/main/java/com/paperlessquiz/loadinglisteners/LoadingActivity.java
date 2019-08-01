@@ -1,4 +1,4 @@
-package com.paperlessquiz.googleaccess;
+package com.paperlessquiz.loadinglisteners;
 
 public interface LoadingActivity {
 

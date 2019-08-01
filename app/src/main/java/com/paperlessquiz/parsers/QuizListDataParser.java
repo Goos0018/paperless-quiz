@@ -1,7 +1,7 @@
 package com.paperlessquiz.parsers;
 
 import com.paperlessquiz.quiz.QuizDatabase;
-import com.paperlessquiz.quizlistdata.QuizListData;
+import com.paperlessquiz.quiz.QuizListData;
 
 import org.json.JSONException;
 import org.json.JSONObject;

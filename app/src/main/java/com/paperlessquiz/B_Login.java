@@ -14,7 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.paperlessquiz.adapters.ParticipantsAdapter;
-import com.paperlessquiz.googleaccess.LoadingActivity;
+import com.paperlessquiz.loadinglisteners.LoadingActivity;
 import com.paperlessquiz.quiz.QuizDatabase;
 import com.paperlessquiz.quiz.QuizLoader;
 import com.paperlessquiz.quiz.Quiz;
@@ -83,7 +83,7 @@ public class B_Login extends AppCompatActivity implements LoadingActivity {
             answersSubmittedLoaded = false;
             ordersLoaded = false;
             quizLoader.loadRoundsIntoQuiz();
-            quizLoader.updateQuestionsIntoQuiz();
+            quizLoader.loadQuestionsIntoQuiz();
             //Make sure we have answers for all teams and all questions before we start setting the answers
             thisQuiz.initializeAllAnswers();
             quizLoader.updateAnswersIntoQuiz();

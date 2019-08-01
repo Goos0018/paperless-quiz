@@ -1,14 +1,7 @@
 package com.paperlessquiz.quiz;
 
-import com.paperlessquiz.answer.Answer;
-import com.paperlessquiz.users.Team;
-import com.paperlessquiz.question.Question;
-import com.paperlessquiz.round.Round;
-
-import java.util.ArrayList;
-import java.util.Collections;
-
 public class QuizStandingsCalculator {
+    /*
     private Quiz thisQuiz;
 
     //Calculate scores for the entire quiz based on corrections and store them in the results objects for each team
@@ -99,4 +92,5 @@ public class QuizStandingsCalculator {
     public QuizStandingsCalculator(Quiz thisQuiz) {
         this.thisQuiz = thisQuiz;
     }
+    */
 }

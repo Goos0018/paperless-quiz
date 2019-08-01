@@ -4,17 +4,16 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.paperlessquiz.adapters.CorrectAnswersAdapter;
 import com.paperlessquiz.answer.Answer;
-import com.paperlessquiz.googleaccess.LoadingActivity;
+import com.paperlessquiz.loadinglisteners.LoadingActivity;
 import com.paperlessquiz.quiz.QuizDatabase;
 import com.paperlessquiz.quiz.QuizLoader;
-import com.paperlessquiz.round.Round;
+import com.paperlessquiz.quiz.Round;
 
 import java.util.ArrayList;
 //TODO: change colour of qSpinner if not all answers are corrected - current way is not working as it should

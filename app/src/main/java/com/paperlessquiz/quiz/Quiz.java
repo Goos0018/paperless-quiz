@@ -1,20 +1,9 @@
 package com.paperlessquiz.quiz;
 
-import android.content.Context;
-
-import com.paperlessquiz.corrections.CorrectionsList;
 import com.paperlessquiz.answer.Answer;
-import com.paperlessquiz.answer.AnswersList;
-import com.paperlessquiz.googleaccess.GoogleAccess;
-import com.paperlessquiz.googleaccess.GoogleAccessSet;
-import com.paperlessquiz.googleaccess.LLNotifyStartOnly;
-import com.paperlessquiz.googleaccess.LLSilent;
 import com.paperlessquiz.users.Organizer;
 import com.paperlessquiz.users.Team;
 import com.paperlessquiz.users.User;
-import com.paperlessquiz.question.Question;
-import com.paperlessquiz.quizlistdata.QuizListData;
-import com.paperlessquiz.round.Round;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -154,7 +143,7 @@ public ResultAfterRound getResultForTeam(int teamNr, int roundNr){
 
         }
     }
-    */
+
 
     //Add the answers for each question from an array of array of AnswersLists
     public void setAllCorrectionsPerQuestion(ArrayList<ArrayList<CorrectionsList>> allCorrectionsPerRound) {
@@ -175,6 +164,7 @@ public ResultAfterRound getResultForTeam(int teamNr, int roundNr){
             }
         }
     }
+    */
 
     //Return the team/organizer with the given ID
     public Team getTeam(int teamNr) {
@@ -255,141 +245,6 @@ public ResultAfterRound getResultForTeam(int teamNr, int roundNr){
 
     public void setThisUser(User thisUser) {
         this.thisUser = thisUser;
-    }
-
-    public void updateRounds(Context context) {
-        ArrayList<Round> roundsList = getRounds();
-        String tmp = "[";
-        for (int i = 0; i < roundsList.size(); i++) {
-            tmp = tmp + roundsList.get(i).toString();
-            if (i < roundsList.size() - 1) {
-                tmp = tmp + ",";
-            } else {
-                tmp = tmp + "]";
-            }
-        }
-        String scriptParams = GoogleAccess.PARAMNAME_DOC_ID + getListData().getSheetDocID() + GoogleAccess.PARAM_CONCATENATOR +
-                GoogleAccess.PARAMNAME_SHEET + QuizGenerator.SHEET_ROUNDS + GoogleAccess.PARAM_CONCATENATOR +
-                GoogleAccess.PARAMNAME_RECORD_ID + "1" + GoogleAccess.PARAM_CONCATENATOR +
-                GoogleAccess.PARAMNAME_FIELDNAME + QuizGenerator.ROUND_NAME + GoogleAccess.PARAM_CONCATENATOR +
-                GoogleAccess.PARAMNAME_NEWVALUES + tmp + GoogleAccess.PARAM_CONCATENATOR +
-                GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_SETDATA;
-        GoogleAccessSet submitRounds = new GoogleAccessSet(context, scriptParams);
-        submitRounds.setData(new LLNotifyStartOnly(context, getThisUser().getName(),
-                "Submitting round updates"));
-    }
-
-    public void updateTeams(Context context) {
-        ArrayList<Team> teamsList = getTeams();
-        String tmp = "[";
-        for (int i = 0; i < teamsList.size(); i++) {
-            tmp = tmp + teamsList.get(i).toString();
-            if (i < teamsList.size() - 1) {
-                tmp = tmp + ",";
-            } else {
-                tmp = tmp + "]";
-            }
-        }
-        String scriptParams = GoogleAccess.PARAMNAME_DOC_ID + getListData().getSheetDocID() + GoogleAccess.PARAM_CONCATENATOR +
-                GoogleAccess.PARAMNAME_SHEET + QuizGenerator.SHEET_TEAMS + GoogleAccess.PARAM_CONCATENATOR +
-                GoogleAccess.PARAMNAME_RECORDID + GoogleAccess.PARAMVALUE_FIRST_ROUNDNR + GoogleAccess.PARAM_CONCATENATOR +
-                GoogleAccess.PARAMNAME_FIELDNAME + QuizGenerator.LOGIN_ENTITY_NAME + GoogleAccess.PARAM_CONCATENATOR +
-                GoogleAccess.PARAMNAME_NEWVALUES + tmp + GoogleAccess.PARAM_CONCATENATOR +
-                GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_SETDATA;
-        GoogleAccessSet googleAccessSet = new GoogleAccessSet(context, scriptParams);
-        googleAccessSet.setData(new LLNotifyStartOnly(context, getThisUser().getName(),
-                "Submitting team updates"));
-    }
-
-    /*
-    //Used by the Corrector to submit all corrections for a single question
-    public void submitCorrectionsForQuestion(Context context, int roundNr, int questionNr) {
-        ArrayList<Answer> answerList = getAllAnswersForQuestion(roundNr, questionNr);
-        String tmp = "[[";
-        for (int i = 0; i < answerList.size(); i++) {
-            tmp = tmp + "\"" + answerList.get(i).isCorrect() + "\"";
-            if (i < answerList.size() - 1) {
-                tmp = tmp + ",";
-            }
-        }
-        tmp = tmp + "]]";
-        String scriptParams = GoogleAccess.PARAMNAME_DOC_ID + getListData().getSheetDocID() + GoogleAccess.PARAM_CONCATENATOR +
-                GoogleAccess.PARAMNAME_USERID + "Rupert" + GoogleAccess.PARAM_CONCATENATOR +
-                GoogleAccess.PARAMNAME_SHEET + QuizGenerator.SHEET_CORRECTIONS + GoogleAccess.PARAM_CONCATENATOR +
-                GoogleAccess.PARAMNAME_RECORDID + getQuestion(roundNr, questionNr).getQuestionID() + GoogleAccess.PARAM_CONCATENATOR +
-                //We write score starting from the first team which should have id 1
-                GoogleAccess.PARAMNAME_FIELDNAME + QuizGenerator.TEAMS_PREFIX + GoogleAccess.PARAMVALUE_FIRST_TEAM_NR + GoogleAccess.PARAM_CONCATENATOR +
-                GoogleAccess.PARAMNAME_NEWVALUES + tmp + GoogleAccess.PARAM_CONCATENATOR +
-                GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_SETDATA;
-        GoogleAccessSet submitScores = new GoogleAccessSet(context, scriptParams);
-        submitScores.setData(new LLNotifyStartOnly(context, getThisUser().getName(),
-                "Submitting scores for question " + getQuestion(roundNr, questionNr).getQuestionID()));
-    }
-
-
-
-    //Used by the Corrector to submit all corrections for a single team
-    public void submitCorrectionsForTeam(Context context, int roundNr, int teamNr) {
-        ArrayList<Answer> answerList = getAnswersForRound(roundNr, teamNr);
-        String tmp = "[";
-        for (int i = 0; i < answerList.size(); i++) {
-            tmp = tmp + "[\"" + answerList.get(i).isCorrect() + "\"]";
-            if (i < answerList.size() - 1) {
-                tmp = tmp + ",";
-            }
-        }
-        tmp = tmp + "]";
-        String scriptParams = GoogleAccess.PARAMNAME_DOC_ID + getListData().getSheetDocID() + GoogleAccess.PARAM_CONCATENATOR +
-                GoogleAccess.PARAMNAME_USERID + "Rupert" + GoogleAccess.PARAM_CONCATENATOR +
-                GoogleAccess.PARAMNAME_SHEET + QuizGenerator.SHEET_CORRECTIONS + GoogleAccess.PARAM_CONCATENATOR +
-                GoogleAccess.PARAMNAME_RECORDID + getQuestion(roundNr, 1).getQuestionID() + GoogleAccess.PARAM_CONCATENATOR +
-                GoogleAccess.PARAMNAME_FIELDNAME + QuizGenerator.TEAMS_PREFIX + teamNr + GoogleAccess.PARAM_CONCATENATOR +
-                GoogleAccess.PARAMNAME_NEWVALUES + tmp + GoogleAccess.PARAM_CONCATENATOR +
-                GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_SETDATA;
-        GoogleAccessSet submitScores = new GoogleAccessSet(context, scriptParams);
-        submitScores.setData(new LLNotifyStartOnly(context, getThisUser().getName(),
-                "Submitting scores for team " + getTeam(teamNr).getName()));
-    }
-
-
-    //Used by the Participant to submit all answers for a single round
-    public void submitAnswers(Context context, int roundNr) {
-        ArrayList<Answer> answerList = getAnswersForRound(roundNr, getThisUser().getIdUser());
-        String tmp = "[";
-        for (int i = 0; i < answerList.size(); i++) {
-            tmp = tmp + "[\"" + answerList.get(i).getTheAnswer() + "\"]";
-            if (i < answerList.size() - 1) {
-                tmp = tmp + ",";
-            }
-        }
-        tmp = tmp + "]";
-        String scriptParams = GoogleAccess.PARAMNAME_DOC_ID + listData.getSheetDocID() + GoogleAccess.PARAM_CONCATENATOR +
-                GoogleAccess.PARAMNAME_USERID + thisUser.getName() + GoogleAccess.PARAM_CONCATENATOR +
-                GoogleAccess.PARAMNAME_ROUNDID + roundNr + GoogleAccess.PARAM_CONCATENATOR +
-                GoogleAccess.PARAMNAME_ROUND_PREFIX + QuizGenerator.ROUNDS_PREFIX + GoogleAccess.PARAM_CONCATENATOR +
-                GoogleAccess.PARAMNAME_FIRSTQUESTION + getRound(roundNr).getQuestion(1).getQuestionID() + GoogleAccess.PARAM_CONCATENATOR +
-                GoogleAccess.PARAMNAME_TEAMID + thisUser.getIdUser() + GoogleAccess.PARAM_CONCATENATOR +
-                GoogleAccess.PARAMNAME_TEAM_PREFIX + QuizGenerator.TEAMS_PREFIX + GoogleAccess.PARAM_CONCATENATOR +
-                GoogleAccess.PARAMNAME_ANSWERS + tmp + GoogleAccess.PARAM_CONCATENATOR +
-                GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_SUBMITANSWERS;
-        GoogleAccessSet submitAnswers = new GoogleAccessSet(context, scriptParams);
-        submitAnswers.setData(new LLNotifyStartOnly(context, thisUser.getName(),
-                "Submitting answers for round " + roundNr));
-    }
-
-*/
-    //Triggered in the onCreate of ParticipantHome - marks this team as Logged In
-    public void setLoggedIn(Context context, int teamNr, boolean isLoggedIn) {
-        String tmp = "[[" + isLoggedIn + "]]";
-        String scriptParams = GoogleAccess.PARAMNAME_DOC_ID + getListData().getSheetDocID() + GoogleAccess.PARAM_CONCATENATOR +
-                GoogleAccess.PARAMNAME_USERID + "Rupert" + GoogleAccess.PARAM_CONCATENATOR +
-                GoogleAccess.PARAMNAME_SHEET + QuizGenerator.SHEET_TEAMS + GoogleAccess.PARAM_CONCATENATOR +
-                GoogleAccess.PARAMNAME_RECORDID + teamNr + GoogleAccess.PARAM_CONCATENATOR +
-                GoogleAccess.PARAMNAME_FIELDNAME + QuizGenerator.TEAM_LOGGED_IN + GoogleAccess.PARAM_CONCATENATOR +
-                GoogleAccess.PARAMNAME_NEWVALUES + tmp + GoogleAccess.PARAM_CONCATENATOR +
-                GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_SETDATA;
-        GoogleAccessSet setLoggedIn = new GoogleAccessSet(context, scriptParams);
-        setLoggedIn.setData(new LLSilent());
     }
 
     public boolean isAnyRoundOpen() {

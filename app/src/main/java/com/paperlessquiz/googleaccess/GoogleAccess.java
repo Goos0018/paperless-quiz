@@ -1,6 +1,7 @@
 package com.paperlessquiz.googleaccess;
 
 public class GoogleAccess {
+    /*
     //This is the base URL & parameters for the Google script to interact with any google sheet
     //static final String SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxF4oneivWH9QUnOyEJRWWDNIfdaSft5idzfNWgz7USI0ZzKw_o/exec?"; => RME Version
     //static final String SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzBnefs99HeSwpCQEHY4c6K4pEvpWoiuE3dEU-UuKQ-yRtO-Awe/exec?"; => PQ version
@@ -35,5 +36,5 @@ public class GoogleAccess {
     //Fieldnames that are used by the SetData GScript to return result of the action
     public static final String GASET_FIELDNAME_RESULT = "result";
     public static final String GASET_FIELDNAME_RESULT_EXPLANATION = "explanation";
-
+*/
 }

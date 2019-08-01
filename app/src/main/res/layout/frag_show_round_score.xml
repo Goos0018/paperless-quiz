@@ -27,7 +27,7 @@
 
                 <TextView
                     android:id="@+id/tvScoreForThisRound"
-                    android:layout_width="wrap_content"
+                    android:layout_width="257dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_small"
                     android:gravity="right"
@@ -114,7 +114,7 @@
 
                 <TextView
                     android:id="@+id/tvRankTotal"
-                    android:layout_width="284dp"
+                    android:layout_width="237dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_small"
                     android:layout_marginBottom="@dimen/margin_small"

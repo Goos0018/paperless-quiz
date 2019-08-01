@@ -1,9 +1,6 @@
 package com.paperlessquiz.webrequest;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -14,7 +11,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.paperlessquiz.parsers.JsonParser;
-import com.paperlessquiz.googleaccess.LoadingListener;
+import com.paperlessquiz.loadinglisteners.LoadingListener;
 import com.paperlessquiz.quiz.QuizDatabase;
 
 import org.json.JSONArray;

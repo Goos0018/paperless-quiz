@@ -15,7 +15,7 @@ import android.widget.TextView;
 import com.paperlessquiz.quiz.Quiz;
 import com.paperlessquiz.quiz.QuizDatabase;
 import com.paperlessquiz.quiz.QuizLoader;
-import com.paperlessquiz.round.Round;
+import com.paperlessquiz.quiz.Round;
 
 
 /**

@@ -7,9 +7,8 @@ import com.paperlessquiz.answer.AnswersSubmitted;
 import com.paperlessquiz.MyApplication;
 import com.paperlessquiz.R;
 import com.paperlessquiz.answer.Answer;
-import com.paperlessquiz.googleaccess.GoogleAccess;
-import com.paperlessquiz.googleaccess.LLShowProgressActWhenComplete;
-import com.paperlessquiz.googleaccess.LLSilent;
+import com.paperlessquiz.loadinglisteners.LLShowProgressActWhenComplete;
+import com.paperlessquiz.loadinglisteners.LLSilent;
 import com.paperlessquiz.orders.OrderItem;
 import com.paperlessquiz.parsers.OrderItemParser;
 import com.paperlessquiz.users.Organizer;
@@ -19,34 +18,26 @@ import com.paperlessquiz.parsers.AnswersParser;
 import com.paperlessquiz.parsers.AnswersSubmittedParser;
 import com.paperlessquiz.parsers.LogMessageParser;
 import com.paperlessquiz.parsers.UserParser;
-import com.paperlessquiz.question.Question;
 //import com.example.paperlessquiz.quizextradata.GetQuizExtraDataLPL;
-import com.paperlessquiz.round.Round;
 import com.paperlessquiz.webrequest.HTTPGetData;
 import com.paperlessquiz.webrequest.HTTPSubmit;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
 
-//This class is used to populates a quiz from the SQL database
+/**
+ * This class is used to populates a quiz from the SQL database
+ * TODO: split into loader and Getter class
+ * Can probably be made abstract
+ */
+
 public class QuizLoader {
     private Context context;
-    private String sheetDocID;
     private Quiz thisQuiz = MyApplication.theQuiz;
-    /*
-    //public GetQuizExtraDataLPL quizExtraDataLPL;
-    public GetRoundsLPL quizRoundsLPL;
-    public GetQuestionsLPL quizQuestionsLPL;
-    public GetAnswersListLPL quizAnswersLPL;
-    public GetCorrectionsListLPL quizCorrectionsLPL;
-    public GetLoginEntriesLPL quizTeamsLPL, quizOrganizersLPL;
-    */
+
     public HTTPGetData<User> getUsersRequest;
     public HTTPGetData<Answer> getAnswersRequest;
-    //public HTTPGetData<Answer> getAllAnswersRequest;
     public HTTPGetData<Question> getQuestionsRequest;
-    //public HTTPGetData<Question> getFullQuestionsRequest;
     public HTTPGetData<Round> getRoundsRequest;
     public HTTPGetData<AnswersSubmitted> getAnswersSubmittedRequest;
     public HTTPGetData<EventLog> getMyEventLogsRequest;
@@ -60,31 +51,8 @@ public class QuizLoader {
     public HTTPSubmit correctQuestionRequest;
     public HTTPSubmit calculateStandingsRequest;
 
-    //public GetScoresLPL quizScoresLPL;
-
-    public ArrayList<ArrayList<Answer>> myAnswers;
-
     public QuizLoader(Context context) {
         this.context = context;
-        //this.sheetDocID = sheetDocID;
-        myAnswers = new ArrayList<>();
-        //this.quiz = MyApplication.theQuiz;
-        //quizExtraDataLPL = new GetQuizExtraDataLPL();
-        /*
-        quizRoundsLPL = new GetRoundsLPL();
-        quizQuestionsLPL = new GetQuestionsLPL();
-        //quizTeamsLPL = new GetLoginEntriesLPL();
-        //quizOrganizersLPL = new GetLoginEntriesLPL();
-        quizAnswersLPL = new GetAnswersListLPL();
-        quizCorrectionsLPL = new GetCorrectionsListLPL();
-        //quizScoresLPL = new GetScoresLPL();
-        */
-    }
-
-    public String generateParams(String sheet) {
-        return GoogleAccess.PARAMNAME_DOC_ID + sheetDocID + GoogleAccess.PARAM_CONCATENATOR +
-                GoogleAccess.PARAMNAME_SHEET + sheet + GoogleAccess.PARAM_CONCATENATOR +
-                GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_GETDATA;
     }
 
     //Generate the most used parameter
@@ -153,7 +121,6 @@ public class QuizLoader {
                 context.getString(R.string.loader_updatingquiz),
                 context.getString(R.string.loadingerror), false));
     }
-
 
     public void loadMyAnswers() {
         int idUser = thisQuiz.getThisUser().getIdUser();
@@ -231,7 +198,6 @@ public class QuizLoader {
         }
     }
 
-
     //Get all the users and put them into the Teams resp. Organizers array of the Quiz
     public void loadUsersIntoQuiz() {
         for (int i = 0; i < getUsersRequest.getResultsList().size(); i++) {
@@ -271,29 +237,8 @@ public class QuizLoader {
         }
     }
 
-    //Assumes rounds are already loaded in the quiz, this sub just updates the relevant information
-    public void updateRounds() {
-        for (int i = 0; i < getRoundsRequest.getResultsList().size(); i++) {
-            Round thisRound = getRoundsRequest.getResultsList().get(i);
-            //Rounds are already loaded, we can simply get the round from the Quiz object
-            Round roundToUpdate = thisQuiz.getRound(thisRound.getRoundNr());
-            roundToUpdate.updateRoundBasics(thisRound);
-        }
-    }
-
-    //Assumes users are already loaded in the quiz, this sub just updates the relevant information
-    public void updateTeams() {
-        for (int i = 0; i < getUsersRequest.getResultsList().size(); i++) {
-            User thisUser = getUsersRequest.getResultsList().get(i);
-            //Users are already loaded, we only care about the teams
-            if (thisUser.getUserType() == QuizDatabase.USERTYPE_TEAM) {
-                User userToUpdate = thisQuiz.getTeam(thisUser.getUserNr());
-                userToUpdate.updateUserBasics(thisUser);
-            }
-        }
-    }
-
-    public void updateQuestionsIntoQuiz() {
+    //Load all questions into the quiz
+    public void loadQuestionsIntoQuiz() {
         for (int i = 0; i < getQuestionsRequest.getResultsList().size(); i++) {
             Question thisQuestion = getQuestionsRequest.getResultsList().get(i);
             if (thisQuestion.getRoundNr() > thisQuiz.getRounds().size() + 1) {
@@ -311,7 +256,29 @@ public class QuizLoader {
         }
     }
 
-    //When this is run, all questions are already correctly added
+    //Assumes rounds are already loaded in the quiz, this just updates the relevant information
+    public void updateRounds() {
+        for (int i = 0; i < getRoundsRequest.getResultsList().size(); i++) {
+            Round thisRound = getRoundsRequest.getResultsList().get(i);
+            //Rounds are already loaded, we can simply get the round from the Quiz object
+            Round roundToUpdate = thisQuiz.getRound(thisRound.getRoundNr());
+            roundToUpdate.updateRoundBasics(thisRound);
+        }
+    }
+
+    //Assumes users are already loaded in the quiz, this just updates the relevant information
+    public void updateTeams() {
+        for (int i = 0; i < getUsersRequest.getResultsList().size(); i++) {
+            User thisUser = getUsersRequest.getResultsList().get(i);
+            //Users are already loaded, we only care about the teams
+            if (thisUser.getUserType() == QuizDatabase.USERTYPE_TEAM) {
+                User userToUpdate = thisQuiz.getTeam(thisUser.getUserNr());
+                userToUpdate.updateUserBasics(thisUser);
+            }
+        }
+    }
+
+    //When this is run, all questions are already correctly added, we only add the correct answer here for the corrector
     public void updateFullQuestionsIntoQuiz() {
         for (int i = 0; i < getQuestionsRequest.getResultsList().size(); i++) {
             Question thisQuestion = getQuestionsRequest.getResultsList().get(i);
@@ -445,7 +412,7 @@ public class QuizLoader {
                 QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_USERPASSWORD + userPassword +
                 QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_IDQUIZ + idQuiz +
                 QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_IDROUND + idRound;
-        calculateStandingsRequest = new HTTPSubmit(context, scriptParams, QuizDatabase.REQUEST_ID_CORRECTQUESTION);
+        calculateStandingsRequest = new HTTPSubmit(context, scriptParams, QuizDatabase.REQUEST_ID_CALCULATESCORES);
         calculateStandingsRequest.sendRequest(new LLSilent());
     }
 

@@ -1,9 +1,11 @@
-package com.paperlessquiz.googleaccess;
+package com.paperlessquiz.loadinglisteners;
 
 import android.content.Context;
 import android.widget.Toast;
 
 import com.paperlessquiz.MyApplication;
+import com.paperlessquiz.loadinglisteners.LoadingListener;
+import com.paperlessquiz.webrequest.EventLogger;
 
 /**
  * This LL will only show a short message indicating that loading was started.
@@ -14,7 +16,6 @@ public class LLNotifyStartOnly implements LoadingListener {
     private String userName;
     private String startMessage;
 
-
     public LLNotifyStartOnly(Context context, String userName, String startMessage) {
         this.context = context;
         this.userName=userName;
@@ -24,7 +25,7 @@ public class LLNotifyStartOnly implements LoadingListener {
     @Override
     public void loadingStarted() {
         Toast.makeText(context, startMessage, Toast.LENGTH_SHORT).show();
-        MyApplication.eventLogger.logEvent(userName,EventLogger.LEVEL_INFO,startMessage);
+        MyApplication.eventLogger.logEvent(userName, EventLogger.LEVEL_INFO,startMessage);
     }
 
     @Override

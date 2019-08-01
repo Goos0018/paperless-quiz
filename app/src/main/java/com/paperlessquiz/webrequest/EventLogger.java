@@ -1,4 +1,4 @@
-package com.paperlessquiz.googleaccess;
+package com.paperlessquiz.webrequest;
 
 import android.content.Context;
 

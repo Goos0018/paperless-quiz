@@ -290,7 +290,7 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        displayPDF(thisQuiz.getListData().getQuizPdfURL(), C_ParticipantHome.this.getString(R.string.participant_aboutquiztitle));
+        //displayPDF(thisQuiz.getListData().getQuizPdfURL(), C_ParticipantHome.this.getString(R.string.participant_aboutquiztitle));
     }
 
     @Override

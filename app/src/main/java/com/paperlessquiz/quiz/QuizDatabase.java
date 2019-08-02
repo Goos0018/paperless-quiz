@@ -90,6 +90,13 @@ public class QuizDatabase {
     public static final int ROUNDSTATUS_OPENFORCORRECTIONS = 2;
     public static final int ROUNDSTATUS_CORRECTED = 3;
 
+    //Order Statuses
+    public static final int ORDERSTATUS_NEW = 0;
+    public static final int ORDERSTATUS_SUBMITTED = 1;
+    public static final int ORDERSTATUS_INPROGRESS = 2;
+    public static final int ORDERSTATUS_READY = 3;
+    public static final int ORDERSTATUS_DELIVERED = 4;
+
     //Column names in the SQL database - used to parse the JSON objects
     //Column names table Answers
     public static final String COLNAME_ID_ANSWER = "idAnswer";

@@ -13,7 +13,6 @@ import android.view.MenuItem;
 
 import com.paperlessquiz.quiz.Quiz;
 import com.paperlessquiz.quiz.QuizDatabase;
-import com.paperlessquiz.quiz.QuizGenerator;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
@@ -46,9 +45,11 @@ public class MyActivity extends AppCompatActivity {
                 //Intent intentDisplayPDF = new Intent(MyActivity.this, DisplayPDF.class);
                 //intentDisplayPDF.putExtra(QuizGenerator.PDF_TO_DISPLAY, MyApplication.helpFiles.get(thisQuiz.getThisUser().getType()));
                 //startActivity(intentDisplayPDF);
+                break;
             case R.id.order:
-                Intent intentOrder = new Intent(MyActivity.this, D_Order.class);
-                startActivity(intentOrder);
+                Intent intent = new Intent(MyActivity.this, D_OrderHome.class);
+                startActivity(intent);
+                break;
 
         }
         return super.onOptionsItemSelected(item);

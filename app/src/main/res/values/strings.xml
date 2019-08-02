@@ -32,5 +32,7 @@
     <string name="participant_youranswers">Jullie antwoorden:</string>
     <string name="parthome_your_answer">Jullie antwoord</string>
     <string name="order_title">Nieuwe bestelling</string>
+    <string name="order_btn_new">Nieuwe bestelling</string>
+    <string name="order_btn_submit">Bestelling plaatsen!</string>
 
 </resources>

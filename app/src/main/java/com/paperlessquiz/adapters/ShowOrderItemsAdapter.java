@@ -33,7 +33,7 @@ public class ShowOrderItemsAdapter extends RecyclerView.Adapter<ShowOrderItemsAd
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvItemName,tvItemDescription,tvItemCost;
+        TextView tvItemName,tvItemDescription,tvItemCost, tvAmountOrdered;
         ImageView ivOneItemLess, ivOneItemMore;
 
         public ViewHolder(View itemView) {
@@ -41,8 +41,16 @@ public class ShowOrderItemsAdapter extends RecyclerView.Adapter<ShowOrderItemsAd
             tvItemName = itemView.findViewById(R.id.tvItemName);
             tvItemDescription = itemView.findViewById(R.id.tvItemDescription);
             tvItemCost = itemView.findViewById(R.id.tvItemCost);
+            tvAmountOrdered = itemView.findViewById(R.id.tvAmountOrdered);
             ivOneItemMore=itemView.findViewById(R.id.ivOneItemMore);
             ivOneItemLess=itemView.findViewById(R.id.ivOneItemLess);
+        }
+        public void setFields(int i){
+            itemView.setTag(orderItems.get(i));
+            tvItemName.setText(orderItems.get(i).getItemName());
+            tvItemDescription.setText(orderItems.get(i).getItemDescription());
+            tvItemCost.setText(orderItems.get(i).getItemCost());
+            tvItemCost.setText(theOrder.getAmountOrderedForItem(orderItems.get(i).getIdOrderItem()));
         }
     }
 
@@ -57,10 +65,7 @@ public class ShowOrderItemsAdapter extends RecyclerView.Adapter<ShowOrderItemsAd
     //This runs for every item in your list
     @Override
     public void onBindViewHolder(@NonNull ShowOrderItemsAdapter.ViewHolder viewHolder, int i) {
-        viewHolder.itemView.setTag(orderItems.get(i));
-        viewHolder.tvItemName.setText(orderItems.get(i).getItemName());
-        viewHolder.tvItemDescription.setText(orderItems.get(i).getItemDescription());
-        viewHolder.tvItemCost.setText(orderItems.get(i).getItemCost());
+        viewHolder.setFields(i);
         viewHolder.ivOneItemLess.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -68,6 +73,7 @@ public class ShowOrderItemsAdapter extends RecyclerView.Adapter<ShowOrderItemsAd
                 final int position = view.getId();
                 int itemId = orderItems.get(i).getIdOrderItem();
                 theOrder.oneItemLess(itemId);
+                viewHolder.setFields(i);
             }
         });
         viewHolder.ivOneItemLess.setOnClickListener(new View.OnClickListener()
@@ -77,6 +83,7 @@ public class ShowOrderItemsAdapter extends RecyclerView.Adapter<ShowOrderItemsAd
                 final int position = view.getId();
                 int itemId = orderItems.get(i).getIdOrderItem();
                 theOrder.oneItemMore(itemId);
+                viewHolder.setFields(i);
             }
         });
     }

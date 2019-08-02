@@ -40,4 +40,18 @@ public class Order {
             }
         }
     }
+
+    public HashMap<Integer, Integer> getTheOrder() {
+        return theOrder;
+    }
+
+    public int getAmountOrderedForItem(int itemId){
+        int theAmount;
+        if (theOrder.containsKey(itemId)) {
+            theAmount = theOrder.get(Integer.valueOf(itemId));
+        }else{
+            theAmount=0;
+        }
+        return theAmount;
+    }
 }

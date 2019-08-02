@@ -19,7 +19,6 @@ import com.paperlessquiz.quiz.QuizLoader;
  * Actions: Refresh/Dorst/Rounds/Upload
  */
 public class C_QuizmasterHome extends MyActivity implements FragRoundSpinner.HasRoundSpinner, LoadingActivity {
-    //Quiz thisQuiz = MyApplication.theQuiz;
     RecyclerView rvTeams;
     RecyclerView.LayoutManager layoutManager;
     ShowTeamsAdapter showTeamsAdapter;
@@ -65,13 +64,14 @@ public class C_QuizmasterHome extends MyActivity implements FragRoundSpinner.Has
         getMenuInflater().inflate(R.menu.quizmaster, menu);
         return super.onCreateOptionsMenu(menu);
     }
-
+/*
     public void showHideTop(){
         Toast toast = Toast.makeText(this, "Top " + thisQuiz.getHideTopRows(), Toast.LENGTH_LONG);
         TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
         v.setBackgroundColor(Color.RED);
         toast.show();
     }
+*/
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -81,6 +81,7 @@ public class C_QuizmasterHome extends MyActivity implements FragRoundSpinner.Has
                 quizLoader.loadUsers();
                 quizLoader.loadAnswersSubmitted();
                 break;
+                /*
             case R.id.plus1:
                 //QuizLoader quizLoader = new QuizLoader(C_QuizmasterHome.this);
                 thisQuiz.setHideTopRows(thisQuiz.getHideTopRows()+1);
@@ -92,6 +93,7 @@ public class C_QuizmasterHome extends MyActivity implements FragRoundSpinner.Has
                 thisQuiz.setHideTopRows(thisQuiz.getHideTopRows()-1);
                 showHideTop();
                 break;
+                */
             /*
             case R.id.rounds:
                 Intent intent = new Intent(C_QuizmasterHome.this, C_QuizmasterRounds.class);

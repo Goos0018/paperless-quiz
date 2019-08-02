@@ -46,6 +46,10 @@ public class MyActivity extends AppCompatActivity {
                 //Intent intentDisplayPDF = new Intent(MyActivity.this, DisplayPDF.class);
                 //intentDisplayPDF.putExtra(QuizGenerator.PDF_TO_DISPLAY, MyApplication.helpFiles.get(thisQuiz.getThisUser().getType()));
                 //startActivity(intentDisplayPDF);
+            case R.id.order:
+                Intent intentOrder = new Intent(MyActivity.this, D_Order.class);
+                startActivity(intentOrder);
+
         }
         return super.onOptionsItemSelected(item);
     }

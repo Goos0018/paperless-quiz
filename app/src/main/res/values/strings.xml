@@ -31,5 +31,6 @@
     <string name="participant_submitanswers">Klaar!</string>
     <string name="participant_youranswers">Jullie antwoorden:</string>
     <string name="parthome_your_answer">Jullie antwoord</string>
+    <string name="order_title">Nieuwe bestelling</string>
 
 </resources>

@@ -8,7 +8,11 @@ import java.util.HashMap;
  */
 public class Order {
     HashMap<Integer,Integer> theOrder;
-    
+
+    public Order() {
+        this.theOrder = new HashMap<>();
+    }
+
     //Remove items where amountOrdered = 0
     public void removeEmpty(){
         for (Integer i: theOrder.keySet()) {

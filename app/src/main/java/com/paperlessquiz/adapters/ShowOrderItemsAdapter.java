@@ -15,6 +15,8 @@ import com.paperlessquiz.orders.OrderItem;
 import com.paperlessquiz.quiz.QuizDatabase;
 
 import java.util.ArrayList;
+import java.util.Currency;
+import java.util.Locale;
 
 /**
  * Adapter used to display the items that can be ordered.
@@ -25,6 +27,7 @@ public class ShowOrderItemsAdapter extends RecyclerView.Adapter<ShowOrderItemsAd
     private ArrayList<OrderItem> orderItems;
     private ShowOrderItemsAdapter adapter;
     private Order theOrder;
+    String euro = "€ ";
 
     public ShowOrderItemsAdapter(Context context, ArrayList<OrderItem> orderItems, Order theOrder) {
         this.orderItems = orderItems;
@@ -33,7 +36,7 @@ public class ShowOrderItemsAdapter extends RecyclerView.Adapter<ShowOrderItemsAd
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvItemName,tvItemDescription,tvItemCost, tvAmountOrdered;
+        TextView tvItemName, tvItemDescription, tvItemCost, tvAmountOrdered;
         ImageView ivOneItemLess, ivOneItemMore;
 
         public ViewHolder(View itemView) {
@@ -42,15 +45,22 @@ public class ShowOrderItemsAdapter extends RecyclerView.Adapter<ShowOrderItemsAd
             tvItemDescription = itemView.findViewById(R.id.tvItemDescription);
             tvItemCost = itemView.findViewById(R.id.tvItemCost);
             tvAmountOrdered = itemView.findViewById(R.id.tvAmountOrdered);
-            ivOneItemMore=itemView.findViewById(R.id.ivOneItemMore);
-            ivOneItemLess=itemView.findViewById(R.id.ivOneItemLess);
+            ivOneItemMore = itemView.findViewById(R.id.ivOneItemMore);
+            ivOneItemLess = itemView.findViewById(R.id.ivOneItemLess);
         }
-        public void setFields(int i){
+
+        public void setFields(int i) {
             itemView.setTag(orderItems.get(i));
             tvItemName.setText(orderItems.get(i).getItemName());
-            tvItemDescription.setText(orderItems.get(i).getItemDescription());
-            tvItemCost.setText(orderItems.get(i).getItemCost());
-            tvItemCost.setText(theOrder.getAmountOrderedForItem(orderItems.get(i).getIdOrderItem()));
+            String desc = orderItems.get(i).getItemDescription();
+            if (desc.isEmpty()) {
+                tvItemDescription.setVisibility(View.GONE);
+            } else {
+                tvItemDescription.setVisibility(View.VISIBLE);
+                tvItemDescription.setText(desc);
+            }
+            tvItemCost.setText(euro + Integer.toString(orderItems.get(i).getItemCost()));
+            tvAmountOrdered.setText(Integer.toString(theOrder.getAmountOrderedForItem(orderItems.get(i).getIdOrderItem())));
         }
     }
 
@@ -66,8 +76,7 @@ public class ShowOrderItemsAdapter extends RecyclerView.Adapter<ShowOrderItemsAd
     @Override
     public void onBindViewHolder(@NonNull ShowOrderItemsAdapter.ViewHolder viewHolder, int i) {
         viewHolder.setFields(i);
-        viewHolder.ivOneItemLess.setOnClickListener(new View.OnClickListener()
-        {
+        viewHolder.ivOneItemLess.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 final int position = view.getId();
@@ -76,8 +85,7 @@ public class ShowOrderItemsAdapter extends RecyclerView.Adapter<ShowOrderItemsAd
                 viewHolder.setFields(i);
             }
         });
-        viewHolder.ivOneItemLess.setOnClickListener(new View.OnClickListener()
-        {
+        viewHolder.ivOneItemMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 final int position = view.getId();

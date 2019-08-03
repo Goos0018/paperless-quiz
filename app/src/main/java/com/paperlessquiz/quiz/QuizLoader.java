@@ -56,6 +56,7 @@ public class QuizLoader {
     public HTTPSubmit updateUserStatusRequest;
     public HTTPSubmit correctQuestionRequest;
     public HTTPSubmit calculateStandingsRequest;
+    public HTTPSubmit submitOrderRequest;
 
     public QuizLoader(Context context) {
         this.context = context;
@@ -206,7 +207,7 @@ public class QuizLoader {
                 "Something went wrong: ", false));
     }
 
-    public void loadOrderDetails(int idOrder){
+    public void loadOrderDetails(int idOrder) {
         int idUser = thisQuiz.getThisUser().getIdUser();
         String userPassword = thisQuiz.getThisUser().getUserPassword();
         int idQuiz = thisQuiz.getListData().getIdQuiz();
@@ -216,7 +217,6 @@ public class QuizLoader {
                 context.getString(R.string.loader_updatingquiz),
                 "Something went wrong: ", false));
     }
-
 
 
     //Get the items you can order and put them in the MyApplication itemsToOrderArray object
@@ -447,4 +447,15 @@ public class QuizLoader {
         calculateStandingsRequest.sendRequest(new LLSilent());
     }
 
+    public void submitOrder(String orderDetails, String time) {
+        int idUser = thisQuiz.getThisUser().getIdUser();
+        int idQuiz = thisQuiz.getListData().getIdQuiz();
+        String userPassword = thisQuiz.getThisUser().getUserPassword();
+        String scriptParams = QuizDatabase.SCRIPT_SUBMITORDER + QuizDatabase.PHP_STARTPARAM + QuizDatabase.PARAMNAME_IDUSER + idUser +
+                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_USERPASSWORD + userPassword +
+                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_ITEMSTOORDER + orderDetails +
+                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_TIME + time;
+        submitOrderRequest = new HTTPSubmit(context, scriptParams, QuizDatabase.REQUEST_ID_SUBMITORDER);
+        submitOrderRequest.sendRequest(new LLSilent());
+    }
 }

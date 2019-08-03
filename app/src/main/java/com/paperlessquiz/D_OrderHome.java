@@ -28,13 +28,13 @@ public class D_OrderHome extends AppCompatActivity implements CanShowOrderDetail
     RecyclerView rvShowOrders;
     RecyclerView.LayoutManager layoutManager;
     ShowOrdersAdapter showOrdersAdapter;
-    TextView tvSaldoIntro, tvSaldo, tvNoOrders, tvDisplayOrder;
-    Button btnNewOrder, btnSubmitOrder;
+    TextView tvSaldoIntro, tvSaldo, tvOrderIntro, tvDisplayItemNames, tvDisplayMiddle, tvDisplayAmount;
+    Button btnNewOrder;
     Order theNewOrder, theSelectedOrder;
     Quiz thisQuiz = MyApplication.theQuiz;
     QuizLoader quizLoader = new QuizLoader(this);
     ArrayList<Order> myOrders;
-    boolean ordersLoaded,orderDetailsLoaded;
+    boolean ordersLoaded, orderDetailsLoaded;
 
     @Override
     public void loadingComplete(int requestID) {
@@ -63,33 +63,28 @@ public class D_OrderHome extends AppCompatActivity implements CanShowOrderDetail
             orderDetailsLoaded = false;
             theSelectedOrder.setDetailsLoaded(true);
             theSelectedOrder.loadDetails(quizLoader.getOrderDetails.getResultsList());
-            String details = theSelectedOrder.displayOrderDetails();
-            tvDisplayOrder.setText(details);
-            }
+            String detailItems = theSelectedOrder.displayOrderItems();
+            String detailAmounts = theSelectedOrder.displayOrderAmounts();
+            tvDisplayItemNames.setText(detailItems);
+            tvDisplayAmount.setText(detailAmounts);
         }
+    }
 
     @Override
     public void showOrderDetails(int position) {
-        String details = "";
-        if (position == -1){
-            //This is a new order
-            details = theNewOrder.displayOrderDetails();
+        String detailItems = "";
+        String detailAmounts = "";
+        //This is an existing order selected from the list
+        theSelectedOrder = myOrders.get(position);
+        //If details were already loaded for it, display them, otherwise load them first
+        if (myOrders.get(position).isDetailsLoaded()) {
+            detailItems = theSelectedOrder.displayOrderItems();
+            detailAmounts = theSelectedOrder.displayOrderAmounts();
+        } else {
+            quizLoader.loadOrderDetails(theSelectedOrder.getIdOrder());
         }
-        else
-        {
-            //This is an existing order selected from the list
-            theSelectedOrder = myOrders.get(position);
-            //If details were already loaded for it, display them, otherwise load them first
-            if (myOrders.get(position).isDetailsLoaded()) {
-                details = theSelectedOrder.displayOrderDetails();
-            }
-            else
-            {
-                quizLoader.loadOrderDetails(theSelectedOrder.getIdOrder());
-            }
-        }
-        tvDisplayOrder.setText(details);
-
+        tvDisplayItemNames.setText(detailItems);
+        tvDisplayAmount.setText(detailAmounts);
     }
 
     @Override
@@ -100,10 +95,14 @@ public class D_OrderHome extends AppCompatActivity implements CanShowOrderDetail
         rvShowOrders = findViewById(R.id.rvShowOrders);
         tvSaldo = findViewById(R.id.tvSaldo);
         tvSaldoIntro = findViewById(R.id.tvSaldoIntro);
-        tvNoOrders = findViewById(R.id.tvNoOrders);
-        tvDisplayOrder = findViewById(R.id.tvDisplayOrder);
+        tvSaldoIntro.setText("Saldo: ");
+        tvOrderIntro = findViewById(R.id.tvOrdersIntro);
+        tvOrderIntro.setText("Details geselecteerde bestelling: ");
+        tvDisplayItemNames = findViewById(R.id.tvDisplayItemNames);
+        //tvDisplayMiddle = findViewById(R.id.tvMiddle);
+        tvDisplayAmount = findViewById(R.id.tvAmountsOrdered);
+
         btnNewOrder = findViewById(R.id.btnNewOrder);
-        btnSubmitOrder = findViewById(R.id.btnSubmitOrder);
         //Create empty list here, will be populated when loading is done
         myOrders = new ArrayList<>();
         //Initialize the adapter and recyclerview
@@ -119,20 +118,17 @@ public class D_OrderHome extends AppCompatActivity implements CanShowOrderDetail
             public void onClick(View view) {
                 //final int position = view.getId();
                 Intent intentOrder = new Intent(D_OrderHome.this, D_NewOrder.class);
-                startActivityForResult(intentOrder, 0);
+                startActivityForResult(intentOrder,0);
             }
         });
+    }
 
-        btnSubmitOrder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (theNewOrder == null) {
-                    //nothing to do
-                } else {
-                    //submit order to database
-                }
-            }
-        });
+    public void refreshDisplay()
+    {
+        int saldo=0;
+        for (int i = 0; i < myOrders.size() ; i++) {
+
+        }
     }
 
     @Override
@@ -143,9 +139,9 @@ public class D_OrderHome extends AppCompatActivity implements CanShowOrderDetail
                 //No order was created, nothing to do
                 break;
             case Order.RESULT_ORDER_CREATED:
-                theNewOrder = (Order) data.getSerializableExtra(Order.PUTEXTRANAME_NEW_ORDER);
-                showOrderDetails(-1);
+                quizLoader.loadOrdersForuser();
                 break;
         }
     }
+
 }

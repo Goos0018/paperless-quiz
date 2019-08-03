@@ -24,6 +24,8 @@ public class QuizDatabase {
     public static final String PARAMNAME_NEWUSERNAME = "newUserName=";
     public static final String PARAMNAME_ISCORRECT = "isCorrect=";
     public static final String PARAMNAME_IDTEAMS = "idTeams=";
+    public static final String PARAMNAME_ITEMSTOORDER = "itemsToOrder=";
+    public static final String PARAMNAME_TIME = "time=";
     // Available PHP scripts
     public static final String SCRIPT_GET_QUIZLIST = "getquizlist.php";
     public static final String SCRIPT_GET_QUIZUSERS = "getuserlist.php";
@@ -36,7 +38,7 @@ public class QuizDatabase {
     public static final String SCRIPT_UPDATETEAM = "updateteam.php";
     public static final String SCRIPT_CORRECTQUESTION = "correctquestion.php";
     public static final String SCRIPT_CALCULATESCORESFORROUND = "calculatescoresforround.php";
-
+    public static final String SCRIPT_SUBMITORDER = "createorder.php";
     //Param values - query names
     public static final String PARAMVALUE_QRY_ALL_ROUNDS = "rounds";
     public static final String PARAMVALUE_QRY_ALL_QUESTIONS = "questions";
@@ -76,6 +78,7 @@ public class QuizDatabase {
     public static final int REQUEST_ID_UPDATETEAM = 105;
     public static final int REQUEST_ID_CORRECTQUESTION = 106;
     public static final int REQUEST_ID_CALCULATESCORES = 107;
+    public static final int REQUEST_ID_SUBMITORDER = 108;
 
     //User types - these must match what is defined in the constants.php
     public static final int USERTYPE_TEAM = 0;

@@ -10,11 +10,15 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.paperlessquiz.adapters.ShowOrderItemsAdapter;
 import com.paperlessquiz.orders.Order;
 import com.paperlessquiz.quiz.Quiz;
+import com.paperlessquiz.quiz.QuizLoader;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * This activity is used to create an order
@@ -25,6 +29,7 @@ public class D_NewOrder extends AppCompatActivity {
     ShowOrderItemsAdapter showOrderItemsAdapter;
     Order thisOrder = new Order();
     Quiz thisQuiz = MyApplication.theQuiz;
+    QuizLoader quizLoader;
 
     //QuizLoader quizLoader;
     //boolean  answersSubmittedLoaded;
@@ -37,7 +42,7 @@ public class D_NewOrder extends AppCompatActivity {
         alertDialogBuilder.setTitle("Bestelling doorsturen?");
 
         String message = "Onderstaande bestelling doorgeven? \n\n" +
-                thisOrder.displayOrderDetails();
+                thisOrder.displayOrderItems();
         // set dialog message
         alertDialogBuilder
                 .setMessage(message)
@@ -58,8 +63,6 @@ public class D_NewOrder extends AppCompatActivity {
 
         // show it
         alertDialog.show();
-
-
     }
 
     public void createOrder() {
@@ -69,6 +72,7 @@ public class D_NewOrder extends AppCompatActivity {
         } else {
             intent.putExtra(Order.PUTEXTRANAME_NEW_ORDER, thisOrder);
             setResult(Order.RESULT_ORDER_CREATED, intent);
+            quizLoader.submitOrder(thisOrder.createOrderParameter(),getCurrentTime());
         }
         D_NewOrder.this.finish();
     }
@@ -87,6 +91,7 @@ public class D_NewOrder extends AppCompatActivity {
         rvShowOrderItems.setLayoutManager(layoutManager);
         showOrderItemsAdapter = new ShowOrderItemsAdapter(this, MyApplication.itemsToOrderArray, thisOrder);
         rvShowOrderItems.setAdapter(showOrderItemsAdapter);
+        quizLoader = new QuizLoader(this);
     }
 
     public Order getThisOrder() {
@@ -119,5 +124,13 @@ public class D_NewOrder extends AppCompatActivity {
     public void onBackPressed() {
         //Don't do anything, they should either cancel or submit the order
         //Toast.makeText(this, D_NewOrder.this.getString(R.string.participant_nobackallowed), Toast.LENGTH_SHORT).show();
+    }
+
+    public String getCurrentTime() {
+        Date date = new Date();
+        String strDateFormat = "hh:mm";
+        DateFormat dateFormat = new SimpleDateFormat(strDateFormat);
+        String formattedDate= dateFormat.format(date);
+        return formattedDate;
     }
 }

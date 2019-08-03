@@ -51,6 +51,16 @@ public class Order implements Serializable {
         }
     }
 
+    public String createOrderParameter(){
+        String theParam = "";
+        for (Integer i : theOrder.keySet()) {
+            //String itemName = MyApplication.itemsToOrder.get(i).getItemName();
+            theParam = theParam + i.intValue() + "-" + theOrder.get(i) + ",";
+        }
+        theParam=theParam.substring(0,theParam.length()-1);
+        return theParam;
+    }
+
     public boolean isEmpty() {
         return theOrder.isEmpty();
     }
@@ -59,12 +69,19 @@ public class Order implements Serializable {
         return lastStatusUpdate;
     }
 
-    public String displayOrderDetails() {
+    public String displayOrderItems() {
         String orderDetails = "";
         for (Integer i : theOrder.keySet()) {
             String itemName = MyApplication.itemsToOrder.get(i).getItemName();
-            String newLine = rpad(itemName,30);
-            orderDetails = orderDetails + newLine + ": " + theOrder.get(i) + "\n";
+            orderDetails = orderDetails + itemName + "\n";
+        }
+        return orderDetails;
+    }
+
+    public String displayOrderAmounts() {
+        String orderDetails = "";
+        for (Integer i : theOrder.keySet()) {
+            orderDetails = orderDetails + " : " + theOrder.get(i) + "\n";
         }
         return orderDetails;
     }

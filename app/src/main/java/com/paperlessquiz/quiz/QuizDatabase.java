@@ -47,6 +47,9 @@ public class QuizDatabase {
     public static final String PARAMVALUE_QRY_MY_EVENTLOGS = "myevents";
     public static final String PARAMVALUE_QRY_SCORES = "scores";
     public static final String PARAMVALUE_QRY_ORDERITEMS = "orderitems";
+    public static final String PARAMVALUE_QRY_ORDERSFORUSER = "ordersforuser";
+    public static final String PARAMVALUE_QRY_ALLORDERS = "allorders";
+    public static final String PARAMVALUE_QRY_ORDERDETAILS="orderdetails";
 
     //Request ID's
     //GET Requests
@@ -61,6 +64,9 @@ public class QuizDatabase {
     public static final int REQUEST_ID_GET_FULLQUESTIONS = 8;
     public static final int REQUEST_ID_GET_RESULTS = 9;
     public static final int REQUEST_ID_GET_ORDERITEMS = 10;
+    public static final int REQUEST_ID_GET_ORDERSFORUSER = 11;
+    public static final int REQUEST_ID_GET_ALLORDERS = 12;
+    public static final int REQUEST_ID_GET_ORDERDETAILS = 13;
     //Submit requests
     public static final int REQUEST_ID_AUTHENTICATE = 100;
     public static final int REQUEST_ID_SUBMITANSWER = 101;
@@ -154,6 +160,15 @@ public class QuizDatabase {
     public static final String COLNAME_ITEMCOST = "ItemCost";
     public static final String COLNAME_ITEMUNITSAVAIALABLE = "ItemUnitsAvailable";
     public static final String COLNAME_ITEMSOLDOUT = "ItemSoldOut";
+    //Column names table Orders
+    public static final String COLNAME_IDORDER = "idOrder";
+    public static final String COLNAME_ORDERCATEGORY = "OrderCategory";
+    public static final String COLNAME_ORDERNUMBER = "OrderNumber";
+    public static final String COLNAME_ORDERCOST = "OrderCost";
+    public static final String COLNAME_ORDERSTATUS = "OrderStatus";
+    public static final String COLNAME_ORDERLASTUPDATE = "OrderLastUpdate";
+    //Column names table ItemsOrdered
+    public static final String COLNAME_ORDEREDAMOUNT = "ItemsOrderedAmount";
 
     //Helpfiles
     public static final String HELPFILE_PARTICIPANT = "ParticipantHelp.pdf";

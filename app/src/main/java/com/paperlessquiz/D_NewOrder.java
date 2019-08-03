@@ -1,7 +1,9 @@
 package com.paperlessquiz;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -27,6 +29,39 @@ public class D_NewOrder extends AppCompatActivity {
     //QuizLoader quizLoader;
     //boolean  answersSubmittedLoaded;
 
+    public void confirmOrder() {
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(D_NewOrder.this);
+
+        // set title
+        alertDialogBuilder.setTitle("Bestelling doorsturen?");
+
+        String message = "Onderstaande bestelling doorgeven? \n\n" +
+                thisOrder.displayOrderDetails();
+        // set dialog message
+        alertDialogBuilder
+                .setMessage(message)
+                .setCancelable(false)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        createOrder();
+                    }
+                })
+                .setNegativeButton("Back", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        // show it
+        alertDialog.show();
+
+
+    }
+
     public void createOrder() {
         Intent intent = new Intent();
         if (thisOrder.isEmpty()) {
@@ -34,7 +69,6 @@ public class D_NewOrder extends AppCompatActivity {
         } else {
             intent.putExtra(Order.PUTEXTRANAME_NEW_ORDER, thisOrder);
             setResult(Order.RESULT_ORDER_CREATED, intent);
-
         }
         D_NewOrder.this.finish();
     }
@@ -45,7 +79,7 @@ public class D_NewOrder extends AppCompatActivity {
         setContentView(R.layout.act_d_order);
 
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle(D_NewOrder.this.getString(R.string.order_title) + " (" + thisQuiz.getThisUser().getName() + ")");
+        actionBar.setTitle(D_NewOrder.this.getString(R.string.order_title));
 
         rvShowOrderItems = findViewById(R.id.rvShowOrderItems);
         rvShowOrderItems.setHasFixedSize(true);
@@ -75,7 +109,7 @@ public class D_NewOrder extends AppCompatActivity {
                 D_NewOrder.this.finish();
                 break;
             case R.id.submit:
-                createOrder();
+                confirmOrder();
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -83,7 +117,7 @@ public class D_NewOrder extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-            //Don't do anything, they should either cancel or submit the order
-            //Toast.makeText(this, D_NewOrder.this.getString(R.string.participant_nobackallowed), Toast.LENGTH_SHORT).show();
+        //Don't do anything, they should either cancel or submit the order
+        //Toast.makeText(this, D_NewOrder.this.getString(R.string.participant_nobackallowed), Toast.LENGTH_SHORT).show();
     }
 }

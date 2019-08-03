@@ -15,15 +15,40 @@ public class Order implements Serializable {
     public static final int RESULT_NO_ORDER_CREATED = 0;
     public static final int RESULT_ORDER_CREATED = 1;
     public static final String PUTEXTRANAME_NEW_ORDER = "newOrder";
+    public static final String STR_ORDER = "Bestelling ";
+    public static final String STR_SEPARATOR = "-";
 
-
-    ArrayList<String> statusUpdates;
-    int currentStatus, orderNr, userNr, idOrder, totalCost;
+    //ArrayList<String> statusUpdates;
+    int idOrder, userNr, orderNr, totalCost, currentStatus;
+    String lastStatusUpdate,orderCategory;
     String orderName;
+    boolean detailsLoaded;
     HashMap<Integer, Integer> theOrder;
+
+    public Order(int idOrder, int userNr, int orderNr, int totalCost, int currentStatus, String lastStatusUpdate, String orderCategory) {
+        this.idOrder = idOrder;
+        this.userNr = userNr;
+        this.orderNr = orderNr;
+        this.totalCost = totalCost;
+        this.currentStatus = currentStatus;
+        this.lastStatusUpdate = lastStatusUpdate;
+        this.orderCategory = orderCategory;
+        this.orderName = STR_ORDER + orderNr + STR_SEPARATOR + orderCategory;
+        detailsLoaded = false;
+        theOrder=new HashMap<>();
+    }
 
     public Order() {
         this.theOrder = new HashMap<>();
+    }
+
+
+    //Load the details of the order into the theOrder Hashmap based on a list of ItemsOrdered (retrieved from the database)
+    public void loadDetails(ArrayList<ItemOrdered> itemsOrdered){
+        for (int i = 0; i < itemsOrdered.size() ; i++) {
+            ItemOrdered thisItem = itemsOrdered.get(i);
+            theOrder.put(Integer.valueOf(thisItem.getIdOrderItem()),Integer.valueOf(thisItem.getAmountOrdered()));
+        }
     }
 
     public boolean isEmpty() {
@@ -31,12 +56,7 @@ public class Order implements Serializable {
     }
 
     public String getLastStatusUpdate() {
-        if (statusUpdates == null) {
-            return "";
-        } else {
-            return statusUpdates.get(statusUpdates.size() - 1);
-        }
-
+        return lastStatusUpdate;
     }
 
     public String displayOrderDetails() {
@@ -98,14 +118,6 @@ public class Order implements Serializable {
         return theAmount;
     }
 
-    public ArrayList<String> getStatusUpdates() {
-        return statusUpdates;
-    }
-
-    public void setStatusUpdates(ArrayList<String> statusUpdates) {
-        this.statusUpdates = statusUpdates;
-    }
-
     public int getCurrentStatus() {
         return currentStatus;
     }
@@ -142,10 +154,6 @@ public class Order implements Serializable {
         return totalCost;
     }
 
-    public void setTotalCost(int totalCost) {
-        this.totalCost = totalCost;
-    }
-
     public String getOrderName() {
         return orderName;
     }
@@ -156,5 +164,13 @@ public class Order implements Serializable {
 
     public void setTheOrder(HashMap<Integer, Integer> theOrder) {
         this.theOrder = theOrder;
+    }
+
+    public boolean isDetailsLoaded() {
+        return detailsLoaded;
+    }
+
+    public void setDetailsLoaded(boolean detailsLoaded) {
+        this.detailsLoaded = detailsLoaded;
     }
 }

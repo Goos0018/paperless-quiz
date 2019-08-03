@@ -9,8 +9,12 @@ import com.paperlessquiz.R;
 import com.paperlessquiz.answer.Answer;
 import com.paperlessquiz.loadinglisteners.LLShowProgressActWhenComplete;
 import com.paperlessquiz.loadinglisteners.LLSilent;
+import com.paperlessquiz.orders.ItemOrdered;
+import com.paperlessquiz.orders.Order;
 import com.paperlessquiz.orders.OrderItem;
+import com.paperlessquiz.parsers.ItemOrderedParser;
 import com.paperlessquiz.parsers.OrderItemParser;
+import com.paperlessquiz.parsers.OrderParser;
 import com.paperlessquiz.users.Organizer;
 import com.paperlessquiz.users.Team;
 import com.paperlessquiz.users.User;
@@ -43,6 +47,8 @@ public class QuizLoader {
     public HTTPGetData<EventLog> getMyEventLogsRequest;
     public HTTPGetData<ResultAfterRound> getResultsRequest;
     public HTTPGetData<OrderItem> getOrderItems;
+    public HTTPGetData<Order> getOrders;
+    public HTTPGetData<ItemOrdered> getOrderDetails;
     public HTTPSubmit authenticateRequest;
     public HTTPSubmit submitAnswerRequest;
     public HTTPSubmit submitAnswersSubmittedRequest;
@@ -187,6 +193,31 @@ public class QuizLoader {
                 context.getString(R.string.loader_updatingquiz),
                 "Something went wrong: ", false));
     }
+
+    //Load orders for the user
+    public void loadOrdersForuser() {
+        int idUser = thisQuiz.getThisUser().getIdUser();
+        String userPassword = thisQuiz.getThisUser().getUserPassword();
+        int idQuiz = thisQuiz.getListData().getIdQuiz();
+        String scriptParams = generateParamsPHP(QuizDatabase.PARAMVALUE_QRY_ORDERSFORUSER, idUser, userPassword, idQuiz, idUser);
+        getOrders = new HTTPGetData<>(context, scriptParams, QuizDatabase.REQUEST_ID_GET_ORDERSFORUSER);
+        getOrders.getItems(new OrderParser(), new LLShowProgressActWhenComplete(context, context.getString(R.string.loader_pleasewait),
+                context.getString(R.string.loader_updatingquiz),
+                "Something went wrong: ", false));
+    }
+
+    public void loadOrderDetails(int idOrder){
+        int idUser = thisQuiz.getThisUser().getIdUser();
+        String userPassword = thisQuiz.getThisUser().getUserPassword();
+        int idQuiz = thisQuiz.getListData().getIdQuiz();
+        String scriptParams = generateParamsPHP(QuizDatabase.PARAMVALUE_QRY_ORDERDETAILS, idUser, userPassword, idQuiz, idOrder);
+        getOrderDetails = new HTTPGetData<>(context, scriptParams, QuizDatabase.REQUEST_ID_GET_ORDERDETAILS);
+        getOrderDetails.getItems(new ItemOrderedParser(), new LLShowProgressActWhenComplete(context, context.getString(R.string.loader_pleasewait),
+                context.getString(R.string.loader_updatingquiz),
+                "Something went wrong: ", false));
+    }
+
+
 
     //Get the items you can order and put them in the MyApplication itemsToOrderArray object
     public void loadItemsToOrderIntoQuiz() {

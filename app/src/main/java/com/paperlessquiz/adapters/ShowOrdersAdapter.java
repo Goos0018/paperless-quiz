@@ -13,6 +13,7 @@ import com.paperlessquiz.R;
 import com.paperlessquiz.orders.CanShowOrderDetail;
 import com.paperlessquiz.orders.Order;
 import com.paperlessquiz.quiz.QuizDatabase;
+import com.paperlessquiz.quiz.QuizLoader;
 
 import java.util.ArrayList;
 
@@ -22,10 +23,12 @@ public class ShowOrdersAdapter extends RecyclerView.Adapter<ShowOrdersAdapter.Vi
     //private Order theOrder;
     String euro = "€ ";
     CanShowOrderDetail parentActivity;
+    //QuizLoader quizLoader;
 
     public ShowOrdersAdapter(Context context, ArrayList<Order> orders) {
         this.orders = orders;
         parentActivity = (CanShowOrderDetail) context;
+        //quizLoader = new QuizLoader(context);
         //adapter = this;
         //this.theOrder = theOrder;
     }
@@ -54,10 +57,10 @@ public class ShowOrdersAdapter extends RecyclerView.Adapter<ShowOrdersAdapter.Vi
                 tvOrderLastStatusUpdate.setText(lastUpdate);
             }
             tvTotalCost.setText(euro + Integer.toString(orders.get(i).getTotalCost()));
-            switch (orders.get(i).getCurrentStatus()){
+            switch (orders.get(i).getCurrentStatus()) {
                 case QuizDatabase.ORDERSTATUS_NEW:
-                ivShowStatus.setImageResource(R.drawable.order_new);
-                break;
+                    ivShowStatus.setImageResource(R.drawable.order_new);
+                    break;
                 case QuizDatabase.ORDERSTATUS_SUBMITTED:
                     ivShowStatus.setImageResource(R.drawable.order_submitted);
                     break;
@@ -89,8 +92,8 @@ public class ShowOrdersAdapter extends RecyclerView.Adapter<ShowOrdersAdapter.Vi
             @Override
             public void onClick(View view) {
                 final int position = view.getId();
-                int orderNr = orders.get(i).getOrderNr();
-                parentActivity.showOrderDetails(orderNr);
+                //int orderNr = orders.get(i).getOrderNr();
+                parentActivity.showOrderDetails(i);
             }
         });
     }

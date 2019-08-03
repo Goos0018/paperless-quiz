@@ -1,38 +1,28 @@
 package com.paperlessquiz.orders;
 
+/**
+ * This represents one ordered item as it is read from the database
+ * Will be used to create the order details for the user
+ */
 public class ItemOrdered {
-    //TODO: delete not needed
-    /*
-    int idOrderItem, nrOfItemsOrdered, totalCost;
 
-    public ItemOrdered(int idOrderItem, int nrOfItemsOrdered, int totalCost) {
+    int idOrder, idOrderItem,amountOrdered;
+
+    public ItemOrdered(int idOrder, int idOrderItem, int amountOrdered) {
+        this.idOrder = idOrder;
         this.idOrderItem = idOrderItem;
-        this.nrOfItemsOrdered = nrOfItemsOrdered;
-        this.totalCost = totalCost;
+        this.amountOrdered = amountOrdered;
+    }
+
+    public int getIdOrder() {
+        return idOrder;
     }
 
     public int getIdOrderItem() {
         return idOrderItem;
     }
 
-    public void setIdOrderItem(int idOrderItem) {
-        this.idOrderItem = idOrderItem;
+    public int getAmountOrdered() {
+        return amountOrdered;
     }
-
-    public int getNrOfItemsOrdered() {
-        return nrOfItemsOrdered;
-    }
-
-    public void setNrOfItemsOrdered(int nrOfItemsOrdered) {
-        this.nrOfItemsOrdered = nrOfItemsOrdered;
-    }
-
-    public int getTotalCost() {
-        return totalCost;
-    }
-
-    public void setTotalCost(int totalCost) {
-        this.totalCost = totalCost;
-    }
-    */
 }

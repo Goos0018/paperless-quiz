@@ -65,9 +65,10 @@ public class C_BarResponsibleHome extends MyActivity implements LoadingActivity,
             //refreshSaldo();
             //quizLoader.updateAnswersSubmittedIntoQuiz();
             if (showOrdersAdapter != null) {
-                //showOrdersAdapter.notifyDataSetChanged();
-                showOrdersAdapter = new ShowOrdersAdapter(this, allOrders);
-                rvShowAllOrders.setAdapter(showOrdersAdapter);
+                showOrdersAdapter.setOrders(allOrders);
+                showOrdersAdapter.notifyDataSetChanged();
+                //showOrdersAdapter = new ShowOrdersAdapter(this, allOrders);
+                //rvShowAllOrders.setAdapter(showOrdersAdapter);
                 //Select the top row = most recent order
                 if (allOrders.size() > 0) {
                     showOrder(0);
@@ -100,7 +101,17 @@ public class C_BarResponsibleHome extends MyActivity implements LoadingActivity,
         String detailItems = "";
         String detailAmounts = "";
         //Details should be loaded at this point
-        tvSelectedOrderIntro.setText("Details " + theSelectedOrder.getOrderName());
+        String header;
+        //Show if this is an order for a team or an organizer, in the first case, show the team nr, otherwise, the username
+        if (theSelectedOrder.getUserType() == QuizDatabase.USERTYPE_TEAM) {
+            header = QuizDatabase.TEAM + Integer.toString(theSelectedOrder.getUserNr());
+        }
+        else
+        {
+            header = theSelectedOrder.getUserName();
+        }
+        header += " // " + theSelectedOrder.getOrderName();
+        tvSelectedOrderIntro.setText(header);
         detailItems = theSelectedOrder.displayOrderItems();
         detailAmounts = theSelectedOrder.displayOrderAmounts();
         tvItemNames.setText(detailItems);
@@ -183,7 +194,7 @@ public class C_BarResponsibleHome extends MyActivity implements LoadingActivity,
         layoutManager = new LinearLayoutManager(this);
         rvShowAllOrders.setLayoutManager(layoutManager);
         showOrdersAdapter = new ShowOrdersAdapter(this, allOrders);
-        //rvShowAllOrders.setAdapter(showOrdersAdapter);
+        rvShowAllOrders.setAdapter(showOrdersAdapter);
         quizLoader.loadAllOrders(selectedStatuses,selectedCategories);
         //callingActivity =  getIntent().getClass()
     }

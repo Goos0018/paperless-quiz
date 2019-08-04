@@ -2,6 +2,7 @@ package com.paperlessquiz.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,6 +33,9 @@ public class ShowOrdersAdapter extends RecyclerView.Adapter<ShowOrdersAdapter.Vi
     String euro = QuizDatabase.EURO_SIGN;
     String team = QuizDatabase.TEAM;
     Quiz thisQuiz = MyApplication.theQuiz;
+    Context context;
+    int previousPosition=-1;
+    int colorWhenClicked, colorWhenNotClicked;
     //CanShowOrderDetail parentActivity;
     //QuizLoader quizLoader;
 
@@ -43,14 +47,15 @@ public class ShowOrdersAdapter extends RecyclerView.Adapter<ShowOrdersAdapter.Vi
         this.orders = orders;
         //parentActivity = (CanShowOrderDetail) context;
         parentActivity = (ItemClicked) context;
-        //quizLoader = new QuizLoader(context);
-        //adapter = this;
-        //this.theOrder = theOrder;
+        this.context=context;
+        colorWhenClicked= context.getResources().getColor(R.color.colorDivider);
+        colorWhenNotClicked= context.getResources().getColor(R.color.white);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvOrderName, tvOrderLastStatusUpdate, tvTotalCost;
         ImageView ivShowStatus;
+        CardView cvCardView;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -58,16 +63,23 @@ public class ShowOrdersAdapter extends RecyclerView.Adapter<ShowOrdersAdapter.Vi
             tvOrderLastStatusUpdate = itemView.findViewById(R.id.tvOrderLastStatusUpdate);
             tvTotalCost = itemView.findViewById(R.id.tvTotalCost); //This item is abused to show the team nr for the bar helpers
             ivShowStatus = itemView.findViewById(R.id.ivShowStatus);
+            cvCardView = itemView.findViewById(R.id.cvCardView);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    //reset the background of the previously clicked item
+                    notifyItemChanged(previousPosition);
+                    cvCardView.setCardBackgroundColor(colorWhenClicked);
                     parentActivity.onItemClicked(orders.indexOf((Order) view.getTag()));
+                    previousPosition = getAdapterPosition();
+
                 }
             });
         }
 
         public void setFields(int i) {
+            cvCardView.setCardBackgroundColor(colorWhenNotClicked);
             itemView.setTag(orders.get(i));
             tvOrderName.setText(orders.get(i).getOrderName());
             tvOrderLastStatusUpdate.setText(orders.get(i).getLastStatusUpdate());
@@ -79,9 +91,6 @@ public class ShowOrdersAdapter extends RecyclerView.Adapter<ShowOrdersAdapter.Vi
                 tvOrderLastStatusUpdate.setText(lastUpdate);
             }
             switch (MyApplication.theQuiz.getThisUser().getUserType()){
-                case QuizDatabase.USERTYPE_TEAM:
-                    tvTotalCost.setText(euro + Integer.toString(orders.get(i).getTotalCost()));
-                    break;
                 case QuizDatabase.USERTYPE_BARRESPONSIBLE:
                 case QuizDatabase.USERTYPE_BARHELPER:
                     //Show if this is an order for a team or an organizer, in the first case, show the team nr, otherwise, the username
@@ -96,6 +105,8 @@ public class ShowOrdersAdapter extends RecyclerView.Adapter<ShowOrdersAdapter.Vi
                         tvTotalCost.setText(userName);
                     }
                     break;
+                default:
+                    tvTotalCost.setText(euro + Integer.toString(orders.get(i).getTotalCost()));
             }
 
             switch (orders.get(i).getCurrentStatus()) {

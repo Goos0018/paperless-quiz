@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
@@ -37,6 +38,7 @@ public class D_OrderHome extends AppCompatActivity implements LoadingActivity, S
     RecyclerView.LayoutManager layoutManager;
     ShowOrdersAdapter showOrdersAdapter;
     TextView tvSaldoIntro, tvSaldo, tvOrderIntro, tvDisplayItemNames, tvOverviewIntro, tvDisplayAmount;
+    CardView cvOrderDetails;
     Button btnNewOrder;
     Order theNewOrder, theSelectedOrder;
     Quiz thisQuiz = MyApplication.theQuiz;
@@ -60,22 +62,24 @@ public class D_OrderHome extends AppCompatActivity implements LoadingActivity, S
                 orderDetailsLoaded = true;
                 break;
         }
-        //If everything is properly loaded, we can start populating the central Quiz object
+        //If everything is properly loaded, we can get on wth the rest
         if (ordersLoaded) {
             //reset the loading statuses
             ordersLoaded = false;
             myOrders = quizLoader.getOrders.getResultsList();
             refreshSaldo();
-            //quizLoader.updateAnswersSubmittedIntoQuiz();
             if (showOrdersAdapter != null) {
                 //showOrdersAdapter.notifyDataSetChanged();
                 showOrdersAdapter = new ShowOrdersAdapter(this, myOrders);
                 rvShowOrders.setAdapter(showOrdersAdapter);
                 //Select the top row = most recent order
                 if (myOrders.size() > 0) {
+                    cvOrderDetails.setVisibility(View.VISIBLE);
                     showOrder(0);
+                    tvOverviewIntro.setText(this.getString(R.string.orderhome_overview_orders));
                 } else {
-                    tvOrderIntro.setText("You have no orders yet: ");
+                    cvOrderDetails.setVisibility(View.GONE);
+                    tvOverviewIntro.setText(this.getString(R.string.orderhome_no_orders_yet));
                 }
             }
         }
@@ -116,8 +120,9 @@ public class D_OrderHome extends AppCompatActivity implements LoadingActivity, S
         setContentView(R.layout.act_d_order_home);
         setActionBarIcon();
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("the Boooozz...");
+        actionBar.setTitle("the booze ...");
         //Get stuff from the interface
+        cvOrderDetails = findViewById(R.id.cvOrderDetails);
         rvShowOrders = findViewById(R.id.rvShowOrders);
         tvSaldo = findViewById(R.id.tvSaldo);
         tvSaldoIntro = findViewById(R.id.tvSaldoIntro);
@@ -125,7 +130,6 @@ public class D_OrderHome extends AppCompatActivity implements LoadingActivity, S
         tvOrderIntro = findViewById(R.id.tvOrdersIntro);
         tvDisplayItemNames = findViewById(R.id.tvDisplayItemNames);
         tvOverviewIntro = findViewById(R.id.tvIntroOverview);
-        tvOverviewIntro.setText("Overzicht bestellingen");
         tvDisplayAmount = findViewById(R.id.tvAmountsOrdered);
 
         //Create empty list here, will be populated when loading is done
@@ -160,7 +164,6 @@ public class D_OrderHome extends AppCompatActivity implements LoadingActivity, S
                 break;
         }
     }
-
 
     public void setActionBarIcon() {
         //Set the action bar

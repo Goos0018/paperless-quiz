@@ -34,7 +34,9 @@ public class ShowOrdersAdapter extends RecyclerView.Adapter<ShowOrdersAdapter.Vi
     String team = QuizDatabase.TEAM;
     Quiz thisQuiz = MyApplication.theQuiz;
     Context context;
-    int previousPosition=-1;
+    private int previousPosition=0;
+    private int currentPosition=0;
+
     int colorWhenClicked, colorWhenNotClicked;
     //CanShowOrderDetail parentActivity;
     //QuizLoader quizLoader;
@@ -73,13 +75,20 @@ public class ShowOrdersAdapter extends RecyclerView.Adapter<ShowOrdersAdapter.Vi
                     cvCardView.setCardBackgroundColor(colorWhenClicked);
                     parentActivity.onItemClicked(orders.indexOf((Order) view.getTag()));
                     previousPosition = getAdapterPosition();
+                    currentPosition = getAdapterPosition();
 
                 }
             });
         }
 
         public void setFields(int i) {
-            cvCardView.setCardBackgroundColor(colorWhenNotClicked);
+            if (i==currentPosition){
+                cvCardView.setCardBackgroundColor(colorWhenClicked);
+            }
+            else
+            {
+                cvCardView.setCardBackgroundColor(colorWhenNotClicked);
+            }
             itemView.setTag(orders.get(i));
             tvOrderName.setText(orders.get(i).getOrderName());
             tvOrderLastStatusUpdate.setText(orders.get(i).getLastStatusUpdate());
@@ -158,5 +167,9 @@ public class ShowOrdersAdapter extends RecyclerView.Adapter<ShowOrdersAdapter.Vi
 
     public void setOrders(ArrayList<Order> orders) {
         this.orders = orders;
+    }
+
+    public void setCurrentPosition(int currentPosition) {
+        this.currentPosition = currentPosition;
     }
 }

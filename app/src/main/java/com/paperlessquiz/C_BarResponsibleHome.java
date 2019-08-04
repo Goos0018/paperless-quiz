@@ -72,6 +72,7 @@ public class C_BarResponsibleHome extends MyActivity implements LoadingActivity,
                 //Select the top row = most recent order
                 if (allOrders.size() > 0) {
                     showOrder(0);
+                    showOrdersAdapter.setCurrentPosition(0);
                 } else {
                     tvOverviewIntro.setText("You have no orders yet: ");
                 }
@@ -152,6 +153,7 @@ public class C_BarResponsibleHome extends MyActivity implements LoadingActivity,
                 String time = MyApplication.getCurrentTime();
                 int newStatus = QuizDatabase.ORDERSTATUS_SUBMITTED;
                 quizLoader.updateOrderStatus(orderId,newStatus,time);
+                //TODO: move this to when the order change is done
                 quizLoader.loadAllOrders(selectedStatuses,selectedCategories);
             }
         });

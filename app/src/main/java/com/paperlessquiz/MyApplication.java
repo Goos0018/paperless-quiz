@@ -15,7 +15,10 @@ import com.paperlessquiz.orders.OrderItem;
 import com.paperlessquiz.quiz.Quiz;
 import com.paperlessquiz.quiz.QuizGenerator;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -91,6 +94,14 @@ public class MyApplication extends Application {
             public void onActivityDestroyed(Activity activity) {
             }
         });
+    }
+
+    public static String getCurrentTime() {
+        Date date = new Date();
+        String strDateFormat = "hh:mm";
+        DateFormat dateFormat = new SimpleDateFormat(strDateFormat);
+        String formattedDate= dateFormat.format(date);
+        return formattedDate;
     }
 
     public static boolean isTabletDevice(Context activityContext) {

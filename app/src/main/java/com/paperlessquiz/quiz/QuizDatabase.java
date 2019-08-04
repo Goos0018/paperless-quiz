@@ -28,6 +28,10 @@ public class QuizDatabase {
     public static final String PARAMNAME_TIME = "time=";
     public static final String PARAMNAME_ORDERBY = "orderBy=";
     public static final String PARAMNAME_ORDERDIRECTION = "orderDirection=";
+    public static final String PARAMNAME_ORDERCATEGORIES = "orderCategories=";
+    public static final String PARAMNAME_ORDERSTATUSLIST = "orderStatusList=";
+    public static final String PARAMNAME_IDORDER = "idOrder=";
+    public static final String PARAMNAME_NEWORDERSTATUS = "newOrderStatus=";
     // Available PHP scripts
     public static final String SCRIPT_GET_QUIZLIST = "getquizlist.php";
     public static final String SCRIPT_GET_QUIZUSERS = "getuserlist.php";
@@ -41,6 +45,8 @@ public class QuizDatabase {
     public static final String SCRIPT_CORRECTQUESTION = "correctquestion.php";
     public static final String SCRIPT_CALCULATESCORESFORROUND = "calculatescoresforround.php";
     public static final String SCRIPT_SUBMITORDER = "createorder.php";
+    public static final String SCRIPT_GET_ALLORDERS = "getallorders.php";
+    public static final String SCRIPT_UPDATEORDERSTATUS = "updateorderstatus.php";
     //Param values - query names
     public static final String PARAMVALUE_QRY_ALL_ROUNDS = "rounds";
     public static final String PARAMVALUE_QRY_ALL_QUESTIONS = "questions";
@@ -91,6 +97,8 @@ public class QuizDatabase {
     public static final int USERTYPE_CORRECTOR = 3;
     public static final int USERTYPE_JUROR = 4;
     public static final int USERTYPE_SALES = 5;
+    public static final int USERTYPE_BARRESPONSIBLE = 6;
+    public static final int USERTYPE_BARHELPER = 7;
 
     //User Statuses  - these must match what is defined in the constants.php
     public static final int USERSTATUS_NOTPRESENT = 0;
@@ -189,6 +197,8 @@ public class QuizDatabase {
 
     //Various other constants
     public static final String INTENT_EXTRANAME_IS_ORGANIZER = "isOrganizer";
-    public static final String EURO_SIGN = "€ ";
+    public static final String EURO_SIGN = "€ ";    //Used in ShowOrderAdapter
+    public static final String TEAM = "Tafel ";         //Used in ShowOrderAdapter
+    public static final int MAX_NAME_LENGTH = 10;         //Used in ShowOrderAdapter
     public static final int REQUEST_CODE_ORDERHOME = 1;
 }

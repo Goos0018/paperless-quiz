@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".D_OrderHome"></activity>
+        <activity android:name=".C_BarResponsibleHome"></activity>
+        <activity android:name=".D_OrderHome" />
         <activity android:name=".D_NewOrder" />
         <activity android:name=".DisplayPDF" />
         <activity

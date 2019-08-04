@@ -38,8 +38,8 @@
                     android:layout_marginTop="@dimen/margin_tiny"
                     android:layout_marginRight="@dimen/margin_tiny"
                     android:text="Textview"
-                    android:textSize="@dimen/text_size_medium"
-                    android:textStyle="bold" />
+                    android:textColor="@color/niceBlue"
+                    android:textSize="@dimen/text_size_medium" />
 
                 <TextView
                     android:id="@+id/tvOrderLastStatusUpdate"
@@ -50,7 +50,8 @@
                     android:layout_marginTop="@dimen/margin_tiny"
                     android:layout_marginRight="@dimen/margin_tiny"
                     android:layout_marginBottom="@dimen/margin_tiny"
-                    android:text="TextView" />
+                    android:text="TextView"
+                    android:textSize="10sp" />
             </LinearLayout>
 
             <ImageView

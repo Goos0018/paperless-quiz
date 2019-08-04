@@ -19,15 +19,17 @@ public class Order implements Serializable {
     public static final String STR_SEPARATOR = "-";
 
     //ArrayList<String> statusUpdates;
-    int idOrder, userNr, orderNr, totalCost, currentStatus;
-    String lastStatusUpdate, orderCategory;
+    int idOrder, userNr, userType, orderNr, totalCost, currentStatus;
+    String lastStatusUpdate, orderCategory, userName;
     String orderName;
     boolean detailsLoaded;
     HashMap<Integer, Integer> theOrder;
 
-    public Order(int idOrder, int userNr, int orderNr, int totalCost, int currentStatus, String lastStatusUpdate, String orderCategory) {
+    public Order(int idOrder, int userNr, int userType, String userName, int orderNr, int totalCost, int currentStatus, String lastStatusUpdate, String orderCategory) {
         this.idOrder = idOrder;
         this.userNr = userNr;
+        this.userType = userType;
+        this.userName=userName;
         this.orderNr = orderNr;
         this.totalCost = totalCost;
         this.currentStatus = currentStatus;
@@ -202,5 +204,13 @@ public class Order implements Serializable {
 
     public void setDetailsLoaded(boolean detailsLoaded) {
         this.detailsLoaded = detailsLoaded;
+    }
+
+    public int getUserType() {
+        return userType;
+    }
+
+    public String getUserName() {
+        return userName;
     }
 }

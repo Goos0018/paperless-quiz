@@ -57,6 +57,7 @@ public class QuizLoader {
     public HTTPSubmit correctQuestionRequest;
     public HTTPSubmit calculateStandingsRequest;
     public HTTPSubmit submitOrderRequest;
+    public HTTPSubmit updateOrderStatusRequest;
 
     public QuizLoader(Context context) {
         this.context = context;
@@ -204,6 +205,30 @@ public class QuizLoader {
         scriptParams = scriptParams + QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_ORDERBY + QuizDatabase.COLNAME_ORDERNUMBER +
                 QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_ORDERDIRECTION + QuizDatabase.PARAMVALUE_ORDERDESC;
         getOrders = new HTTPGetData<>(context, scriptParams, QuizDatabase.REQUEST_ID_GET_ORDERSFORUSER);
+        getOrders.getItems(new OrderParser(), new LLShowProgressActWhenComplete(context, context.getString(R.string.loader_pleasewait),
+                context.getString(R.string.loader_updatingquiz),
+                "Something went wrong: ", false));
+    }
+
+    //Load ALL orders with status / category in a given comma separated list
+    // This will load all orders if the status resp. category is omitted
+    public void loadAllOrders(String statuses, String categories) {
+        int idUser = thisQuiz.getThisUser().getIdUser();
+        String userPassword = thisQuiz.getThisUser().getUserPassword();
+        int idQuiz = thisQuiz.getListData().getIdQuiz();
+        String encodedCategories;
+        try {
+            encodedCategories = URLEncoder.encode(categories.replaceAll("'", "\""), "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            encodedCategories = "Categories contains illegal characters";
+        }
+        String scriptParams = QuizDatabase.SCRIPT_GET_ALLORDERS + QuizDatabase.PHP_STARTPARAM + QuizDatabase.PARAMNAME_IDUSER + idUser +
+                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_USERPASSWORD + userPassword +
+                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_IDQUIZ+ idQuiz +
+                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_ORDERCATEGORIES + encodedCategories +
+                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_ORDERSTATUSLIST + statuses ;
+    getOrders = new HTTPGetData<>(context, scriptParams, QuizDatabase.REQUEST_ID_GET_ALLORDERS);
         getOrders.getItems(new OrderParser(), new LLShowProgressActWhenComplete(context, context.getString(R.string.loader_pleasewait),
                 context.getString(R.string.loader_updatingquiz),
                 "Something went wrong: ", false));
@@ -460,4 +485,17 @@ public class QuizLoader {
         submitOrderRequest = new HTTPSubmit(context, scriptParams, QuizDatabase.REQUEST_ID_SUBMITORDER);
         submitOrderRequest.sendRequest(new LLSilent());
     }
+
+    public void updateOrderStatus(int idOrder, int newStatus, String time) {
+        int idUser = thisQuiz.getThisUser().getIdUser();
+        String userPassword = thisQuiz.getThisUser().getUserPassword();
+        String scriptParams = QuizDatabase.SCRIPT_UPDATEORDERSTATUS + QuizDatabase.PHP_STARTPARAM + QuizDatabase.PARAMNAME_IDUSER + idUser +
+                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_USERPASSWORD + userPassword +
+                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_IDORDER + idOrder +
+                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_NEWORDERSTATUS + newStatus +
+                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_TIME + time;
+        updateOrderStatusRequest = new HTTPSubmit(context, scriptParams, QuizDatabase.REQUEST_ID_SUBMITORDER);
+        updateOrderStatusRequest.sendRequest(new LLSilent());
+    }
+
 }

@@ -9,20 +9,29 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.paperlessquiz.MyActivity;
+import com.paperlessquiz.MyApplication;
 import com.paperlessquiz.R;
 import com.paperlessquiz.orders.CanShowOrderDetail;
 import com.paperlessquiz.orders.Order;
+import com.paperlessquiz.quiz.Quiz;
 import com.paperlessquiz.quiz.QuizDatabase;
 import com.paperlessquiz.quiz.QuizLoader;
 
 import java.util.ArrayList;
 
+/**
+ * This adapter is used to display order. It is used by both teams and the bar helpers
+ * It depends on the user type what exactly is displayed.
+ */
 public class ShowOrdersAdapter extends RecyclerView.Adapter<ShowOrdersAdapter.ViewHolder> {
     private ArrayList<Order> orders;
     private ItemClicked parentActivity;
     //private ShowOrderItemsAdapter adapter;
     //private Order theOrder;
     String euro = QuizDatabase.EURO_SIGN;
+    String team = QuizDatabase.TEAM;
+    Quiz thisQuiz = MyApplication.theQuiz;
     //CanShowOrderDetail parentActivity;
     //QuizLoader quizLoader;
 
@@ -47,7 +56,7 @@ public class ShowOrdersAdapter extends RecyclerView.Adapter<ShowOrdersAdapter.Vi
             super(itemView);
             tvOrderName = itemView.findViewById(R.id.tvOrderName);
             tvOrderLastStatusUpdate = itemView.findViewById(R.id.tvOrderLastStatusUpdate);
-            tvTotalCost = itemView.findViewById(R.id.tvTotalCost);
+            tvTotalCost = itemView.findViewById(R.id.tvTotalCost); //This item is abused to show the team nr for the bar helpers
             ivShowStatus = itemView.findViewById(R.id.ivShowStatus);
 
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -69,7 +78,26 @@ public class ShowOrdersAdapter extends RecyclerView.Adapter<ShowOrdersAdapter.Vi
                 tvOrderLastStatusUpdate.setVisibility(View.VISIBLE);
                 tvOrderLastStatusUpdate.setText(lastUpdate);
             }
-            tvTotalCost.setText(euro + Integer.toString(orders.get(i).getTotalCost()));
+            switch (MyApplication.theQuiz.getThisUser().getUserType()){
+                case QuizDatabase.USERTYPE_TEAM:
+                    tvTotalCost.setText(euro + Integer.toString(orders.get(i).getTotalCost()));
+                    break;
+                case QuizDatabase.USERTYPE_BARRESPONSIBLE:
+                case QuizDatabase.USERTYPE_BARHELPER:
+                    //Show if this is an order for a team or an organizer, in the first case, show the team nr, otherwise, the username
+                    if (orders.get(i).getUserType() == QuizDatabase.USERTYPE_TEAM) {
+                        tvTotalCost.setText(team + Integer.toString(orders.get(i).getUserNr()));
+                    }
+                    else
+                    {
+                        String userName = orders.get(i).getUserName();
+                        if (userName.length() > QuizDatabase.MAX_NAME_LENGTH){
+                            userName= userName.substring(0,QuizDatabase.MAX_NAME_LENGTH);}
+                        tvTotalCost.setText(userName);
+                    }
+                    break;
+            }
+
             switch (orders.get(i).getCurrentStatus()) {
                 case QuizDatabase.ORDERSTATUS_NEW:
                     ivShowStatus.setImageResource(R.drawable.order_new);

@@ -45,6 +45,7 @@ public class B_Login extends AppCompatActivity implements LoadingActivity {
     String password;
     boolean roundsLoaded, questionsLoaded, answersLoaded, answersSubmittedLoaded, ordersLoaded; //False by default
     //private ProgressDialog loading;
+    Intent intent;
 
     @Override
     public void loadingComplete(int requestId) {
@@ -96,20 +97,28 @@ public class B_Login extends AppCompatActivity implements LoadingActivity {
             //loading.dismiss();
             switch (thisUser.getUserType()) {
                 case QuizDatabase.USERTYPE_TEAM:
-                    Intent intentP = new Intent(B_Login.this, C_ParticipantHome.class);
-                    startActivity(intentP);
+                    intent = new Intent(B_Login.this, C_ParticipantHome.class);
+                    startActivity(intent);
                     break;
                 case QuizDatabase.USERTYPE_QUIZMASTER:
-                    Intent intentQM = new Intent(B_Login.this, C_QuizmasterHome.class);
-                    startActivity(intentQM);
+                    intent = new Intent(B_Login.this, C_QuizmasterHome.class);
+                    startActivity(intent);
                     break;
                 case QuizDatabase.USERTYPE_CORRECTOR:
-                    Intent intentC = new Intent(B_Login.this, C_CorrectorHome.class);
-                    startActivity(intentC);
+                    intent = new Intent(B_Login.this, C_CorrectorHome.class);
+                    startActivity(intent);
                     break;
                 case QuizDatabase.USERTYPE_RECEPTIONIST:
-                    Intent intentR = new Intent(B_Login.this, C_ReceptionistHome.class);
-                    startActivity(intentR);
+                    intent = new Intent(B_Login.this, C_ReceptionistHome.class);
+                    startActivity(intent);
+                    break;
+                case QuizDatabase.USERTYPE_SALES:
+                    //intent = new Intent(B_Login.this, C_ReceptionistHome.class);
+                    //startActivity(intent);
+                    break;
+                case QuizDatabase.USERTYPE_BARRESPONSIBLE:
+                    intent = new Intent(B_Login.this, C_BarResponsibleHome.class);
+                    startActivity(intent);
                     break;
             }
         }

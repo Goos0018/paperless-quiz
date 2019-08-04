@@ -34,5 +34,6 @@
     <string name="order_title">Nieuwe bestelling</string>
     <string name="order_btn_new">Nieuwe bestelling</string>
     <string name="order_btn_submit">Bestelling plaatsen!</string>
+    <string name="barresp_activeorders">Alle openstaande orders</string>
 
 </resources>

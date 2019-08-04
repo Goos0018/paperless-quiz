@@ -1,5 +1,6 @@
 package com.paperlessquiz;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -43,6 +44,7 @@ public class B_Login extends AppCompatActivity implements LoadingActivity {
     QuizLoader quizLoader;
     String password;
     boolean roundsLoaded, questionsLoaded, answersLoaded, answersSubmittedLoaded, ordersLoaded; //False by default
+    //private ProgressDialog loading;
 
     @Override
     public void loadingComplete(int requestId) {
@@ -52,6 +54,7 @@ public class B_Login extends AppCompatActivity implements LoadingActivity {
                     thisUser.setUserPassword(password);
                     thisQuiz.setThisUser(thisUser);
                     //Load the rest of the quiz
+                    //loading = ProgressDialog.show(this, this.getString(R.string.loader_pleasewait), this.getString(R.string.loader_updatingquiz), false,false);
                     quizLoader.loadQuizFromDb();
                 } else {
                     //Authentication failed
@@ -90,6 +93,7 @@ public class B_Login extends AppCompatActivity implements LoadingActivity {
             quizLoader.updateAnswersSubmittedIntoQuiz();
             quizLoader.loadItemsToOrderIntoQuiz();
             //Now open the appropriate home screen
+            //loading.dismiss();
             switch (thisUser.getUserType()) {
                 case QuizDatabase.USERTYPE_TEAM:
                     Intent intentP = new Intent(B_Login.this, C_ParticipantHome.class);
@@ -108,7 +112,6 @@ public class B_Login extends AppCompatActivity implements LoadingActivity {
                     startActivity(intentR);
                     break;
             }
-
         }
     }
 

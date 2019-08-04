@@ -20,7 +20,7 @@ public class Order implements Serializable {
 
     //ArrayList<String> statusUpdates;
     int idOrder, userNr, orderNr, totalCost, currentStatus;
-    String lastStatusUpdate,orderCategory;
+    String lastStatusUpdate, orderCategory;
     String orderName;
     boolean detailsLoaded;
     HashMap<Integer, Integer> theOrder;
@@ -35,7 +35,7 @@ public class Order implements Serializable {
         this.orderCategory = orderCategory;
         this.orderName = STR_ORDER + orderNr + STR_SEPARATOR + orderCategory;
         detailsLoaded = false;
-        theOrder=new HashMap<>();
+        theOrder = new HashMap<>();
     }
 
     public Order() {
@@ -44,20 +44,20 @@ public class Order implements Serializable {
 
 
     //Load the details of the order into the theOrder Hashmap based on a list of ItemsOrdered (retrieved from the database)
-    public void loadDetails(ArrayList<ItemOrdered> itemsOrdered){
-        for (int i = 0; i < itemsOrdered.size() ; i++) {
+    public void loadDetails(ArrayList<ItemOrdered> itemsOrdered) {
+        for (int i = 0; i < itemsOrdered.size(); i++) {
             ItemOrdered thisItem = itemsOrdered.get(i);
-            theOrder.put(Integer.valueOf(thisItem.getIdOrderItem()),Integer.valueOf(thisItem.getAmountOrdered()));
+            theOrder.put(Integer.valueOf(thisItem.getIdOrderItem()), Integer.valueOf(thisItem.getAmountOrdered()));
         }
     }
 
-    public String createOrderParameter(){
+    public String createOrderParameter() {
         String theParam = "";
         for (Integer i : theOrder.keySet()) {
             //String itemName = MyApplication.itemsToOrder.get(i).getItemName();
             theParam = theParam + i.intValue() + "-" + theOrder.get(i) + ",";
         }
-        theParam=theParam.substring(0,theParam.length()-1);
+        theParam = theParam.substring(0, theParam.length() - 1);
         return theParam;
     }
 
@@ -86,10 +86,23 @@ public class Order implements Serializable {
         return orderDetails;
     }
 
-    public String rpad(String inStr, int finalLength)
-    {
-        return (inStr + "                          " // typically a sufficient length spaces string.
-        ).substring(0, finalLength);
+    public String displayFullOrderDetails() {
+        String orderDetails = "";
+        for (Integer i : theOrder.keySet()) {
+            String itemName = MyApplication.itemsToOrder.get(i).getItemName();
+            String itemAmount = theOrder.get(i) + " x ";
+            orderDetails = orderDetails + rpad(itemAmount, 5) + itemName + "\n";
+        }
+        return orderDetails;
+    }
+
+    public String rpad(String inStr, int finalLength) {
+        String tmp = "\t\t\t\t\t" + inStr;
+        if (finalLength > tmp.length()) {
+            return tmp;
+        } else {
+            return (tmp).substring(tmp.length() - finalLength);
+        }
     }
 
     //Remove items where amountOrdered = 0

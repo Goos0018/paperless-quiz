@@ -38,6 +38,7 @@ public class MyApplication extends Application {
     public static boolean keepLogs = true;                          //Indicates if you want to overwrite logs of the GScript each time
     public static int appDebugLevel = 3;                            //Overall debug level for the app itself, initialized here but later overwritten with what is configured for the Quiz
     public static HashMap<Integer,String> helpFiles;
+    public static boolean orderOngoing;
 
     @Override
     public void onCreate() {

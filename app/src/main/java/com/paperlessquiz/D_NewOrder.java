@@ -42,7 +42,7 @@ public class D_NewOrder extends AppCompatActivity {
         alertDialogBuilder.setTitle("Bestelling doorsturen?");
 
         String message = "Onderstaande bestelling doorgeven? \n\n" +
-                thisOrder.displayOrderItems();
+                thisOrder.displayFullOrderDetails();
         //TODO: add amounts as well here
         // set dialog message
         alertDialogBuilder

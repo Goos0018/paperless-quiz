@@ -47,10 +47,10 @@ public class MyActivity extends AppCompatActivity {
                 //startActivity(intentDisplayPDF);
                 break;
             case R.id.order:
+                MyApplication.orderOngoing = true;
                 Intent intent = new Intent(MyActivity.this, D_OrderHome.class);
                 startActivity(intent);
                 break;
-
         }
         return super.onOptionsItemSelected(item);
     }

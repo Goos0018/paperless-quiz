@@ -201,6 +201,8 @@ public class QuizLoader {
         String userPassword = thisQuiz.getThisUser().getUserPassword();
         int idQuiz = thisQuiz.getListData().getIdQuiz();
         String scriptParams = generateParamsPHP(QuizDatabase.PARAMVALUE_QRY_ORDERSFORUSER, idUser, userPassword, idQuiz, idUser);
+        scriptParams = scriptParams + QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_ORDERBY + QuizDatabase.COLNAME_ORDERNUMBER +
+                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_ORDERDIRECTION + QuizDatabase.PARAMVALUE_ORDERDESC;
         getOrders = new HTTPGetData<>(context, scriptParams, QuizDatabase.REQUEST_ID_GET_ORDERSFORUSER);
         getOrders.getItems(new OrderParser(), new LLShowProgressActWhenComplete(context, context.getString(R.string.loader_pleasewait),
                 context.getString(R.string.loader_updatingquiz),

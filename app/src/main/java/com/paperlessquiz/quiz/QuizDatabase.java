@@ -26,6 +26,8 @@ public class QuizDatabase {
     public static final String PARAMNAME_IDTEAMS = "idTeams=";
     public static final String PARAMNAME_ITEMSTOORDER = "itemsToOrder=";
     public static final String PARAMNAME_TIME = "time=";
+    public static final String PARAMNAME_ORDERBY = "orderBy=";
+    public static final String PARAMNAME_ORDERDIRECTION = "orderDirection=";
     // Available PHP scripts
     public static final String SCRIPT_GET_QUIZLIST = "getquizlist.php";
     public static final String SCRIPT_GET_QUIZUSERS = "getuserlist.php";
@@ -52,6 +54,8 @@ public class QuizDatabase {
     public static final String PARAMVALUE_QRY_ORDERSFORUSER = "ordersforuser";
     public static final String PARAMVALUE_QRY_ALLORDERS = "allorders";
     public static final String PARAMVALUE_QRY_ORDERDETAILS="orderdetails";
+    public static final String PARAMVALUE_ORDERASC="ASC";
+    public static final String PARAMVALUE_ORDERDESC="DESC";
 
     //Request ID's
     //GET Requests
@@ -185,4 +189,6 @@ public class QuizDatabase {
 
     //Various other constants
     public static final String INTENT_EXTRANAME_IS_ORGANIZER = "isOrganizer";
+    public static final String EURO_SIGN = "€ ";
+    public static final int REQUEST_CODE_ORDERHOME = 1;
 }

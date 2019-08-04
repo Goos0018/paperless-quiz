@@ -19,15 +19,21 @@ import java.util.ArrayList;
 
 public class ShowOrdersAdapter extends RecyclerView.Adapter<ShowOrdersAdapter.ViewHolder> {
     private ArrayList<Order> orders;
+    private ItemClicked parentActivity;
     //private ShowOrderItemsAdapter adapter;
     //private Order theOrder;
-    String euro = "€ ";
-    CanShowOrderDetail parentActivity;
+    String euro = QuizDatabase.EURO_SIGN;
+    //CanShowOrderDetail parentActivity;
     //QuizLoader quizLoader;
+
+    public interface ItemClicked {
+        void onItemClicked(int index);
+    }
 
     public ShowOrdersAdapter(Context context, ArrayList<Order> orders) {
         this.orders = orders;
-        parentActivity = (CanShowOrderDetail) context;
+        //parentActivity = (CanShowOrderDetail) context;
+        parentActivity = (ItemClicked) context;
         //quizLoader = new QuizLoader(context);
         //adapter = this;
         //this.theOrder = theOrder;
@@ -43,6 +49,13 @@ public class ShowOrdersAdapter extends RecyclerView.Adapter<ShowOrdersAdapter.Vi
             tvOrderLastStatusUpdate = itemView.findViewById(R.id.tvOrderLastStatusUpdate);
             tvTotalCost = itemView.findViewById(R.id.tvTotalCost);
             ivShowStatus = itemView.findViewById(R.id.ivShowStatus);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    parentActivity.onItemClicked(orders.indexOf((Order) view.getTag()));
+                }
+            });
         }
 
         public void setFields(int i) {
@@ -88,7 +101,7 @@ public class ShowOrdersAdapter extends RecyclerView.Adapter<ShowOrdersAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull ShowOrdersAdapter.ViewHolder viewHolder, int i) {
         viewHolder.setFields(i);
-        viewHolder.ivShowStatus.setOnClickListener(new View.OnClickListener() {
+        /*viewHolder.ivShowStatus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 final int position = view.getId();
@@ -96,6 +109,7 @@ public class ShowOrdersAdapter extends RecyclerView.Adapter<ShowOrdersAdapter.Vi
                 parentActivity.showOrderDetails(i);
             }
         });
+        */
     }
 
     @Override

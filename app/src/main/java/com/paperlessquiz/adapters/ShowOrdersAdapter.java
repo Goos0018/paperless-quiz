@@ -10,14 +10,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.paperlessquiz.MyActivity;
 import com.paperlessquiz.MyApplication;
 import com.paperlessquiz.R;
-import com.paperlessquiz.orders.CanShowOrderDetail;
 import com.paperlessquiz.orders.Order;
 import com.paperlessquiz.quiz.Quiz;
 import com.paperlessquiz.quiz.QuizDatabase;
-import com.paperlessquiz.quiz.QuizLoader;
 
 import java.util.ArrayList;
 
@@ -71,11 +68,11 @@ public class ShowOrdersAdapter extends RecyclerView.Adapter<ShowOrdersAdapter.Vi
                 @Override
                 public void onClick(View view) {
                     //reset the background of the previously clicked item
+                    currentPosition = getAdapterPosition();
                     notifyItemChanged(previousPosition);
                     cvCardView.setCardBackgroundColor(colorWhenClicked);
+                    previousPosition = currentPosition;
                     parentActivity.onItemClicked(orders.indexOf((Order) view.getTag()));
-                    previousPosition = getAdapterPosition();
-                    currentPosition = getAdapterPosition();
 
                 }
             });
@@ -119,8 +116,8 @@ public class ShowOrdersAdapter extends RecyclerView.Adapter<ShowOrdersAdapter.Vi
             }
 
             switch (orders.get(i).getCurrentStatus()) {
-                case QuizDatabase.ORDERSTATUS_NEW:
-                    ivShowStatus.setImageResource(R.drawable.order_new);
+                case QuizDatabase.ORDERSTATUS_MODIFIED:
+                    ivShowStatus.setImageResource(R.drawable.order_edited);
                     break;
                 case QuizDatabase.ORDERSTATUS_SUBMITTED:
                     ivShowStatus.setImageResource(R.drawable.order_submitted);
@@ -171,5 +168,6 @@ public class ShowOrdersAdapter extends RecyclerView.Adapter<ShowOrdersAdapter.Vi
 
     public void setCurrentPosition(int currentPosition) {
         this.currentPosition = currentPosition;
+        this.previousPosition = currentPosition;
     }
 }

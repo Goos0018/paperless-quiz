@@ -58,6 +58,7 @@ public class QuizLoader {
     public HTTPSubmit calculateStandingsRequest;
     public HTTPSubmit submitOrderRequest;
     public HTTPSubmit updateOrderStatusRequest;
+    public HTTPSubmit updateExistingOrderRequest;
 
     public QuizLoader(Context context) {
         this.context = context;
@@ -474,9 +475,10 @@ public class QuizLoader {
         calculateStandingsRequest.sendRequest(new LLSilent());
     }
 
+    //Create a new order for the user that is logged in
     public void submitOrder(String orderDetails, String time) {
         int idUser = thisQuiz.getThisUser().getIdUser();
-        int idQuiz = thisQuiz.getListData().getIdQuiz();
+        //int idQuiz = thisQuiz.getListData().getIdQuiz();
         String userPassword = thisQuiz.getThisUser().getUserPassword();
         String scriptParams = QuizDatabase.SCRIPT_SUBMITORDER + QuizDatabase.PHP_STARTPARAM + QuizDatabase.PARAMNAME_IDUSER + idUser +
                 QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_USERPASSWORD + userPassword +
@@ -484,6 +486,20 @@ public class QuizLoader {
                 QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_TIME + time;
         submitOrderRequest = new HTTPSubmit(context, scriptParams, QuizDatabase.REQUEST_ID_SUBMITORDER);
         submitOrderRequest.sendRequest(new LLSilent());
+    }
+
+    //Update the order that is passed
+    public void updateExistingOrder(Order order, String time) {
+        int idUser = thisQuiz.getThisUser().getIdUser();
+        //int idQuiz = thisQuiz.getListData().getIdQuiz();
+        String userPassword = thisQuiz.getThisUser().getUserPassword();
+        String scriptParams = QuizDatabase.SCRIPT_UPDATEEXISTINGORDER + QuizDatabase.PHP_STARTPARAM + QuizDatabase.PARAMNAME_IDUSER + idUser +
+                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_USERPASSWORD + userPassword +
+                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_ITEMSTOORDER + order.getOrderContentsAsString() +
+                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_IDORDER + order.getIdOrder() +
+                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_TIME + time;
+        updateExistingOrderRequest = new HTTPSubmit(context, scriptParams, QuizDatabase.REQUEST_ID_UPDATEEXISTINGORDER);
+        updateExistingOrderRequest.sendRequest(new LLSilent());
     }
 
     public void updateOrderStatus(int idOrder, int newStatus, String time) {
@@ -494,8 +510,11 @@ public class QuizLoader {
                 QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_IDORDER + idOrder +
                 QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_NEWORDERSTATUS + newStatus +
                 QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_TIME + time;
-        updateOrderStatusRequest = new HTTPSubmit(context, scriptParams, QuizDatabase.REQUEST_ID_SUBMITORDER);
-        updateOrderStatusRequest.sendRequest(new LLSilent());
+        updateOrderStatusRequest = new HTTPSubmit(context, scriptParams, QuizDatabase.REQUEST_ID_UPDATEORDERSTATUS);
+        updateOrderStatusRequest.sendRequest(new LLShowProgressActWhenComplete(context, context.getString(R.string.loader_pleasewait),
+                context.getString(R.string.loader_updatingquiz),
+                context.getString(R.string.loadingerror), false));
     }
 
 }
+

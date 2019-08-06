@@ -53,13 +53,14 @@ public class Order implements Serializable {
         }
     }
 
-    public String createOrderParameter() {
+    public String getOrderContentsAsString() {
         String theParam = "";
         for (Integer i : theOrder.keySet()) {
             //String itemName = MyApplication.itemsToOrder.get(i).getItemName();
             theParam = theParam + i.intValue() + "-" + theOrder.get(i) + ",";
         }
-        theParam = theParam.substring(0, theParam.length() - 1);
+        if (theParam !=""){
+        theParam = theParam.substring(0, theParam.length() - 1);}
         return theParam;
     }
 

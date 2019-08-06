@@ -47,6 +47,7 @@ public class QuizDatabase {
     public static final String SCRIPT_SUBMITORDER = "createorder.php";
     public static final String SCRIPT_GET_ALLORDERS = "getallorders.php";
     public static final String SCRIPT_UPDATEORDERSTATUS = "updateorderstatus.php";
+    public static final String SCRIPT_UPDATEEXISTINGORDER = "updateexistingorder.php";
     //Param values - query names
     public static final String PARAMVALUE_QRY_ALL_ROUNDS = "rounds";
     public static final String PARAMVALUE_QRY_ALL_QUESTIONS = "questions";
@@ -89,6 +90,9 @@ public class QuizDatabase {
     public static final int REQUEST_ID_CORRECTQUESTION = 106;
     public static final int REQUEST_ID_CALCULATESCORES = 107;
     public static final int REQUEST_ID_SUBMITORDER = 108;
+    public static final int REQUEST_ID_UPDATEEXISTINGORDER = 109;
+    public static final int REQUEST_ID_UPDATEORDERSTATUS = 110;
+
 
     //User types - these must match what is defined in the constants.php
     public static final int USERTYPE_TEAM = 0;
@@ -112,7 +116,7 @@ public class QuizDatabase {
     public static final int ROUNDSTATUS_CORRECTED = 3;
 
     //Order Statuses
-    public static final int ORDERSTATUS_NEW = 0;
+    public static final int ORDERSTATUS_MODIFIED = 0;
     public static final int ORDERSTATUS_SUBMITTED = 1;
     public static final int ORDERSTATUS_INPROGRESS = 2;
     public static final int ORDERSTATUS_READY = 3;
@@ -197,8 +201,12 @@ public class QuizDatabase {
 
     //Various other constants
     public static final String INTENT_EXTRANAME_IS_ORGANIZER = "isOrganizer";
+    public static final String INTENT_EXTRANAME_ORDER_TO_EDIT = "orderToEdit";
     public static final String EURO_SIGN = "€ ";    //Used in ShowOrderAdapter
     public static final String TEAM = "Tafel ";         //Used in ShowOrderAdapter
     public static final int MAX_NAME_LENGTH = 10;         //Used in ShowOrderAdapter
-    public static final int REQUEST_CODE_ORDERHOME = 1;
+    //public static final int REQUEST_CODE_ORDERHOME = 1;
+    public static final int REQUEST_CODE_NEWORDER = 0;
+    public static final int REQUEST_CODE_EDITEXISTINGORDER = 1;
 }
+

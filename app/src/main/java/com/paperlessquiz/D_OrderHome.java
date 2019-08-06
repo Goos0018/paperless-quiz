@@ -204,7 +204,7 @@ public class D_OrderHome extends AppCompatActivity implements LoadingActivity, S
         switch (item.getItemId()) {
             case R.id.neworder:
                 Intent intentOrder = new Intent(D_OrderHome.this, D_NewOrder.class);
-                startActivityForResult(intentOrder, 0);
+                startActivityForResult(intentOrder, QuizDatabase.REQUEST_CODE_NEWORDER);
                 break;
 
         }

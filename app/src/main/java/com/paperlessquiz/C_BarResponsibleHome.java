@@ -38,16 +38,17 @@ public class C_BarResponsibleHome extends MyActivity implements LoadingActivity,
     Quiz thisQuiz = MyApplication.theQuiz;
     QuizLoader quizLoader = new QuizLoader(this);
     ArrayList<Order> allOrders;
-    boolean ordersLoaded, orderDetailsLoaded;
-    MyActivity callingActivity;
+    boolean ordersLoaded, orderDetailsLoaded, orderStatusUpdated;
     String selectedStatuses="", selectedCategories="";
 
     @Override
+    //Things to do when an order in the list is clicked
     public void onItemClicked(int index) {
         showOrder(index);
     }
 
     @Override
+    //Things to do when we are done with a web request
     public void loadingComplete(int requestID) {
         switch (requestID) {
             case QuizDatabase.REQUEST_ID_GET_ALLORDERS:
@@ -55,6 +56,9 @@ public class C_BarResponsibleHome extends MyActivity implements LoadingActivity,
                 break;
             case QuizDatabase.REQUEST_ID_GET_ORDERDETAILS:
                 orderDetailsLoaded = true;
+                break;
+            case QuizDatabase.REQUEST_ID_UPDATEORDERSTATUS:
+                orderStatusUpdated = true;
                 break;
         }
         //If everything is properly loaded, we can start populating the central Quiz object
@@ -65,8 +69,6 @@ public class C_BarResponsibleHome extends MyActivity implements LoadingActivity,
             //refreshSaldo();
             //quizLoader.updateAnswersSubmittedIntoQuiz();
             if (showOrdersAdapter != null) {
-                showOrdersAdapter.setOrders(allOrders);
-                showOrdersAdapter.notifyDataSetChanged();
                 //showOrdersAdapter = new ShowOrdersAdapter(this, allOrders);
                 //rvShowAllOrders.setAdapter(showOrdersAdapter);
                 //Select the top row = most recent order
@@ -76,6 +78,8 @@ public class C_BarResponsibleHome extends MyActivity implements LoadingActivity,
                 } else {
                     tvOverviewIntro.setText("You have no orders yet: ");
                 }
+                showOrdersAdapter.setOrders(allOrders);
+                showOrdersAdapter.notifyDataSetChanged();
             }
         }
         if (orderDetailsLoaded) {
@@ -85,6 +89,12 @@ public class C_BarResponsibleHome extends MyActivity implements LoadingActivity,
             theSelectedOrder.loadDetails(quizLoader.getOrderDetails.getResultsList());
             displayOrder(theSelectedOrder);
         }
+        if (orderStatusUpdated) {
+            //reset the loading statuses
+            orderStatusUpdated = false;
+            quizLoader.loadAllOrders(selectedStatuses,selectedCategories);
+        }
+
     }
 
     //Show the order with the given index, loading it if needed
@@ -111,7 +121,7 @@ public class C_BarResponsibleHome extends MyActivity implements LoadingActivity,
         {
             header = theSelectedOrder.getUserName();
         }
-        header += " // " + theSelectedOrder.getOrderName();
+        header += " // " + theSelectedOrder.getOrderName() + " (" + QuizDatabase.EURO_SIGN + theSelectedOrder.getTotalCost() + ")";
         tvSelectedOrderIntro.setText(header);
         detailItems = theSelectedOrder.displayOrderItems();
         detailAmounts = theSelectedOrder.displayOrderAmounts();
@@ -144,6 +154,9 @@ public class C_BarResponsibleHome extends MyActivity implements LoadingActivity,
             @Override
             public void onClick(View view) {
                 //int orderNr = orders.get(i).getOrderNr();
+                Intent intentOrder = new Intent(C_BarResponsibleHome.this, D_NewOrder.class);
+                intentOrder.putExtra(QuizDatabase.INTENT_EXTRANAME_ORDER_TO_EDIT, theSelectedOrder);
+                startActivityForResult(intentOrder, QuizDatabase.REQUEST_CODE_EDITEXISTINGORDER);
             }
         });
         ivStatusSubmitted.setOnClickListener(new View.OnClickListener() {
@@ -153,8 +166,6 @@ public class C_BarResponsibleHome extends MyActivity implements LoadingActivity,
                 String time = MyApplication.getCurrentTime();
                 int newStatus = QuizDatabase.ORDERSTATUS_SUBMITTED;
                 quizLoader.updateOrderStatus(orderId,newStatus,time);
-                //TODO: move this to when the order change is done
-                quizLoader.loadAllOrders(selectedStatuses,selectedCategories);
             }
         });
         ivStatusInProgress.setOnClickListener(new View.OnClickListener() {
@@ -164,7 +175,6 @@ public class C_BarResponsibleHome extends MyActivity implements LoadingActivity,
                 String time = MyApplication.getCurrentTime();
                 int newStatus = QuizDatabase.ORDERSTATUS_INPROGRESS;
                 quizLoader.updateOrderStatus(orderId,newStatus,time);
-                quizLoader.loadAllOrders(selectedStatuses,selectedCategories);
             }
         });
         ivStatusReady.setOnClickListener(new View.OnClickListener() {
@@ -174,7 +184,6 @@ public class C_BarResponsibleHome extends MyActivity implements LoadingActivity,
                 String time = MyApplication.getCurrentTime();
                 int newStatus = QuizDatabase.ORDERSTATUS_READY;
                 quizLoader.updateOrderStatus(orderId,newStatus,time);
-                quizLoader.loadAllOrders(selectedStatuses,selectedCategories);
             }
         });
         ivStatusDelivered.setOnClickListener(new View.OnClickListener() {
@@ -184,10 +193,8 @@ public class C_BarResponsibleHome extends MyActivity implements LoadingActivity,
                 String time = MyApplication.getCurrentTime();
                 int newStatus = QuizDatabase.ORDERSTATUS_DELIVERED;
                 quizLoader.updateOrderStatus(orderId,newStatus,time);
-                quizLoader.loadAllOrders(selectedStatuses,selectedCategories);
             }
         });
-
 
         //Create empty list here, will be populated when loading is done
         allOrders = new ArrayList<>();
@@ -198,7 +205,6 @@ public class C_BarResponsibleHome extends MyActivity implements LoadingActivity,
         showOrdersAdapter = new ShowOrdersAdapter(this, allOrders);
         rvShowAllOrders.setAdapter(showOrdersAdapter);
         quizLoader.loadAllOrders(selectedStatuses,selectedCategories);
-        //callingActivity =  getIntent().getClass()
     }
 
     @Override
@@ -216,4 +222,17 @@ public class C_BarResponsibleHome extends MyActivity implements LoadingActivity,
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (resultCode) {
+            case Order.RESULT_NO_ORDER_CREATED:
+                //No order was created, nothing to do
+                break;
+            case Order.RESULT_ORDER_CREATED:
+                //This is when we modified an existing order
+                quizLoader.loadAllOrders(selectedStatuses,selectedCategories);
+                break;
+        }
+    }
 }

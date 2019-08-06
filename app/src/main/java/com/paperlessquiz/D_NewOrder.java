@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import com.paperlessquiz.adapters.ShowOrderItemsAdapter;
 import com.paperlessquiz.orders.Order;
 import com.paperlessquiz.quiz.Quiz;
+import com.paperlessquiz.quiz.QuizDatabase;
 import com.paperlessquiz.quiz.QuizLoader;
 
 import java.text.DateFormat;
@@ -27,30 +28,34 @@ public class D_NewOrder extends AppCompatActivity {
     RecyclerView rvShowOrderItems;
     RecyclerView.LayoutManager layoutManager;
     ShowOrderItemsAdapter showOrderItemsAdapter;
-    Order thisOrder = new Order();
+    Order thisOrder;
     Quiz thisQuiz = MyApplication.theQuiz;
     QuizLoader quizLoader;
+    boolean isNewOrder;
 
     //QuizLoader quizLoader;
     //boolean  answersSubmittedLoaded;
 
-    public void confirmOrder() {
-
+    public void confirmOrder(boolean isNewOrder) {
+        String title, message;
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(D_NewOrder.this);
-
-        // set title
-        alertDialogBuilder.setTitle("Bestelling doorsturen?");
-
-        String message = "Onderstaande bestelling doorgeven? \n\n" +
-                thisOrder.displayFullOrderDetails();
-        //TODO: add amounts as well here
-        // set dialog message
+        if (isNewOrder) {
+            title = this.getString(R.string.neworder_sendorder);
+            message = this.getString(R.string.neworder_sendthisorder);
+        } else {
+            title = this.getString(R.string.neworder_modifyorder);
+            message = thisOrder.getOrderName() + " (" +
+                    thisOrder.getUserName() + ") " + this.getString(R.string.neworder_modifyto);
+        }
+        // set and show dialog message
+        message = message + " \n\n" + thisOrder.displayFullOrderDetails();
+        alertDialogBuilder.setTitle(title);
         alertDialogBuilder
                 .setMessage(message)
                 .setCancelable(false)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        createOrder();
+                        createOrder(isNewOrder);
                     }
                 })
                 .setNegativeButton("Back", new DialogInterface.OnClickListener() {
@@ -66,14 +71,20 @@ public class D_NewOrder extends AppCompatActivity {
         alertDialog.show();
     }
 
-    public void createOrder() {
+    public void createOrder(boolean isNewOrder) {
         Intent intent = new Intent();
-        if (thisOrder.isEmpty()) {
-            setResult(Order.RESULT_NO_ORDER_CREATED, intent);
+        if (isNewOrder) {
+            if (thisOrder.isEmpty()) {
+                setResult(Order.RESULT_NO_ORDER_CREATED, intent);
+            } else {
+                //intent.putExtra(Order.PUTEXTRANAME_NEW_ORDER, thisOrder);
+                setResult(Order.RESULT_ORDER_CREATED, intent);
+                quizLoader.submitOrder(thisOrder.getOrderContentsAsString(), getCurrentTime());
+            }
         } else {
-            intent.putExtra(Order.PUTEXTRANAME_NEW_ORDER, thisOrder);
+            //intent.putExtra(Order.PUTEXTRANAME_NEW_ORDER, thisOrder);
             setResult(Order.RESULT_ORDER_CREATED, intent);
-            quizLoader.submitOrder(thisOrder.createOrderParameter(),getCurrentTime());
+            quizLoader.updateExistingOrder(thisOrder, getCurrentTime());
         }
         D_NewOrder.this.finish();
     }
@@ -82,9 +93,19 @@ public class D_NewOrder extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_d_order);
-
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle(D_NewOrder.this.getString(R.string.order_title));
+        String actionBarTitle;
+        //Check if an order was passed. If so, we need to edit it, otherwise, we need to create a new order
+        if (getIntent().hasExtra(QuizDatabase.INTENT_EXTRANAME_ORDER_TO_EDIT)) {
+            thisOrder = (Order) getIntent().getSerializableExtra(QuizDatabase.INTENT_EXTRANAME_ORDER_TO_EDIT);
+            isNewOrder = false;
+            actionBarTitle = this.getString(R.string.order_modifytitle);
+        } else {
+            thisOrder = new Order();
+            isNewOrder = true;
+            actionBarTitle = this.getString(R.string.order_title);
+        }
+        actionBar.setTitle(actionBarTitle);
 
         rvShowOrderItems = findViewById(R.id.rvShowOrderItems);
         rvShowOrderItems.setHasFixedSize(true);
@@ -115,7 +136,7 @@ public class D_NewOrder extends AppCompatActivity {
                 D_NewOrder.this.finish();
                 break;
             case R.id.submit:
-                confirmOrder();
+                confirmOrder(isNewOrder);
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -131,7 +152,7 @@ public class D_NewOrder extends AppCompatActivity {
         Date date = new Date();
         String strDateFormat = "hh:mm";
         DateFormat dateFormat = new SimpleDateFormat(strDateFormat);
-        String formattedDate= dateFormat.format(date);
+        String formattedDate = dateFormat.format(date);
         return formattedDate;
     }
 }

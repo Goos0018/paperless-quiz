@@ -19,8 +19,9 @@ import java.util.Currency;
 import java.util.Locale;
 
 /**
- * Adapter used to display the items that can be ordered.
- * TODO: finalize
+ * Adapter used to create or edit an order
+ * It displays a list of all items that can be ordered and allows the user to set/ modify the quantities of each item
+ * If theOrder contains something, we will display initially the quantities of that order
  */
 
 public class ShowOrderItemsAdapter extends RecyclerView.Adapter<ShowOrderItemsAdapter.ViewHolder> {

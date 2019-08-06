@@ -37,5 +37,12 @@
     <string name="barresp_activeorders">Alle openstaande orders</string>
     <string name="orderhome_no_orders_yet">Geen bestellingen gevonden</string>
     <string name="orderhome_overview_orders">Overzicht bestellingen</string>
+    <string name="order_modifytitle">Wijzig bestelling</string>
+    <string name="neworder_sendorder">Bestelling doorsturen?</string>
+    <string name="neworder_sendthisorder">Onderstaande bestelling doorgeven?</string>
+    <string name="neworder_modifyorder">Bestelling wijzigen?</string>
+    <string name="neworder_order">Bestelling</string>
+    <string name="neworder_for">voor</string>
+    <string name="neworder_modifyto">wijzigen in onderstaande?</string>
 
 </resources>

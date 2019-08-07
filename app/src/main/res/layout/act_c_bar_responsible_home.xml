@@ -7,41 +7,109 @@
     android:orientation="vertical"
     tools:context=".C_BarResponsibleHome">
 
-    <LinearLayout
-        android:id="@+id/llCheckCats"
+    <TextView
+        android:id="@+id/tvIntroFilter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginLeft="@dimen/margin_medium"
-        android:layout_marginTop="@dimen/margin_medium"
-        android:layout_marginRight="@dimen/margin_medium"
-        android:orientation="vertical">
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/margin_huge"
+        android:text="Filters"
+        android:textColor="@color/wrongRed"
+        android:textSize="@dimen/text_size_medium"
+        android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/tvStatusIntro"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:layout_marginRight="@dimen/margin_large"
-            android:layout_weight="1"
-            android:gravity="right"
-            android:text="TextView"
-            android:textColor="@color/correctGreen"
-            android:textSize="@dimen/text_size_large"
-            android:textStyle="bold" />
+    <android.support.v7.widget.CardView
+        android:id="@+id/cvFilter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_huge"
+        android:layout_marginTop="@dimen/margin_large"
+        android:layout_marginRight="@dimen/margin_huge"
+        app:cardBackgroundColor="@color/colorPrimaryLight">
 
-        <TextView
-            android:id="@+id/tvStatus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_weight="1"
-            android:gravity="left"
-            android:text="0"
-            android:textColor="@color/correctGreen"
-            android:textSize="@dimen/text_size_large" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-    </LinearLayout>
+            <LinearLayout
+                android:id="@+id/llFilter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_medium"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:layout_marginRight="@dimen/margin_medium"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/ivFilterCats"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/filter_category" />
+
+                <ImageView
+                    android:id="@+id/ivFilterStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/filter_status" />
+
+                <ImageView
+                    android:id="@+id/ivFilterUser"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/filter_user" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_medium"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:layout_marginRight="@dimen/margin_medium"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tvCats"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text="All" />
+
+                <TextView
+                    android:id="@+id/tvStatuses"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text="All" />
+
+                <TextView
+                    android:id="@+id/tvUser"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text="All" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <TextView
+        android:id="@+id/tvIntroDetails"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/margin_huge"
+        android:text="Edit order"
+        android:textColor="@color/wrongRed"
+        android:textSize="@dimen/text_size_medium"
+        android:textStyle="bold" />
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
@@ -158,7 +226,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/margin_huge"
-        android:text="All active orders"
+        android:text="Select order"
         android:textColor="@color/wrongRed"
         android:textSize="@dimen/text_size_medium"
         android:textStyle="bold" />

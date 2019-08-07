@@ -1,5 +1,8 @@
 package com.paperlessquiz.quiz;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class QuizDatabase {
     /**
      * Contains only constants reflecting the SQL db structure and usage here
@@ -121,6 +124,15 @@ public class QuizDatabase {
     public static final int ORDERSTATUS_INPROGRESS = 2;
     public static final int ORDERSTATUS_READY = 3;
     public static final int ORDERSTATUS_DELIVERED = 4;
+    public static final String ORDERSTATUS_MODIFIED_STR = "Gewijzigd";
+    public static final String ORDERSTATUS_SUBMITTED_STR = "Nieuw";
+    public static final String ORDERSTATUS_INPROGRESS_STR = "Bezig";
+    public static final String ORDERSTATUS_READY_STR = "Klaar";
+    public static final String ORDERSTATUS_DELIVERED_STR = "Afgeleverd";
+    public static final ArrayList<String> displayStatusesArray= new ArrayList<>(Arrays.asList(ORDERSTATUS_MODIFIED_STR,ORDERSTATUS_SUBMITTED_STR,
+            ORDERSTATUS_INPROGRESS_STR,ORDERSTATUS_READY_STR,ORDERSTATUS_DELIVERED_STR));
+    public static final ArrayList<String> statusesArray= new ArrayList<>(Arrays.asList(Integer.toString(ORDERSTATUS_MODIFIED),Integer.toString(ORDERSTATUS_SUBMITTED),
+            Integer.toString(ORDERSTATUS_INPROGRESS),Integer.toString(ORDERSTATUS_READY),Integer.toString(ORDERSTATUS_DELIVERED)));
 
     //Column names in the SQL database - used to parse the JSON objects
     //Column names table Answers

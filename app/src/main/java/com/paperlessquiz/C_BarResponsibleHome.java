@@ -1,11 +1,14 @@
 package com.paperlessquiz;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,7 +17,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.paperlessquiz.adapters.ShowOrdersAdapter;
@@ -27,6 +34,7 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class C_BarResponsibleHome extends MyActivity implements LoadingActivity, ShowOrdersAdapter.ItemClicked {
     RecyclerView rvShowAllOrders;
@@ -34,6 +42,11 @@ public class C_BarResponsibleHome extends MyActivity implements LoadingActivity,
     ShowOrdersAdapter showOrdersAdapter;
     TextView tvStatusIntro, tvStatus, tvSelectedOrderIntro, tvItemNames, tvItemAmounts, tvOverviewIntro;
     ImageView ivOrderEdit, ivStatusSubmitted, ivStatusInProgress, ivStatusReady, ivStatusDelivered;
+    LinearLayout llShowCats;
+    //HashMap<String, Boolean> catsList = new HashMap<>();
+    ArrayList<String> catsList = new ArrayList<>();
+    String selectedCats="";
+    ArrayList<String> selectedCatsArray;
     Order theSelectedOrder;
     Quiz thisQuiz = MyApplication.theQuiz;
     QuizLoader quizLoader = new QuizLoader(this);
@@ -138,8 +151,43 @@ public class C_BarResponsibleHome extends MyActivity implements LoadingActivity,
         //Get stuff from the interface
         rvShowAllOrders = findViewById(R.id.rvShowAllOrders);
         tvStatusIntro = findViewById(R.id.tvStatusIntro);
-        tvStatus = findViewById(R.id.tvStatus);
-        tvStatusIntro.setText("Status");
+        /*
+        llShowCats = findViewById(R.id.llCheckCats);
+        catsList.put("test 1", false);catsList.put("test 2", false);
+        int i=0;
+        for (String cat : catsList.keySet()) {
+            TableRow row =new TableRow(this);
+            row.setId(i);
+            row.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            CheckBox checkBox = new CheckBox(this);
+            checkBox.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    boolean checked = ((CheckBox) v).isChecked();
+                    String thisCat = (String)((CheckBox) v).getText();
+                    catsList.put(thisCat,Boolean.valueOf(checked));
+                    selectedCats="";
+                    for (String cat : catsList.keySet()) {
+                        if (catsList.get(cat)){
+                            selectedCats+=cat;
+                        }
+                    }
+                    tvStatusIntro.setText(selectedCats);
+                }
+            });
+            checkBox.setId(i);
+            checkBox.setText(cat);
+            row.addView(checkBox);
+            llShowCats.addView(row);
+            i++;
+        }
+
+        */
+        catsList.add("test1");catsList.add("test2");
+        showDialog(catsList);
+
+        //tvStatusIntro.setText(selectedCats);
+        //tvStatus = findViewById(R.id.tvStatus);
+        //tvStatusIntro.setText("Status");
         tvSelectedOrderIntro = findViewById(R.id.tvSelectedOrderIntro);
         tvItemNames = findViewById(R.id.tvItemNames);
         tvItemAmounts = findViewById(R.id.tvAmounts);
@@ -235,4 +283,51 @@ public class C_BarResponsibleHome extends MyActivity implements LoadingActivity,
                 break;
         }
     }
+
+    //Onclick listener for checkboxes
+    public void onCheckboxClicked(View view) {
+        // Is the view now checked?
+        boolean checked = ((CheckBox) view).isChecked();
+
+    }
+
+    public void showDialog(ArrayList<String> itemsArrayList ){
+        Dialog dialog;
+        //final String[] items = {" PHP", " JAVA", " JSON", " C#", " Objective-C"};
+        String[] items = itemsArrayList.toArray(new String[itemsArrayList.size()]);
+        ArrayList itemsSelected = new ArrayList();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Select Languages you know : ");
+        builder.setMultiChoiceItems(items, null,
+                new DialogInterface.OnMultiChoiceClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int selectedItemId,
+                                        boolean isSelected) {
+                        if (isSelected) {
+                            itemsSelected.add(selectedItemId);
+                        } else if (itemsSelected.contains(selectedItemId)) {
+                            itemsSelected.remove(Integer.valueOf(selectedItemId));
+                        }
+                    }
+                })
+                .setPositiveButton("Done!", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        selectedCatsArray=new ArrayList<>();
+                        selectedCats="";
+                        for (int i = 0; i < itemsSelected.size(); i++) {
+                           // selectedCats+=catsList.get(int (itemsSelected.get(i)));
+                        }
+                        tvStatusIntro.setText(selectedCats);
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                    }
+                });
+        dialog = builder.create();
+        dialog.show();
+    }
+
 }

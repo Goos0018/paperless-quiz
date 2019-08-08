@@ -37,6 +37,9 @@ import com.squareup.picasso.Target;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * Home screen for the bar responsible. Allows to view all or a selection of orders, change statuses of orders and modify them
+ */
 public class C_BarResponsibleHome extends MyActivity implements LoadingActivity, ShowOrdersAdapter.ItemClicked {
     RecyclerView rvShowAllOrders;
     RecyclerView.LayoutManager layoutManager;
@@ -59,10 +62,6 @@ public class C_BarResponsibleHome extends MyActivity implements LoadingActivity,
     boolean ordersLoaded, orderDetailsLoaded, orderStatusUpdated;
     boolean filterVisible;
     String selectedStatuses = "", selectedCategories = "", selectedUsers = "";
-    //ArrayList<String> selectedCategoriesArray = new ArrayList<>();
-    //ArrayList<String> selectedStatusesArray = new ArrayList<>();
-    //ArrayList<String> selectedUsersArray = new ArrayList<>();
-
 
     @Override
     //Things to do when an order in the list is clicked
@@ -84,30 +83,27 @@ public class C_BarResponsibleHome extends MyActivity implements LoadingActivity,
                 orderStatusUpdated = true;
                 break;
         }
-        //If everything is properly loaded, we can start populating the central Quiz object
+        //If orders are loaded, populate the necessary objects
         if (ordersLoaded) {
-            //reset the loading statuses
+            //reset the loading status
             ordersLoaded = false;
             allOrders = quizLoader.getOrders.getResultsList();
-            //refreshSaldo();
-            //quizLoader.updateAnswersSubmittedIntoQuiz();
             if (showOrdersAdapter != null) {
-                //showOrdersAdapter = new ShowOrdersAdapter(this, allOrders);
-                //rvShowAllOrders.setAdapter(showOrdersAdapter);
                 //Select the top row = most recent order
                 if (allOrders.size() > 0) {
                     showOrder(0);
                     showOrdersAdapter.setCurrentPosition(0);
                 } else {
-                    tvOverviewIntro.setText("You have no orders yet: ");
+                    tvOverviewIntro.setText("No orders to show");
                 }
                 showOrdersAdapter.setOrders(allOrders);
                 showOrdersAdapter.notifyDataSetChanged();
             }
         }
         if (orderDetailsLoaded) {
-            //reset the loading statuses
+            //reset the loading status
             orderDetailsLoaded = false;
+            //Mark that we loaded the details for this order and then add them to our order and display it
             theSelectedOrder.setDetailsLoaded(true);
             theSelectedOrder.loadDetails(quizLoader.getOrderDetails.getResultsList());
             displayOrder(theSelectedOrder);
@@ -115,7 +111,8 @@ public class C_BarResponsibleHome extends MyActivity implements LoadingActivity,
         if (orderStatusUpdated) {
             //reset the loading statuses
             orderStatusUpdated = false;
-            quizLoader.loadAllOrders(selectedStatuses, selectedCategories);
+            //Reload the orders
+            quizLoader.loadAllOrders(selectedStatuses, selectedCategories, selectedUsers);
         }
 
     }
@@ -134,7 +131,6 @@ public class C_BarResponsibleHome extends MyActivity implements LoadingActivity,
     public void displayOrder(Order theSelectedOrder) {
         String detailItems = "";
         String detailAmounts = "";
-        //Details should be loaded at this point
         String header;
         //Show if this is an order for a team or an organizer, in the first case, show the team nr, otherwise, the username
         if (theSelectedOrder.getUserType() == QuizDatabase.USERTYPE_TEAM) {
@@ -142,7 +138,7 @@ public class C_BarResponsibleHome extends MyActivity implements LoadingActivity,
         } else {
             header = theSelectedOrder.getUserName();
         }
-        header += " // " + theSelectedOrder.getOrderName() + " (" + QuizDatabase.EURO_SIGN + theSelectedOrder.getTotalCost() + ")";
+        header += " - " + theSelectedOrder.getOrderName() + " (" + QuizDatabase.EURO_SIGN + theSelectedOrder.getTotalCost() + ")";
         tvSelectedOrderIntro.setText(header);
         detailItems = theSelectedOrder.displayOrderItems();
         detailAmounts = theSelectedOrder.displayOrderAmounts();
@@ -160,12 +156,22 @@ public class C_BarResponsibleHome extends MyActivity implements LoadingActivity,
         rvShowAllOrders = findViewById(R.id.rvShowAllOrders);
         cvFilter = findViewById(R.id.cvFilter);
         tvIntroFilter = findViewById(R.id.tvIntroFilter);
-        ivFilterCats = findViewById(R.id.ivFilterCats);
-        ivFilterStatus = findViewById(R.id.ivFilterStatus);
-        ivFilterUser = findViewById(R.id.ivFilterUser);
         tvCats = findViewById(R.id.tvCats);
         tvStatuses = findViewById(R.id.tvStatuses);
         tvUser = findViewById(R.id.tvUser);
+        tvSelectedOrderIntro = findViewById(R.id.tvSelectedOrderIntro);
+        tvItemNames = findViewById(R.id.tvItemNames);
+        tvItemAmounts = findViewById(R.id.tvAmounts);
+        tvOverviewIntro = findViewById(R.id.tvIntroOverview);
+        ivOrderEdit = findViewById(R.id.ivEditOrder);
+        ivStatusSubmitted = findViewById(R.id.ivStatusSubmitted);
+        ivStatusInProgress = findViewById(R.id.ivStatusInProgress);
+        ivStatusReady = findViewById(R.id.ivStatusReady);
+        ivStatusDelivered = findViewById(R.id.ivStatusDelivered);
+        ivFilterCats = findViewById(R.id.ivFilterCats);
+        ivFilterStatus = findViewById(R.id.ivFilterStatus);
+        ivFilterUser = findViewById(R.id.ivFilterUser);
+        //Initialize the (display)arrays with the filter conditions, categories, statuses and users
         for (int i = 0; i < MyApplication.itemsToOrderArray.size(); i++) {
             String thisCategory = MyApplication.itemsToOrderArray.get(i).getItemCategory();
             if (!catsList.contains(thisCategory)) {
@@ -173,7 +179,7 @@ public class C_BarResponsibleHome extends MyActivity implements LoadingActivity,
             }
         }
         for (int i = 0; i < thisQuiz.getTeams().size(); i++) {
-            String thisTeam = thisQuiz.getTeams().get(i).getDescription();
+            String thisTeam = thisQuiz.getTeams().get(i).getUserNr() + ". " + thisQuiz.getTeams().get(i).getName();
             String thisTeamId = Integer.toString(thisQuiz.getTeams().get(i).getIdUser());
             usersList.add(thisTeam);
             userIdsList.add(thisTeamId);
@@ -186,7 +192,7 @@ public class C_BarResponsibleHome extends MyActivity implements LoadingActivity,
         }
         displayStatusesList = QuizDatabase.displayStatusesArray;
         statusesList = QuizDatabase.statusesArray;
-
+        //Set onclick listeners for the filter icons
         ivFilterCats.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -205,17 +211,7 @@ public class C_BarResponsibleHome extends MyActivity implements LoadingActivity,
                 showDialog("Users", usersList, 3);
             }
         });
-
-        tvSelectedOrderIntro = findViewById(R.id.tvSelectedOrderIntro);
-        tvItemNames = findViewById(R.id.tvItemNames);
-        tvItemAmounts = findViewById(R.id.tvAmounts);
-        tvOverviewIntro = findViewById(R.id.tvIntroOverview);
-        //Get the icons and set onclick listeners for them
-        ivOrderEdit = findViewById(R.id.ivEditOrder);
-        ivStatusSubmitted = findViewById(R.id.ivStatusSubmitted);
-        ivStatusInProgress = findViewById(R.id.ivStatusInProgress);
-        ivStatusReady = findViewById(R.id.ivStatusReady);
-        ivStatusDelivered = findViewById(R.id.ivStatusDelivered);
+        //Set onclick listeners for the action icons
         ivOrderEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -261,16 +257,15 @@ public class C_BarResponsibleHome extends MyActivity implements LoadingActivity,
                 quizLoader.updateOrderStatus(orderId, newStatus, time);
             }
         });
-
-        //Create empty list here, will be populated when loading is done
+        //Rest of the stuff
         allOrders = new ArrayList<>();
-        //Initialize the adapter and recyclerview
         rvShowAllOrders.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         rvShowAllOrders.setLayoutManager(layoutManager);
         showOrdersAdapter = new ShowOrdersAdapter(this, allOrders);
         rvShowAllOrders.setAdapter(showOrdersAdapter);
-        quizLoader.loadAllOrders(selectedStatuses, selectedCategories);
+        //Finally, load all orders
+        quizLoader.loadAllOrders(selectedStatuses, selectedCategories, selectedUsers);
     }
 
     @Override
@@ -283,10 +278,11 @@ public class C_BarResponsibleHome extends MyActivity implements LoadingActivity,
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.refresh:
-                quizLoader.loadAllOrders(selectedStatuses, selectedCategories);
+                //Reload orders, using the given filters
+                quizLoader.loadAllOrders(selectedStatuses, selectedCategories, selectedUsers);
                 break;
             case R.id.filter:
-
+                //Show or hide the filters
                 if (filterVisible) {
                     tvIntroFilter.setVisibility(View.VISIBLE);
                     cvFilter.setVisibility(View.VISIBLE);
@@ -301,26 +297,21 @@ public class C_BarResponsibleHome extends MyActivity implements LoadingActivity,
     }
 
     @Override
+    //This is called when an order was edited
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (resultCode) {
             case Order.RESULT_NO_ORDER_CREATED:
-                //No order was created, nothing to do
+                //Editing was canceled
                 break;
             case Order.RESULT_ORDER_CREATED:
                 //This is when we modified an existing order
-                quizLoader.loadAllOrders(selectedStatuses, selectedCategories);
+                quizLoader.loadAllOrders(selectedStatuses, selectedCategories, selectedUsers);
                 break;
         }
     }
 
-    //Onclick listener for checkboxes
-    public void onCheckboxClicked(View view) {
-        // Is the view now checked?
-        boolean checked = ((CheckBox) view).isChecked();
-
-    }
-
+    //Generic function to show a select item dialog
     public void showDialog(String title, ArrayList<String> itemsArrayList, int dialogId) {
         Dialog dialog;
         String[] items = itemsArrayList.toArray(new String[itemsArrayList.size()]);
@@ -354,10 +345,7 @@ public class C_BarResponsibleHome extends MyActivity implements LoadingActivity,
         dialog.show();
     }
 
-    public String displayString(String string) {
-        return string.replace(",", "\n");
-    }
-
+    //Called from the setDialog function, sets the filter that was modified
     public void setFilter(int dialogId, ArrayList<Integer> itemsSelected) {
         String filter = "";
         TextView displayField;
@@ -365,31 +353,28 @@ public class C_BarResponsibleHome extends MyActivity implements LoadingActivity,
         ArrayList<String> targetArray = new ArrayList<>();
         switch (dialogId) {
             case 1:
-                //ArrayList<String> targetArray = selectedCatsArray;
-                //selectedCategories=filter;
                 displayField = tvCats;
                 sourceList = catsList;
                 break;
             case 2:
-                //ArrayList<String> targetArray = selectedCatsArray;
-                //selectedStatuses=filter;
                 displayField = tvStatuses;
                 sourceList = displayStatusesList;
                 break;
             default:
-                //ArrayList<String> targetArray = selectedCatsArray;
-                //selectedUsers=filter;
                 displayField = tvUser;
                 sourceList = usersList;
                 break;
         }
+        //Build the filter string
         for (int i = 0; i < itemsSelected.size(); i++) {
             targetArray.add(sourceList.get((int) (itemsSelected.get(i))));
             filter += sourceList.get((int) (itemsSelected.get(i))) + ",";
         }
+        //remove the last ","
         if (filter != "") {
             filter = filter.substring(0, filter.length() - 1);
         }
+        //Display what was filtered
         if (filter.equals("")){
             displayField.setText("All");
         }
@@ -398,7 +383,7 @@ public class C_BarResponsibleHome extends MyActivity implements LoadingActivity,
             displayField.setText(filter.replace(",", "\n"));
         }
 
-        //Set the actual filters to be used
+        //Build and set actual parameters that correspond to the filters
         switch (dialogId) {
             case 1:
                 selectedCategories="";
@@ -432,7 +417,7 @@ public class C_BarResponsibleHome extends MyActivity implements LoadingActivity,
                 }
                 break;
         }
-
-        quizLoader.loadAllOrders(selectedStatuses, selectedCategories);
+        //Reload the orders
+        quizLoader.loadAllOrders(selectedStatuses, selectedCategories, selectedUsers);
     }
 }

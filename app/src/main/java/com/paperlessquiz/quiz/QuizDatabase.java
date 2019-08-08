@@ -33,6 +33,7 @@ public class QuizDatabase {
     public static final String PARAMNAME_ORDERDIRECTION = "orderDirection=";
     public static final String PARAMNAME_ORDERCATEGORIES = "orderCategories=";
     public static final String PARAMNAME_ORDERSTATUSLIST = "orderStatusList=";
+    public static final String PARAMNAME_ORDERUSERSLIST = "orderUsersList=";
     public static final String PARAMNAME_IDORDER = "idOrder=";
     public static final String PARAMNAME_NEWORDERSTATUS = "newOrderStatus=";
     // Available PHP scripts

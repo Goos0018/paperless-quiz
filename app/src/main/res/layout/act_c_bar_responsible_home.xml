@@ -106,7 +106,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/margin_huge"
-        android:text="Edit order"
+        android:text="@string/edit_order"
         android:textColor="@color/wrongRed"
         android:textSize="@dimen/text_size_medium"
         android:textStyle="bold" />
@@ -226,7 +226,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/margin_huge"
-        android:text="Select order"
+        android:text="@string/select_order"
         android:textColor="@color/wrongRed"
         android:textSize="@dimen/text_size_medium"
         android:textStyle="bold" />

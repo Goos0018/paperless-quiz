@@ -20,9 +20,11 @@ import com.paperlessquiz.quiz.QuizLoader;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 /**
- * This activity is used to create an order
+ * This activity is used to create an order, or modify an existing order
+ * Boolean isNewOrder indicates if it is a new order, or an existing order that is being modified
  */
 public class D_NewOrder extends AppCompatActivity {
     RecyclerView rvShowOrderItems;
@@ -33,9 +35,7 @@ public class D_NewOrder extends AppCompatActivity {
     QuizLoader quizLoader;
     boolean isNewOrder;
 
-    //QuizLoader quizLoader;
-    //boolean  answersSubmittedLoaded;
-
+    //Confirm before submitting an order
     public void confirmOrder(boolean isNewOrder) {
         String title, message;
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(D_NewOrder.this);
@@ -63,26 +63,22 @@ public class D_NewOrder extends AppCompatActivity {
                         dialog.cancel();
                     }
                 });
-
-        // create alert dialog
+        // create alert dialog and show it
         AlertDialog alertDialog = alertDialogBuilder.create();
-
-        // show it
         alertDialog.show();
     }
 
+    //Create or update the order in the database, the exit this screen
     public void createOrder(boolean isNewOrder) {
         Intent intent = new Intent();
         if (isNewOrder) {
             if (thisOrder.isEmpty()) {
                 setResult(Order.RESULT_NO_ORDER_CREATED, intent);
             } else {
-                //intent.putExtra(Order.PUTEXTRANAME_NEW_ORDER, thisOrder);
                 setResult(Order.RESULT_ORDER_CREATED, intent);
                 quizLoader.submitOrder(thisOrder.getOrderContentsAsString(), getCurrentTime());
             }
         } else {
-            //intent.putExtra(Order.PUTEXTRANAME_NEW_ORDER, thisOrder);
             setResult(Order.RESULT_ORDER_CREATED, intent);
             quizLoader.updateExistingOrder(thisOrder, getCurrentTime());
         }
@@ -116,11 +112,6 @@ public class D_NewOrder extends AppCompatActivity {
         quizLoader = new QuizLoader(this);
     }
 
-    public Order getThisOrder() {
-        return thisOrder;
-    }
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.new_order, menu);
@@ -143,15 +134,16 @@ public class D_NewOrder extends AppCompatActivity {
     }
 
     @Override
+    //Don't do anything, they should either cancel or submit the order
     public void onBackPressed() {
-        //Don't do anything, they should either cancel or submit the order
-        //Toast.makeText(this, D_NewOrder.this.getString(R.string.participant_nobackallowed), Toast.LENGTH_SHORT).show();
     }
 
+    //Used to create the time parameter that is passed when creating orders
     public String getCurrentTime() {
         Date date = new Date();
-        String strDateFormat = "hh:mm";
+        String strDateFormat = "HH:mm";
         DateFormat dateFormat = new SimpleDateFormat(strDateFormat);
+        dateFormat.setTimeZone(TimeZone.getDefault());
         String formattedDate = dateFormat.format(date);
         return formattedDate;
     }

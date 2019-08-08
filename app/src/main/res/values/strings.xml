@@ -44,5 +44,7 @@
     <string name="neworder_order">Bestelling</string>
     <string name="neworder_for">voor</string>
     <string name="neworder_modifyto">wijzigen in onderstaande?</string>
+    <string name="edit_order">Wijzig bestelling</string>
+    <string name="select_order">Selecteer een bestelling</string>
 
 </resources>

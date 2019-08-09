@@ -1,13 +1,8 @@
 package com.paperlessquiz;
 
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
@@ -33,29 +28,34 @@ public class C_BarHelperHome extends MyActivity implements LoadingActivity, Show
     RecyclerView rvShowAllOrders;
     RecyclerView.LayoutManager layoutManager;
     ShowOrdersAdapter showOrdersAdapter;
-    TextView tvIntroFilter, tvOrderNr, tvOrderUser, tvItemNames, tvItemAmounts, tvOverviewIntro;
-    TextView tvCats, tvStatuses;
+    TextView tvOrderNr, tvOrderUser;
+    TextView tvItemNames, tvItemAmounts, tvOverviewIntro;
+    //TextView tvCats, tvStatuses;
+    RadioGroup rgpCategories, rgpRoles;
     ImageView ivStatusToProcess, ivStatusProcessed;
-    LinearLayout llFilterRole, llFilterCats, llMain;
+    LinearLayout llFilterRole, llFilterCats, llDetails, llOrderList;
 
     ArrayList<String> catsList = new ArrayList<>();
     ArrayList<String> usersList = new ArrayList<>();
     ArrayList<String> userIdsList = new ArrayList<>();
-    ArrayList<String> statusesList = new ArrayList<>();
-    ArrayList<String> displayStatusesList = new ArrayList<>();
+    ArrayList<String> rolesList = new ArrayList<>();
+    ArrayList<String> displayRolesList = new ArrayList<>();
     Order theSelectedOrder;
     Quiz thisQuiz = MyApplication.theQuiz;
     QuizLoader quizLoader = new QuizLoader(this);
     ArrayList<Order> allOrders;
     boolean ordersLoaded, orderDetailsLoaded, orderStatusUpdated;
-    boolean filterVisible;
+    boolean filterHidden, orderSelected;
     String selectedStatuses = "", selectedCategories = "", selectedUsers = "";
     String selectedRole = "";
 
     @Override
     //Things to do when an order in the list is clicked
     public void onItemClicked(int index) {
+        orderSelected = true;
+        showOrdersAdapter.setItemSelected(true);
         showOrder(index);
+        setVisibility();
     }
 
     @Override
@@ -77,17 +77,22 @@ public class C_BarHelperHome extends MyActivity implements LoadingActivity, Show
             //reset the loading status
             ordersLoaded = false;
             allOrders = quizLoader.getOrders.getResultsList();
-            if (showOrdersAdapter != null) {
-                //Select the top row = most recent order
-                if (allOrders.size() > 0) {
-                    showOrder(0);
-                    showOrdersAdapter.setCurrentPosition(0);
-                } else {
-                    tvOverviewIntro.setText("No orders to show");
-                }
-                showOrdersAdapter.setOrders(allOrders);
-                showOrdersAdapter.notifyDataSetChanged();
+            //Reset the selected item
+            orderSelected = false;
+            // if (showOrdersAdapter != null) {
+            showOrdersAdapter.setItemSelected(false);
+            //Select the top row = most recent order
+            if (allOrders.size() > 0) {
+                tvOverviewIntro.setText(this.getString(R.string.select_order));
+                //showOrder(0);
+                //showOrdersAdapter.setCurrentPosition(0);
+            } else {
+                tvOverviewIntro.setText(this.getString(R.string.barhelp_no_orders));
             }
+            showOrdersAdapter.setOrders(allOrders);
+            showOrdersAdapter.notifyDataSetChanged();
+            setVisibility();
+            //}
         }
         if (orderDetailsLoaded) {
             //reset the loading status
@@ -127,25 +132,13 @@ public class C_BarHelperHome extends MyActivity implements LoadingActivity, Show
         } else {
             orderUser = theSelectedOrder.getUserName();
         }
-        tvOrderNr.setText(theSelectedOrder.getOrderNr());
-        tvOrderUser.setText(orderUser);
+        tvOrderNr.setText(" : " + theSelectedOrder.getOrderNr());
+        tvOrderUser.setText(" : " + orderUser);
         detailItems = theSelectedOrder.displayOrderItems();
         detailAmounts = theSelectedOrder.displayOrderAmounts();
         tvItemNames.setText(detailItems);
         tvItemAmounts.setText(detailAmounts);
     }
-
-    //Reset roles and responsibilities and prompt the user to set them again
-    public void getRolesAndResponsibilities() {
-        //Reset everything
-        selectedRole = "";
-        selectedStatuses = "";
-        selectedCategories = "";
-        setVisibility();
-        //Prompt the user for his role
-        showDialog(this.getString(R.string.barhelp_select_role), displayStatusesList, QuizDatabase.DIALOG_STATUSES);
-    }
-
 
     //Display the appropriate items in the interface, depending on your role selected
     public void setVisibility() {
@@ -154,18 +147,33 @@ public class C_BarHelperHome extends MyActivity implements LoadingActivity, Show
                 //Just display the select Role part and hide everything else
                 llFilterRole.setVisibility(View.VISIBLE);
                 llFilterCats.setVisibility(View.GONE);
-                llMain.setVisibility(View.GONE);
+                llDetails.setVisibility(View.GONE);
+                llOrderList.setVisibility(View.GONE);
                 break;
             case QuizDatabase.BARHELPERROLENAME_PREPARE:
+                llFilterRole.setVisibility(View.VISIBLE);
+                llFilterCats.setVisibility(View.VISIBLE);
+                break;
             case QuizDatabase.BARHELPERROLENAME_DELIVER:
-                //Hide the roles part and show only the main part
-                llFilterRole.setVisibility(View.GONE);
+                llFilterRole.setVisibility(View.VISIBLE);
                 llFilterCats.setVisibility(View.GONE);
-                llMain.setVisibility(View.VISIBLE);
                 break;
         }
+        if (filterHidden) {
+            llFilterRole.setVisibility(View.GONE);
+            llFilterCats.setVisibility(View.GONE);
+        }
+        if (!selectedRole.equals("")) {
+            //Only show details if an order was actually selected, in that case, hide the list
+            if (orderSelected) {
+                llDetails.setVisibility(View.VISIBLE);
+                llOrderList.setVisibility(View.GONE);
+            } else {
+                llDetails.setVisibility(View.GONE);
+                llOrderList.setVisibility(View.VISIBLE);
+            }
+        }
     }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -177,11 +185,14 @@ public class C_BarHelperHome extends MyActivity implements LoadingActivity, Show
         rvShowAllOrders = findViewById(R.id.rvShowAllOrders);
         llFilterRole = findViewById(R.id.llFilterRole);
         llFilterCats = findViewById(R.id.llFilterCats);
-        llMain = findViewById(R.id.llMain);
+        llDetails = findViewById(R.id.llDetails);
+        llOrderList = findViewById(R.id.llOrderList);
+        rgpCategories = (RadioGroup) findViewById(R.id.rgCats);
+        rgpRoles = (RadioGroup) findViewById(R.id.rgRole);
         tvOverviewIntro = findViewById(R.id.tvIntroOverview);
-        tvIntroFilter = findViewById(R.id.tvIntroFilter);
-        tvCats = findViewById(R.id.tvCats);
-        tvStatuses = findViewById(R.id.tvStatuses);
+        //tvIntroFilter = findViewById(R.id.tvIntroFilter);
+        //tvCats = findViewById(R.id.tvCats);
+        //tvStatuses = findViewById(R.id.tvStatuses);
         tvOrderNr = findViewById(R.id.tvOrderNr);
         tvOrderUser = findViewById(R.id.tvUser);
         tvItemNames = findViewById(R.id.tvItemNames);
@@ -207,8 +218,47 @@ public class C_BarHelperHome extends MyActivity implements LoadingActivity, Show
             usersList.add(thisTeam);
             userIdsList.add(thisTeamId);
         }
-        displayStatusesList = QuizDatabase.displayHelperRolesArray;
-        statusesList = QuizDatabase.helperRolesArray;
+        displayRolesList = QuizDatabase.displayHelperRolesArray;
+        rolesList = QuizDatabase.helperRolesArray;
+        //Populate the RgpRoles buttons
+        for (int i = 0; i < displayRolesList.size(); i++) {
+            RadioButton rbn = new RadioButton(this);
+            rbn.setId(View.generateViewId());
+            rbn.setText(displayRolesList.get(i));
+            rgpRoles.addView(rbn);
+        }
+        //Populate the rgCategories buttons
+        rgpCategories = (RadioGroup) findViewById(R.id.rgCats);
+        for (int i = 0; i < catsList.size(); i++) {
+            RadioButton rbn = new RadioButton(this);
+            rbn.setId(View.generateViewId());
+            rbn.setText(catsList.get(i));
+            rgpCategories.addView(rbn);
+        }
+        //Listeners for radiogroups
+        rgpRoles.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                RadioButton checkedButton = findViewById(checkedId);
+                selectedRole = (String) checkedButton.getText();
+                int index = displayRolesList.indexOf(selectedRole);
+                selectedStatuses = rolesList.get(index);
+                if (selectedRole.equals(QuizDatabase.BARHELPERROLENAME_DELIVER)) {
+                    selectedCategories = "";
+                    quizLoader.loadAllOrders(selectedStatuses, selectedCategories, selectedUsers);
+                } else {
+                    setVisibility();
+                }
+            }
+        });
+        rgpCategories.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                RadioButton checkedButton = findViewById(checkedId);
+                selectedCategories = "\"" + (String) checkedButton.getText() + "\"";
+                quizLoader.loadAllOrders(selectedStatuses, selectedCategories, selectedUsers);
+            }
+        });
         //Set onclick listeners for the action icons
         ivStatusToProcess.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -216,7 +266,7 @@ public class C_BarHelperHome extends MyActivity implements LoadingActivity, Show
                 int orderId = theSelectedOrder.getIdOrder();
                 String time = MyApplication.getCurrentTime();
                 int newStatus = QuizDatabase.ORDERSTATUS_SUBMITTED;
-                quizLoader.updateOrderStatus(orderId, newStatus, time);
+                // TODO: change this quizLoader.updateOrderStatus(orderId, newStatus, time);
             }
         });
         ivStatusProcessed.setOnClickListener(new View.OnClickListener() {
@@ -225,7 +275,7 @@ public class C_BarHelperHome extends MyActivity implements LoadingActivity, Show
                 int orderId = theSelectedOrder.getIdOrder();
                 String time = MyApplication.getCurrentTime();
                 int newStatus = QuizDatabase.ORDERSTATUS_INPROGRESS;
-                quizLoader.updateOrderStatus(orderId, newStatus, time);
+                // TODO: change this quizLoader.updateOrderStatus(orderId, newStatus, time);
             }
         });
         //Rest of the stuff
@@ -235,18 +285,7 @@ public class C_BarHelperHome extends MyActivity implements LoadingActivity, Show
         rvShowAllOrders.setLayoutManager(layoutManager);
         showOrdersAdapter = new ShowOrdersAdapter(this, allOrders);
         rvShowAllOrders.setAdapter(showOrdersAdapter);
-        //Populate the categories buttons
-        RadioGroup rgp = (RadioGroup) findViewById(R.id.radio_group);
-        int buttons = 5;
-        for (int i = 1; i <= buttons ; i++) {
-            RadioButton rbn = new RadioButton(this);
-            rbn.setId(View.generateViewId());
-            rbn.setText("RadioButton" + i);
-            rgp.addView(rbn);
-        }
-
-        getRolesAndResponsibilities();
-
+        setVisibility();
     }
 
     @Override
@@ -263,8 +302,9 @@ public class C_BarHelperHome extends MyActivity implements LoadingActivity, Show
                 quizLoader.loadAllOrders(selectedStatuses, selectedCategories, selectedUsers);
                 break;
             case R.id.filter:
-                //Reset role and responsibility
-
+                //Show or hide the filters
+                filterHidden = !filterHidden;
+                setVisibility();
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -285,6 +325,18 @@ public class C_BarHelperHome extends MyActivity implements LoadingActivity, Show
         }
     }
 
+    /*
+
+    //Reset roles and responsibilities and prompt the user to set them again
+    public void getRolesAndResponsibilities() {
+        //Reset everything
+        selectedRole = "";
+        selectedStatuses = "";
+        selectedCategories = "";
+        setVisibility();
+        //Prompt the user for his role
+        showDialog(this.getString(R.string.barhelp_select_role), displayRolesList, QuizDatabase.DIALOG_STATUSES);
+    }
     //Generic function to show a select item dialog
     public void showDialog(String title, ArrayList<String> itemsArrayList, int dialogId) {
         Dialog dialog;
@@ -332,7 +384,7 @@ public class C_BarHelperHome extends MyActivity implements LoadingActivity, Show
                 break;
             default:
                 displayField = tvStatuses;
-                sourceList = displayStatusesList;
+                sourceList = displayRolesList;
                 break;
         }
         //Build the filter string
@@ -365,15 +417,13 @@ public class C_BarHelperHome extends MyActivity implements LoadingActivity, Show
             default:
                 //The user selected a role
                 selectedStatuses = "";
-                if (targetArray.size() !=1){
+                if (targetArray.size() != 1) {
                     //The user MUST select one and only one role
-                }
-                else
-                {
+                } else {
                     String thisRole = targetArray.get(0);
-                    if (thisRole.equals(QuizDatabase.BARHELPERROLENAME_PREPARE)){
-                        int index = displayStatusesList.indexOf(thisRole);
-                        selectedStatuses += statusesList.get(index);
+                    if (thisRole.equals(QuizDatabase.BARHELPERROLENAME_PREPARE)) {
+                        int index = displayRolesList.indexOf(thisRole);
+                        selectedStatuses += rolesList.get(index);
                         //Prompt for the categories
                         showDialog(this.getString(R.string.barhelp_select_cats), catsList, QuizDatabase.DIALOG_CATS);
                     }
@@ -383,4 +433,5 @@ public class C_BarHelperHome extends MyActivity implements LoadingActivity, Show
         //Reload the orders
         quizLoader.loadAllOrders(selectedStatuses, selectedCategories, selectedUsers);
     }
+    */
 }

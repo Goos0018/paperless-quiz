@@ -399,7 +399,7 @@ public class C_BarResponsibleHome extends MyActivity implements LoadingActivity,
                 for (int i = 0; i < targetArray.size(); i++) {
                     String thisStatus=targetArray.get(i);
                     int index = displayStatusesList.indexOf(thisStatus);
-                    //selectedStatuses+="\"" + statusesList.get(index) + "\",";
+                    //selectedStatuses+="\"" + rolesList.get(index) + "\",";
                     selectedStatuses+=statusesList.get(index) + ",";
                 }
                 if (selectedStatuses != "") {

@@ -48,5 +48,7 @@
     <string name="select_order">Selecteer een bestelling</string>
     <string name="barhelp_select_cats">Selecteer de bestellingen die je zal klaarzetten</string>
     <string name="barhelp_select_role">Wat ga je doen?</string>
+    <string name="barhelp_orderdetail">Klaar te zetten bestelling</string>
+    <string name="barhelp_no_orders">Geen bestellingen</string>
 
 </resources>

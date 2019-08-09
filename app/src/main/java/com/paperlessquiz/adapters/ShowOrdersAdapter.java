@@ -33,6 +33,7 @@ public class ShowOrdersAdapter extends RecyclerView.Adapter<ShowOrdersAdapter.Vi
     Context context;
     private int previousPosition=0;
     private int currentPosition=0;
+    boolean itemSelected;
 
     int colorWhenClicked, colorWhenNotClicked;
     //CanShowOrderDetail parentActivity;
@@ -79,7 +80,7 @@ public class ShowOrdersAdapter extends RecyclerView.Adapter<ShowOrdersAdapter.Vi
         }
 
         public void setFields(int i) {
-            if (i==currentPosition){
+            if (i==currentPosition && itemSelected){
                 cvCardView.setCardBackgroundColor(colorWhenClicked);
             }
             else
@@ -169,5 +170,9 @@ public class ShowOrdersAdapter extends RecyclerView.Adapter<ShowOrdersAdapter.Vi
     public void setCurrentPosition(int currentPosition) {
         this.currentPosition = currentPosition;
         this.previousPosition = currentPosition;
+    }
+
+    public void setItemSelected(boolean itemSelected) {
+        this.itemSelected = itemSelected;
     }
 }

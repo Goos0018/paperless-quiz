@@ -154,8 +154,8 @@ public class C_BarHelperHome extends MyActivity implements LoadingActivity, Show
                 llFilterCats.setVisibility(View.GONE);
                 llMain.setVisibility(View.GONE);
                 break;
-            case QuizDatabase.BARHELPERROLECODE_PREPARE:
-            case QuizDatabase.BARHELPERROLECODE_DELIVER:
+            case QuizDatabase.BARHELPERROLENAME_PREPARE:
+            case QuizDatabase.BARHELPERROLENAME_DELIVER:
                 //Hide the roles part and show only the main part
                 llFilterRole.setVisibility(View.GONE);
                 llFilterCats.setVisibility(View.GONE);

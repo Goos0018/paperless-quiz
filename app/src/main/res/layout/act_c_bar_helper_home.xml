@@ -23,6 +23,29 @@
             android:textSize="@dimen/text_size_medium"
             android:textStyle="bold" />
 
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RadioButton
+                android:id="@+id/rbPrepare"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginLeft="@dimen/margin_huge"
+                android:text="Prepare"
+                android:checked="true"/>
+
+            <RadioButton
+                android:id="@+id/rbDeliver"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginLeft="@dimen/margin_huge"
+                android:text="Deliver" />
+        </RadioGroup>
+
         <TextView
             android:id="@+id/tvStatuses"
             android:layout_width="match_parent"
@@ -48,12 +71,10 @@
             android:textSize="@dimen/text_size_medium"
             android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/tvCats"
+        <RadioGroup
+            android:id="@+id/rgCats"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center_horizontal" />
+            android:layout_height="match_parent" />
 
     </LinearLayout>
 

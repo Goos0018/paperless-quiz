@@ -120,6 +120,10 @@ public class B_Login extends AppCompatActivity implements LoadingActivity {
                     intent = new Intent(B_Login.this, C_BarResponsibleHome.class);
                     startActivity(intent);
                     break;
+                case QuizDatabase.USERTYPE_BARHELPER:
+                    intent = new Intent(B_Login.this, C_BarHelperHome.class);
+                    startActivity(intent);
+                    break;
             }
         }
     }

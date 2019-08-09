@@ -46,5 +46,7 @@
     <string name="neworder_modifyto">wijzigen in onderstaande?</string>
     <string name="edit_order">Wijzig bestelling</string>
     <string name="select_order">Selecteer een bestelling</string>
+    <string name="barhelp_select_cats">Selecteer de bestellingen die je zal klaarzetten</string>
+    <string name="barhelp_select_role">Wat ga je doen?</string>
 
 </resources>

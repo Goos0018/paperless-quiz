@@ -130,10 +130,22 @@ public class QuizDatabase {
     public static final String ORDERSTATUS_INPROGRESS_STR = "Bezig";
     public static final String ORDERSTATUS_READY_STR = "Klaar";
     public static final String ORDERSTATUS_DELIVERED_STR = "Afgeleverd";
+    //Bar helper and repsonsible stuff
+    public static final String BARHELPERROLENAME_PREPARE = "Bestellingen klaarzetten";
+    public static final String BARHELPERROLENAME_DELIVER = "Bestellingen afleveren";
+    public static final int BARHELPERROLECODE_NONE = 0;
+    public static final int BARHELPERROLECODE_PREPARE = 1;
+    public static final int BARHELPERROLECODE_DELIVER = 2;
+    public static final int DIALOG_CATS = 1;
+    public static final int DIALOG_STATUSES = 2;
+    public static final int DIALOG_USERS = 3;
+
     public static final ArrayList<String> displayStatusesArray= new ArrayList<>(Arrays.asList(ORDERSTATUS_MODIFIED_STR,ORDERSTATUS_SUBMITTED_STR,
             ORDERSTATUS_INPROGRESS_STR,ORDERSTATUS_READY_STR,ORDERSTATUS_DELIVERED_STR));
     public static final ArrayList<String> statusesArray= new ArrayList<>(Arrays.asList(Integer.toString(ORDERSTATUS_MODIFIED),Integer.toString(ORDERSTATUS_SUBMITTED),
             Integer.toString(ORDERSTATUS_INPROGRESS),Integer.toString(ORDERSTATUS_READY),Integer.toString(ORDERSTATUS_DELIVERED)));
+    public static final ArrayList<String> displayHelperRolesArray= new ArrayList<>(Arrays.asList(BARHELPERROLENAME_PREPARE, BARHELPERROLENAME_DELIVER));
+    public static final ArrayList<String> helperRolesArray= new ArrayList<>(Arrays.asList(Integer.toString(ORDERSTATUS_SUBMITTED),Integer.toString(ORDERSTATUS_READY)));
 
     //Column names in the SQL database - used to parse the JSON objects
     //Column names table Answers

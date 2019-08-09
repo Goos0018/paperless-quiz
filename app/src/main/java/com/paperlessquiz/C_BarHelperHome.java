@@ -30,7 +30,7 @@ public class C_BarHelperHome extends MyActivity implements LoadingActivity, Show
     ShowOrdersAdapter showOrdersAdapter;
     TextView tvOrderNr, tvOrderUser;
     TextView tvItemNames, tvItemAmounts, tvOverviewIntro;
-    //TextView tvCats, tvStatuses;
+    TextView tvOrderStatus;
     RadioGroup rgpCategories, rgpRoles;
     ImageView ivStatusToProcess, ivStatusProcessed;
     LinearLayout llFilterRole, llFilterCats, llDetails, llOrderList;
@@ -44,7 +44,7 @@ public class C_BarHelperHome extends MyActivity implements LoadingActivity, Show
     Quiz thisQuiz = MyApplication.theQuiz;
     QuizLoader quizLoader = new QuizLoader(this);
     ArrayList<Order> allOrders;
-    boolean ordersLoaded, orderDetailsLoaded, orderStatusUpdated;
+    boolean ordersLoaded, orderDetailsLoaded, orderStatusUpdated, orderLockedForPrep;
     boolean filterHidden, orderSelected;
     String selectedStatuses = "", selectedCategories = "", selectedUsers = "";
     String selectedRole = "";
@@ -52,10 +52,22 @@ public class C_BarHelperHome extends MyActivity implements LoadingActivity, Show
     @Override
     //Things to do when an order in the list is clicked
     public void onItemClicked(int index) {
-        orderSelected = true;
-        showOrdersAdapter.setItemSelected(true);
-        showOrder(index);
-        setVisibility();
+        //TODO: differentiate between prepare and deliver here
+        theSelectedOrder = allOrders.get(index);
+        int orderId = theSelectedOrder.getIdOrder();
+        String time = MyApplication.getCurrentTime();
+        if (selectedRole.equals(QuizDatabase.BARHELPERROLENAME_PREPARE)){
+            quizLoader.lockOrderForPrep(orderId, time);
+            showOrder(theSelectedOrder);
+            //Rest is done when the result of this action is successful
+        }
+        else
+        {
+            orderSelected = true;
+            showOrdersAdapter.setItemSelected(true);
+            setVisibility();
+        }
+
     }
 
     @Override
@@ -70,6 +82,9 @@ public class C_BarHelperHome extends MyActivity implements LoadingActivity, Show
                 break;
             case QuizDatabase.REQUEST_ID_UPDATEORDERSTATUS:
                 orderStatusUpdated = true;
+                break;
+            case QuizDatabase.REQUEST_ID_LOCKORDERFORPREP:
+                orderLockedForPrep = true;
                 break;
         }
         //If orders are loaded, populate the necessary objects
@@ -108,16 +123,28 @@ public class C_BarHelperHome extends MyActivity implements LoadingActivity, Show
             //Reload the orders
             quizLoader.loadAllOrders(selectedStatuses, selectedCategories, selectedUsers);
         }
+        if (orderLockedForPrep) {
+            orderLockedForPrep = false;
+            //Check the result of the prep action
+            if (quizLoader.lockOrderForPrepRequest.isRequestOK()) {
+                orderSelected = true;
+                showOrdersAdapter.setItemSelected(true);
+                setVisibility();
+            } else {
+                quizLoader.loadAllOrders(selectedStatuses, selectedCategories, selectedUsers);
+            }
+
+        }
 
     }
 
-    //Show the order with the given index, loading it if needed
-    public void showOrder(int index) {
-        theSelectedOrder = allOrders.get(index);
-        if (theSelectedOrder.isDetailsLoaded()) {
-            displayOrder(theSelectedOrder);
+    //Show the order given, loading it if needed
+    public void showOrder(Order order) {
+        //theSelectedOrder = allOrders.get(index);
+        if (order.isDetailsLoaded()) {
+            displayOrder(order);
         } else {
-            quizLoader.loadOrderDetails(theSelectedOrder.getIdOrder());
+            quizLoader.loadOrderDetails(order.getIdOrder());
         }
     }
 
@@ -138,6 +165,7 @@ public class C_BarHelperHome extends MyActivity implements LoadingActivity, Show
         detailAmounts = theSelectedOrder.displayOrderAmounts();
         tvItemNames.setText(detailItems);
         tvItemAmounts.setText(detailAmounts);
+        tvOrderStatus.setText(theSelectedOrder.getLastStatusUpdate());
     }
 
     //Display the appropriate items in the interface, depending on your role selected
@@ -163,7 +191,7 @@ public class C_BarHelperHome extends MyActivity implements LoadingActivity, Show
             llFilterRole.setVisibility(View.GONE);
             llFilterCats.setVisibility(View.GONE);
         }
-        if (!selectedRole.equals("")) {
+        if (selectedRole.equals(QuizDatabase.BARHELPERROLENAME_DELIVER) || (selectedRole.equals(QuizDatabase.BARHELPERROLENAME_PREPARE) && (!selectedCategories.equals("")))) {
             //Only show details if an order was actually selected, in that case, hide the list
             if (orderSelected) {
                 llDetails.setVisibility(View.VISIBLE);
@@ -191,8 +219,7 @@ public class C_BarHelperHome extends MyActivity implements LoadingActivity, Show
         rgpRoles = (RadioGroup) findViewById(R.id.rgRole);
         tvOverviewIntro = findViewById(R.id.tvIntroOverview);
         //tvIntroFilter = findViewById(R.id.tvIntroFilter);
-        //tvCats = findViewById(R.id.tvCats);
-        //tvStatuses = findViewById(R.id.tvStatuses);
+        tvOrderStatus = findViewById(R.id.tvOrderStatus);
         tvOrderNr = findViewById(R.id.tvOrderNr);
         tvOrderUser = findViewById(R.id.tvUser);
         tvItemNames = findViewById(R.id.tvItemNames);
@@ -263,10 +290,10 @@ public class C_BarHelperHome extends MyActivity implements LoadingActivity, Show
         ivStatusToProcess.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //Reset the order status
                 int orderId = theSelectedOrder.getIdOrder();
                 String time = MyApplication.getCurrentTime();
-                int newStatus = QuizDatabase.ORDERSTATUS_SUBMITTED;
-                // TODO: change this quizLoader.updateOrderStatus(orderId, newStatus, time);
+                quizLoader.updateOrderStatus(orderId, QuizDatabase.ORDERSTATUS_SUBMITTED, time);
             }
         });
         ivStatusProcessed.setOnClickListener(new View.OnClickListener() {
@@ -274,8 +301,7 @@ public class C_BarHelperHome extends MyActivity implements LoadingActivity, Show
             public void onClick(View view) {
                 int orderId = theSelectedOrder.getIdOrder();
                 String time = MyApplication.getCurrentTime();
-                int newStatus = QuizDatabase.ORDERSTATUS_INPROGRESS;
-                // TODO: change this quizLoader.updateOrderStatus(orderId, newStatus, time);
+                quizLoader.updateOrderStatus(orderId, QuizDatabase.ORDERSTATUS_READY, time);
             }
         });
         //Rest of the stuff

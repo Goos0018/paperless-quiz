@@ -158,8 +158,6 @@
                     android:text="Team Name" />
             </TableRow>
 
-
-
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -186,6 +184,34 @@
                     android:gravity="left"
                     android:text="00" />
             </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/margin_small">
+
+                <TextView
+                    android:id="@+id/tvOrderStatusIntro"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_marginRight="@dimen/margin_small"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:text="@string/barhelp_last_update"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/tvOrderStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginLeft="@dimen/margin_small"
+                    android:layout_weight="1"
+                    android:gravity="left"
+                    android:text="00" />
+            </TableRow>
+
         </TableLayout>
 
         <LinearLayout

@@ -59,6 +59,7 @@ public class QuizLoader {
     public HTTPSubmit submitOrderRequest;
     public HTTPSubmit updateOrderStatusRequest;
     public HTTPSubmit updateExistingOrderRequest;
+    public HTTPSubmit lockOrderForPrepRequest;
 
     public QuizLoader(Context context) {
         this.context = context;
@@ -517,5 +518,17 @@ public class QuizLoader {
                 context.getString(R.string.loadingerror), false));
     }
 
+    public void lockOrderForPrep(int idOrder, String time) {
+        int idUser = thisQuiz.getThisUser().getIdUser();
+        String userPassword = thisQuiz.getThisUser().getUserPassword();
+        String scriptParams = QuizDatabase.SCRIPT_LOCKORDERFORPREP + QuizDatabase.PHP_STARTPARAM + QuizDatabase.PARAMNAME_IDUSER + idUser +
+                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_USERPASSWORD + userPassword +
+                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_IDORDER + idOrder +
+                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_TIME + time;
+        lockOrderForPrepRequest = new HTTPSubmit(context, scriptParams, QuizDatabase.REQUEST_ID_LOCKORDERFORPREP);
+        lockOrderForPrepRequest.sendRequest(new LLShowProgressActWhenComplete(context, context.getString(R.string.loader_pleasewait),
+                context.getString(R.string.loader_updatingquiz),
+                context.getString(R.string.loadingerror), false));
+    }
 }
 

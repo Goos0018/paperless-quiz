@@ -36,6 +36,7 @@ public class QuizDatabase {
     public static final String PARAMNAME_ORDERUSERSLIST = "orderUsersList=";
     public static final String PARAMNAME_IDORDER = "idOrder=";
     public static final String PARAMNAME_NEWORDERSTATUS = "newOrderStatus=";
+
     // Available PHP scripts
     public static final String SCRIPT_GET_QUIZLIST = "getquizlist.php";
     public static final String SCRIPT_GET_QUIZUSERS = "getuserlist.php";
@@ -52,6 +53,7 @@ public class QuizDatabase {
     public static final String SCRIPT_GET_ALLORDERS = "getallorders.php";
     public static final String SCRIPT_UPDATEORDERSTATUS = "updateorderstatus.php";
     public static final String SCRIPT_UPDATEEXISTINGORDER = "updateexistingorder.php";
+    public static final String SCRIPT_LOCKORDERFORPREP = "lockorderforprep.php";
     //Param values - query names
     public static final String PARAMVALUE_QRY_ALL_ROUNDS = "rounds";
     public static final String PARAMVALUE_QRY_ALL_QUESTIONS = "questions";
@@ -96,6 +98,7 @@ public class QuizDatabase {
     public static final int REQUEST_ID_SUBMITORDER = 108;
     public static final int REQUEST_ID_UPDATEEXISTINGORDER = 109;
     public static final int REQUEST_ID_UPDATEORDERSTATUS = 110;
+    public static final int REQUEST_ID_LOCKORDERFORPREP = 111;
 
 
     //User types - these must match what is defined in the constants.php

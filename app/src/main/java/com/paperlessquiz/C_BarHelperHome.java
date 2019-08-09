@@ -15,6 +15,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.paperlessquiz.adapters.ShowOrdersAdapter;
@@ -233,6 +235,16 @@ public class C_BarHelperHome extends MyActivity implements LoadingActivity, Show
         rvShowAllOrders.setLayoutManager(layoutManager);
         showOrdersAdapter = new ShowOrdersAdapter(this, allOrders);
         rvShowAllOrders.setAdapter(showOrdersAdapter);
+        //Populate the categories buttons
+        RadioGroup rgp = (RadioGroup) findViewById(R.id.radio_group);
+        int buttons = 5;
+        for (int i = 1; i <= buttons ; i++) {
+            RadioButton rbn = new RadioButton(this);
+            rbn.setId(View.generateViewId());
+            rbn.setText("RadioButton" + i);
+            rgp.addView(rbn);
+        }
+
         getRolesAndResponsibilities();
 
     }

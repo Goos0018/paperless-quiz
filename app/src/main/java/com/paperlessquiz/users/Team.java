@@ -36,12 +36,12 @@ public class Team extends User implements Serializable {
         this.results = results;
     }
 
-    public Team(int idQuiz, int idUser, int userNr, int userType, int userStatus, String name) {
-        super(idQuiz, idUser, userNr, userType, userStatus, name);
+    public Team(int idQuiz, int idUser, int userNr, int userType, int userStatus, String name, int totalDeposits) {
+        super(idQuiz, idUser, userNr, userType, userStatus, name,totalDeposits);
     }
 
     public Team(User user) {
-        super(user.getIdQuiz(), user.getIdUser(), user.getUserNr(), user.getUserType(), user.getUserStatus(), user.getName());
+        super(user.getIdQuiz(), user.getIdUser(), user.getUserNr(), user.getUserType(), user.getUserStatus(), user.getName(), user.getTotalDeposits());
         answersForRndSubmitted = new HashMap<>();
         results = new ArrayList<>();
         setDescription("Ploeg " + getUserNr());
@@ -49,7 +49,7 @@ public class Team extends User implements Serializable {
 
     //20190728 - Create a dummy team with team nr given
     public Team(int teamNr) {
-        super(MyApplication.theQuiz.getListData().getIdQuiz(), 0, teamNr, QuizDatabase.USERTYPE_TEAM, QuizDatabase.USERSTATUS_NOTPRESENT, "EMPTY");
+        super(MyApplication.theQuiz.getListData().getIdQuiz(), 0, teamNr, QuizDatabase.USERTYPE_TEAM, QuizDatabase.USERSTATUS_NOTPRESENT, "EMPTY",0);
     }
 
     /*

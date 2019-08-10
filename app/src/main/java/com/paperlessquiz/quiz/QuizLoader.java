@@ -60,6 +60,7 @@ public class QuizLoader {
     public HTTPSubmit updateOrderStatusRequest;
     public HTTPSubmit updateExistingOrderRequest;
     public HTTPSubmit lockOrderForPrepRequest;
+    public HTTPSubmit buyBonnekesRequest;
 
     public QuizLoader(Context context) {
         this.context = context;
@@ -90,13 +91,18 @@ public class QuizLoader {
         loadScoresAndStandings();
     }
 
-    public void loadUsers() {
-        String scriptParams = QuizDatabase.SCRIPT_GET_QUIZUSERS + QuizDatabase.PHP_STARTPARAM + QuizDatabase.PARAMNAME_IDQUIZ + thisQuiz.getListData().getIdQuiz();
+    public void loadUsers(String usersList) {
+        String scriptParams = QuizDatabase.SCRIPT_GET_QUIZUSERS + QuizDatabase.PHP_STARTPARAM + QuizDatabase.PARAMNAME_IDQUIZ + thisQuiz.getListData().getIdQuiz() +
+                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_USERSLIST + usersList;
         //generateParamsPHP(QuizDatabase.PARAMVALUE_QRY_ALL_TEAMS_FOR_QUIZ);
         getUsersRequest = new HTTPGetData<>(context, scriptParams, QuizDatabase.REQUEST_ID_GET_USERS);
         getUsersRequest.getItems(new UserParser(), new LLShowProgressActWhenComplete(context, context.getString(R.string.loader_pleasewait),
                 context.getString(R.string.loader_updatingquiz),
                 context.getString(R.string.loadingerror), false));
+    }
+
+    public void loadUsers() {
+        loadUsers("");
     }
 
     public void loadRounds() {
@@ -227,11 +233,11 @@ public class QuizLoader {
         }
         String scriptParams = QuizDatabase.SCRIPT_GET_ALLORDERS + QuizDatabase.PHP_STARTPARAM + QuizDatabase.PARAMNAME_IDUSER + idUser +
                 QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_USERPASSWORD + userPassword +
-                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_IDQUIZ+ idQuiz +
+                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_IDQUIZ + idQuiz +
                 QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_ORDERCATEGORIES + encodedCategories +
                 QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_ORDERSTATUSLIST + statuses +
-        QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_ORDERUSERSLIST + users ;
-    getOrders = new HTTPGetData<>(context, scriptParams, QuizDatabase.REQUEST_ID_GET_ALLORDERS);
+                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_ORDERUSERSLIST + users;
+        getOrders = new HTTPGetData<>(context, scriptParams, QuizDatabase.REQUEST_ID_GET_ALLORDERS);
         getOrders.getItems(new OrderParser(), new LLShowProgressActWhenComplete(context, context.getString(R.string.loader_pleasewait),
                 context.getString(R.string.loader_updatingquiz),
                 "Something went wrong: ", false));
@@ -530,5 +536,20 @@ public class QuizLoader {
                 context.getString(R.string.loader_updatingquiz),
                 context.getString(R.string.loadingerror), false));
     }
+
+    //Add the amount of bonnekes given to the user's account
+    public void buyBonnekes(int userToUpdate, int amount) {
+        int idUser = thisQuiz.getThisUser().getIdUser();
+        String userPassword = thisQuiz.getThisUser().getUserPassword();
+        String scriptParams = QuizDatabase.SCRIPT_BUYBONNEKES + QuizDatabase.PHP_STARTPARAM + QuizDatabase.PARAMNAME_IDUSER + idUser +
+                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_USERPASSWORD + userPassword +
+                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_USERTOUPDATE + userToUpdate +
+                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_NROFBONNEKES + amount;
+        buyBonnekesRequest = new HTTPSubmit(context, scriptParams, QuizDatabase.REQUEST_ID_BUYBONNEKES);
+        buyBonnekesRequest.sendRequest(new LLShowProgressActWhenComplete(context, context.getString(R.string.loader_pleasewait),
+                context.getString(R.string.loader_updatingquiz),
+                context.getString(R.string.loadingerror), false));
+    }
+
 }
 

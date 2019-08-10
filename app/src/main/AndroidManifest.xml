@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".C_BarHelperHome"></activity>
+        <activity android:name=".C_SalesHome"></activity>
+        <activity android:name=".C_BarHelperHome" />
         <activity android:name=".C_BarResponsibleHome" />
         <activity android:name=".D_OrderHome" />
         <activity android:name=".D_NewOrder" />

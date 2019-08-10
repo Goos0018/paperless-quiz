@@ -36,6 +36,8 @@ public class QuizDatabase {
     public static final String PARAMNAME_ORDERUSERSLIST = "orderUsersList=";
     public static final String PARAMNAME_IDORDER = "idOrder=";
     public static final String PARAMNAME_NEWORDERSTATUS = "newOrderStatus=";
+    public static final String PARAMNAME_USERSLIST = "usersList=";
+    public static final String PARAMNAME_NROFBONNEKES = "amount=";
 
     // Available PHP scripts
     public static final String SCRIPT_GET_QUIZLIST = "getquizlist.php";
@@ -54,6 +56,7 @@ public class QuizDatabase {
     public static final String SCRIPT_UPDATEORDERSTATUS = "updateorderstatus.php";
     public static final String SCRIPT_UPDATEEXISTINGORDER = "updateexistingorder.php";
     public static final String SCRIPT_LOCKORDERFORPREP = "lockorderforprep.php";
+    public static final String SCRIPT_BUYBONNEKES = "buybonnekes.php";
     //Param values - query names
     public static final String PARAMVALUE_QRY_ALL_ROUNDS = "rounds";
     public static final String PARAMVALUE_QRY_ALL_QUESTIONS = "questions";
@@ -99,6 +102,7 @@ public class QuizDatabase {
     public static final int REQUEST_ID_UPDATEEXISTINGORDER = 109;
     public static final int REQUEST_ID_UPDATEORDERSTATUS = 110;
     public static final int REQUEST_ID_LOCKORDERFORPREP = 111;
+    public static final int REQUEST_ID_BUYBONNEKES = 112;
 
 
     //User types - these must match what is defined in the constants.php
@@ -191,6 +195,7 @@ public class QuizDatabase {
     public static final String COLNAME_USER_STATUS = "UserStatus";
     public static final String COLNAME_USER_TYPE = "UserType";
     public static final String COLNAME_USER_NAME = "UserName";
+    public static final String COLNAME_USER_DEPOSIT = "Balance";
     //Column names table ScoreForRound
     public static final String COLNAME_SCOREFORROUND = "ScoreForRound";
     //Column names table ScoreAfterRound

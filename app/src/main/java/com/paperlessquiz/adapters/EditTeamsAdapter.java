@@ -1,8 +1,11 @@
 package com.paperlessquiz.adapters;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +29,8 @@ public class EditTeamsAdapter extends RecyclerView.Adapter<EditTeamsAdapter.View
     private EditTeamsAdapter adapter;
     private QuizLoader quizLoader;
     private Context context;
+    private int nrOfBonnekes;
+    private int thisTeamID;
 
 
     public EditTeamsAdapter(Context context, ArrayList<Team> teams) {
@@ -36,16 +41,18 @@ public class EditTeamsAdapter extends RecyclerView.Adapter<EditTeamsAdapter.View
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvTeamNr, tvTeamName;
+        TextView tvTeamNr, tvTeamName, tvTotalAmount;
         EditText etTeamName;
-        ImageView ivPresent;
+        ImageView ivPresent, ivBonnekes;
 
         public ViewHolder(View itemView) {
             super(itemView);
             tvTeamNr = itemView.findViewById(R.id.tvTeamNr);
             tvTeamName = itemView.findViewById(R.id.tvTeamName);
+            tvTotalAmount = itemView.findViewById(R.id.tvTotalAmount);
             etTeamName = itemView.findViewById(R.id.etTeamName);
             ivPresent = itemView.findViewById(R.id.ivTeamPresent);
+            ivBonnekes= itemView.findViewById(R.id.ivBonnekes);
         }
     }
 
@@ -63,6 +70,7 @@ public class EditTeamsAdapter extends RecyclerView.Adapter<EditTeamsAdapter.View
         viewHolder.tvTeamNr.setText(teams.get(i).getUserNr() + ".");
         viewHolder.etTeamName.setText(teams.get(i).getName());
         viewHolder.tvTeamName.setText(teams.get(i).getName());
+        viewHolder.tvTotalAmount.setText("(" + QuizDatabase.EURO_SIGN + teams.get(i).getTotalDeposits() + ")");
         if (teams.get(i).getUserStatus() == QuizDatabase.USERSTATUS_NOTPRESENT) {
             viewHolder.ivPresent.setImageResource(R.drawable.team_not_present);
 
@@ -99,6 +107,35 @@ public class EditTeamsAdapter extends RecyclerView.Adapter<EditTeamsAdapter.View
                 adapter.notifyDataSetChanged();
             }
         });
+
+
+        viewHolder.ivBonnekes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Bonnekes voor " + teams.get(i).getName());
+                thisTeamID=teams.get(i).getIdUser();
+                final EditText input = new EditText(context);
+                input.setInputType(InputType.TYPE_CLASS_NUMBER);
+                builder.setView(input);
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        nrOfBonnekes = Integer.valueOf(input.getText().toString());
+                        quizLoader.buyBonnekes(thisTeamID,nrOfBonnekes);
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                builder.show();
+            }
+        });
+
+
     }
 
     @Override

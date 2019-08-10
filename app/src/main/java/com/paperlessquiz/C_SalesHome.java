@@ -1,56 +1,34 @@
 package com.paperlessquiz;
 
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
 
 import com.paperlessquiz.adapters.EditTeamsAdapter;
 import com.paperlessquiz.loadinglisteners.LoadingActivity;
-import com.paperlessquiz.quiz.QuizDatabase;
 import com.paperlessquiz.quiz.QuizLoader;
 
-/**
- * Home screen for receptionist. Allows setting team status, change team names and buy or refund bonnekes
- * Actions: Refresh/Dorst/Upload
- */
-
-
-public class C_ReceptionistHome extends MyActivity implements LoadingActivity {
+public class C_SalesHome extends MyActivity implements LoadingActivity {
 
 
     //TODO: create own action bar = default
     // TODO:make field editable when clicked only via below methods:
-        //<your_editText>.setEnabled(true)
-        //<your_editText>.requestFocus();
+    //<your_editText>.setEnabled(true)
+    //<your_editText>.requestFocus();
 
+    //Quiz thisQuiz = MyApplication.theQuiz;
     RecyclerView rvTeams;
     RecyclerView.LayoutManager layoutManager;
     EditTeamsAdapter editTeamsAdapter;
-    boolean usersLoaded, bonnekesBought;
 
     @Override
     public void loadingComplete(int requestID) {
-        switch (requestID) {
-            case QuizDatabase.REQUEST_ID_GET_USERS:
-                usersLoaded = true;
-                break;
-            case QuizDatabase.REQUEST_ID_BUYBONNEKES:
-                bonnekesBought = true;
-                break;
-        }
-        //if users are loaded, update them
-        if (usersLoaded) {
-            //reset the loading statuses
-            usersLoaded = false;
-            quizLoader.updateTeams();
-            quizLoader.updateAnswersSubmittedIntoQuiz();
-            if (showTeamsAdapter != null) {
-                showTeamsAdapter.notifyDataSetChanged();
-            }
+        //Do something when loading is complete
+        if (editTeamsAdapter != null) {
+            editTeamsAdapter.notifyDataSetChanged();
         }
     }
 
@@ -64,8 +42,8 @@ public class C_ReceptionistHome extends MyActivity implements LoadingActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.refresh:
-                QuizLoader quizLoader = new QuizLoader(C_ReceptionistHome.this);
-                quizLoader.loadUsers();
+                QuizLoader quizLoader = new QuizLoader(C_SalesHome.this);
+                //quizLoader.loadTeams();
                 break;
 
         }
@@ -75,7 +53,7 @@ public class C_ReceptionistHome extends MyActivity implements LoadingActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.act_c_receptionist_home);
+        setContentView(R.layout.act_c_sales_home);
         //Set the action bar
         setActionBarIcon();
         setActionBarTitle();

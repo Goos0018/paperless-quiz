@@ -145,10 +145,11 @@ public class D_OrderHome extends AppCompatActivity implements LoadingActivity, S
     }
 
     public void refreshSaldo() {
-        int saldo = 0;
-        for (int i = 0; i < myOrders.size(); i++) {
-            saldo += myOrders.get(i).getTotalCost();
-        }
+        //int saldo = 0;
+        //for (int i = 0; i < myOrders.size(); i++) {
+        //    saldo += myOrders.get(i).getTotalCost();
+        //}
+        int saldo = thisQuiz.getThisUser().getUserCredits() - thisQuiz.getThisUser().getTotalSpent();
         tvSaldo.setText(QuizDatabase.EURO_SIGN + saldo);
     }
 

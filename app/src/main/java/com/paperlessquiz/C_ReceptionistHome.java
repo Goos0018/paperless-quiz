@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.paperlessquiz.adapters.EditTeamsAdapter;
 import com.paperlessquiz.loadinglisteners.LoadingActivity;
@@ -15,22 +16,13 @@ import com.paperlessquiz.quiz.QuizLoader;
 
 /**
  * Home screen for receptionist. Allows setting team status, change team names and buy or refund bonnekes
- * Actions: Refresh/Dorst/Upload
  */
-
-
 public class C_ReceptionistHome extends MyActivity implements LoadingActivity {
-
-
-    //TODO: create own action bar = default
-    // TODO:make field editable when clicked only via below methods:
-        //<your_editText>.setEnabled(true)
-        //<your_editText>.requestFocus();
-
     RecyclerView rvTeams;
     RecyclerView.LayoutManager layoutManager;
     EditTeamsAdapter editTeamsAdapter;
     boolean usersLoaded, bonnekesBought;
+    QuizLoader quizLoader = new QuizLoader(this);
 
     @Override
     public void loadingComplete(int requestID) {
@@ -47,9 +39,18 @@ public class C_ReceptionistHome extends MyActivity implements LoadingActivity {
             //reset the loading statuses
             usersLoaded = false;
             quizLoader.updateTeams();
-            quizLoader.updateAnswersSubmittedIntoQuiz();
-            if (showTeamsAdapter != null) {
-                showTeamsAdapter.notifyDataSetChanged();
+            //editTeamsAdapter.setTeams(thisQuiz.getTeams());
+            editTeamsAdapter.notifyDataSetChanged();
+        }
+        //If bonnekes are bought, reload the users to show the correct amount
+        if (bonnekesBought){
+            bonnekesBought=false;
+            if (quizLoader.buyBonnekesRequest.isRequestOK()){
+                quizLoader.loadUsers();
+            }
+            else
+            {
+                Toast.makeText(this, "Error: " + quizLoader.buyBonnekesRequest.getExplanation(), Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -64,7 +65,6 @@ public class C_ReceptionistHome extends MyActivity implements LoadingActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.refresh:
-                QuizLoader quizLoader = new QuizLoader(C_ReceptionistHome.this);
                 quizLoader.loadUsers();
                 break;
 
@@ -84,7 +84,7 @@ public class C_ReceptionistHome extends MyActivity implements LoadingActivity {
         rvTeams.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         rvTeams.setLayoutManager(layoutManager);
-        editTeamsAdapter = new EditTeamsAdapter(this, thisQuiz.getTeams());
+        editTeamsAdapter = new EditTeamsAdapter(this, thisQuiz.getTeams(), quizLoader);
         rvTeams.setAdapter(editTeamsAdapter);
     }
 }

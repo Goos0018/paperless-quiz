@@ -195,7 +195,8 @@ public class QuizDatabase {
     public static final String COLNAME_USER_STATUS = "UserStatus";
     public static final String COLNAME_USER_TYPE = "UserType";
     public static final String COLNAME_USER_NAME = "UserName";
-    public static final String COLNAME_USER_DEPOSIT = "Balance";
+    public static final String COLNAME_USER_CREDITS = "UserCredits";
+    public static final String COLNAME_TOTALSPENT = "TotalSpent";
     //Column names table ScoreForRound
     public static final String COLNAME_SCOREFORROUND = "ScoreForRound";
     //Column names table ScoreAfterRound

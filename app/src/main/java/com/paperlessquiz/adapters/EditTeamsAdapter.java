@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.paperlessquiz.R;
 import com.paperlessquiz.quiz.QuizDatabase;
@@ -22,7 +23,6 @@ import java.util.ArrayList;
 
 /**
  * Used by the receptionist to view and edit team names/statuses
- * TODO: check to sumbit changes also when user exits the edittext
  */
 public class EditTeamsAdapter extends RecyclerView.Adapter<EditTeamsAdapter.ViewHolder> {
     private ArrayList<Team> teams;
@@ -33,11 +33,11 @@ public class EditTeamsAdapter extends RecyclerView.Adapter<EditTeamsAdapter.View
     private int thisTeamID;
 
 
-    public EditTeamsAdapter(Context context, ArrayList<Team> teams) {
+    public EditTeamsAdapter(Context context, ArrayList<Team> teams, QuizLoader quizLoader) {
         this.teams = teams;
         this.context = context;
         adapter = this;
-        this.quizLoader = new QuizLoader(context);
+        this.quizLoader = quizLoader;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -52,7 +52,7 @@ public class EditTeamsAdapter extends RecyclerView.Adapter<EditTeamsAdapter.View
             tvTotalAmount = itemView.findViewById(R.id.tvTotalAmount);
             etTeamName = itemView.findViewById(R.id.etTeamName);
             ivPresent = itemView.findViewById(R.id.ivTeamPresent);
-            ivBonnekes= itemView.findViewById(R.id.ivBonnekes);
+            ivBonnekes = itemView.findViewById(R.id.ivBonnekes);
         }
     }
 
@@ -70,7 +70,7 @@ public class EditTeamsAdapter extends RecyclerView.Adapter<EditTeamsAdapter.View
         viewHolder.tvTeamNr.setText(teams.get(i).getUserNr() + ".");
         viewHolder.etTeamName.setText(teams.get(i).getName());
         viewHolder.tvTeamName.setText(teams.get(i).getName());
-        viewHolder.tvTotalAmount.setText("(" + QuizDatabase.EURO_SIGN + teams.get(i).getTotalDeposits() + ")");
+        viewHolder.tvTotalAmount.setText("(" + QuizDatabase.EURO_SIGN + teams.get(i).getUserCredits() + ")");
         if (teams.get(i).getUserStatus() == QuizDatabase.USERSTATUS_NOTPRESENT) {
             viewHolder.ivPresent.setImageResource(R.drawable.team_not_present);
 
@@ -101,7 +101,7 @@ public class EditTeamsAdapter extends RecyclerView.Adapter<EditTeamsAdapter.View
                 }
                 teams.get(i).setName(viewHolder.etTeamName.getText().toString().trim());
                 //Send the update to the database
-                quizLoader.updateTeam(teams.get(i).getUserNr(),teams.get(i).getUserStatus(),teams.get(i).getName());
+                quizLoader.updateTeam(teams.get(i).getUserNr(), teams.get(i).getUserStatus(), teams.get(i).getName());
                 viewHolder.tvTeamName.setVisibility(View.VISIBLE);
                 viewHolder.etTeamName.setVisibility(View.GONE);
                 adapter.notifyDataSetChanged();
@@ -114,15 +114,20 @@ public class EditTeamsAdapter extends RecyclerView.Adapter<EditTeamsAdapter.View
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 builder.setTitle("Bonnekes voor " + teams.get(i).getName());
-                thisTeamID=teams.get(i).getIdUser();
+                thisTeamID = teams.get(i).getIdUser();
+                int currentAmount = teams.get(i).getUserCredits() - teams.get(i).getTotalSpent();
                 final EditText input = new EditText(context);
-                input.setInputType(InputType.TYPE_CLASS_NUMBER);
+                input.setInputType(InputType.TYPE_NUMBER_FLAG_SIGNED);
                 builder.setView(input);
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         nrOfBonnekes = Integer.valueOf(input.getText().toString());
-                        quizLoader.buyBonnekes(thisTeamID,nrOfBonnekes);
+                        if ((currentAmount + nrOfBonnekes) < 0) {
+                            Toast.makeText(context, "Error: saldo kan niet negatief zijn. Huidig saldo = " + currentAmount, Toast.LENGTH_LONG).show();
+                        } else {
+                            quizLoader.buyBonnekes(thisTeamID, nrOfBonnekes);
+                        }
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

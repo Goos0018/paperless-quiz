@@ -44,7 +44,7 @@ public class C_BarResponsibleHome extends MyActivity implements LoadingActivity,
     RecyclerView rvShowAllOrders;
     RecyclerView.LayoutManager layoutManager;
     ShowOrdersAdapter showOrdersAdapter;
-    TextView tvIntroFilter, tvSelectedOrderIntro, tvItemNames, tvItemAmounts, tvOverviewIntro;
+    TextView tvIntroFilter, tvSelectedOrderIntro, tvItemNames, tvItemAmounts, tvOverviewIntro, tvOrderStatus;
     TextView tvCats, tvStatuses, tvUser;
     ImageView ivOrderEdit, ivStatusSubmitted, ivStatusInProgress, ivStatusReady, ivStatusDelivered;
     ImageView ivFilterCats, ivFilterStatus, ivFilterUser;
@@ -66,7 +66,8 @@ public class C_BarResponsibleHome extends MyActivity implements LoadingActivity,
     @Override
     //Things to do when an order in the list is clicked
     public void onItemClicked(int index) {
-        showOrder(index);
+        theSelectedOrder=allOrders.get(index);
+        showOrder(theSelectedOrder);
     }
 
     @Override
@@ -91,8 +92,10 @@ public class C_BarResponsibleHome extends MyActivity implements LoadingActivity,
             if (showOrdersAdapter != null) {
                 //Select the top row = most recent order
                 if (allOrders.size() > 0) {
-                    showOrder(0);
+                    theSelectedOrder=allOrders.get(0);
+                    showOrder(theSelectedOrder);
                     showOrdersAdapter.setCurrentPosition(0);
+                    showOrdersAdapter.setItemSelected(true);
                 } else {
                     tvOverviewIntro.setText("No orders to show");
                 }
@@ -118,8 +121,7 @@ public class C_BarResponsibleHome extends MyActivity implements LoadingActivity,
     }
 
     //Show the order with the given index, loading it if needed
-    public void showOrder(int index) {
-        theSelectedOrder = allOrders.get(index);
+    public void showOrder(Order theSelectedOrder) {
         if (theSelectedOrder.isDetailsLoaded()) {
             displayOrder(theSelectedOrder);
         } else {
@@ -144,6 +146,8 @@ public class C_BarResponsibleHome extends MyActivity implements LoadingActivity,
         detailAmounts = theSelectedOrder.displayOrderAmounts();
         tvItemNames.setText(detailItems);
         tvItemAmounts.setText(detailAmounts);
+        tvOrderStatus.setText(theSelectedOrder.getLastStatusUpdate());
+        showOrdersAdapter.setItemSelected(true);
     }
 
     @Override
@@ -163,6 +167,7 @@ public class C_BarResponsibleHome extends MyActivity implements LoadingActivity,
         tvItemNames = findViewById(R.id.tvItemNames);
         tvItemAmounts = findViewById(R.id.tvAmounts);
         tvOverviewIntro = findViewById(R.id.tvIntroOverview);
+        tvOrderStatus=findViewById(R.id.tvOrderStatus);
         ivOrderEdit = findViewById(R.id.ivEditOrder);
         ivStatusSubmitted = findViewById(R.id.ivStatusSubmitted);
         ivStatusInProgress = findViewById(R.id.ivStatusInProgress);

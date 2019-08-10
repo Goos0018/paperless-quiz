@@ -130,8 +130,8 @@ public class QuizDatabase {
     public static final int ORDERSTATUS_DELIVERED = 4;
     public static final String ORDERSTATUS_MODIFIED_STR = "Gewijzigd";
     public static final String ORDERSTATUS_SUBMITTED_STR = "Nieuw";
-    public static final String ORDERSTATUS_INPROGRESS_STR = "Bezig";
-    public static final String ORDERSTATUS_READY_STR = "Klaar";
+    public static final String ORDERSTATUS_INPROGRESS_STR = "Klaarmaken ... ";
+    public static final String ORDERSTATUS_READY_STR = "Onderweg ...";
     public static final String ORDERSTATUS_DELIVERED_STR = "Afgeleverd";
     //Bar helper and repsonsible stuff
     public static final String BARHELPERROLENAME_PREPARE = "Bestellingen klaarzetten";

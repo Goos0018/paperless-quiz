@@ -53,5 +53,6 @@
     <string name="barhelp_last_update">Laatste update</string>
     <string name="barhelp_toastclosefirst">Sluit eerst de geselecteerde order</string>
     <string name="order_nothing_to_order">Niets te bestellen...</string>
+    <string name="barhelp_orderdeliver">Af te leveren bestelling</string>
 
 </resources>

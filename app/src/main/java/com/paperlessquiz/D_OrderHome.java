@@ -92,8 +92,8 @@ public class D_OrderHome extends AppCompatActivity implements LoadingActivity, S
             theSelectedOrder.loadDetails(quizLoader.getOrderDetails.getResultsList());
             displayOrder(theSelectedOrder);
         }
-        if (usersLoaded){
-            usersLoaded=false;
+        if (usersLoaded) {
+            usersLoaded = false;
             quizLoader.updateUsersIntoQuiz();
             refreshSaldo();
         }
@@ -159,9 +159,9 @@ public class D_OrderHome extends AppCompatActivity implements LoadingActivity, S
         tvSaldo.setText(QuizDatabase.EURO_SIGN + saldo);
     }
 
-    public void refreshData(){
-        quizLoader.loadAllOrders("","",thisQuiz.getThisUser().getIdUser()+"");
-        quizLoader.loadUsers(thisQuiz.getThisUser().getIdUser()+"");
+    public void refreshData() {
+        quizLoader.loadAllOrders("", "", thisQuiz.getThisUser().getIdUser() + "");
+        quizLoader.loadUsers(thisQuiz.getThisUser().getIdUser() + "");
     }
 
     @Override
@@ -217,6 +217,9 @@ public class D_OrderHome extends AppCompatActivity implements LoadingActivity, S
             case R.id.neworder:
                 Intent intentOrder = new Intent(D_OrderHome.this, D_NewOrder.class);
                 startActivityForResult(intentOrder, QuizDatabase.REQUEST_CODE_NEWORDER);
+                break;
+            case R.id.backtoquiz:
+                onBackPressed();
                 break;
         }
         return super.onOptionsItemSelected(item);

@@ -6,4 +6,9 @@
         android:orderInCategory="100"
         app:showAsAction="always"
         android:icon="@drawable/new_order"/>
+    <item android:id="@+id/backtoquiz"
+        android:title="Back to quiz"
+        android:orderInCategory="100"
+        app:showAsAction="always"
+        android:icon="@drawable/back"/>
 </menu>

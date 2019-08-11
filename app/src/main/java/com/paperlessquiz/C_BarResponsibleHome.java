@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.paperlessquiz.adapters.ShowOrdersAdapter;
@@ -31,11 +32,13 @@ public class C_BarResponsibleHome extends MyActivity implements LoadingActivity,
     RecyclerView rvShowAllOrders;
     RecyclerView.LayoutManager layoutManager;
     ShowOrdersAdapter showOrdersAdapter;
-    TextView tvIntroFilter, tvSelectedOrderIntro, tvItemNames, tvItemAmounts, tvOverviewIntro, tvOrderStatus;
-    TextView tvCats, tvStatuses, tvUser;
-    ImageView ivOrderEdit, ivStatusSubmitted, ivStatusInProgress, ivStatusReady, ivStatusDelivered;
+    TextView tvIntroFilter, tvCats, tvStatuses, tvUsers;
+    TextView tvSelectedOrderIntro, tvItemNames, tvItemAmounts, tvUser, tvTable, tvOrderNr, tvOrderStatus;
+    TextView tvOverviewIntro;
+    ImageView ivCancel, ivOrderEdit, ivStatusSubmitted, ivStatusInProgress, ivStatusReady, ivStatusDelivered;
     ImageView ivFilterCats, ivFilterStatus, ivFilterUser;
     CardView cvFilter;
+    LinearLayout llDetails, llOrderList;
 
     ArrayList<String> catsList = new ArrayList<>();
     ArrayList<String> usersList = new ArrayList<>();
@@ -46,14 +49,15 @@ public class C_BarResponsibleHome extends MyActivity implements LoadingActivity,
     Quiz thisQuiz = MyApplication.theQuiz;
     QuizLoader quizLoader = new QuizLoader(this);
     ArrayList<Order> allOrders;
-    boolean ordersLoaded, orderDetailsLoaded, orderStatusUpdated, usersLoaded;
-    boolean filterVisible;
+    boolean ordersLoaded, orderDetailsLoaded, orderStatusUpdated;
+    boolean filterHidden;
+    boolean orderSelected;
     String selectedStatuses = "", selectedCategories = "", selectedUsers = "";
 
     @Override
     //Things to do when an order in the list is clicked
     public void onItemClicked(int index) {
-        theSelectedOrder=allOrders.get(index);
+        theSelectedOrder = allOrders.get(index);
         showOrder(theSelectedOrder);
     }
 
@@ -70,31 +74,24 @@ public class C_BarResponsibleHome extends MyActivity implements LoadingActivity,
             case QuizDatabase.REQUEST_ID_UPDATEORDERSTATUS:
                 orderStatusUpdated = true;
                 break;
-                /*
-            case QuizDatabase.REQUEST_ID_GET_USERS:
-                usersLoaded = true;
-                break;
-                */
         }
         //If orders are loaded, populate the necessary objects
         if (ordersLoaded) {
             //reset the loading status
             ordersLoaded = false;
             allOrders = quizLoader.getOrdersRequest.getResultsList();
-            if (showOrdersAdapter != null) {
-                //Select the top row = most recent order
-                if (allOrders.size() > 0) {
-                    theSelectedOrder=allOrders.get(0);
-                    showOrder(theSelectedOrder);
-                    showOrdersAdapter.setCurrentPosition(0);
-                    showOrdersAdapter.setItemSelected(true);
-                } else {
-                    tvOverviewIntro.setText("No orders to show");
-                }
-                showOrdersAdapter.setOrders(allOrders);
-                showOrdersAdapter.notifyDataSetChanged();
+            if (allOrders.size() > 0) {
+                tvOverviewIntro.setText(this.getString(R.string.select_order));
+            } else {
+                tvOverviewIntro.setText(this.getString(R.string.barhelp_no_orders));
             }
-        }
+            showOrdersAdapter.setOrders(allOrders);
+            showOrdersAdapter.notifyDataSetChanged();
+            //Don't select any item and make sure the list is shown
+            orderSelected = false;
+            showOrdersAdapter.setItemSelected(false);
+            setVisibility();
+         }
         if (orderDetailsLoaded) {
             //reset the loading status
             orderDetailsLoaded = false;
@@ -109,13 +106,6 @@ public class C_BarResponsibleHome extends MyActivity implements LoadingActivity,
             //Reload the orders
             quizLoader.loadAllOrders(selectedStatuses, selectedCategories, selectedUsers);
         }
-        /*
-        if (usersLoaded){
-            usersLoaded=false;
-            quizLoader.updateUsersIntoQuiz();
-        }
-        */
-
     }
 
     //Show the order with the given index, loading it if needed
@@ -131,22 +121,45 @@ public class C_BarResponsibleHome extends MyActivity implements LoadingActivity,
     public void displayOrder(Order theSelectedOrder) {
         String detailItems = "";
         String detailAmounts = "";
-        String header;
+        String orderUser;
+        String table;
         //Show if this is an order for a team or an organizer, in the first case, show the team nr, otherwise, the username
+        orderUser = theSelectedOrder.getUserName();
         if (theSelectedOrder.getUserType() == QuizDatabase.USERTYPE_TEAM) {
-            header = QuizDatabase.TEAM + Integer.toString(theSelectedOrder.getUserNr());
+            table = Integer.toString(theSelectedOrder.getUserNr());
         } else {
-            header = theSelectedOrder.getUserName();
+            table = "NVT (Organisatie)";
         }
-        header += " - " + theSelectedOrder.getOrderName() + " (" + QuizDatabase.EURO_SIGN + theSelectedOrder.getTotalCost() + ")";
-        tvSelectedOrderIntro.setText(header);
+        tvOrderNr.setText("" + theSelectedOrder.getOrderNr());
+        tvUser.setText("" + orderUser);
+        tvTable.setText(table);
         detailItems = theSelectedOrder.displayOrderItems();
         detailAmounts = theSelectedOrder.displayOrderAmounts();
         tvItemNames.setText(detailItems);
         tvItemAmounts.setText(detailAmounts);
         tvOrderStatus.setText(theSelectedOrder.getLastStatusUpdate());
+        //Make sure the details part is shown
+        orderSelected = true;
         showOrdersAdapter.setItemSelected(true);
+        setVisibility();
     }
+
+    //Display the appropriate items in the interface, depending on your role selected
+    public void setVisibility() {
+        //Hide filter elements if the user asked so
+        if (filterHidden) {
+            cvFilter.setVisibility(View.GONE);
+        }
+        //In case filters were correctly selected, show or hide either the list or the details screen
+        if (orderSelected) {
+            llDetails.setVisibility(View.VISIBLE);
+            llOrderList.setVisibility(View.GONE);
+        } else {
+            llDetails.setVisibility(View.GONE);
+            llOrderList.setVisibility(View.VISIBLE);
+        }
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,15 +170,22 @@ public class C_BarResponsibleHome extends MyActivity implements LoadingActivity,
         //Get stuff from the interface
         rvShowAllOrders = findViewById(R.id.rvShowAllOrders);
         cvFilter = findViewById(R.id.cvFilter);
+        llDetails = findViewById(R.id.llDetails);
+        llOrderList = findViewById(R.id.llOrderList);
         tvIntroFilter = findViewById(R.id.tvIntroFilter);
         tvCats = findViewById(R.id.tvCats);
         tvStatuses = findViewById(R.id.tvStatuses);
-        tvUser = findViewById(R.id.tvUser);
-        tvSelectedOrderIntro = findViewById(R.id.tvSelectedOrderIntro);
+        tvUsers = findViewById(R.id.tvUsers);
+        tvSelectedOrderIntro = findViewById(R.id.tvIntroDetails);
         tvItemNames = findViewById(R.id.tvItemNames);
         tvItemAmounts = findViewById(R.id.tvAmounts);
+        tvUser = findViewById(R.id.tvUser);
+        tvTable = findViewById(R.id.tvTable);
+        tvOrderNr = findViewById(R.id.tvOrderNr);
+        tvOrderStatus = findViewById(R.id.tvOrderStatus);
         tvOverviewIntro = findViewById(R.id.tvIntroOverview);
-        tvOrderStatus=findViewById(R.id.tvOrderStatus);
+        //Images
+        ivCancel=findViewById(R.id.ivCancel);
         ivOrderEdit = findViewById(R.id.ivEditOrder);
         ivStatusSubmitted = findViewById(R.id.ivStatusSubmitted);
         ivStatusInProgress = findViewById(R.id.ivStatusInProgress);
@@ -215,6 +235,13 @@ public class C_BarResponsibleHome extends MyActivity implements LoadingActivity,
             }
         });
         //Set onclick listeners for the action icons
+        ivCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Just reload the orders to show the list again
+                quizLoader.loadAllOrders(selectedStatuses, selectedCategories, selectedUsers);
+            }
+        });
         ivOrderEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -285,14 +312,14 @@ public class C_BarResponsibleHome extends MyActivity implements LoadingActivity,
                 break;
             case R.id.filter:
                 //Show or hide the filters
-                if (filterVisible) {
+                if (filterHidden) {
                     tvIntroFilter.setVisibility(View.VISIBLE);
                     cvFilter.setVisibility(View.VISIBLE);
                 } else {
                     tvIntroFilter.setVisibility(View.GONE);
                     cvFilter.setVisibility(View.GONE);
                 }
-                filterVisible = !filterVisible;
+                filterHidden = !filterHidden;
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -364,7 +391,7 @@ public class C_BarResponsibleHome extends MyActivity implements LoadingActivity,
                 sourceList = displayStatusesList;
                 break;
             default:
-                displayField = tvUser;
+                displayField = tvUsers;
                 sourceList = usersList;
                 break;
         }
@@ -378,20 +405,18 @@ public class C_BarResponsibleHome extends MyActivity implements LoadingActivity,
             filter = filter.substring(0, filter.length() - 1);
         }
         //Display what was filtered
-        if (filter.equals("")){
+        if (filter.equals("")) {
             displayField.setText("All");
-        }
-        else
-        {
+        } else {
             displayField.setText(filter.replace(",", "\n"));
         }
 
         //Build and set actual parameters that correspond to the filters
         switch (dialogId) {
             case 1:
-                selectedCategories="";
+                selectedCategories = "";
                 for (int i = 0; i < targetArray.size(); i++) {
-                    selectedCategories+="\"" + targetArray.get(i) + "\",";
+                    selectedCategories += "\"" + targetArray.get(i) + "\",";
                 }
                 if (selectedCategories != "") {
                     selectedCategories = selectedCategories.substring(0, selectedCategories.length() - 1);
@@ -400,10 +425,10 @@ public class C_BarResponsibleHome extends MyActivity implements LoadingActivity,
             case 2:
                 selectedStatuses = "";
                 for (int i = 0; i < targetArray.size(); i++) {
-                    String thisStatus=targetArray.get(i);
+                    String thisStatus = targetArray.get(i);
                     int index = displayStatusesList.indexOf(thisStatus);
                     //selectedStatuses+="\"" + rolesList.get(index) + "\",";
-                    selectedStatuses+=statusesList.get(index) + ",";
+                    selectedStatuses += statusesList.get(index) + ",";
                 }
                 if (selectedStatuses != "") {
                     selectedStatuses = selectedStatuses.substring(0, selectedStatuses.length() - 1);
@@ -412,9 +437,9 @@ public class C_BarResponsibleHome extends MyActivity implements LoadingActivity,
             default:
                 selectedUsers = "";
                 for (int i = 0; i < targetArray.size(); i++) {
-                    String thisUser=targetArray.get(i);
+                    String thisUser = targetArray.get(i);
                     int index = usersList.indexOf(thisUser);
-                    selectedUsers+="\"" + userIdsList.get(index) + "\",";
+                    selectedUsers += "\"" + userIdsList.get(index) + "\",";
                 }
                 if (selectedUsers != "") {
                     selectedUsers = selectedUsers.substring(0, selectedUsers.length() - 1);

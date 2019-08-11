@@ -29,8 +29,8 @@ public class C_BarHelperHome extends MyActivity implements LoadingActivity, Show
     RecyclerView rvShowAllOrders;
     RecyclerView.LayoutManager layoutManager;
     ShowOrdersAdapter showOrdersAdapter;
-    TextView tvOrderNr, tvOrderUser;
-    TextView tvItemNames, tvItemAmounts, tvOverviewIntro;
+    TextView tvOrderNr, tvOrderUser, tvDetailsIntro;
+    TextView tvItemNames, tvItemAmounts, tvOverviewIntro, tvTable;
     TextView tvOrderStatus;
     RadioGroup rgpCategories, rgpRoles;
     ImageView ivStatusToProcess, ivStatusProcessed;
@@ -143,19 +143,29 @@ public class C_BarHelperHome extends MyActivity implements LoadingActivity, Show
         String detailItems = "";
         String detailAmounts = "";
         String orderUser;
+        String table;
         //Show if this is an order for a team or an organizer, in the first case, show the team nr, otherwise, the username
+        orderUser=theSelectedOrder.getUserName();
         if (theSelectedOrder.getUserType() == QuizDatabase.USERTYPE_TEAM) {
-            orderUser = QuizDatabase.TEAM + Integer.toString(theSelectedOrder.getUserNr());
+            table = Integer.toString(theSelectedOrder.getUserNr());
         } else {
-            orderUser = theSelectedOrder.getUserName();
+            table = "NVT (Organisatie)";
         }
-        tvOrderNr.setText(" : " + theSelectedOrder.getOrderNr());
-        tvOrderUser.setText(" : " + orderUser);
+        tvOrderNr.setText(""+ theSelectedOrder.getOrderNr());
+        tvOrderUser.setText("" + orderUser);
+        tvTable.setText(table);
         detailItems = theSelectedOrder.displayOrderItems();
         detailAmounts = theSelectedOrder.displayOrderAmounts();
         tvItemNames.setText(detailItems);
         tvItemAmounts.setText(detailAmounts);
         tvOrderStatus.setText(theSelectedOrder.getLastStatusUpdate());
+        if (selectedRole.equals(QuizDatabase.BARHELPERROLENAME_DELIVER)){
+            tvDetailsIntro.setText(this.getString(R.string.barhelp_orderdeliver));
+        }
+        else
+        {
+            tvDetailsIntro.setText(this.getString(R.string.barhelp_orderdetail));
+        }
         //Make sure the details part is shown
         orderSelected = true;
         showOrdersAdapter.setItemSelected(true);
@@ -219,6 +229,8 @@ public class C_BarHelperHome extends MyActivity implements LoadingActivity, Show
         tvOrderUser = findViewById(R.id.tvUser);
         tvItemNames = findViewById(R.id.tvItemNames);
         tvItemAmounts = findViewById(R.id.tvAmounts);
+        tvDetailsIntro=findViewById(R.id.tvIntroDetails);
+        tvTable=findViewById(R.id.tvTable);
         ivStatusToProcess = findViewById(R.id.ivStatusToProcess);
         ivStatusProcessed = findViewById(R.id.ivStatusProcessed);
         //Initialize the (display)arrays with the filter conditions (categories and roles)
@@ -228,19 +240,6 @@ public class C_BarHelperHome extends MyActivity implements LoadingActivity, Show
                 catsList.add(thisCategory);
             }
         }
-        /*
-        for (int i = 0; i < thisQuiz.getTeams().size(); i++) {
-            String thisTeam = thisQuiz.getTeams().get(i).getUserNr() + ". " + thisQuiz.getTeams().get(i).getName();
-            String thisTeamId = Integer.toString(thisQuiz.getTeams().get(i).getIdUser());
-            usersList.add(thisTeam);
-            userIdsList.add(thisTeamId);
-        }
-        for (int i = 0; i < thisQuiz.getOrganizers().size(); i++) {
-            String thisTeam = thisQuiz.getOrganizers().get(i).getName();
-            String thisTeamId = Integer.toString(thisQuiz.getOrganizers().get(i).getIdUser());
-            usersList.add(thisTeam);
-            userIdsList.add(thisTeamId);
-        }*/
         displayRolesList = QuizDatabase.displayHelperRolesArray;
         rolesList = QuizDatabase.helperRolesArray;
         //Populate the rgpRoles buttons

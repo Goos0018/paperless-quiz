@@ -86,7 +86,7 @@ public class QuizDatabase {
     public static final int REQUEST_ID_GET_FULLQUESTIONS = 8;
     public static final int REQUEST_ID_GET_RESULTS = 9;
     public static final int REQUEST_ID_GET_ORDERITEMS = 10;
-    public static final int REQUEST_ID_GET_ORDERSFORUSER = 11;
+    //public static final int REQUEST_ID_GET_ORDERSFORUSER = 11;
     public static final int REQUEST_ID_GET_ALLORDERS = 12;
     public static final int REQUEST_ID_GET_ORDERDETAILS = 13;
     //Submit requests

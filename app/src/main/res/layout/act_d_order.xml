@@ -7,8 +7,83 @@
     android:orientation="vertical"
     tools:context=".D_NewOrder">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rvShowOrderItems"
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_huge"
+        app:cardBackgroundColor="@color/cardview_shadow_end_color">
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/tvSaldoIntro"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:text="Saldo :"
+                    android:textColor="@color/niceBlue"
+                    android:textSize="@dimen/text_size_medium"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvSaldo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_medium"
+                    android:layout_weight="1"
+                    android:text="00"
+                    android:textColor="@color/correctGreen"
+                    android:textSize="@dimen/text_size_medium"
+                    android:textStyle="bold" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/tvRemainingSaldoIntro"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:text="Na deze bestelling :"
+                    android:textColor="@color/niceBlue"
+                    android:textSize="@dimen/text_size_medium"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvSaldoAfterThis"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_medium"
+                    android:layout_weight="1"
+                    android:text="00"
+                    android:textColor="@color/correctGreen"
+                    android:textSize="@dimen/text_size_medium"
+                    android:textStyle="bold" />
+            </TableRow>
+
+        </TableLayout>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/margin_small"
+        app:cardBackgroundColor="@color/cardview_shadow_end_color">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvShowOrderItems"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </android.support.v7.widget.CardView>
+
 </LinearLayout>

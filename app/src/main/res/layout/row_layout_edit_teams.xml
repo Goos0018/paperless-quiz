@@ -22,17 +22,15 @@
 
     <TextView
         android:id="@+id/tvTeamNr"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="32dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
         android:ems="10"
         android:gravity="center|right"
-        android:text="00"
+        android:text="00."
         android:textSize="@dimen/text_size_medium"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/ivTeamPresent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -60,13 +58,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
         android:text="TextView"
         android:textColor="@color/colorPrimaryText"
         android:textSize="@dimen/text_size_medium"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tvTeamNr"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -74,14 +69,36 @@
         android:id="@+id/tvTotalAmount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
+        android:gravity="right"
         android:text="000"
+        android:textColor="@color/correctGreen"
         android:textSize="@dimen/text_size_medium"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/ivBonnekes"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toStartOf="@id/tvSlash" />
+
+    <TextView
+        android:id="@+id/tvSlash"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text=" / "
+        android:textSize="@dimen/text_size_medium"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/tvRemaining" />
+
+    <TextView
+        android:id="@+id/tvRemaining"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:gravity="left"
+        android:text="000"
+        android:textColor="@color/wrongRed"
+        android:textSize="@dimen/text_size_medium"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/ivBonnekes" />
 
     <ImageView
         android:id="@+id/ivBonnekes"
@@ -94,6 +111,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/euro" />
-
 
 </android.support.constraint.ConstraintLayout>

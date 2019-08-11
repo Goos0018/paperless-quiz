@@ -8,7 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.paperlessquiz.MyApplication;
 import com.paperlessquiz.R;
 import com.paperlessquiz.orders.Order;
 import com.paperlessquiz.orders.OrderItem;
@@ -28,12 +30,16 @@ public class ShowOrderItemsAdapter extends RecyclerView.Adapter<ShowOrderItemsAd
     private ArrayList<OrderItem> orderItems;
     private ShowOrderItemsAdapter adapter;
     private Order theOrder;
-    String euro = "€ ";
+    TextView tvSaldoAfterThis;
+    String euro = QuizDatabase.EURO_SIGN;
+    Context context;
 
-    public ShowOrderItemsAdapter(Context context, ArrayList<OrderItem> orderItems, Order theOrder) {
+    public ShowOrderItemsAdapter(Context context, ArrayList<OrderItem> orderItems, Order theOrder, TextView tvSaldoAfterThis) {
         this.orderItems = orderItems;
         adapter = this;
         this.theOrder = theOrder;
+        this.tvSaldoAfterThis=tvSaldoAfterThis;
+        this.context=context;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -82,8 +88,15 @@ public class ShowOrderItemsAdapter extends RecyclerView.Adapter<ShowOrderItemsAd
             public void onClick(View view) {
                 final int position = view.getId();
                 int itemId = orderItems.get(i).getIdOrderItem();
-                theOrder.oneItemLess(itemId);
-                viewHolder.setFields(i);
+                int itemsOrdered = theOrder.getAmountOrderedForItem(itemId);
+                if (itemsOrdered > 0) {
+                    theOrder.oneItemLess(itemId);
+                    String cur = tvSaldoAfterThis.getText().toString();
+                    int curSaldo = (int) Integer.valueOf(cur);
+                    int newValue = curSaldo + orderItems.get(i).getItemCost();
+                    tvSaldoAfterThis.setText(newValue + "");
+                    viewHolder.setFields(i);
+                }
             }
         });
         viewHolder.ivOneItemMore.setOnClickListener(new View.OnClickListener() {
@@ -91,8 +104,17 @@ public class ShowOrderItemsAdapter extends RecyclerView.Adapter<ShowOrderItemsAd
             public void onClick(View view) {
                 final int position = view.getId();
                 int itemId = orderItems.get(i).getIdOrderItem();
-                theOrder.oneItemMore(itemId);
-                viewHolder.setFields(i);
+                String cur = tvSaldoAfterThis.getText().toString();
+                int curSaldo = (int) Integer.valueOf(cur);
+                int newValue = curSaldo - orderItems.get(i).getItemCost();
+                if ((newValue<0)&& MyApplication.theQuiz.getThisUser().getUserType()==0){
+                    Toast.makeText(context, "Saldo ontoereikend", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    theOrder.oneItemMore(itemId);
+                    tvSaldoAfterThis.setText(newValue+"");
+                    viewHolder.setFields(i);
+                }
             }
         });
     }

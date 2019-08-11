@@ -46,8 +46,8 @@ public class QuizLoader {
     public HTTPGetData<AnswersSubmitted> getAnswersSubmittedRequest;
     public HTTPGetData<EventLog> getMyEventLogsRequest;
     public HTTPGetData<ResultAfterRound> getResultsRequest;
-    public HTTPGetData<OrderItem> getOrderItems;
-    public HTTPGetData<Order> getOrders;
+    public HTTPGetData<OrderItem> getOrderItemsRequest;
+    public HTTPGetData<Order> getOrdersRequest;
     public HTTPGetData<ItemOrdered> getOrderDetails;
     public HTTPSubmit authenticateRequest;
     public HTTPSubmit submitAnswerRequest;
@@ -198,12 +198,14 @@ public class QuizLoader {
         String userPassword = thisQuiz.getThisUser().getUserPassword();
         int idQuiz = thisQuiz.getListData().getIdQuiz();
         String scriptParams = generateParamsPHP(QuizDatabase.PARAMVALUE_QRY_ORDERITEMS, idUser, userPassword, idQuiz, idQuiz);
-        getOrderItems = new HTTPGetData<>(context, scriptParams, QuizDatabase.REQUEST_ID_GET_ORDERITEMS);
-        getOrderItems.getItems(new OrderItemParser(), new LLShowProgressActWhenComplete(context, context.getString(R.string.loader_pleasewait),
+        getOrderItemsRequest = new HTTPGetData<>(context, scriptParams, QuizDatabase.REQUEST_ID_GET_ORDERITEMS);
+        getOrderItemsRequest.getItems(new OrderItemParser(), new LLShowProgressActWhenComplete(context, context.getString(R.string.loader_pleasewait),
                 context.getString(R.string.loader_updatingquiz),
                 "Something went wrong: ", false));
     }
 
+    /*
+    Replace by general load orders function
     //Load orders for the user
     public void loadOrdersForuser() {
         int idUser = thisQuiz.getThisUser().getIdUser();
@@ -212,11 +214,12 @@ public class QuizLoader {
         String scriptParams = generateParamsPHP(QuizDatabase.PARAMVALUE_QRY_ORDERSFORUSER, idUser, userPassword, idQuiz, idUser);
         scriptParams = scriptParams + QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_ORDERBY + QuizDatabase.COLNAME_ORDERNUMBER +
                 QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_ORDERDIRECTION + QuizDatabase.PARAMVALUE_ORDERDESC;
-        getOrders = new HTTPGetData<>(context, scriptParams, QuizDatabase.REQUEST_ID_GET_ORDERSFORUSER);
-        getOrders.getItems(new OrderParser(), new LLShowProgressActWhenComplete(context, context.getString(R.string.loader_pleasewait),
+        getOrdersRequest = new HTTPGetData<>(context, scriptParams, QuizDatabase.REQUEST_ID_GET_ORDERSFORUSER);
+        getOrdersRequest.getItems(new OrderParser(), new LLShowProgressActWhenComplete(context, context.getString(R.string.loader_pleasewait),
                 context.getString(R.string.loader_updatingquiz),
                 "Something went wrong: ", false));
     }
+    */
 
     //Load ALL orders with status / category in a given comma separated list
     // This will load all orders if the status resp. category is omitted
@@ -237,11 +240,16 @@ public class QuizLoader {
                 QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_ORDERCATEGORIES + encodedCategories +
                 QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_ORDERSTATUSLIST + statuses +
                 QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_ORDERUSERSLIST + users;
-        getOrders = new HTTPGetData<>(context, scriptParams, QuizDatabase.REQUEST_ID_GET_ALLORDERS);
-        getOrders.getItems(new OrderParser(), new LLShowProgressActWhenComplete(context, context.getString(R.string.loader_pleasewait),
+        getOrdersRequest = new HTTPGetData<>(context, scriptParams, QuizDatabase.REQUEST_ID_GET_ALLORDERS);
+        getOrdersRequest.getItems(new OrderParser(), new LLShowProgressActWhenComplete(context, context.getString(R.string.loader_pleasewait),
                 context.getString(R.string.loader_updatingquiz),
                 "Something went wrong: ", false));
     }
+    public void loadAllOrders() {
+        loadAllOrders("","","");
+    }
+
+
 
     public void loadOrderDetails(int idOrder) {
         int idUser = thisQuiz.getThisUser().getIdUser();
@@ -257,8 +265,8 @@ public class QuizLoader {
 
     //Get the items you can order and put them in the MyApplication itemsToOrderArray object
     public void loadItemsToOrderIntoQuiz() {
-        for (int i = 0; i < getOrderItems.getResultsList().size(); i++) {
-            OrderItem thisItem = getOrderItems.getResultsList().get(i);
+        for (int i = 0; i < getOrderItemsRequest.getResultsList().size(); i++) {
+            OrderItem thisItem = getOrderItemsRequest.getResultsList().get(i);
             //Add this to the HashMap and the array
             MyApplication.itemsToOrderArray.add(thisItem);
             MyApplication.itemsToOrder.put(Integer.valueOf(thisItem.getIdOrderItem()), thisItem);
@@ -334,12 +342,15 @@ public class QuizLoader {
     }
 
     //Assumes users are already loaded in the quiz, this just updates the relevant information
-    public void updateTeams() {
+    public void updateUsersIntoQuiz() {
         for (int i = 0; i < getUsersRequest.getResultsList().size(); i++) {
             User thisUser = getUsersRequest.getResultsList().get(i);
             //Users are already loaded, we only care about the teams
             if (thisUser.getUserType() == QuizDatabase.USERTYPE_TEAM) {
                 User userToUpdate = thisQuiz.getTeam(thisUser.getUserNr());
+                userToUpdate.updateUserBasics(thisUser);
+            } else {
+                User userToUpdate = thisQuiz.getOrganizer(thisUser.getUserNr());
                 userToUpdate.updateUserBasics(thisUser);
             }
         }

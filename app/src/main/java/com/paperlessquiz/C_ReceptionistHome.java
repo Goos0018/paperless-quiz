@@ -5,8 +5,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.paperlessquiz.adapters.EditTeamsAdapter;
@@ -25,6 +23,7 @@ public class C_ReceptionistHome extends MyActivity implements LoadingActivity {
     QuizLoader quizLoader = new QuizLoader(this);
 
     @Override
+    //Things to do after loading actions are complete
     public void loadingComplete(int requestID) {
         switch (requestID) {
             case QuizDatabase.REQUEST_ID_GET_USERS:
@@ -34,12 +33,11 @@ public class C_ReceptionistHome extends MyActivity implements LoadingActivity {
                 bonnekesBought = true;
                 break;
         }
-        //if users are loaded, update them
+        //if users are re-loaded, update them in the quiz and notify the adapter
         if (usersLoaded) {
             //reset the loading statuses
             usersLoaded = false;
-            quizLoader.updateTeams();
-            //editTeamsAdapter.setTeams(thisQuiz.getTeams());
+            quizLoader.updateUsersIntoQuiz();
             editTeamsAdapter.notifyDataSetChanged();
         }
         //If bonnekes are bought, reload the users to show the correct amount

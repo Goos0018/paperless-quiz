@@ -196,7 +196,8 @@ public class QuizDatabase {
     public static final String COLNAME_USER_TYPE = "UserType";
     public static final String COLNAME_USER_NAME = "UserName";
     public static final String COLNAME_USER_CREDITS = "UserCredits";
-    public static final String COLNAME_TOTALSPENT = "TotalSpent";
+    //public static final String COLNAME_TOTALSPENT = "TotalSpent"; => Replaced by the TotalSpentCalc below
+    public static final String COLNAME_TOTALSPENTCALC = "TotalSpentCalc";
     //Column names table ScoreForRound
     public static final String COLNAME_SCOREFORROUND = "ScoreForRound";
     //Column names table ScoreAfterRound
@@ -217,9 +218,10 @@ public class QuizDatabase {
     public static final String COLNAME_IDORDER = "idOrder";
     public static final String COLNAME_ORDERCATEGORY = "OrderCategory";
     public static final String COLNAME_ORDERNUMBER = "OrderNumber";
-    public static final String COLNAME_ORDERCOST = "OrderCost";
+    public static final String COLNAME_ORDERCOST = "OrderCost";     //This is the ordercost that is maintained manually
     public static final String COLNAME_ORDERSTATUS = "OrderStatus";
     public static final String COLNAME_ORDERLASTUPDATE = "OrderLastUpdate";
+    public static final String COLNAME_ORDERTOTALCOST = "TotalCost"; //This is the cost that calculated in the query
     //Column names table ItemsOrdered
     public static final String COLNAME_ORDEREDAMOUNT = "ItemsOrderedAmount";
 

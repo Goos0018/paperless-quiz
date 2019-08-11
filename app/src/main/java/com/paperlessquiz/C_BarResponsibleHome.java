@@ -3,13 +3,8 @@ package com.paperlessquiz;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,12 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.paperlessquiz.adapters.ShowOrdersAdapter;
@@ -31,11 +21,8 @@ import com.paperlessquiz.orders.Order;
 import com.paperlessquiz.quiz.Quiz;
 import com.paperlessquiz.quiz.QuizDatabase;
 import com.paperlessquiz.quiz.QuizLoader;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Home screen for the bar responsible. Allows to view all or a selection of orders, change statuses of orders and modify them
@@ -59,7 +46,7 @@ public class C_BarResponsibleHome extends MyActivity implements LoadingActivity,
     Quiz thisQuiz = MyApplication.theQuiz;
     QuizLoader quizLoader = new QuizLoader(this);
     ArrayList<Order> allOrders;
-    boolean ordersLoaded, orderDetailsLoaded, orderStatusUpdated;
+    boolean ordersLoaded, orderDetailsLoaded, orderStatusUpdated, usersLoaded;
     boolean filterVisible;
     String selectedStatuses = "", selectedCategories = "", selectedUsers = "";
 
@@ -83,12 +70,17 @@ public class C_BarResponsibleHome extends MyActivity implements LoadingActivity,
             case QuizDatabase.REQUEST_ID_UPDATEORDERSTATUS:
                 orderStatusUpdated = true;
                 break;
+                /*
+            case QuizDatabase.REQUEST_ID_GET_USERS:
+                usersLoaded = true;
+                break;
+                */
         }
         //If orders are loaded, populate the necessary objects
         if (ordersLoaded) {
             //reset the loading status
             ordersLoaded = false;
-            allOrders = quizLoader.getOrders.getResultsList();
+            allOrders = quizLoader.getOrdersRequest.getResultsList();
             if (showOrdersAdapter != null) {
                 //Select the top row = most recent order
                 if (allOrders.size() > 0) {
@@ -117,6 +109,12 @@ public class C_BarResponsibleHome extends MyActivity implements LoadingActivity,
             //Reload the orders
             quizLoader.loadAllOrders(selectedStatuses, selectedCategories, selectedUsers);
         }
+        /*
+        if (usersLoaded){
+            usersLoaded=false;
+            quizLoader.updateUsersIntoQuiz();
+        }
+        */
 
     }
 
@@ -220,7 +218,6 @@ public class C_BarResponsibleHome extends MyActivity implements LoadingActivity,
         ivOrderEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //int orderNr = orders.get(i).getOrderNr();
                 Intent intentOrder = new Intent(C_BarResponsibleHome.this, D_NewOrder.class);
                 intentOrder.putExtra(QuizDatabase.INTENT_EXTRANAME_ORDER_TO_EDIT, theSelectedOrder);
                 startActivityForResult(intentOrder, QuizDatabase.REQUEST_CODE_EDITEXISTINGORDER);
@@ -312,6 +309,7 @@ public class C_BarResponsibleHome extends MyActivity implements LoadingActivity,
             case Order.RESULT_ORDER_CREATED:
                 //This is when we modified an existing order
                 quizLoader.loadAllOrders(selectedStatuses, selectedCategories, selectedUsers);
+                //quizLoader.loadUsers(theSelectedOrder.getIdUser()+"");
                 break;
         }
     }

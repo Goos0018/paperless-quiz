@@ -10,12 +10,16 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.paperlessquiz.adapters.ShowOrderItemsAdapter;
+import com.paperlessquiz.loadinglisteners.LoadingActivity;
 import com.paperlessquiz.orders.Order;
 import com.paperlessquiz.quiz.Quiz;
 import com.paperlessquiz.quiz.QuizDatabase;
 import com.paperlessquiz.quiz.QuizLoader;
+import com.paperlessquiz.users.User;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -26,14 +30,42 @@ import java.util.TimeZone;
  * This activity is used to create an order, or modify an existing order
  * Boolean isNewOrder indicates if it is a new order, or an existing order that is being modified
  */
-public class D_NewOrder extends AppCompatActivity {
+public class D_NewOrder extends AppCompatActivity implements LoadingActivity {
     RecyclerView rvShowOrderItems;
     RecyclerView.LayoutManager layoutManager;
+    TextView tvSaldo, tvSaldoAfterThis;
     ShowOrderItemsAdapter showOrderItemsAdapter;
     Order thisOrder;
     Quiz thisQuiz = MyApplication.theQuiz;
+    User thisUser;
     QuizLoader quizLoader;
     boolean isNewOrder;
+    boolean usersLoaded;
+    //int thisUserId;
+
+    @Override
+    public void loadingComplete(int requestId) {
+
+        switch (requestId) {
+            case QuizDatabase.REQUEST_ID_GET_USERS:
+                usersLoaded = true;
+                break;
+        }
+        if (usersLoaded) {
+            usersLoaded = false;
+            quizLoader.updateUsersIntoQuiz();
+            updateSaldo();
+        }
+    }
+
+    //Update saldo
+    public void updateSaldo() {
+        int bonnekesBought = thisUser.getUserCredits();
+        int totalSpent = thisUser.getTotalSpent();
+        int saldo = bonnekesBought - totalSpent;
+        tvSaldo.setText(saldo + "");
+        tvSaldoAfterThis.setText(saldo + "");
+    }
 
     //Confirm before submitting an order
     public void confirmOrder(boolean isNewOrder) {
@@ -74,6 +106,7 @@ public class D_NewOrder extends AppCompatActivity {
         if (isNewOrder) {
             if (thisOrder.isEmpty()) {
                 setResult(Order.RESULT_NO_ORDER_CREATED, intent);
+                Toast.makeText(this, this.getString(R.string.order_nothing_to_order), Toast.LENGTH_LONG).show();
             } else {
                 setResult(Order.RESULT_ORDER_CREATED, intent);
                 quizLoader.submitOrder(thisOrder.getOrderContentsAsString(), getCurrentTime());
@@ -92,24 +125,34 @@ public class D_NewOrder extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         String actionBarTitle;
         //Check if an order was passed. If so, we need to edit it, otherwise, we need to create a new order
+        //Also, set thisUser correctly
         if (getIntent().hasExtra(QuizDatabase.INTENT_EXTRANAME_ORDER_TO_EDIT)) {
             thisOrder = (Order) getIntent().getSerializableExtra(QuizDatabase.INTENT_EXTRANAME_ORDER_TO_EDIT);
             isNewOrder = false;
             actionBarTitle = this.getString(R.string.order_modifytitle);
+            if (thisOrder.getUserType() == 0) {
+                thisUser = thisQuiz.getTeam(thisOrder.getUserNr());
+            } else {
+                thisUser = thisQuiz.getOrganizer(thisOrder.getUserNr());
+            }
         } else {
             thisOrder = new Order();
             isNewOrder = true;
             actionBarTitle = this.getString(R.string.order_title);
+            thisUser = thisQuiz.getThisUser();
         }
         actionBar.setTitle(actionBarTitle);
-
+        tvSaldo = findViewById(R.id.tvSaldo);
+        tvSaldoAfterThis = findViewById(R.id.tvSaldoAfterThis);
         rvShowOrderItems = findViewById(R.id.rvShowOrderItems);
         rvShowOrderItems.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         rvShowOrderItems.setLayoutManager(layoutManager);
-        showOrderItemsAdapter = new ShowOrderItemsAdapter(this, MyApplication.itemsToOrderArray, thisOrder);
+        showOrderItemsAdapter = new ShowOrderItemsAdapter(this, MyApplication.itemsToOrderArray, thisOrder, tvSaldoAfterThis);
         rvShowOrderItems.setAdapter(showOrderItemsAdapter);
         quizLoader = new QuizLoader(this);
+        //Make sure we always have the latest information
+        quizLoader.loadUsers(thisUser.getIdUser() + "");
     }
 
     @Override

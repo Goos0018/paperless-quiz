@@ -10,7 +10,7 @@ public class UserParser implements JsonParser<User> {
 
     @Override
     public User parse(JSONObject jo) throws JSONException {
-        int idQuiz, idUser, userNr, userStatus,userType, userCredits, totalSpent;
+        int idQuiz, idUser, userNr, userStatus,userType, userCredits, totalSpentCalc;
         String userName;
         User user;
         try {
@@ -25,10 +25,11 @@ public class UserParser implements JsonParser<User> {
             catch (Exception e){
                 userCredits =0;
             }
+            //Used to be TotalSpent, but replaced by calculated value from the order data
             try {
-                totalSpent =jo.getInt(QuizDatabase.COLNAME_TOTALSPENT);}
+                totalSpentCalc =jo.getInt(QuizDatabase.COLNAME_TOTALSPENTCALC);}
             catch (Exception e){
-                totalSpent =0;
+                totalSpentCalc =0;
             }
         } catch (Exception e) {
             idQuiz = 0;
@@ -39,9 +40,9 @@ public class UserParser implements JsonParser<User> {
             //teamPassword="";
             userName = "Error parsing " + jo.toString();
             userCredits =0;
-            totalSpent=0;
+            totalSpentCalc=0;
         }
-        user = new User(idQuiz, idUser, userNr, userType, userStatus, userName, userCredits,totalSpent);
+        user = new User(idQuiz, idUser, userNr, userType, userStatus, userName, userCredits,totalSpentCalc);
         return user;
     }
 }

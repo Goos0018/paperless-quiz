@@ -19,7 +19,6 @@ import android.widget.TextView;
 
 import com.paperlessquiz.adapters.ShowOrdersAdapter;
 import com.paperlessquiz.loadinglisteners.LoadingActivity;
-import com.paperlessquiz.orders.CanShowOrderDetail;
 import com.paperlessquiz.orders.Order;
 import com.paperlessquiz.quiz.Quiz;
 import com.paperlessquiz.quiz.QuizDatabase;
@@ -44,7 +43,7 @@ public class D_OrderHome extends AppCompatActivity implements LoadingActivity, S
     Quiz thisQuiz = MyApplication.theQuiz;
     QuizLoader quizLoader = new QuizLoader(this);
     ArrayList<Order> myOrders;
-    boolean ordersLoaded, orderDetailsLoaded;
+    boolean ordersLoaded, orderDetailsLoaded, usersLoaded;
     MyActivity callingActivity;
 
     @Override
@@ -55,18 +54,21 @@ public class D_OrderHome extends AppCompatActivity implements LoadingActivity, S
     @Override
     public void loadingComplete(int requestID) {
         switch (requestID) {
-            case QuizDatabase.REQUEST_ID_GET_ORDERSFORUSER:
+            case QuizDatabase.REQUEST_ID_GET_ALLORDERS:
                 ordersLoaded = true;
                 break;
             case QuizDatabase.REQUEST_ID_GET_ORDERDETAILS:
                 orderDetailsLoaded = true;
+                break;
+            case QuizDatabase.REQUEST_ID_GET_USERS:
+                usersLoaded = true;
                 break;
         }
         //If everything is properly loaded, we can get on wth the rest
         if (ordersLoaded) {
             //reset the loading statuses
             ordersLoaded = false;
-            myOrders = quizLoader.getOrders.getResultsList();
+            myOrders = quizLoader.getOrdersRequest.getResultsList();
             refreshSaldo();
             if (showOrdersAdapter != null) {
                 //showOrdersAdapter.notifyDataSetChanged();
@@ -89,6 +91,11 @@ public class D_OrderHome extends AppCompatActivity implements LoadingActivity, S
             theSelectedOrder.setDetailsLoaded(true);
             theSelectedOrder.loadDetails(quizLoader.getOrderDetails.getResultsList());
             displayOrder(theSelectedOrder);
+        }
+        if (usersLoaded){
+            usersLoaded=false;
+            quizLoader.updateUsersIntoQuiz();
+            refreshSaldo();
         }
     }
 
@@ -140,8 +147,7 @@ public class D_OrderHome extends AppCompatActivity implements LoadingActivity, S
         rvShowOrders.setLayoutManager(layoutManager);
         showOrdersAdapter = new ShowOrdersAdapter(this, myOrders);
         rvShowOrders.setAdapter(showOrdersAdapter);
-        quizLoader.loadOrdersForuser();
-        //callingActivity =  getIntent().getClass()
+        refreshData();
     }
 
     public void refreshSaldo() {
@@ -153,6 +159,11 @@ public class D_OrderHome extends AppCompatActivity implements LoadingActivity, S
         tvSaldo.setText(QuizDatabase.EURO_SIGN + saldo);
     }
 
+    public void refreshData(){
+        quizLoader.loadAllOrders("","",thisQuiz.getThisUser().getIdUser()+"");
+        quizLoader.loadUsers(thisQuiz.getThisUser().getIdUser()+"");
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -161,7 +172,7 @@ public class D_OrderHome extends AppCompatActivity implements LoadingActivity, S
                 //No order was created, nothing to do
                 break;
             case Order.RESULT_ORDER_CREATED:
-                quizLoader.loadOrdersForuser();
+                refreshData();
                 break;
         }
     }
@@ -207,7 +218,6 @@ public class D_OrderHome extends AppCompatActivity implements LoadingActivity, S
                 Intent intentOrder = new Intent(D_OrderHome.this, D_NewOrder.class);
                 startActivityForResult(intentOrder, QuizDatabase.REQUEST_CODE_NEWORDER);
                 break;
-
         }
         return super.onOptionsItemSelected(item);
     }

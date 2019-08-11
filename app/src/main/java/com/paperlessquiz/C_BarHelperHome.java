@@ -87,7 +87,7 @@ public class C_BarHelperHome extends MyActivity implements LoadingActivity, Show
         if (ordersLoaded) {
             //reset the status
             ordersLoaded = false;
-            allOrders = quizLoader.getOrders.getResultsList();
+            allOrders = quizLoader.getOrdersRequest.getResultsList();
             if (allOrders.size() > 0) {
                 tvOverviewIntro.setText(this.getString(R.string.select_order));
             } else {

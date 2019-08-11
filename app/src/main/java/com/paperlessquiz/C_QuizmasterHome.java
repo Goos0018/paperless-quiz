@@ -1,13 +1,10 @@
 package com.paperlessquiz;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.paperlessquiz.adapters.ShowTeamsAdapter;
 import com.paperlessquiz.loadinglisteners.LoadingActivity;
@@ -51,7 +48,7 @@ public class C_QuizmasterHome extends MyActivity implements FragRoundSpinner.Has
             //reset the loading statuses
             usersLoaded = false;
             answersSubmittedLoaded = false;
-            quizLoader.updateTeams();
+            quizLoader.updateUsersIntoQuiz();
             quizLoader.updateAnswersSubmittedIntoQuiz();
             if (showTeamsAdapter != null) {
                 showTeamsAdapter.notifyDataSetChanged();
@@ -99,7 +96,7 @@ public class C_QuizmasterHome extends MyActivity implements FragRoundSpinner.Has
                 Intent intent = new Intent(C_QuizmasterHome.this, C_QuizmasterRounds.class);
                 startActivity(intent);
                 case R.id.upload:
-                //thisQuiz.updateTeams(C_QuizmasterHome.this);
+                //thisQuiz.updateUsersIntoQuiz(C_QuizmasterHome.this);
                 break;
             */
         }

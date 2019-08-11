@@ -22,7 +22,7 @@ import com.paperlessquiz.users.Team;
 import java.util.ArrayList;
 
 /**
- * Used by the receptionist to view and edit team names/statuses
+ * Used by the receptionist to view and edit team names/statuses + buy and refund bonnekes
  */
 public class EditTeamsAdapter extends RecyclerView.Adapter<EditTeamsAdapter.ViewHolder> {
     private ArrayList<Team> teams;
@@ -32,7 +32,6 @@ public class EditTeamsAdapter extends RecyclerView.Adapter<EditTeamsAdapter.View
     private int nrOfBonnekes;
     private int thisTeamID;
 
-
     public EditTeamsAdapter(Context context, ArrayList<Team> teams, QuizLoader quizLoader) {
         this.teams = teams;
         this.context = context;
@@ -40,8 +39,9 @@ public class EditTeamsAdapter extends RecyclerView.Adapter<EditTeamsAdapter.View
         this.quizLoader = quizLoader;
     }
 
+    //This represents all fields for one item in the list
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvTeamNr, tvTeamName, tvTotalAmount;
+        TextView tvTeamNr, tvTeamName, tvTotalAmount, tvRemaining;
         EditText etTeamName;
         ImageView ivPresent, ivBonnekes;
 
@@ -50,6 +50,7 @@ public class EditTeamsAdapter extends RecyclerView.Adapter<EditTeamsAdapter.View
             tvTeamNr = itemView.findViewById(R.id.tvTeamNr);
             tvTeamName = itemView.findViewById(R.id.tvTeamName);
             tvTotalAmount = itemView.findViewById(R.id.tvTotalAmount);
+            tvRemaining = itemView.findViewById(R.id.tvRemaining);
             etTeamName = itemView.findViewById(R.id.etTeamName);
             ivPresent = itemView.findViewById(R.id.ivTeamPresent);
             ivBonnekes = itemView.findViewById(R.id.ivBonnekes);
@@ -70,16 +71,16 @@ public class EditTeamsAdapter extends RecyclerView.Adapter<EditTeamsAdapter.View
         viewHolder.tvTeamNr.setText(teams.get(i).getUserNr() + ".");
         viewHolder.etTeamName.setText(teams.get(i).getName());
         viewHolder.tvTeamName.setText(teams.get(i).getName());
-        viewHolder.tvTotalAmount.setText("(" + QuizDatabase.EURO_SIGN + teams.get(i).getUserCredits() + ")");
+        viewHolder.tvTotalAmount.setText("" + QuizDatabase.EURO_SIGN + teams.get(i).getUserCredits());
+        viewHolder.tvRemaining.setText((teams.get(i).getUserCredits() - teams.get(i).getTotalSpent()) + "");
         if (teams.get(i).getUserStatus() == QuizDatabase.USERSTATUS_NOTPRESENT) {
             viewHolder.ivPresent.setImageResource(R.drawable.team_not_present);
 
         } else {
             viewHolder.ivPresent.setImageResource(R.drawable.team_present);
         }
-
+        //Make team name field editable when clicked
         viewHolder.tvTeamName.setOnClickListener(new View.OnClickListener()
-                //Make field editable when clicked
         {
             @Override
             public void onClick(View view) {
@@ -87,9 +88,8 @@ public class EditTeamsAdapter extends RecyclerView.Adapter<EditTeamsAdapter.View
                 viewHolder.etTeamName.setVisibility(View.VISIBLE);
             }
         });
-
+        //Toggle isPresent from true to false when clicking the team status indicator + send the update (including possible the new name) to the db
         viewHolder.ivPresent.setOnClickListener(new View.OnClickListener()
-                //Toggle isPresent from true to false
         {
             @Override
             public void onClick(View view) {
@@ -107,8 +107,7 @@ public class EditTeamsAdapter extends RecyclerView.Adapter<EditTeamsAdapter.View
                 adapter.notifyDataSetChanged();
             }
         });
-
-
+        //Buy or rezfund bonnekes when clicking the Euro sign
         viewHolder.ivBonnekes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -139,8 +138,6 @@ public class EditTeamsAdapter extends RecyclerView.Adapter<EditTeamsAdapter.View
                 builder.show();
             }
         });
-
-
     }
 
     @Override

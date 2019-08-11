@@ -1,5 +1,7 @@
 package com.paperlessquiz.users;
 
+import com.paperlessquiz.quiz.QuizDatabase;
+
 /*
 This class represents a user that can log in. Will be extended to Team or Organizers.
  */
@@ -84,7 +86,34 @@ public class User {
     }
 
     public void updateUserBasics(User user){
-        this.description = user.getDescription();
+        switch (user.getUserType()) {
+            case QuizDatabase.USERTYPE_TEAM:
+                this.description ="Ploeg " + getUserNr();
+                break;
+            case QuizDatabase.USERTYPE_QUIZMASTER:
+                this.description = "Quizmaster";
+                break;
+            case QuizDatabase.USERTYPE_CORRECTOR:
+                setDescription("Verbeteraar");
+                break;
+            case QuizDatabase.USERTYPE_RECEPTIONIST:
+                setDescription("Receptionist");
+                break;
+            case QuizDatabase.USERTYPE_JUROR:
+                setDescription("Juryvoorzitter");
+                break;
+            case QuizDatabase.USERTYPE_SALES:
+                setDescription("Bonnetjes");
+                break;
+            case QuizDatabase.USERTYPE_BARRESPONSIBLE:
+                setDescription("Barverantwoordelijke");
+                break;
+            case QuizDatabase.USERTYPE_BARHELPER:
+                setDescription("Barhelper");
+                break;
+            default:
+                setDescription("Organizator");
+        }
         this.name = user.getName();
         this.userStatus=user.getUserStatus();
         this.userCredits =user.getUserCredits();

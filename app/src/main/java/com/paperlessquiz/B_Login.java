@@ -135,8 +135,7 @@ public class B_Login extends AppCompatActivity implements LoadingActivity {
             tvDisplayID.setText(thisQuiz.getOrganizers().get(position).getDescription());
             etPasskey.setText("");
             userNr = thisQuiz.getOrganizers().get(position).getUserNr();
-        }
-        else {
+        } else {
             tvDisplayName.setText(thisQuiz.getTeams().get(position).getName());
             tvDisplayID.setText(thisQuiz.getTeams().get(position).getDescription());
             etPasskey.setText("");
@@ -156,7 +155,7 @@ public class B_Login extends AppCompatActivity implements LoadingActivity {
         etPasskey = findViewById(R.id.et_passkey);
         lvShowUsers = findViewById(R.id.lvNamesList);
         //All the rest
-        isOrganizer = getIntent().getBooleanExtra(QuizDatabase.INTENT_EXTRANAME_IS_ORGANIZER,false);
+        isOrganizer = getIntent().getBooleanExtra(QuizDatabase.INTENT_EXTRANAME_IS_ORGANIZER, false);
         quizLoader = new QuizLoader(this);
         if (isOrganizer) {
             userList = thisQuiz.convertOrganizerToUserArray(thisQuiz.getOrganizers());

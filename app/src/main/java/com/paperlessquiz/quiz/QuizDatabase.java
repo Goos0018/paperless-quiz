@@ -38,6 +38,8 @@ public class QuizDatabase {
     public static final String PARAMNAME_NEWORDERSTATUS = "newOrderStatus=";
     public static final String PARAMNAME_USERSLIST = "usersList=";
     public static final String PARAMNAME_NROFBONNEKES = "amount=";
+    public static final String PARAMNAME_PAUSETYPE = "type=";
+    public static final String PARAMNAME_TIMEPAUSED = "timePaused=";
 
     // Available PHP scripts
     public static final String SCRIPT_GET_QUIZLIST = "getquizlist.php";
@@ -57,6 +59,7 @@ public class QuizDatabase {
     public static final String SCRIPT_UPDATEEXISTINGORDER = "updateexistingorder.php";
     public static final String SCRIPT_LOCKORDERFORPREP = "lockorderforprep.php";
     public static final String SCRIPT_BUYBONNEKES = "buybonnekes.php";
+    public static final String SCRIPT_CREATEPAUSEEVENT = "createpauseevent.php";
     //Param values - query names
     public static final String PARAMVALUE_QRY_ALL_ROUNDS = "rounds";
     public static final String PARAMVALUE_QRY_ALL_QUESTIONS = "questions";
@@ -103,6 +106,7 @@ public class QuizDatabase {
     public static final int REQUEST_ID_UPDATEORDERSTATUS = 110;
     public static final int REQUEST_ID_LOCKORDERFORPREP = 111;
     public static final int REQUEST_ID_BUYBONNEKES = 112;
+    public static final int REQUEST_ID_CREATEPAUSEEVENT = 113;
 
 
     //User types - these must match what is defined in the constants.php
@@ -114,18 +118,15 @@ public class QuizDatabase {
     public static final int USERTYPE_SALES = 5;
     public static final int USERTYPE_BARRESPONSIBLE = 6;
     public static final int USERTYPE_BARHELPER = 7;
-
     //User Statuses  - these must match what is defined in the constants.php
     public static final int USERSTATUS_NOTPRESENT = 0;
     public static final int USERSTATUS_PRESENTNOTLOGGEDIN = 1;
     public static final int USERSTATUS_PRESENTLOGGEDIN = 2;
-
     //Round Statuses
     public static final int ROUNDSTATUS_CLOSED = 0;
     public static final int ROUNDSTATUS_OPENFORANSWERS = 1;
     public static final int ROUNDSTATUS_OPENFORCORRECTIONS = 2;
     public static final int ROUNDSTATUS_CORRECTED = 3;
-
     //Order Statuses
     public static final int ORDERSTATUS_MODIFIED = 0;
     public static final int ORDERSTATUS_SUBMITTED = 1;
@@ -146,14 +147,15 @@ public class QuizDatabase {
     public static final int DIALOG_CATS = 1;
     public static final int DIALOG_STATUSES = 2;
     public static final int DIALOG_USERS = 3;
-
     public static final ArrayList<String> displayStatusesArray= new ArrayList<>(Arrays.asList(ORDERSTATUS_MODIFIED_STR,ORDERSTATUS_SUBMITTED_STR,
             ORDERSTATUS_INPROGRESS_STR,ORDERSTATUS_READY_STR,ORDERSTATUS_DELIVERED_STR));
     public static final ArrayList<String> statusesArray= new ArrayList<>(Arrays.asList(Integer.toString(ORDERSTATUS_MODIFIED),Integer.toString(ORDERSTATUS_SUBMITTED),
             Integer.toString(ORDERSTATUS_INPROGRESS),Integer.toString(ORDERSTATUS_READY),Integer.toString(ORDERSTATUS_DELIVERED)));
     public static final ArrayList<String> displayHelperRolesArray= new ArrayList<>(Arrays.asList(BARHELPERROLENAME_PREPARE, BARHELPERROLENAME_DELIVER));
     public static final ArrayList<String> helperRolesArray= new ArrayList<>(Arrays.asList(Integer.toString(ORDERSTATUS_SUBMITTED),Integer.toString(ORDERSTATUS_READY)));
-
+    //Pause event types
+    public static final int TYPE_PAUSE_PAUSE = 0;
+    public static final int TYPE_PAUSE_RESUME = 1;
     //Column names in the SQL database - used to parse the JSON objects
     //Column names table Answers
     public static final String COLNAME_ID_ANSWER = "idAnswer";
@@ -198,6 +200,8 @@ public class QuizDatabase {
     public static final String COLNAME_USER_CREDITS = "UserCredits";
     //public static final String COLNAME_TOTALSPENT = "TotalSpent"; => Replaced by the TotalSpentCalc below
     public static final String COLNAME_TOTALSPENTCALC = "TotalSpentCalc";
+    public static final String COLNAME_TOTALTIMEPAUSED = "TotalTimePaused";
+
     //Column names table ScoreForRound
     public static final String COLNAME_SCOREFORROUND = "ScoreForRound";
     //Column names table ScoreAfterRound
@@ -244,5 +248,6 @@ public class QuizDatabase {
     //public static final int REQUEST_CODE_ORDERHOME = 1;
     public static final int REQUEST_CODE_NEWORDER = 0;
     public static final int REQUEST_CODE_EDITEXISTINGORDER = 1;
+    public static final int MAX_ALLOWED_PAUSE=60;
 }
 

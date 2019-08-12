@@ -9,13 +9,13 @@ import com.paperlessquiz.quiz.QuizDatabase;
 public class Organizer extends User {
     //int organizerType,organizerNr;
 
-    public Organizer(int idQuiz, int idUser, int userNr, int userType, int userStatus, String name, int totalDeposits, int totalSpent) {
-        super(idQuiz, idUser, userNr, userType, userStatus, name, totalDeposits, totalSpent);
+    public Organizer(int idQuiz, int idUser, int userNr, int userType, int userStatus, String name, int totalDeposits, int totalSpent, int totalTimePaused) {
+        super(idQuiz, idUser, userNr, userType, userStatus, name, totalDeposits, totalSpent, totalTimePaused);
     }
 
 
     public Organizer(User user){
-        super(user.getIdQuiz(), user.getIdUser(), user.getUserNr(), user.getUserType(), user.getUserStatus(), user.getName(), user.getUserCredits(), user.getTotalSpent());
+        super(user.getIdQuiz(), user.getIdUser(), user.getUserNr(), user.getUserType(), user.getUserStatus(), user.getName(), user.getUserCredits(), user.getTotalSpent(), user.getTotalTimePaused());
         switch (user.getUserType()) {
             case QuizDatabase.USERTYPE_QUIZMASTER:
                 setDescription("Quizmaster");
@@ -45,7 +45,7 @@ public class Organizer extends User {
 
     //20190728 - Create a dummy organizer with the nr given
     public Organizer(int organizerNr){
-        super(MyApplication.theQuiz.getListData().getIdQuiz(),0,organizerNr, QuizDatabase.USERTYPE_RECEPTIONIST,QuizDatabase.USERSTATUS_NOTPRESENT,"EMPTY",0,0);
+        super(MyApplication.theQuiz.getListData().getIdQuiz(),0,organizerNr, QuizDatabase.USERTYPE_RECEPTIONIST,QuizDatabase.USERSTATUS_NOTPRESENT,"EMPTY",0,0,0);
     }
 
 

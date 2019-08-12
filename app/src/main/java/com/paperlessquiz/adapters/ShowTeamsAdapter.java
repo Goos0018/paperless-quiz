@@ -23,20 +23,23 @@ public class ShowTeamsAdapter extends RecyclerView.Adapter<ShowTeamsAdapter.View
     private ArrayList<Team> teams;
     private int roundNr;
     private ShowTeamsAdapter adapter;
+    int colorAlert;
 
     public ShowTeamsAdapter(Context context, ArrayList<Team> teams, int roundNr) {
         this.teams = teams;
         this.roundNr = roundNr;
         adapter = this;
+        colorAlert = context.getResources().getColor(R.color.wrongRed);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvTeamName;
+        TextView tvTeamName, tvTotalTimePaused;
         ImageView ivPresent, ivAnswersSubmitted;
 
         public ViewHolder(View itemView) {
             super(itemView);
             tvTeamName = itemView.findViewById(R.id.tvTeamName);
+            tvTotalTimePaused = itemView.findViewById(R.id.tvTotalTimePaused);
             ivPresent = itemView.findViewById(R.id.ivTeamPresent);
             ivAnswersSubmitted = itemView.findViewById(R.id.ivAnswersSubmitted);
         }
@@ -54,6 +57,12 @@ public class ShowTeamsAdapter extends RecyclerView.Adapter<ShowTeamsAdapter.View
     public void onBindViewHolder(@NonNull ShowTeamsAdapter.ViewHolder viewHolder, int i) {
         viewHolder.itemView.setTag(teams.get(i));
         viewHolder.tvTeamName.setText(teams.get(i).getUserNr() + ". " + teams.get(i).getName());
+        int totalPause = teams.get(i).getTotalTimePaused();
+        viewHolder.tvTotalTimePaused.setText(totalPause+"");
+        if (totalPause > QuizDatabase.MAX_ALLOWED_PAUSE){
+            viewHolder.tvTotalTimePaused.setTextColor(colorAlert);
+            viewHolder.tvTeamName.setTextColor(colorAlert);
+        }
         boolean answersForThisRoundSubmitted = teams.get(i).isAnswersForThisRoundSubmitted(roundNr);
         switch (teams.get(i).getUserStatus()) {
             case QuizDatabase.USERSTATUS_NOTPRESENT:

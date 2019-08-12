@@ -297,8 +297,7 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
     protected void onPause() {
         if (thisQuiz.isAnyRoundOpen() && !MyApplication.orderOngoing) {
             lastPausedDate = new Date();
-            MyApplication.eventLogger.logEvent(thisQuiz.getThisUser().getName(), EventLogger.LEVEL_INFO, "INFO: Paused the app");
-            //thisQuiz.setLoggedIn(C_ParticipantHome.this, thisTeamNr, false);
+            quizLoader.createPauseEvent(QuizDatabase.TYPE_PAUSE_PAUSE,0);
             MyApplication.setAppPaused(true);
         }
         quizLoader.updateMyStatus(QuizDatabase.USERSTATUS_PRESENTNOTLOGGEDIN);
@@ -311,12 +310,8 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
         if (MyApplication.isAppPaused()) {
             Date dateResumed = new Date();
             long timePaused = (dateResumed.getTime() - lastPausedDate.getTime()) / 1000;
-            totalTimePaused = totalTimePaused + timePaused;
-            MyApplication.eventLogger.logEvent(thisQuiz.getThisUser().getName(), EventLogger.LEVEL_WARNING, "WARNING: Resumed the app after "
-                    + timePaused + " seconds - total time paused is now " + totalTimePaused + " seconds");
-            //thisQuiz.setLoggedIn(C_ParticipantHome.this, thisTeamNr, true);
+            quizLoader.createPauseEvent(QuizDatabase.TYPE_PAUSE_RESUME,timePaused);
             MyApplication.setAppPaused(false);
-            //TODO: replace this with logging a specific record in the db + retrieve these with TeamsUpdate
         }
         quizLoader.updateMyStatus(QuizDatabase.USERSTATUS_PRESENTLOGGEDIN);
         MyApplication.orderOngoing=false;

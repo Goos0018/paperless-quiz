@@ -61,6 +61,8 @@ public class QuizLoader {
     public HTTPSubmit updateExistingOrderRequest;
     public HTTPSubmit lockOrderForPrepRequest;
     public HTTPSubmit buyBonnekesRequest;
+    public HTTPSubmit createPauseEventRequest;
+
 
     public QuizLoader(Context context) {
         this.context = context;
@@ -560,6 +562,19 @@ public class QuizLoader {
         buyBonnekesRequest.sendRequest(new LLShowProgressActWhenComplete(context, context.getString(R.string.loader_pleasewait),
                 context.getString(R.string.loader_updatingquiz),
                 context.getString(R.string.loadingerror), false));
+    }
+
+
+    //Create a pause event for this user
+    public void createPauseEvent(int type, long timePaused) {
+        int idUser = thisQuiz.getThisUser().getIdUser();
+        String userPassword = thisQuiz.getThisUser().getUserPassword();
+        String scriptParams = QuizDatabase.SCRIPT_CREATEPAUSEEVENT + QuizDatabase.PHP_STARTPARAM + QuizDatabase.PARAMNAME_IDUSER + idUser +
+                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_USERPASSWORD + userPassword +
+                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_PAUSETYPE + type +
+                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_TIMEPAUSED + timePaused;
+        createPauseEventRequest = new HTTPSubmit(context, scriptParams, QuizDatabase.REQUEST_ID_BUYBONNEKES);
+        createPauseEventRequest.sendRequest(new LLSilent());
     }
 
 }

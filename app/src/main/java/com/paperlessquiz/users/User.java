@@ -6,11 +6,11 @@ import com.paperlessquiz.quiz.QuizDatabase;
 This class represents a user that can log in. Will be extended to Team or Organizers.
  */
 public class User {
-    private int idQuiz,idUser, userNr,userType,userStatus, userCredits, totalSpent;
+    private int idQuiz,idUser, userNr,userType,userStatus, userCredits, totalSpent, totalTimePaused;
     private String name, description;
     private String userPassword;
 
-    public User(int idQuiz, int idUser, int userNr, int userType, int userStatus, String name, int userCredits, int totalSpent) {
+    public User(int idQuiz, int idUser, int userNr, int userType, int userStatus, String name, int userCredits, int totalSpent, int totalTimePaused) {
         this.idQuiz = idQuiz;
         this.idUser = idUser;
         this.userNr = userNr;
@@ -19,6 +19,7 @@ public class User {
         this.name = name;
         this.userCredits = userCredits;
         this.totalSpent=totalSpent;
+        this.totalTimePaused=totalTimePaused;
     }
 
     public int getIdQuiz() {
@@ -118,6 +119,7 @@ public class User {
         this.userStatus=user.getUserStatus();
         this.userCredits =user.getUserCredits();
         this.totalSpent=user.getTotalSpent();
+        this.totalTimePaused=user.getTotalTimePaused();
     }
 
     public int getUserCredits() {
@@ -126,5 +128,9 @@ public class User {
 
     public int getTotalSpent() {
         return totalSpent;
+    }
+
+    public int getTotalTimePaused() {
+        return totalTimePaused;
     }
 }

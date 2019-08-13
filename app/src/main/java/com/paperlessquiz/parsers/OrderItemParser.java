@@ -10,7 +10,7 @@ public class OrderItemParser implements JsonParser<OrderItem> {
 
     @Override
     public OrderItem parse(JSONObject jo) throws JSONException {
-        int idOrderItem, itemCost, itemUnitsAvailable;
+        int idOrderItem, itemCost, itemUnitsAvailable, itemUnitsRemaining;
         boolean itemSoldOut;
         String itemCategory,itemName,itemDescription;
         OrderItem orderItem;
@@ -19,6 +19,11 @@ public class OrderItemParser implements JsonParser<OrderItem> {
             idOrderItem = jo.getInt(QuizDatabase.COLNAME_IDORDERITEM);
             itemCost = jo.getInt(QuizDatabase.COLNAME_ITEMCOST);
             itemUnitsAvailable = jo.getInt(QuizDatabase.COLNAME_ITEMUNITSAVAIALABLE);
+            try {
+            itemUnitsRemaining =jo.getInt(QuizDatabase.COLNAME_ITEMSREMAINING);
+            } catch (Exception e) {
+                itemUnitsRemaining = itemUnitsAvailable;
+            }
             itemSoldOut = (jo.getInt(QuizDatabase.COLNAME_ITEMSOLDOUT) == 1);
             itemCategory = jo.getString(QuizDatabase.COLNAME_ITEMCATEGORY);
             itemName = jo.getString(QuizDatabase.COLNAME_ITEMNAME);
@@ -28,12 +33,13 @@ public class OrderItemParser implements JsonParser<OrderItem> {
             idOrderItem = 0;
             itemCost = 0;
             itemUnitsAvailable = 0;
+            itemUnitsRemaining = 0;
             itemSoldOut = true;
             itemCategory = "";
             itemName = "Error parsing " + jo.toString();
             itemDescription = "";
         }
-        orderItem = new OrderItem(idOrderItem,itemCost,itemUnitsAvailable, itemCategory,itemName,itemDescription, itemSoldOut);
+        orderItem = new OrderItem(idOrderItem,itemCost,itemUnitsAvailable,itemUnitsRemaining, itemCategory,itemName,itemDescription, itemSoldOut);
         return orderItem;
     }
 }

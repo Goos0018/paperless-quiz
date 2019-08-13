@@ -1,6 +1,5 @@
 package com.paperlessquiz;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -92,7 +91,7 @@ public class B_Login extends AppCompatActivity implements LoadingActivity {
             thisQuiz.initializeAllAnswers();
             quizLoader.updateAnswersIntoQuiz();
             quizLoader.updateAnswersSubmittedIntoQuiz();
-            quizLoader.loadItemsToOrderIntoQuiz();
+            quizLoader.loadOrderItemsIntoQuiz();
             //Now open the appropriate home screen
             //loading.dismiss();
             switch (thisUser.getUserType()) {

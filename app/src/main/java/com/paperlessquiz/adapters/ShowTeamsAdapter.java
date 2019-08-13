@@ -23,13 +23,14 @@ public class ShowTeamsAdapter extends RecyclerView.Adapter<ShowTeamsAdapter.View
     private ArrayList<Team> teams;
     private int roundNr;
     private ShowTeamsAdapter adapter;
-    int colorAlert;
+    int colorAlert, colorNormal;
 
     public ShowTeamsAdapter(Context context, ArrayList<Team> teams, int roundNr) {
         this.teams = teams;
         this.roundNr = roundNr;
         adapter = this;
         colorAlert = context.getResources().getColor(R.color.wrongRed);
+        colorNormal = context.getResources().getColor(R.color.colorSecondaryText);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -62,6 +63,11 @@ public class ShowTeamsAdapter extends RecyclerView.Adapter<ShowTeamsAdapter.View
         if (totalPause > QuizDatabase.MAX_ALLOWED_PAUSE){
             viewHolder.tvTotalTimePaused.setTextColor(colorAlert);
             viewHolder.tvTeamName.setTextColor(colorAlert);
+        }
+        else
+        {
+            viewHolder.tvTotalTimePaused.setTextColor(colorNormal);
+            viewHolder.tvTeamName.setTextColor(colorNormal);
         }
         boolean answersForThisRoundSubmitted = teams.get(i).isAnswersForThisRoundSubmitted(roundNr);
         switch (teams.get(i).getUserStatus()) {

@@ -40,21 +40,29 @@ public class D_NewOrder extends AppCompatActivity implements LoadingActivity {
     User thisUser;
     QuizLoader quizLoader;
     boolean isNewOrder;
-    boolean usersLoaded;
+    boolean usersLoaded, orderItemsLoaded;
     //int thisUserId;
 
     @Override
     public void loadingComplete(int requestId) {
-
         switch (requestId) {
             case QuizDatabase.REQUEST_ID_GET_USERS:
                 usersLoaded = true;
+                break;
+            case QuizDatabase.REQUEST_ID_GET_ORDERITEMS:
+                orderItemsLoaded = true;
                 break;
         }
         if (usersLoaded) {
             usersLoaded = false;
             quizLoader.updateUsersIntoQuiz();
             updateSaldo();
+        }
+        if (orderItemsLoaded) {
+            orderItemsLoaded = false;
+            quizLoader.loadOrderItemsIntoQuiz();
+            showOrderItemsAdapter.setOrderItems(MyApplication.itemsToOrderArray);
+            showOrderItemsAdapter.notifyDataSetChanged();
         }
     }
 
@@ -148,9 +156,10 @@ public class D_NewOrder extends AppCompatActivity implements LoadingActivity {
         rvShowOrderItems.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         rvShowOrderItems.setLayoutManager(layoutManager);
-        showOrderItemsAdapter = new ShowOrderItemsAdapter(this, MyApplication.itemsToOrderArray, thisOrder, tvSaldoAfterThis);
-        rvShowOrderItems.setAdapter(showOrderItemsAdapter);
         quizLoader = new QuizLoader(this);
+        showOrderItemsAdapter = new ShowOrderItemsAdapter(this, MyApplication.itemsToOrderArray, thisOrder, tvSaldoAfterThis, quizLoader);
+        rvShowOrderItems.setAdapter(showOrderItemsAdapter);
+
         //Make sure we always have the latest information
         quizLoader.loadUsers(thisUser.getIdUser() + "");
     }
@@ -164,6 +173,9 @@ public class D_NewOrder extends AppCompatActivity implements LoadingActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.refresh:
+                quizLoader.loadOrderItems();
+                break;
             case R.id.cancel:
                 Intent intent = new Intent();
                 setResult(Order.RESULT_NO_ORDER_CREATED, intent);
@@ -179,6 +191,7 @@ public class D_NewOrder extends AppCompatActivity implements LoadingActivity {
     @Override
     //Don't do anything, they should either cancel or submit the order
     public void onBackPressed() {
+        Toast.makeText(this, getString(R.string.order_confirmorcancel), Toast.LENGTH_LONG).show();
     }
 
     //Used to create the time parameter that is passed when creating orders

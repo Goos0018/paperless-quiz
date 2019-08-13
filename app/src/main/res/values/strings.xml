@@ -54,5 +54,6 @@
     <string name="barhelp_toastclosefirst">Sluit eerst de geselecteerde order</string>
     <string name="order_nothing_to_order">Niets te bestellen...</string>
     <string name="barhelp_orderdeliver">Af te leveren bestelling</string>
+    <string name="order_confirmorcancel">Bevestig of annuleer je order!</string>
 
 </resources>

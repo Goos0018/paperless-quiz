@@ -107,7 +107,7 @@ public class EditTeamsAdapter extends RecyclerView.Adapter<EditTeamsAdapter.View
                 adapter.notifyDataSetChanged();
             }
         });
-        //Buy or rezfund bonnekes when clicking the Euro sign
+        //Buy or refund bonnekes when clicking the Euro sign
         viewHolder.ivBonnekes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -40,6 +40,8 @@ public class QuizDatabase {
     public static final String PARAMNAME_NROFBONNEKES = "amount=";
     public static final String PARAMNAME_PAUSETYPE = "type=";
     public static final String PARAMNAME_TIMEPAUSED = "timePaused=";
+    public static final String PARAMNAME_ITEMTOUPDATE = "itemToUpdate=";
+    public static final String PARAMNAME_NEWITEMSTATUS = "newItemStatus=";
 
     // Available PHP scripts
     public static final String SCRIPT_GET_QUIZLIST = "getquizlist.php";
@@ -60,6 +62,7 @@ public class QuizDatabase {
     public static final String SCRIPT_LOCKORDERFORPREP = "lockorderforprep.php";
     public static final String SCRIPT_BUYBONNEKES = "buybonnekes.php";
     public static final String SCRIPT_CREATEPAUSEEVENT = "createpauseevent.php";
+    public static final String SCRIPT_SETSOLDOUT = "setsoldout.php";
     //Param values - query names
     public static final String PARAMVALUE_QRY_ALL_ROUNDS = "rounds";
     public static final String PARAMVALUE_QRY_ALL_QUESTIONS = "questions";
@@ -107,6 +110,7 @@ public class QuizDatabase {
     public static final int REQUEST_ID_LOCKORDERFORPREP = 111;
     public static final int REQUEST_ID_BUYBONNEKES = 112;
     public static final int REQUEST_ID_CREATEPAUSEEVENT = 113;
+    public static final int REQUEST_ID_SETSOLDOUT = 114;
 
 
     //User types - these must match what is defined in the constants.php
@@ -217,6 +221,7 @@ public class QuizDatabase {
     public static final String COLNAME_ITEMDESCRIPTION = "ItemDescription";
     public static final String COLNAME_ITEMCOST = "ItemCost";
     public static final String COLNAME_ITEMUNITSAVAIALABLE = "ItemUnitsAvailable";
+    public static final String COLNAME_ITEMSREMAINING = "ItemsRemaining";
     public static final String COLNAME_ITEMSOLDOUT = "ItemSoldOut";
     //Column names table Orders
     public static final String COLNAME_IDORDER = "idOrder";
@@ -249,5 +254,6 @@ public class QuizDatabase {
     public static final int REQUEST_CODE_NEWORDER = 0;
     public static final int REQUEST_CODE_EDITEXISTINGORDER = 1;
     public static final int MAX_ALLOWED_PAUSE=60;
+    public static final int UNITS_REMAINING_FLAG=10;
 }
 

@@ -28,6 +28,8 @@ import com.paperlessquiz.webrequest.HTTPSubmit;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * This class is used to populates a quiz from the SQL database
@@ -62,6 +64,7 @@ public class QuizLoader {
     public HTTPSubmit lockOrderForPrepRequest;
     public HTTPSubmit buyBonnekesRequest;
     public HTTPSubmit createPauseEventRequest;
+    public HTTPSubmit setSoldOutRequest;
 
 
     public QuizLoader(Context context) {
@@ -266,7 +269,9 @@ public class QuizLoader {
 
 
     //Get the items you can order and put them in the MyApplication itemsToOrderArray object
-    public void loadItemsToOrderIntoQuiz() {
+    public void loadOrderItemsIntoQuiz() {
+        MyApplication.itemsToOrderArray = new ArrayList<>();
+        MyApplication.itemsToOrder = new HashMap<>();
         for (int i = 0; i < getOrderItemsRequest.getResultsList().size(); i++) {
             OrderItem thisItem = getOrderItemsRequest.getResultsList().get(i);
             //Add this to the HashMap and the array
@@ -573,8 +578,20 @@ public class QuizLoader {
                 QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_USERPASSWORD + userPassword +
                 QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_PAUSETYPE + type +
                 QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_TIMEPAUSED + timePaused;
-        createPauseEventRequest = new HTTPSubmit(context, scriptParams, QuizDatabase.REQUEST_ID_BUYBONNEKES);
+        createPauseEventRequest = new HTTPSubmit(context, scriptParams, QuizDatabase.REQUEST_ID_CREATEPAUSEEVENT);
         createPauseEventRequest.sendRequest(new LLSilent());
+    }
+
+    //Mark an item as sold out (or reset this)
+    public void setItemSoldOut(int itemToUpdate, int newItemStatus) {
+        int idUser = thisQuiz.getThisUser().getIdUser();
+        String userPassword = thisQuiz.getThisUser().getUserPassword();
+        String scriptParams = QuizDatabase.SCRIPT_SETSOLDOUT + QuizDatabase.PHP_STARTPARAM + QuizDatabase.PARAMNAME_IDUSER + idUser +
+                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_USERPASSWORD + userPassword +
+                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_ITEMTOUPDATE + itemToUpdate +
+                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_NEWITEMSTATUS + newItemStatus;
+        setSoldOutRequest = new HTTPSubmit(context, scriptParams, QuizDatabase.REQUEST_ID_SETSOLDOUT);
+        setSoldOutRequest.sendRequest(new LLSilent());
     }
 
 }

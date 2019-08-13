@@ -5,16 +5,16 @@ public class OrderItem {
      * An OrderItem is an item that can be ordered.
      * Reflects the similar table in the database, and is simply loaded once and never modified.
      * Except for the itemSoldOut?
-     * TODO: complete
      */
-    int idOrderItem, itemCost, itemUnitsAvailable;
+    int idOrderItem, itemCost, itemUnitsAvailable, itemUnitsRemaining;
     String itemCategory, itemName, itemDescription;
     boolean itemSoldOut;
 
-    public OrderItem(int idOrderItem, int itemCost, int itemUnitsAvailable, String itemCategory, String itemName, String itemDescription, boolean itemSoldOut) {
+    public OrderItem(int idOrderItem, int itemCost, int itemUnitsAvailable, int itemUnitsRemaining, String itemCategory, String itemName, String itemDescription, boolean itemSoldOut) {
         this.idOrderItem = idOrderItem;
         this.itemCost = itemCost;
         this.itemUnitsAvailable = itemUnitsAvailable;
+        this.itemUnitsRemaining = itemUnitsRemaining;
         this.itemCategory = itemCategory;
         this.itemName = itemName;
         this.itemDescription = itemDescription;
@@ -47,5 +47,9 @@ public class OrderItem {
 
     public boolean isItemSoldOut() {
         return itemSoldOut;
+    }
+
+    public int getItemUnitsRemaining() {
+        return itemUnitsRemaining;
     }
 }

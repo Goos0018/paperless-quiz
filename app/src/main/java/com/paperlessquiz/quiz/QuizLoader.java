@@ -438,7 +438,9 @@ public class QuizLoader {
                 QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_USERPASSWORD + userPassword +
                 QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_IDROUND + idRound;
         submitAnswersSubmittedRequest = new HTTPSubmit(context, scriptParams, QuizDatabase.REQUEST_ID_SETANSWERSSUBMITTED);
-        submitAnswersSubmittedRequest.sendRequest(new LLSilent());
+        submitAnswersSubmittedRequest.sendRequest(new LLShowProgressActWhenComplete(context, context.getString(R.string.loader_pleasewait),
+                context.getString(R.string.loader_updatingquiz),
+                context.getString(R.string.loadingerror), false));
     }
 
     public void updateRoundStatus(int roundNr, int newStatus) {

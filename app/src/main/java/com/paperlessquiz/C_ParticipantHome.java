@@ -52,7 +52,7 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
     long totalTimePaused;
     Date lastPausedDate;
     QuizLoader quizLoader;
-    boolean roundsLoaded, answersLoaded, scoresLoaded;
+    boolean roundsLoaded, answersLoaded, scoresLoaded, answersSubmitted;
 
     @Override
     public void loadingComplete(int requestID) {
@@ -65,6 +65,9 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
                 break;
             case QuizDatabase.REQUEST_ID_GET_RESULTS:
                 scoresLoaded = true;
+                break;
+            case QuizDatabase.REQUEST_ID_SETANSWERSSUBMITTED:
+                answersSubmitted=true;
                 break;
         }
         //If everything is properly loaded, we can start populating the central Quiz object
@@ -79,6 +82,10 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
             roundSpinner.refreshIcons();
             roundResultFrag.refresh();  //This will recalculate scores based on the re-loaded corrections
             refreshDisplayFragments();  //Display the correct fragments based on new round status etc.
+        }
+        if (answersSubmitted){
+            answersSubmitted=false;
+            Toast.makeText(this, this.getString(R.string.part_answerssubmitted), Toast.LENGTH_SHORT).show();
         }
     }
 

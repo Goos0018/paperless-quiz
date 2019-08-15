@@ -92,7 +92,7 @@ public class FragRoundSpinner extends Fragment {
             } else {
                 thisRound.setRoundStatus(thisRound.getRoundStatus() + 1);
             }
-            //Calculate standings of the round is corrected now
+            //Calculate standings if the round is corrected now
             if (thisRound.getRoundStatus() == QuizDatabase.ROUNDSTATUS_CORRECTED) {
                 quizLoader.calculateStandings(position);
             }

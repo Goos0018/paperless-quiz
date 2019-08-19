@@ -64,8 +64,6 @@ public class A_Main extends AppCompatActivity implements LoadingActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //Load the data from the selected Quiz into the thisQuiz object
                 thisQuiz.setListData(adapter.getItem(position));
-                //MyApplication.theQuiz.setListData(adapter.getItem(position));
-                //thisQuiz=MyApplication.theQuiz;
                 Intent intent = new Intent(A_Main.this, A_SelectRole.class);
                 //Pass the SheetId of the selected quiz so we can log further events there
                 MyApplication.eventLogger.setDocID(adapter.getItem(position).getSheetDocID());

@@ -51,6 +51,7 @@ public class QuizLoader {
     public HTTPGetData<OrderItem> getOrderItemsRequest;
     public HTTPGetData<Order> getOrdersRequest;
     public HTTPGetData<ItemOrdered> getOrderDetails;
+
     public HTTPSubmit authenticateRequest;
     public HTTPSubmit submitAnswerRequest;
     public HTTPSubmit submitAnswersSubmittedRequest;

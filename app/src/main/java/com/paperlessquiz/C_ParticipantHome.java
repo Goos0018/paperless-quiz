@@ -1,6 +1,8 @@
 package com.paperlessquiz;
 
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,6 +18,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.paperlessquiz.adapters.DisplayAnswersAdapter;
+import com.paperlessquiz.loadinglisteners.LLSilentActWhenComplete;
+import com.paperlessquiz.quiz.QuizLoaderClass;
 import com.paperlessquiz.webrequest.EventLogger;
 import com.paperlessquiz.loadinglisteners.LoadingActivity;
 import com.paperlessquiz.quiz.QuizDatabase;
@@ -52,6 +56,7 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
     long totalTimePaused;
     Date lastPausedDate;
     QuizLoader quizLoader;
+    //private ProgressDialog loading;
     boolean roundsLoaded, answersLoaded, scoresLoaded, answersSubmitted;
 
     @Override
@@ -82,6 +87,7 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
             roundSpinner.refreshIcons();
             roundResultFrag.refresh();  //This will recalculate scores based on the re-loaded corrections
             refreshDisplayFragments();  //Display the correct fragments based on new round status etc.
+            //loading.dismiss();
         }
         if (answersSubmitted){
             answersSubmitted=false;
@@ -90,8 +96,11 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
     }
 
     private void updateQuiz() {
-        //TODO: show a toast when starting this and dismiss it when loading is completely done
         quizLoader.updateQuizForUser();
+        //loading = ProgressDialog.show(this, this.getString(R.string.loader_pleasewait), this.getString(R.string.loader_updatingquiz), false,false);
+        //QuizLoaderClass.loadRounds(this, new LLSilentActWhenComplete(this,this.getString(R.string.loadingerror)));
+        //QuizLoaderClass.loadMyAnswers(this, new LLSilentActWhenComplete(this,this.getString(R.string.loadingerror)));
+        //QuizLoaderClass.loadScoresAndStandings(this, new LLSilentActWhenComplete(this,this.getString(R.string.loadingerror)));
         //The rest is done when loading is complete
     }
 
@@ -328,6 +337,10 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
     public void onBackPressed() {
         if (true) {
             Toast.makeText(this, C_ParticipantHome.this.getString(R.string.participant_nobackallowed), Toast.LENGTH_SHORT).show();
+            /*Intent intent = new Intent(C_ParticipantHome.this, A_Main.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            */
             //super.onBackPressed();
         } else {
             super.onBackPressed();

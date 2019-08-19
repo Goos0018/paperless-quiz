@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 
 import com.paperlessquiz.quiz.QuizDatabase;
+import com.paperlessquiz.quiz.QuizLoader;
 import com.paperlessquiz.webrequest.EventLogger;
 import com.paperlessquiz.orders.OrderItem;
 import com.paperlessquiz.quiz.Quiz;

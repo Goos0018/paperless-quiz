@@ -34,16 +34,6 @@ public class HTTPGetData<T> {
     private int requestID;
     private ArrayList<T> resultsList;
 
-    int debugLevel;
-
-    /*
-    //Fieldnames that are used by the SetData GScript to return result of the action
-    public static final String FIELDNAME_RESULT = "result";
-    public static final String FIELDNAME_DATA = "explanation";
-    public static final int TYPE_GET = 0;
-    public static final int TYPE_SUBMIT = 1;
-*/
-
     public HTTPGetData(Context context, String parameters, int requestID) {
         this.context = context;
         this.parameters = parameters;
@@ -59,28 +49,8 @@ public class HTTPGetData<T> {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        //The response first indicates success or failure, the data itself is in the Explanation
-                        //try {
-                            /*
-                            JSONObject jo = new JSONObject(response);
-                            int resultOK = jo.getInt(FIELDNAME_RESULT);
-                            String data = jo.getString(FIELDNAME_DATA);
-                            //MyApplication.googleLog.add(Boolean.toString(resultOK) + ": " + resultExplanation);
-                            if (!(resultOK == 1)) {
-                                Toast toast = Toast.makeText(context, "Error: " + data, Toast.LENGTH_LONG);
-                                TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                                v.setBackgroundColor(Color.RED);
-                                toast.show();
-                                //toast.getView().setBackgroundColor(Color.RED)
-                                //Toast.makeText(context, "Error: " + resultExplanation, Toast.LENGTH_LONG).getView().setBackgroundColor(Color.RED).show();
-                            } else {
-                            */
-                                resultsList = parseItems(response, parser);
-                                loadingListener.loadingEnded(requestID);
-                            //}
-                        //} catch (JSONException e) {
-                        //    e.printStackTrace();
-                        //}
+                        resultsList = parseItems(response, parser);
+                        loadingListener.loadingEnded(requestID);
                     }
                 },
 

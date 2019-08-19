@@ -1,5 +1,6 @@
 package com.paperlessquiz;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -14,17 +15,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.paperlessquiz.adapters.ParticipantsAdapter;
+import com.paperlessquiz.loadinglisteners.LLSilentActWhenComplete;
 import com.paperlessquiz.loadinglisteners.LoadingActivity;
 import com.paperlessquiz.quiz.QuizDatabase;
 import com.paperlessquiz.quiz.QuizLoader;
 import com.paperlessquiz.quiz.Quiz;
+import com.paperlessquiz.quiz.QuizLoaderClass;
 import com.paperlessquiz.users.User;
 
 import java.util.ArrayList;
 
 /**
- * Main login screen for users, allows user to select a team to log in and proceed to the Participant Home screen after authentication
- * Here, we load all info needed for a participant: list of rounds, questions, answers, own event logs
+ * Main login screen, allows user to select a team to log in and proceed to their Home screen after authentication
+ * Here, we also load all info needed for a participant or organizer (in some cases, to much info)
  */
 public class B_Login extends AppCompatActivity implements LoadingActivity {
     Quiz thisQuiz = MyApplication.theQuiz;
@@ -53,9 +56,16 @@ public class B_Login extends AppCompatActivity implements LoadingActivity {
                 if (quizLoader.authenticateRequest.isRequestOK()) {
                     thisUser.setUserPassword(password);
                     thisQuiz.setThisUser(thisUser);
-                    //Load the rest of the quiz
+                    //Load the rest of the quiz: rounds, questions, own answers, order items (TODO: remove AnswersSubmitted, just count the nr of answers)
                     //loading = ProgressDialog.show(this, this.getString(R.string.loader_pleasewait), this.getString(R.string.loader_updatingquiz), false,false);
+                    //loading = ProgressDialog.show(this, "New loader", "We are loading the quiz...", false,false);
                     quizLoader.loadQuizFromDb();
+                    //QuizLoaderClass.loadRounds(this, new LLSilentActWhenComplete(this,this.getString(R.string.loadingerror)));
+                    //QuizLoaderClass.loadQuestions(this, new LLSilentActWhenComplete(this,this.getString(R.string.loadingerror)));
+                    //QuizLoaderClass.loadMyAnswers(this, new LLSilentActWhenComplete(this,this.getString(R.string.loadingerror)));
+                    //QuizLoaderClass.loadAnswersSubmitted(this, new LLSilentActWhenComplete(this,this.getString(R.string.loadingerror)));
+                    //QuizLoaderClass.loadOrderItems(this, new LLSilentActWhenComplete(this,this.getString(R.string.loadingerror)));
+                    //Do the rest when all of these requests are complete
                 } else {
                     //Authentication failed
                     Toast.makeText(B_Login.this, B_Login.this.getString(R.string.main_wrongpassword), Toast.LENGTH_SHORT).show();
@@ -85,6 +95,7 @@ public class B_Login extends AppCompatActivity implements LoadingActivity {
             answersLoaded = false;
             answersSubmittedLoaded = false;
             ordersLoaded = false;
+
             quizLoader.loadRoundsIntoQuiz();
             quizLoader.loadQuestionsIntoQuiz();
             //Make sure we have answers for all teams and all questions before we start setting the answers
@@ -92,8 +103,18 @@ public class B_Login extends AppCompatActivity implements LoadingActivity {
             quizLoader.updateAnswersIntoQuiz();
             quizLoader.updateAnswersSubmittedIntoQuiz();
             quizLoader.loadOrderItemsIntoQuiz();
-            //Now open the appropriate home screen
+            /*
+            QuizLoaderClass.loadRoundsIntoQuiz();
+            QuizLoaderClass.loadQuestionsIntoQuiz();
+            //Make sure we have answers for all teams and all questions before we start setting the answers
+            thisQuiz.initializeAllAnswers();
+            QuizLoaderClass.updateAnswersIntoQuiz();
+            QuizLoaderClass.updateAnswersSubmittedIntoQuiz();
+            QuizLoaderClass.loadOrderItemsIntoQuiz();
             //loading.dismiss();
+            */
+            //Now open the appropriate home screen
+
             switch (thisUser.getUserType()) {
                 case QuizDatabase.USERTYPE_TEAM:
                     intent = new Intent(B_Login.this, C_ParticipantHome.class);
@@ -110,10 +131,6 @@ public class B_Login extends AppCompatActivity implements LoadingActivity {
                 case QuizDatabase.USERTYPE_RECEPTIONIST:
                     intent = new Intent(B_Login.this, C_ReceptionistHome.class);
                     startActivity(intent);
-                    break;
-                case QuizDatabase.USERTYPE_SALES:
-                    //intent = new Intent(B_Login.this, C_ReceptionistHome.class);
-                    //startActivity(intent);
                     break;
                 case QuizDatabase.USERTYPE_BARRESPONSIBLE:
                     intent = new Intent(B_Login.this, C_BarResponsibleHome.class);
@@ -193,6 +210,9 @@ public class B_Login extends AppCompatActivity implements LoadingActivity {
                         thisUser = (User) thisQuiz.getTeam(userNr);
                         if (thisUser.getUserStatus() == QuizDatabase.USERSTATUS_NOTPRESENT) {
                             Toast.makeText(B_Login.this, B_Login.this.getString(R.string.main_registeratreceptionfirst), Toast.LENGTH_LONG).show();
+                            intent = new Intent(B_Login.this, A_Main.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(intent);
                         } else {
                             quizLoader.authenticateUser(thisUser.getIdUser(), password);
                             //The rest is done when loading is complete

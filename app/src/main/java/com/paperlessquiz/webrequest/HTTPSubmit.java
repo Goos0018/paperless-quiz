@@ -30,9 +30,7 @@ public class HTTPSubmit {
     private String explanation;
     private boolean requestOK;
 
-    int debugLevel;
-
-    //Fieldnames that are used by the SetData GScript to return result of the action - These should match with what is defined in the back-end PHP script constants.php
+    //Fieldnames that are used by the PHP Script to return result of the action - These should match with what is defined in the back-end PHP script constants.php
     public static final String FIELDNAME_RESULT = "result";
     public static final String FIELDNAME_DATA = "explanation";
 
@@ -42,9 +40,6 @@ public class HTTPSubmit {
         this.requestID = requestID;
     }
 
-    //For each type of object/specific use, you need to create an implementation of JsonParser and ListParsedListener
-    //For simple submit requetss where the answer is just confirmation, we use a String parser
-    //public void getItems(JsonParser<T> parser, final ListParsedListener<T> listParsedListener, LoadingListener loadingListener) {
     public void sendRequest(LoadingListener loadingListener) {
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, QuizDatabase.PHP_URL + parameters,
@@ -56,15 +51,12 @@ public class HTTPSubmit {
                             JSONObject jo = new JSONObject(response);
                             int resultOK = jo.getInt(FIELDNAME_RESULT);
                             explanation = jo.getString(FIELDNAME_DATA);
-                            //MyApplication.googleLog.add(Boolean.toString(resultOK) + ": " + resultExplanation);
                             if (!(resultOK == 1)) {
                                 requestOK = false;
                                 Toast toast = Toast.makeText(context, "Error: " + explanation, Toast.LENGTH_LONG);
                                 TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
                                 v.setBackgroundColor(Color.RED);
                                 toast.show();
-                                //toast.getView().setBackgroundColor(Color.RED)
-                                //Toast.makeText(context, "Error: " + resultExplanation, Toast.LENGTH_LONG).getView().setBackgroundColor(Color.RED).show();
                             } else {
                                 requestOK = true;
                             }

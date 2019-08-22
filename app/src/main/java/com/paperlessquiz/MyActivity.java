@@ -41,13 +41,13 @@ public class MyActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.help:
-                //TODO: FIX this given new structure displayPDF(QuizGenerator.HELPFILE_URL + MyApplication.helpFiles.get(thisQuiz.getThisUser().getType()),"HELP!");
-                //Intent intentDisplayPDF = new Intent(MyActivity.this, DisplayPDF.class);
-                //intentDisplayPDF.putExtra(QuizGenerator.PDF_TO_DISPLAY, MyApplication.helpFiles.get(thisQuiz.getThisUser().getType()));
-                //startActivity(intentDisplayPDF);
+                MyApplication.authorizedBreak = true;
+                Intent intentHelp = new Intent(MyActivity.this, DisplayHelpTopics.class);
+                intentHelp.putExtra(QuizDatabase.INTENT_EXTRANAME_HELPTYPE, thisQuiz.getThisUser().getUserType());
+                startActivity(intentHelp);
                 break;
             case R.id.order:
-                MyApplication.orderOngoing = true;
+                MyApplication.authorizedBreak = true;
                 Intent intent = new Intent(MyActivity.this, D_OrderHome.class);
                 startActivity(intent);
                 break;

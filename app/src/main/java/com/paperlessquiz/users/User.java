@@ -103,9 +103,9 @@ public class User {
             case QuizDatabase.USERTYPE_JUROR:
                 setDescription("Juryvoorzitter");
                 break;
-            case QuizDatabase.USERTYPE_SALES:
-                setDescription("Bonnetjes");
-                break;
+//            case QuizDatabase.USERTYPE_SALES:
+//                setDescription("Bonnetjes");
+//                break;
             case QuizDatabase.USERTYPE_BARRESPONSIBLE:
                 setDescription("Barverantwoordelijke");
                 break;

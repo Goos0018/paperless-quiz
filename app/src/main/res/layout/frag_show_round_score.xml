@@ -105,7 +105,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/margin_medium"
                     android:layout_marginTop="@dimen/margin_small"
-                    android:text="00" />
+                    android:text="/ 00" />
             </TableRow>
 
             <TableRow
@@ -120,6 +120,14 @@
                     android:layout_marginBottom="@dimen/margin_small"
                     android:gravity="right"
                     android:text="@string/rnd_score_totalrank" />
+
+                <ImageView
+                    android:id="@+id/ivTopScore"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_medium"
+                    android:visibility="gone"
+                    app:srcCompat="@drawable/topscore" />
 
                 <TextView
                     android:id="@+id/tvYourRankTotal"

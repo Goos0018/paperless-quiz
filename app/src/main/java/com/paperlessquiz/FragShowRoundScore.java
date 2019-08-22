@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.paperlessquiz.R;
@@ -22,6 +23,7 @@ import com.paperlessquiz.quiz.ResultAfterRound;
 public class FragShowRoundScore extends Fragment {
 
     TextView tvYourScoreForThisRnd, tvYourRankForThisRnd, tvYourScoreTotal, tvYourRankAfterThisRound,tvMaxRndScore, tvMaxTotalScore, tvNrOfTeams, tvNrOfTeams2;
+    ImageView ivTopScore;
     int thisTeamNr, thisRoundNr;
     HasShowRoundScore callingActivity;
     Quiz thisQuiz = MyApplication.theQuiz;
@@ -59,8 +61,9 @@ public class FragShowRoundScore extends Fragment {
                 if (thisQuiz.getHideTopRows() > yourRankAfterThisRound)
                 {
                     //tvYourScoreTotal.setText("Top " + thisQuiz.getHideTopRows());
-                    tvYourRankAfterThisRound.setText("Top " + thisQuiz.getHideTopRows() + "!!!");
-                    tvNrOfTeams2.setText(" ");
+                    tvYourRankAfterThisRound.setVisibility(View.GONE); //Text("Top " + thisQuiz.getHideTopRows() + "!!!");
+                    tvNrOfTeams2.setVisibility(View.GONE);//Text(" ");
+                    ivTopScore.setVisibility(View.VISIBLE);
                     //tvYourScoreForThisRnd.setText("Top " + thisQuiz.getHideTopRows());
                     //tvYourRankForThisRnd.setText("Top " + thisQuiz.getHideTopRows());
                 }
@@ -83,6 +86,7 @@ public class FragShowRoundScore extends Fragment {
         tvMaxTotalScore = v.findViewById(R.id.tvMaxTotalScore);
         tvNrOfTeams = v.findViewById(R.id.tvNrOfTeams);
         tvNrOfTeams2 = v.findViewById(R.id.tvNrOfTeams2);
+        ivTopScore=v.findViewById(R.id.ivTopScore);
         return v;
     }
 

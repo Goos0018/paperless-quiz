@@ -12,6 +12,7 @@ import com.paperlessquiz.loadinglisteners.LLSilent;
 import com.paperlessquiz.orders.ItemOrdered;
 import com.paperlessquiz.orders.Order;
 import com.paperlessquiz.orders.OrderItem;
+import com.paperlessquiz.parsers.HelpTopicParser;
 import com.paperlessquiz.parsers.ItemOrderedParser;
 import com.paperlessquiz.parsers.OrderItemParser;
 import com.paperlessquiz.parsers.OrderParser;
@@ -51,6 +52,7 @@ public class QuizLoader {
     public HTTPGetData<OrderItem> getOrderItemsRequest;
     public HTTPGetData<Order> getOrdersRequest;
     public HTTPGetData<ItemOrdered> getOrderDetails;
+    public HTTPGetData<HelpTopic> getHelpTopicsRequest;
 
     public HTTPSubmit authenticateRequest;
     public HTTPSubmit submitAnswerRequest;
@@ -66,6 +68,7 @@ public class QuizLoader {
     public HTTPSubmit buyBonnekesRequest;
     public HTTPSubmit createPauseEventRequest;
     public HTTPSubmit setSoldOutRequest;
+    public HTTPSubmit submitRemarkRequest;
 
 
     public QuizLoader(Context context) {
@@ -210,23 +213,6 @@ public class QuizLoader {
                 "Something went wrong: ", false));
     }
 
-    /*
-    Replace by general load orders function
-    //Load orders for the user
-    public void loadOrdersForuser() {
-        int idUser = thisQuiz.getThisUser().getIdUser();
-        String userPassword = thisQuiz.getThisUser().getUserPassword();
-        int idQuiz = thisQuiz.getListData().getIdQuiz();
-        String scriptParams = generateParamsPHP(QuizDatabase.PARAMVALUE_QRY_ORDERSFORUSER, idUser, userPassword, idQuiz, idUser);
-        scriptParams = scriptParams + QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_ORDERBY + QuizDatabase.COLNAME_ORDERNUMBER +
-                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_ORDERDIRECTION + QuizDatabase.PARAMVALUE_ORDERDESC;
-        getOrdersRequest = new HTTPGetData<>(context, scriptParams, QuizDatabase.REQUEST_ID_GET_ORDERSFORUSER);
-        getOrdersRequest.getItems(new OrderParser(), new LLShowProgressActWhenComplete(context, context.getString(R.string.loader_pleasewait),
-                context.getString(R.string.loader_updatingquiz),
-                "Something went wrong: ", false));
-    }
-    */
-
     //Load ALL orders with status / category in a given comma separated list
     // This will load all orders if the status resp. category is omitted
     public void loadAllOrders(String statuses, String categories, String users) {
@@ -251,11 +237,10 @@ public class QuizLoader {
                 context.getString(R.string.loader_updatingquiz),
                 "Something went wrong: ", false));
     }
+
     public void loadAllOrders() {
-        loadAllOrders("","","");
+        loadAllOrders("", "", "");
     }
-
-
 
     public void loadOrderDetails(int idOrder) {
         int idUser = thisQuiz.getThisUser().getIdUser();
@@ -264,6 +249,18 @@ public class QuizLoader {
         String scriptParams = generateParamsPHP(QuizDatabase.PARAMVALUE_QRY_ORDERDETAILS, idUser, userPassword, idQuiz, idOrder);
         getOrderDetails = new HTTPGetData<>(context, scriptParams, QuizDatabase.REQUEST_ID_GET_ORDERDETAILS);
         getOrderDetails.getItems(new ItemOrderedParser(), new LLShowProgressActWhenComplete(context, context.getString(R.string.loader_pleasewait),
+                context.getString(R.string.loader_updatingquiz),
+                "Something went wrong: ", false));
+    }
+
+    public void loadHelpTopics(int helpType){
+        int idUser = thisQuiz.getThisUser().getIdUser();
+        String userPassword = thisQuiz.getThisUser().getUserPassword();
+        String scriptParams = QuizDatabase.SCRIPT_GET_HELPTOPICS + QuizDatabase.PHP_STARTPARAM + QuizDatabase.PARAMNAME_IDUSER + idUser +
+                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_USERPASSWORD + userPassword +
+                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_HELPTYPE + helpType;
+        getHelpTopicsRequest = new HTTPGetData<>(context, scriptParams, QuizDatabase.REQUEST_ID_GET_HELPTOPICS);
+        getHelpTopicsRequest.getItems(new HelpTopicParser(), new LLShowProgressActWhenComplete(context, context.getString(R.string.loader_pleasewait),
                 context.getString(R.string.loader_updatingquiz),
                 "Something went wrong: ", false));
     }
@@ -597,5 +594,23 @@ public class QuizLoader {
         setSoldOutRequest.sendRequest(new LLSilent());
     }
 
+    //Submit a remark
+    public void submitRemark(int helpType, String remark) {
+        int idUser = thisQuiz.getThisUser().getIdUser();
+        String userPassword = thisQuiz.getThisUser().getUserPassword();
+        String encodedRemark;
+        try {
+            encodedRemark = URLEncoder.encode(remark.replaceAll("'", "\""), "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            encodedRemark = "Remark contains characters that are not allowed";
+        }
+        String scriptParams = QuizDatabase.SCRIPT_SUBMITREMARK + QuizDatabase.PHP_STARTPARAM + QuizDatabase.PARAMNAME_IDUSER + idUser +
+                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_USERPASSWORD + userPassword +
+                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_HELPTYPE + helpType +
+                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_HELPREMARK + encodedRemark;
+        submitRemarkRequest = new HTTPSubmit(context, scriptParams, QuizDatabase.REQUEST_ID_SUBMITREMARK);
+        submitRemarkRequest.sendRequest(new LLSilent());
+    }
 }
 

@@ -1,6 +1,5 @@
 package com.paperlessquiz;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,8 +17,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.paperlessquiz.adapters.DisplayAnswersAdapter;
-import com.paperlessquiz.loadinglisteners.LLSilentActWhenComplete;
-import com.paperlessquiz.quiz.QuizLoaderClass;
 import com.paperlessquiz.webrequest.EventLogger;
 import com.paperlessquiz.loadinglisteners.LoadingActivity;
 import com.paperlessquiz.quiz.QuizDatabase;
@@ -245,6 +242,13 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
             case R.id.refresh:
                 updateQuiz();
                 break;
+
+            case R.id.messages:
+                MyApplication.authorizedBreak = true;
+                Intent intentHelp = new Intent(C_ParticipantHome.this, DisplayHelpTopics.class);
+                intentHelp.putExtra(QuizDatabase.INTENT_EXTRANAME_HELPTYPE, QuizDatabase.HELPTYPE_QUIZQUESTION);
+                startActivity(intentHelp);
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -311,12 +315,13 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
 
     @Override
     protected void onPause() {
-        if (thisQuiz.isAnyRoundOpen() && !MyApplication.orderOngoing) {
+        if (thisQuiz.isAnyRoundOpen() && !MyApplication.authorizedBreak) {
             lastPausedDate = new Date();
             quizLoader.createPauseEvent(QuizDatabase.TYPE_PAUSE_PAUSE,0);
             MyApplication.setAppPaused(true);
+            quizLoader.updateMyStatus(QuizDatabase.USERSTATUS_PRESENTNOTLOGGEDIN);
         }
-        quizLoader.updateMyStatus(QuizDatabase.USERSTATUS_PRESENTNOTLOGGEDIN);
+
         super.onPause();
     }
 
@@ -330,7 +335,7 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
             MyApplication.setAppPaused(false);
         }
         quizLoader.updateMyStatus(QuizDatabase.USERSTATUS_PRESENTLOGGEDIN);
-        MyApplication.orderOngoing=false;
+        MyApplication.authorizedBreak =false;
     }
 
     @Override

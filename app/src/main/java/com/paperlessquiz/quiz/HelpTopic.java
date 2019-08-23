@@ -3,6 +3,7 @@ package com.paperlessquiz.quiz;
 public class HelpTopic {
     int idHelpTopic, orderNr, Type, idUser;
     String remark, response;
+    
 
     public HelpTopic(int idHelpTopic, int orderNr, int type, int idUser, String remark, String response) {
         this.idHelpTopic = idHelpTopic;
@@ -23,5 +24,13 @@ public class HelpTopic {
 
     public String getResponse() {
         return response;
+    }
+
+    public int getIdHelpTopic() {
+        return idHelpTopic;
+    }
+
+    public void setResponse(String response) {
+        this.response = response;
     }
 }

@@ -44,6 +44,9 @@ public class QuizDatabase {
     public static final String PARAMNAME_NEWITEMSTATUS = "newItemStatus=";
     public static final String PARAMNAME_HELPTYPE = "helpType=";
     public static final String PARAMNAME_HELPREMARK = "helpRemark=";
+    public static final String PARAMNAME_HELPNORESPONSEONLY = "noResponseOnly=";
+    public static final String PARAMNAME_HELPREMARKID = "idRemark=";
+    public static final String PARAMNAME_HELPRESPONSE = "response=";
 
     // Available PHP scripts
     public static final String SCRIPT_GET_QUIZLIST = "getquizlist.php";
@@ -67,6 +70,8 @@ public class QuizDatabase {
     public static final String SCRIPT_SETSOLDOUT = "setsoldout.php";
     public static final String SCRIPT_GET_HELPTOPICS = "gethelptopics.php";
     public static final String SCRIPT_SUBMITREMARK = "submitremark.php";
+    public static final String SCRIPT_ANSWERREMARK = "answerremark.php";
+    public static final String SCRIPT_GET_REMARKS = "getremarks.php";
 
     //Param values - query names
     public static final String PARAMVALUE_QRY_ALL_ROUNDS = "rounds";
@@ -101,6 +106,7 @@ public class QuizDatabase {
     public static final int REQUEST_ID_GET_ALLORDERS = 12;
     public static final int REQUEST_ID_GET_ORDERDETAILS = 13;
     public static final int REQUEST_ID_GET_HELPTOPICS = 14;
+    public static final int REQUEST_ID_GET_REMARKS = 15;
     //Submit requests
     public static final int REQUEST_ID_AUTHENTICATE = 100;
     public static final int REQUEST_ID_SUBMITANSWER = 101;
@@ -118,6 +124,7 @@ public class QuizDatabase {
     public static final int REQUEST_ID_CREATEPAUSEEVENT = 113;
     public static final int REQUEST_ID_SETSOLDOUT = 114;
     public static final int REQUEST_ID_SUBMITREMARK = 115;
+    public static final int REQUEST_ID_ANSWERREMARK = 116;
 
 
     //User types - these must match what is defined in the constants.php

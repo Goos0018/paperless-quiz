@@ -128,6 +128,10 @@ public class B_Login extends AppCompatActivity implements LoadingActivity {
                     intent = new Intent(B_Login.this, C_CorrectorHome.class);
                     startActivity(intent);
                     break;
+                case QuizDatabase.USERTYPE_JUROR:
+                    intent = new Intent(B_Login.this, C_JurorHome.class);
+                    startActivity(intent);
+                    break;
                 case QuizDatabase.USERTYPE_RECEPTIONIST:
                     intent = new Intent(B_Login.this, C_ReceptionistHome.class);
                     startActivity(intent);

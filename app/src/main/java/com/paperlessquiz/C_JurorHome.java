@@ -22,28 +22,27 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.TimeZone;
 
-public class DisplayHelpTopics extends AppCompatActivity implements LoadingActivity {
+public class C_JurorHome extends MyActivity implements LoadingActivity {
 
     RecyclerView rvDisplayHelpTopics;
     RecyclerView.LayoutManager layoutManager;
     int helpType;
     ShowHelpTopicsAdapter showHelpTopicsAdapter;
     ArrayList<HelpTopic> topics = new ArrayList<>();
-    Quiz thisQuiz = MyApplication.theQuiz;
     User thisUser = thisQuiz.getThisUser();
     QuizLoader quizLoader;
-    boolean helpTopicsLoaded;
+    boolean remarksLoaded, showAllMessages;
 
     @Override
     public void loadingComplete(int requestId) {
         switch (requestId) {
-            case QuizDatabase.REQUEST_ID_GET_HELPTOPICS:
-                helpTopicsLoaded = true;
+            case QuizDatabase.REQUEST_ID_GET_REMARKS:
+                remarksLoaded = true;
                 break;
         }
-        if (helpTopicsLoaded) {
-            helpTopicsLoaded = false;
-            showHelpTopicsAdapter.setHelpTopics(quizLoader.getHelpTopicsRequest.getResultsList());
+        if (remarksLoaded) {
+            remarksLoaded = false;
+            showHelpTopicsAdapter.setHelpTopics(quizLoader.getRemarksRequest.getResultsList());
             showHelpTopicsAdapter.notifyDataSetChanged();
         }
     }
@@ -52,29 +51,10 @@ public class DisplayHelpTopics extends AppCompatActivity implements LoadingActiv
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.act_display_help_topics);
-        ActionBar actionBar = getSupportActionBar();
-        String actionBarTitle;
+        setContentView(R.layout.act_c_juror_home);
         quizLoader = new QuizLoader(this);
-        helpType = getIntent().getIntExtra(QuizDatabase.INTENT_EXTRANAME_HELPTYPE, 0);
-        quizLoader.loadHelpTopics(helpType);
-        switch (helpType) {
-            case (QuizDatabase.HELPTYPE_QUIZQUESTION):
-            case (QuizDatabase.HELPTYPE_ORDERQUESTION):
-                switch (thisUser.getUserType()) {
-                    case QuizDatabase.USERTYPE_BARRESPONSIBLE:
-                    case QuizDatabase.USERTYPE_JUROR:
-                        actionBarTitle = "Opmerkingen";
-                        break;
-                    default:
-                        actionBarTitle = "Mijn opmerkingen";
-                }
-                break;
-            default:
-                actionBarTitle = "Help";
-        }
-        actionBar.setTitle(actionBarTitle);
-
+        helpType = QuizDatabase.HELPTYPE_QUIZQUESTION;
+        quizLoader.loadRemarks(helpType,showAllMessages);
         rvDisplayHelpTopics = findViewById(R.id.rvDisplayHelpTopics);
         rvDisplayHelpTopics.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
@@ -86,7 +66,7 @@ public class DisplayHelpTopics extends AppCompatActivity implements LoadingActiv
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.helptopics, menu);
+        getMenuInflater().inflate(R.menu.juror, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -94,11 +74,13 @@ public class DisplayHelpTopics extends AppCompatActivity implements LoadingActiv
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.refresh:
-                quizLoader.loadHelpTopics(helpType);
+                quizLoader.loadRemarks(helpType,showAllMessages);
                 break;
-            case R.id.backtoquiz:
-                onBackPressed();
+            case R.id.allmessages:
+                showAllMessages=!showAllMessages;
+                quizLoader.loadRemarks(helpType,showAllMessages);
                 break;
+
         }
         return super.onOptionsItemSelected(item);
     }

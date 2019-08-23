@@ -53,6 +53,7 @@ public class QuizLoader {
     public HTTPGetData<Order> getOrdersRequest;
     public HTTPGetData<ItemOrdered> getOrderDetails;
     public HTTPGetData<HelpTopic> getHelpTopicsRequest;
+    public HTTPGetData<HelpTopic> getRemarksRequest;
 
     public HTTPSubmit authenticateRequest;
     public HTTPSubmit submitAnswerRequest;
@@ -69,6 +70,7 @@ public class QuizLoader {
     public HTTPSubmit createPauseEventRequest;
     public HTTPSubmit setSoldOutRequest;
     public HTTPSubmit submitRemarkRequest;
+    public HTTPSubmit answerRemarkRequest;
 
 
     public QuizLoader(Context context) {
@@ -253,7 +255,7 @@ public class QuizLoader {
                 "Something went wrong: ", false));
     }
 
-    public void loadHelpTopics(int helpType){
+    public void loadHelpTopics(int helpType) {
         int idUser = thisQuiz.getThisUser().getIdUser();
         String userPassword = thisQuiz.getThisUser().getUserPassword();
         String scriptParams = QuizDatabase.SCRIPT_GET_HELPTOPICS + QuizDatabase.PHP_STARTPARAM + QuizDatabase.PARAMNAME_IDUSER + idUser +
@@ -265,6 +267,20 @@ public class QuizLoader {
                 "Something went wrong: ", false));
     }
 
+    public void loadRemarks(int helpType, boolean loadAllMessages) {
+        int idUser = thisQuiz.getThisUser().getIdUser();
+        String userPassword = thisQuiz.getThisUser().getUserPassword();
+        String scriptParams = QuizDatabase.SCRIPT_GET_REMARKS + QuizDatabase.PHP_STARTPARAM + QuizDatabase.PARAMNAME_IDUSER + idUser +
+                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_USERPASSWORD + userPassword +
+                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_HELPTYPE + helpType;
+        if (!loadAllMessages) {
+            scriptParams += QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_HELPNORESPONSEONLY + "1";
+        }
+        getRemarksRequest = new HTTPGetData<>(context, scriptParams, QuizDatabase.REQUEST_ID_GET_REMARKS);
+        getRemarksRequest.getItems(new HelpTopicParser(), new LLShowProgressActWhenComplete(context, context.getString(R.string.loader_pleasewait),
+                context.getString(R.string.loader_updatingquiz),
+                "Something went wrong: ", false));
+    }
 
     //Get the items you can order and put them in the MyApplication itemsToOrderArray object
     public void loadOrderItemsIntoQuiz() {
@@ -612,5 +628,25 @@ public class QuizLoader {
         submitRemarkRequest = new HTTPSubmit(context, scriptParams, QuizDatabase.REQUEST_ID_SUBMITREMARK);
         submitRemarkRequest.sendRequest(new LLSilent());
     }
+
+    //Answer a remark
+    public void answerRemark(int idRemark, String response) {
+        int idUser = thisQuiz.getThisUser().getIdUser();
+        String userPassword = thisQuiz.getThisUser().getUserPassword();
+        String encodedResponse;
+        try {
+            encodedResponse = URLEncoder.encode(response.replaceAll("'", "\""), "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            encodedResponse = "Response contains characters that are not allowed";
+        }
+        String scriptParams = QuizDatabase.SCRIPT_ANSWERREMARK + QuizDatabase.PHP_STARTPARAM + QuizDatabase.PARAMNAME_IDUSER + idUser +
+                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_USERPASSWORD + userPassword +
+                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_HELPREMARKID + idRemark +
+                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_HELPRESPONSE + encodedResponse;
+        answerRemarkRequest = new HTTPSubmit(context, scriptParams, QuizDatabase.REQUEST_ID_ANSWERREMARK);
+        answerRemarkRequest.sendRequest(new LLSilent());
+    }
+
 }
 

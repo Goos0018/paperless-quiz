@@ -16,7 +16,6 @@ import com.paperlessquiz.R;
 /**
  * This Fragment represents a spinner that allows you to scroll up and down through a list of items
  * that are provided by the calling activity via the interface HasSpinner. This interface also allows you to change things in the activity based on spinner changes
- * The Id is used if an activity has more than one spinner.
  */
 public class FragSpinner extends Fragment {
 

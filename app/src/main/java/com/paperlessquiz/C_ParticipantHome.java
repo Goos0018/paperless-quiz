@@ -44,7 +44,7 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
     FragExplainRoundStatus explainRoundStatus;
     TextView tvDisplayRoundResults;
     EditText etAnswer;
-    Button btnSubmit;
+    //Button btnSubmit;
     LinearLayout displayAnswersLayout, editAnswerLayout;
     RecyclerView rvDisplayAnswers;
     DisplayAnswersAdapter displayAnswersAdapter;
@@ -274,7 +274,7 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
         editAnswerLayout = findViewById(R.id.llAnswers);
         tvDisplayRoundResults = findViewById(R.id.tvDisplayRound);
         etAnswer = findViewById(R.id.etAnswer);
-        btnSubmit = findViewById(R.id.btnSubmit);
+        //btnSubmit = findViewById(R.id.btnSubmit);
         rvDisplayAnswers = findViewById(R.id.rvDisplayAnswers);
         rvDisplayAnswers.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
@@ -285,6 +285,7 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
         thisTeam = thisQuiz.getThisUser();
         quizLoader.updateMyStatus(QuizDatabase.USERSTATUS_PRESENTLOGGEDIN);
 
+        /*
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -305,6 +306,7 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
                 quizLoader.setAnswersSubmitted(roundSpinner.getPosition());
             }
         });
+        */
     }
 
     @Override

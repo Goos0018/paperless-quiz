@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <item android:id="@+id/messages"
+        android:title="Messages"
+        android:orderInCategory="100"
+        app:showAsAction="always"
+        android:icon="@drawable/messages"/>
+
     <item android:id="@+id/neworder"
         android:title="New Order"
         android:orderInCategory="100"
@@ -11,4 +19,5 @@
         android:orderInCategory="100"
         app:showAsAction="always"
         android:icon="@drawable/back"/>
+
 </menu>

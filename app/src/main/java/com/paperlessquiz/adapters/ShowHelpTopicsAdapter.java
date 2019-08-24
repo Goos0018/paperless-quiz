@@ -21,6 +21,12 @@ import com.paperlessquiz.quiz.QuizLoader;
 
 import java.util.ArrayList;
 
+/**
+ * This adapter is used for different purposes:
+ * - for the Juror or Bar responsible: show the list of remarks that were submitted and alllow them to answer them
+ * - For teams, show there own remarks and the answers to them
+ * - for everybody, see FAQ help for their role
+ */
 public class ShowHelpTopicsAdapter extends RecyclerView.Adapter<ShowHelpTopicsAdapter.ViewHolder> {
     private ArrayList<HelpTopic> helpTopics;
     private int previousPosition = -1;
@@ -106,19 +112,24 @@ public class ShowHelpTopicsAdapter extends RecyclerView.Adapter<ShowHelpTopicsAd
         viewHolder.itemView.setTag(helpTopics.get(i));
         viewHolder.tvRemark.setText(helpTopics.get(i).getRemark());
         viewHolder.tvResponse.setText(helpTopics.get(i).getResponse());
-        if (currentPosition == i) {
-            viewHolder.tvResponse.setVisibility(View.VISIBLE);
-        } else {
-            viewHolder.tvResponse.setVisibility(View.GONE);
-        }
-        //If this is the Juror or the bar responsible treating incoming messages, always show the answers
-        if ((userType == QuizDatabase.USERTYPE_JUROR && helpType == QuizDatabase.HELPTYPE_QUIZQUESTION) ||
-                (userType == QuizDatabase.USERTYPE_BARRESPONSIBLE && helpType == QuizDatabase.HELPTYPE_ORDERQUESTION)) {
-            if (!helpTopics.get(i).getResponse().equals("")) {
-                viewHolder.tvResponse.setVisibility(View.VISIBLE);
-            } else {
-                viewHolder.tvResponse.setVisibility(View.GONE);
-            }
+        switch (helpType) {
+            //For Quiz Questions, display an answer if it is there
+            case QuizDatabase.HELPTYPE_QUIZQUESTION:
+            case QuizDatabase.HELPTYPE_ORDERQUESTION:
+                if (!helpTopics.get(i).getResponse().equals("")) {
+                    viewHolder.tvResponse.setVisibility(View.VISIBLE);
+                } else {
+                    viewHolder.tvResponse.setVisibility(View.GONE);
+                }
+                break;
+            //For the normal help topics, display them as collapsed, unless they are selected
+            default:
+                if (currentPosition == i) {
+                    viewHolder.tvResponse.setVisibility(View.VISIBLE);
+                } else {
+                    viewHolder.tvResponse.setVisibility(View.GONE);
+                }
+                break;
         }
     }
 

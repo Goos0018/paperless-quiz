@@ -1,20 +1,25 @@
 package com.paperlessquiz;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.paperlessquiz.adapters.ShowOrdersAdapter;
@@ -37,6 +42,7 @@ public class D_OrderHome extends AppCompatActivity implements LoadingActivity, S
     RecyclerView.LayoutManager layoutManager;
     ShowOrdersAdapter showOrdersAdapter;
     TextView tvSaldoIntro, tvSaldo, tvOrderIntro, tvDisplayItemNames, tvOverviewIntro, tvDisplayAmount;
+    ImageView ivRemark;
     CardView cvOrderDetails;
     Button btnNewOrder;
     Order theNewOrder, theSelectedOrder;
@@ -138,7 +144,32 @@ public class D_OrderHome extends AppCompatActivity implements LoadingActivity, S
         tvDisplayItemNames = findViewById(R.id.tvDisplayItemNames);
         tvOverviewIntro = findViewById(R.id.tvIntroOverview);
         tvDisplayAmount = findViewById(R.id.tvAmountsOrdered);
-
+        ivRemark = findViewById(R.id.ivRemark);
+        ivRemark.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(D_OrderHome.this);
+                String title = "Ploeg " + theSelectedOrder.getUserNr() + " - Bestelling " + theSelectedOrder.getOrderNr();
+                builder.setTitle(title);
+                final EditText input = new EditText(D_OrderHome.this);
+                input.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                builder.setView(input);
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String remark = input.getText().toString();
+                        quizLoader.submitRemark(QuizDatabase.HELPTYPE_ORDERQUESTION,title + ": " + remark);
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                builder.show();
+            }
+        });
         //Create empty list here, will be populated when loading is done
         myOrders = new ArrayList<>();
         //Initialize the adapter and recyclerview
@@ -208,12 +239,22 @@ public class D_OrderHome extends AppCompatActivity implements LoadingActivity, S
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.orderhome, menu);
+        //Hide the remarks icon for organizers
+        if (thisQuiz.getThisUser().getUserType() !=0)
+        {
+            menu.findItem(R.id.messages).setVisible(false);
+        }
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.messages:
+                Intent intentHelp = new Intent(D_OrderHome.this, DisplayHelpTopics.class);
+                intentHelp.putExtra(QuizDatabase.INTENT_EXTRANAME_HELPTYPE, QuizDatabase.HELPTYPE_ORDERQUESTION);
+                startActivity(intentHelp);
+                break;
             case R.id.neworder:
                 Intent intentOrder = new Intent(D_OrderHome.this, D_NewOrder.class);
                 startActivityForResult(intentOrder, QuizDatabase.REQUEST_CODE_NEWORDER);

@@ -96,7 +96,7 @@ public class C_CorrectorHome extends MyActivity implements LoadingActivity, Frag
         if (correctPerQuestion) {
             return thisQuiz.getQuestion(thisRoundNr, spinnerPos).getName();
         } else {
-            return Integer.toString(thisQuiz.getTeam(spinnerPos).getUserNr());
+            return "Ploeg " + Integer.toString(thisQuiz.getTeam(spinnerPos).getUserNr());
         }
     }
 
@@ -292,18 +292,6 @@ public class C_CorrectorHome extends MyActivity implements LoadingActivity, Frag
         tvCorrectAnswer = findViewById(R.id.tvCorrectAnswer);
         //btnSubmitCorrections = findViewById(R.id.btnSubmitCorrections);
         lvCorrectQuestions = findViewById(R.id.lvCorrectQuestions);
-/*
-        btnSubmitCorrections.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (correctPerQuestion) {
-                    //thisQuiz.submitCorrectionsForQuestion(C_CorrectorHome.this, thisRoundNr, thisQuestionNr);
-                } else {
-                    //thisQuiz.submitCorrectionsForTeam(C_CorrectorHome.this, thisRoundNr, thisTeamNr);
-                }
-            }
-        });
-        */
         //OnRoundChange and onSpinnerChanged are called by the respective fragments
         quizLoader = new QuizLoader(this);
         loadQuiz();

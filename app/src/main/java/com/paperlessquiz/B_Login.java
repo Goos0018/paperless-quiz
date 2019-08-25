@@ -24,7 +24,7 @@ import java.util.ArrayList;
 
 /**
  * Main login screen, allows user to select a team to log in and proceed to their Home screen after authentication
- * Here, we also load all info needed for a participant or organizer (in some cases, to much info)
+ * Here, we also load all info needed for a participant or organizer (in some cases, to much info): TODO: remove this and load all necessary data in the activity itself
  */
 public class B_Login extends AppCompatActivity implements LoadingActivity {
     Quiz thisQuiz = MyApplication.theQuiz;

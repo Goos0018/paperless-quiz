@@ -1,4 +1,4 @@
-package com.paperlessquiz.answer;
+package com.paperlessquiz.quiz;
 
 import java.io.Serializable;
 

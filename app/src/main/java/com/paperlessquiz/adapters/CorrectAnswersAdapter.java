@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.paperlessquiz.MyApplication;
 import com.paperlessquiz.R;
-import com.paperlessquiz.answer.Answer;
+import com.paperlessquiz.quiz.Answer;
 import com.paperlessquiz.quiz.Quiz;
 import com.paperlessquiz.quiz.QuizLoader;
 

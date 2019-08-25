@@ -1,7 +1,5 @@
 package com.paperlessquiz.quiz;
 
-import com.paperlessquiz.answer.Answer;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 

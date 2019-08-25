@@ -1,6 +1,7 @@
 package com.paperlessquiz.answer;
 
 public class AnswersSubmitted {
+    /*
     int roundNr, teamNr;
     boolean answersSubmitted;
 
@@ -21,4 +22,5 @@ public class AnswersSubmitted {
     public boolean isAnswersSubmitted() {
         return answersSubmitted;
     }
+    */
 }

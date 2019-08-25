@@ -1,6 +1,5 @@
 package com.paperlessquiz;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -15,12 +14,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.paperlessquiz.adapters.ParticipantsAdapter;
-import com.paperlessquiz.loadinglisteners.LLSilentActWhenComplete;
 import com.paperlessquiz.loadinglisteners.LoadingActivity;
 import com.paperlessquiz.quiz.QuizDatabase;
 import com.paperlessquiz.quiz.QuizLoader;
 import com.paperlessquiz.quiz.Quiz;
-import com.paperlessquiz.quiz.QuizLoaderClass;
 import com.paperlessquiz.users.User;
 
 import java.util.ArrayList;
@@ -80,7 +77,7 @@ public class B_Login extends AppCompatActivity implements LoadingActivity {
             case QuizDatabase.REQUEST_ID_GET_ANSWERS:
                 answersLoaded = true;
                 break;
-            case QuizDatabase.REQUEST_ID_GET_ANSWERSSUBMITTED:
+            case QuizDatabase.REQUEST_ID_GET_ANSWERSTATS:
                 answersSubmittedLoaded = true;
                 break;
             case QuizDatabase.REQUEST_ID_GET_ORDERITEMS:
@@ -88,7 +85,7 @@ public class B_Login extends AppCompatActivity implements LoadingActivity {
                 break;
         }
         //Only if everything is properly loaded, we can start populating the central Quiz object
-        if (roundsLoaded && questionsLoaded && answersLoaded && answersSubmittedLoaded && ordersLoaded) {
+        if (roundsLoaded && questionsLoaded && answersLoaded && ordersLoaded) {
             //reset the loading statuses
             roundsLoaded = false;
             questionsLoaded = false;
@@ -101,7 +98,7 @@ public class B_Login extends AppCompatActivity implements LoadingActivity {
             //Make sure we have answers for all teams and all questions before we start setting the answers
             thisQuiz.initializeAllAnswers();
             quizLoader.updateAnswersIntoQuiz();
-            quizLoader.updateAnswersSubmittedIntoQuiz();
+            //quizLoader.updateAnswersSubmittedIntoQuiz();
             quizLoader.loadOrderItemsIntoQuiz();
             /*
             QuizLoaderClass.loadRoundsIntoQuiz();

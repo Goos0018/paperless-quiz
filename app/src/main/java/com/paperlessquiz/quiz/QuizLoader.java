@@ -3,16 +3,15 @@ package com.paperlessquiz.quiz;
 import android.content.Context;
 import android.util.EventLog;
 
-import com.paperlessquiz.answer.AnswersSubmitted;
 import com.paperlessquiz.MyApplication;
 import com.paperlessquiz.R;
-import com.paperlessquiz.answer.Answer;
 import com.paperlessquiz.loadinglisteners.LLShowProgressActWhenComplete;
 import com.paperlessquiz.loadinglisteners.LLSilent;
 import com.paperlessquiz.orders.ItemOrdered;
 import com.paperlessquiz.orders.Order;
 import com.paperlessquiz.orders.OrderItem;
 import com.paperlessquiz.parsers.HelpTopicParser;
+import com.paperlessquiz.parsers.AnswerStatsParser;
 import com.paperlessquiz.parsers.ItemOrderedParser;
 import com.paperlessquiz.parsers.OrderItemParser;
 import com.paperlessquiz.parsers.OrderParser;
@@ -20,7 +19,6 @@ import com.paperlessquiz.users.Organizer;
 import com.paperlessquiz.users.Team;
 import com.paperlessquiz.users.User;
 import com.paperlessquiz.parsers.AnswersParser;
-import com.paperlessquiz.parsers.AnswersSubmittedParser;
 import com.paperlessquiz.parsers.LogMessageParser;
 import com.paperlessquiz.parsers.UserParser;
 //import com.example.paperlessquiz.quizextradata.GetQuizExtraDataLPL;
@@ -46,7 +44,7 @@ public class QuizLoader {
     public HTTPGetData<Answer> getAnswersRequest;
     public HTTPGetData<Question> getQuestionsRequest;
     public HTTPGetData<Round> getRoundsRequest;
-    public HTTPGetData<AnswersSubmitted> getAnswersSubmittedRequest;
+    public HTTPGetData<Integer> getAnswerStatsRequest;
     public HTTPGetData<EventLog> getMyEventLogsRequest;
     public HTTPGetData<ResultAfterRound> getResultsRequest;
     public HTTPGetData<OrderItem> getOrderItemsRequest;
@@ -57,7 +55,7 @@ public class QuizLoader {
 
     public HTTPSubmit authenticateRequest;
     public HTTPSubmit submitAnswerRequest;
-    public HTTPSubmit submitAnswersSubmittedRequest;
+    //public HTTPSubmit submitAnswersSubmittedRequest;
     public HTTPSubmit updateRoundStatusRequest;
     public HTTPSubmit updateUserStatusRequest;
     public HTTPSubmit correctQuestionRequest;
@@ -92,7 +90,7 @@ public class QuizLoader {
         loadRounds();
         loadQuestions();
         loadMyAnswers();
-        loadAnswersSubmitted();
+        //loadAnswersSubmitted();
         loadOrderItems();
     }
 
@@ -171,13 +169,17 @@ public class QuizLoader {
                 "Something went wrong: ", false));
     }
 
-    public void loadAnswersSubmitted() {
+    public void loadAnswerStats(int roundNr, int statistic) {
         int idUser = thisQuiz.getThisUser().getIdUser();
         String userPassword = thisQuiz.getThisUser().getUserPassword();
         int idQuiz = thisQuiz.getListData().getIdQuiz();
-        String scriptParams = generateParamsPHP(QuizDatabase.PARAMVALUE_QRY_ALL_ANSWERSSUBMITTED, idUser, userPassword, idQuiz, idQuiz);
-        getAnswersSubmittedRequest = new HTTPGetData<>(context, scriptParams, QuizDatabase.REQUEST_ID_GET_ANSWERSSUBMITTED);
-        getAnswersSubmittedRequest.getItems(new AnswersSubmittedParser(), new LLShowProgressActWhenComplete(context, context.getString(R.string.loader_pleasewait),
+        String scriptParams = QuizDatabase.SCRIPT_GET_ANSWERSTATS + QuizDatabase.PHP_STARTPARAM + QuizDatabase.PARAMNAME_IDUSER + idUser +
+                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_USERPASSWORD + userPassword +
+                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_IDQUIZ + idQuiz +
+                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_ROUNDNR + roundNr +
+                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_ANSWERSTAT + statistic;
+        getAnswerStatsRequest = new HTTPGetData<>(context, scriptParams, QuizDatabase.REQUEST_ID_GET_ANSWERSTATS);
+        getAnswerStatsRequest.getItems(new AnswerStatsParser(), new LLShowProgressActWhenComplete(context, context.getString(R.string.loader_pleasewait),
                 context.getString(R.string.loader_updatingquiz),
                 "Something went wrong: ", false));
     }
@@ -353,7 +355,7 @@ public class QuizLoader {
     }
 
     //Assumes rounds are already loaded in the quiz, this just updates the relevant information
-    public void updateRounds() {
+    public void updateRoundsIntoQuiz() {
         for (int i = 0; i < getRoundsRequest.getResultsList().size(); i++) {
             Round thisRound = getRoundsRequest.getResultsList().get(i);
             //Rounds are already loaded, we can simply get the round from the Quiz object
@@ -398,12 +400,14 @@ public class QuizLoader {
         }
     }
 
+    /*
     public void updateAnswersSubmittedIntoQuiz() {
         for (int i = 0; i < getAnswersSubmittedRequest.getResultsList().size(); i++) {
             AnswersSubmitted thisAnswerSubmitted = getAnswersSubmittedRequest.getResultsList().get(i);
             thisQuiz.getTeam(thisAnswerSubmitted.getTeamNr()).setAnswersForRoundSubmitted(thisAnswerSubmitted.getRoundNr());
         }
     }
+    */
 
     public void loadResultsIntoQuiz() {
         for (int i = 0; i < getResultsRequest.getResultsList().size(); i++) {
@@ -443,7 +447,7 @@ public class QuizLoader {
         submitAnswerRequest.sendRequest(new LLSilent());
     }
 
-
+    /*
     public void setAnswersSubmitted(int roundNr) {
         int idUser = thisQuiz.getThisUser().getIdUser();
         String userPassword = thisQuiz.getThisUser().getUserPassword();
@@ -456,6 +460,7 @@ public class QuizLoader {
                 context.getString(R.string.loader_updatingquiz),
                 context.getString(R.string.loadingerror), false));
     }
+    */
 
     public void updateRoundStatus(int roundNr, int newStatus) {
         int idRound = thisQuiz.getRound(roundNr).getIdRound();

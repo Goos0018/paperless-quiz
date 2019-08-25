@@ -1,34 +1,5 @@
 package com.paperlessquiz.quiz;
 
-import android.content.Context;
-import android.util.EventLog;
-
-import com.paperlessquiz.MyApplication;
-import com.paperlessquiz.R;
-import com.paperlessquiz.answer.Answer;
-import com.paperlessquiz.answer.AnswersSubmitted;
-import com.paperlessquiz.loadinglisteners.LLShowProgressActWhenComplete;
-import com.paperlessquiz.loadinglisteners.LoadingListener;
-import com.paperlessquiz.orders.ItemOrdered;
-import com.paperlessquiz.orders.Order;
-import com.paperlessquiz.orders.OrderItem;
-import com.paperlessquiz.parsers.AnswersParser;
-import com.paperlessquiz.parsers.AnswersSubmittedParser;
-import com.paperlessquiz.parsers.ItemOrderedParser;
-import com.paperlessquiz.parsers.LogMessageParser;
-import com.paperlessquiz.parsers.OrderItemParser;
-import com.paperlessquiz.parsers.OrderParser;
-import com.paperlessquiz.parsers.UserParser;
-import com.paperlessquiz.users.Organizer;
-import com.paperlessquiz.users.Team;
-import com.paperlessquiz.users.User;
-import com.paperlessquiz.webrequest.HTTPGetData;
-
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.HashMap;
-
 /**
  * This abstract class contains all HTTPGet requests to get data to load into the quiz + the methods to load the retrieved data into the quiz.
  * Each method uses its own HTTPGetRequest object. Loading listeners are passed by the calling activity
@@ -122,7 +93,7 @@ public abstract class QuizLoaderClass {
         String userPassword = thisQuiz.getThisUser().getUserPassword();
         int idQuiz = thisQuiz.getListData().getIdQuiz();
         String scriptParams = generateParamsPHP(QuizDatabase.PARAMVALUE_QRY_ALL_ANSWERSSUBMITTED, idUser, userPassword, idQuiz, idQuiz);
-        getAnswersSubmittedRequest = new HTTPGetData<>(context, scriptParams, QuizDatabase.REQUEST_ID_GET_ANSWERSSUBMITTED);
+        getAnswersSubmittedRequest = new HTTPGetData<>(context, scriptParams, QuizDatabase.REQUEST_ID_GET_ANSWERSTATS);
         getAnswersSubmittedRequest.getItems(new AnswersSubmittedParser(), loadingListener);
     }
 

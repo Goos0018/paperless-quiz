@@ -9,7 +9,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.paperlessquiz.adapters.CorrectAnswersAdapter;
-import com.paperlessquiz.answer.Answer;
+import com.paperlessquiz.quiz.Answer;
 import com.paperlessquiz.loadinglisteners.LoadingActivity;
 import com.paperlessquiz.quiz.QuizDatabase;
 import com.paperlessquiz.quiz.QuizLoader;
@@ -130,7 +130,7 @@ public class C_CorrectorHome extends MyActivity implements LoadingActivity, Frag
             roundsLoaded = false;
             answersLoaded = false;
             fullQuestionsLoaded = false;
-            quizLoader.updateRounds();
+            quizLoader.updateRoundsIntoQuiz();
             quizLoader.updateAnswersIntoQuiz();
             quizLoader.updateFullQuestionsIntoQuiz();
             /*rndSpinner.positionChanged();

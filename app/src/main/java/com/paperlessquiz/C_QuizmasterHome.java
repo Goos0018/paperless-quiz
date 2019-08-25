@@ -5,28 +5,31 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Switch;
 
 import com.paperlessquiz.adapters.ShowTeamsAdapter;
 import com.paperlessquiz.loadinglisteners.LoadingActivity;
 import com.paperlessquiz.quiz.QuizDatabase;
 import com.paperlessquiz.quiz.QuizLoader;
 
+import java.util.ArrayList;
+
 /**
- * Quizmaster home screen. Show the teams and whether or not they submitted answers for a particular round. Also allows toggling round statuses
- * Actions: Refresh/Dorst/Rounds/Upload
+ * Quizmaster home screen. Show the teams and relevant stats about the answers they submitted (either nr of answers when round is open, or nr of corrected answers when round
+ * is being corrected. Also allows toggling round statuses.
  */
 public class C_QuizmasterHome extends MyActivity implements FragRoundSpinner.HasRoundSpinner, LoadingActivity {
     RecyclerView rvTeams;
     RecyclerView.LayoutManager layoutManager;
     ShowTeamsAdapter showTeamsAdapter;
-    int roundNr;
+    int roundNr=1;
     QuizLoader quizLoader;
-    boolean usersLoaded, answersSubmittedLoaded;
+    boolean usersLoaded, roundsLoaded, answerStatsLoaded;
+    //ArrayList<Integer> nrOfAnswers;
 
     @Override
     public void onRoundChanged(int oldRoundnNr, int roundNr) {
         this.roundNr = roundNr;
-        //if (thisQuiz.getThisUser().getType().equals(QuizGenerator.TYPE_QUIZMASTER) && showTeamsAdapter != null) {
         if (showTeamsAdapter != null) {
             showTeamsAdapter.setRoundNr(roundNr);
             showTeamsAdapter.notifyDataSetChanged();
@@ -39,17 +42,22 @@ public class C_QuizmasterHome extends MyActivity implements FragRoundSpinner.Has
             case QuizDatabase.REQUEST_ID_GET_USERS:
                 usersLoaded = true;
                 break;
-            case QuizDatabase.REQUEST_ID_GET_ANSWERSSUBMITTED:
-                answersSubmittedLoaded = true;
+            case QuizDatabase.REQUEST_ID_GET_ROUNDS:
+                roundsLoaded = true;
+                break;
+            case QuizDatabase.REQUEST_ID_GET_ANSWERSTATS:
+                answerStatsLoaded = true;
                 break;
         }
         //If everything is properly loaded, we can start populating the central Quiz object
-        if (usersLoaded && answersSubmittedLoaded) {
+        if (usersLoaded && roundsLoaded && answerStatsLoaded) {
             //reset the loading statuses
             usersLoaded = false;
-            answersSubmittedLoaded = false;
+            roundsLoaded=false;
+            answerStatsLoaded = false;
             quizLoader.updateUsersIntoQuiz();
-            quizLoader.updateAnswersSubmittedIntoQuiz();
+            quizLoader.updateRoundsIntoQuiz();
+            showTeamsAdapter.setNrOfAnswers(quizLoader.getAnswerStatsRequest.getResultsList());
             if (showTeamsAdapter != null) {
                 showTeamsAdapter.notifyDataSetChanged();
             }
@@ -61,44 +69,28 @@ public class C_QuizmasterHome extends MyActivity implements FragRoundSpinner.Has
         getMenuInflater().inflate(R.menu.quizmaster, menu);
         return super.onCreateOptionsMenu(menu);
     }
-/*
-    public void showHideTop(){
-        Toast toast = Toast.makeText(this, "Top " + thisQuiz.getHideTopRows(), Toast.LENGTH_LONG);
-        TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-        v.setBackgroundColor(Color.RED);
-        toast.show();
+
+    public void refreshData() {
+        quizLoader.loadUsers();
+        quizLoader.loadRounds();
+        switch (thisQuiz.getRound(roundNr).getRoundStatus()) {
+            case QuizDatabase.ROUNDSTATUS_CLOSED:
+                quizLoader.loadAnswerStats(roundNr, QuizDatabase.ANSWERSTAT_COUNTBLANK);
+                break;
+            case QuizDatabase.ROUNDSTATUS_OPENFORANSWERS:
+                quizLoader.loadAnswerStats(roundNr, QuizDatabase.ANSWERSTAT_COUNTNONBLANK);
+                break;
+            default:
+                quizLoader.loadAnswerStats(roundNr, QuizDatabase.ANSWERSTAT_COUNTCORRECTED);
+        }
     }
-*/
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.refresh:
-                //QuizLoader quizLoader = new QuizLoader(C_QuizmasterHome.this);
-                quizLoader.loadUsers();
-                quizLoader.loadAnswersSubmitted();
+                refreshData();
                 break;
-                /*
-            case R.id.plus1:
-                //QuizLoader quizLoader = new QuizLoader(C_QuizmasterHome.this);
-                thisQuiz.setHideTopRows(thisQuiz.getHideTopRows()+1);
-                showHideTop();
-                break;
-            case R.id.minus1:
-                //QuizLoader quizLoader = new QuizLoader(C_QuizmasterHome.this);
-                //TODO: upload this to the Quiz and include in quizlist data?
-                thisQuiz.setHideTopRows(thisQuiz.getHideTopRows()-1);
-                showHideTop();
-                break;
-                */
-            /*
-            case R.id.rounds:
-                Intent intent = new Intent(C_QuizmasterHome.this, C_QuizmasterRounds.class);
-                startActivity(intent);
-                case R.id.upload:
-                //thisQuiz.updateUsersIntoQuiz(C_QuizmasterHome.this);
-                break;
-            */
         }
         return super.onOptionsItemSelected(item);
     }
@@ -114,10 +106,9 @@ public class C_QuizmasterHome extends MyActivity implements FragRoundSpinner.Has
         rvTeams.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         rvTeams.setLayoutManager(layoutManager);
-        showTeamsAdapter = new ShowTeamsAdapter(this, thisQuiz.getTeams(), roundNr);
+        showTeamsAdapter = new ShowTeamsAdapter(this, thisQuiz.getTeams(), roundNr, new ArrayList<Integer>());
         rvTeams.setAdapter(showTeamsAdapter);
         quizLoader = new QuizLoader(this);
-        quizLoader.loadUsers();
-        quizLoader.loadAnswersSubmitted();
+        refreshData();
     }
 }

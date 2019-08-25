@@ -8,12 +8,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.paperlessquiz.loadinglisteners.LLShowProgressActWhenComplete;
 import com.paperlessquiz.loadinglisteners.LoadingActivity;
 import com.paperlessquiz.quiz.Quiz;
 import com.paperlessquiz.quiz.QuizDatabase;
 import com.paperlessquiz.quiz.QuizLoader;
-import com.paperlessquiz.quiz.QuizLoaderClass;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -49,7 +47,7 @@ public class A_SelectRole extends AppCompatActivity implements LoadingActivity {
 
             case QuizDatabase.REQUEST_ID_GET_ANSWERS:
                 break;
-            case QuizDatabase.REQUEST_ID_GET_ANSWERSSUBMITTED:
+            case QuizDatabase.REQUEST_ID_GET_ANSWERSTATS:
                 break;
             case QuizDatabase.REQUEST_ID_GET_EVENTLOGS:
                 break;

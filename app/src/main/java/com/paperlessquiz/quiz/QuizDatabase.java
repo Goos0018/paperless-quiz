@@ -47,6 +47,8 @@ public class QuizDatabase {
     public static final String PARAMNAME_HELPNORESPONSEONLY = "noResponseOnly=";
     public static final String PARAMNAME_HELPREMARKID = "idRemark=";
     public static final String PARAMNAME_HELPRESPONSE = "response=";
+    public static final String PARAMNAME_ROUNDNR = "roundNr=";
+    public static final String PARAMNAME_ANSWERSTAT = "answerStatistic=";
 
     // Available PHP scripts
     public static final String SCRIPT_GET_QUIZLIST = "getquizlist.php";
@@ -54,7 +56,7 @@ public class QuizDatabase {
     public static final String SCRIPT_GET_QUIZDATA = "getquizdata.php";
     public static final String SCRIPT_AUTHENTICATE = "authenticate.php";
     public static final String SCRIPT_SUBMITANSWER = "submitanswer.php";
-    public static final String SCRIPT_SETANSWERSSUBMITTED = "setanswerssubmitted.php";
+    //public static final String SCRIPT_SETANSWERSSUBMITTED = "setanswerssubmitted.php";
     public static final String SCRIPT_UPDATEROUNDSTATUS = "updateroundstatus.php";
     public static final String SCRIPT_UPDATEMYSTATUS = "updatemystatus.php";
     public static final String SCRIPT_UPDATETEAM = "updateteam.php";
@@ -72,6 +74,7 @@ public class QuizDatabase {
     public static final String SCRIPT_SUBMITREMARK = "submitremark.php";
     public static final String SCRIPT_ANSWERREMARK = "answerremark.php";
     public static final String SCRIPT_GET_REMARKS = "getremarks.php";
+    public static final String SCRIPT_GET_ANSWERSTATS = "getanswerstats.php";
 
     //Param values - query names
     public static final String PARAMVALUE_QRY_ALL_ROUNDS = "rounds";
@@ -96,7 +99,7 @@ public class QuizDatabase {
     public static final int REQUEST_ID_GET_ROUNDS = 2;
     public static final int REQUEST_ID_GET_QUESTIONS = 3;
     public static final int REQUEST_ID_GET_ANSWERS = 4;
-    public static final int REQUEST_ID_GET_ANSWERSSUBMITTED = 5;
+    public static final int REQUEST_ID_GET_ANSWERSTATS = 5;
     public static final int REQUEST_ID_GET_EVENTLOGS = 6;
     public static final int REQUEST_ID_GET_ALLANSWERS = 7;
     public static final int REQUEST_ID_GET_FULLQUESTIONS = 8;
@@ -267,6 +270,9 @@ public class QuizDatabase {
     public static final String COLNAME_HELPTOPICTYPE = "Type";
     public static final String COLNAME_HELPTOPICREMARK = "Remark";
     public static final String COLNAME_HELPTOPICRESPONSE = "Response";
+    //Column Names usd in AnswerStats
+    public static final String COLNAME_NROFANSWERS="NrOfAnswers";
+
 
     //Helpfiles
     public static final String HELPFILE_PARTICIPANT = "ParticipantHelp.pdf";
@@ -290,5 +296,10 @@ public class QuizDatabase {
     public static final int REQUEST_CODE_EDITEXISTINGORDER = 1;
     public static final int MAX_ALLOWED_PAUSE = 60;
     public static final int UNITS_REMAINING_FLAG = 10;
+    //Answer statistics
+    public static final int ANSWERSTAT_COUNTBLANK = 0;
+    public static final int ANSWERSTAT_COUNTNONBLANK = 1;
+    public static final int ANSWERSTAT_COUNTCORRECTED = 2;
+
 }
 

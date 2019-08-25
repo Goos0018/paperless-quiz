@@ -6,8 +6,9 @@ import com.paperlessquiz.quiz.QuizDatabase;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class AnswersSubmittedParser implements JsonParser<AnswersSubmitted> {
+public class AnswersSubmittedParser {//implements JsonParser<AnswersSubmitted> {
 
+    /*
     @Override
     public AnswersSubmitted parse(JSONObject jo) throws JSONException {
         int teamNr, roundNr;
@@ -26,4 +27,5 @@ public class AnswersSubmittedParser implements JsonParser<AnswersSubmitted> {
         answersSubmitted = new AnswersSubmitted(roundNr,teamNr,submitted);
         return answersSubmitted;
     }
+    */
 }

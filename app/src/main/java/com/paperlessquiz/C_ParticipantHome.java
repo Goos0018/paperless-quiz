@@ -10,7 +10,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -78,7 +77,7 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
             roundsLoaded = false;
             answersLoaded = false;
             scoresLoaded = false;
-            quizLoader.updateRounds();
+            quizLoader.updateRoundsIntoQuiz();
             quizLoader.updateAnswersIntoQuiz();
             quizLoader.loadResultsIntoQuiz();
             roundSpinner.refreshIcons();

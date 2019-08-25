@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.paperlessquiz.MyApplication;
 import com.paperlessquiz.R;
 import com.paperlessquiz.quiz.QuizDatabase;
 import com.paperlessquiz.users.Team;
@@ -16,31 +17,35 @@ import com.paperlessquiz.users.Team;
 import java.util.ArrayList;
 
 /**
- * This adapter is used by the QuizMaster to show the teams with their status + whether or not they submitted answers for the round
+ * This adapter is used by the QuizMaster to show the teams with their status + the number of non-blank answers resp. the nr of corrected answers they submitted for the round
  * that is passed as a parameter or set by the calling activity
  */
 public class ShowTeamsAdapter extends RecyclerView.Adapter<ShowTeamsAdapter.ViewHolder> {
     private ArrayList<Team> teams;
-    private int roundNr;
+    private ArrayList<Integer> nrOfAnswers;
+    private int roundNr, nrOfQuestionsInThisRound;
     private ShowTeamsAdapter adapter;
     int colorAlert, colorNormal;
 
-    public ShowTeamsAdapter(Context context, ArrayList<Team> teams, int roundNr) {
+    public ShowTeamsAdapter(Context context, ArrayList<Team> teams, int roundNr, ArrayList<Integer> nrOfAnswers) {
         this.teams = teams;
         this.roundNr = roundNr;
         adapter = this;
         colorAlert = context.getResources().getColor(R.color.wrongRed);
         colorNormal = context.getResources().getColor(R.color.colorSecondaryText);
+        this.nrOfAnswers = nrOfAnswers;
+        this.nrOfQuestionsInThisRound = MyApplication.theQuiz.getRound(roundNr).getQuestions().size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvTeamName, tvTotalTimePaused;
+        TextView tvTeamName, tvTotalTimePaused, tvNrOfAnswers;
         ImageView ivPresent, ivAnswersSubmitted;
 
         public ViewHolder(View itemView) {
             super(itemView);
             tvTeamName = itemView.findViewById(R.id.tvTeamName);
             tvTotalTimePaused = itemView.findViewById(R.id.tvTotalTimePaused);
+            tvNrOfAnswers = itemView.findViewById(R.id.tvNrOfAnswers);
             ivPresent = itemView.findViewById(R.id.ivTeamPresent);
             ivAnswersSubmitted = itemView.findViewById(R.id.ivAnswersSubmitted);
         }
@@ -58,18 +63,26 @@ public class ShowTeamsAdapter extends RecyclerView.Adapter<ShowTeamsAdapter.View
     public void onBindViewHolder(@NonNull ShowTeamsAdapter.ViewHolder viewHolder, int i) {
         viewHolder.itemView.setTag(teams.get(i));
         viewHolder.tvTeamName.setText(teams.get(i).getUserNr() + ". " + teams.get(i).getName());
+        if (teams.size() == nrOfAnswers.size()) {
+            viewHolder.tvNrOfAnswers.setText(nrOfAnswers.get(i).toString());
+            if (nrOfQuestionsInThisRound > (int) nrOfAnswers.get(i)) {
+                viewHolder.ivAnswersSubmitted.setImageResource(R.drawable.circle_red);
+            } else {
+                viewHolder.ivAnswersSubmitted.setImageResource(R.drawable.circle_green);
+            }
+        } else {
+            viewHolder.tvNrOfAnswers.setText("#");
+        }
         int totalPause = teams.get(i).getTotalTimePaused();
-        viewHolder.tvTotalTimePaused.setText(totalPause+"");
-        if (totalPause > QuizDatabase.MAX_ALLOWED_PAUSE){
+        viewHolder.tvTotalTimePaused.setText(totalPause + "");
+        if (totalPause > QuizDatabase.MAX_ALLOWED_PAUSE) {
             viewHolder.tvTotalTimePaused.setTextColor(colorAlert);
             viewHolder.tvTeamName.setTextColor(colorAlert);
-        }
-        else
-        {
+        } else {
             viewHolder.tvTotalTimePaused.setTextColor(colorNormal);
             viewHolder.tvTeamName.setTextColor(colorNormal);
         }
-        boolean answersForThisRoundSubmitted = teams.get(i).isAnswersForThisRoundSubmitted(roundNr);
+        //boolean answersForThisRoundSubmitted = teams.get(i).isAnswersForThisRoundSubmitted(roundNr);
         switch (teams.get(i).getUserStatus()) {
             case QuizDatabase.USERSTATUS_NOTPRESENT:
                 viewHolder.ivPresent.setImageResource(R.drawable.team_not_present);
@@ -79,11 +92,6 @@ public class ShowTeamsAdapter extends RecyclerView.Adapter<ShowTeamsAdapter.View
                 break;
             case QuizDatabase.USERSTATUS_PRESENTLOGGEDIN:
                 viewHolder.ivPresent.setImageResource(R.drawable.team_logged_in);
-        }
-        if (answersForThisRoundSubmitted) {
-            viewHolder.ivAnswersSubmitted.setImageResource(R.drawable.answers_submitted);
-        } else {
-            viewHolder.ivAnswersSubmitted.setImageResource(R.drawable.answers_not_submitted);
         }
     }
 
@@ -98,5 +106,10 @@ public class ShowTeamsAdapter extends RecyclerView.Adapter<ShowTeamsAdapter.View
 
     public void setRoundNr(int roundNr) {
         this.roundNr = roundNr;
+        nrOfQuestionsInThisRound = MyApplication.theQuiz.getRound(roundNr).getQuestions().size();
+    }
+
+    public void setNrOfAnswers(ArrayList<Integer> nrOfAnswers) {
+        this.nrOfAnswers = nrOfAnswers;
     }
 }

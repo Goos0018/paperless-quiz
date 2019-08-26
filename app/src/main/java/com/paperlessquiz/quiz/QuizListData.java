@@ -24,7 +24,7 @@ public class QuizListData implements Serializable {
         this.logoURL = logoURL;
         this.quizPdfURL = quizPdfURL;
         this.debugLevel = debugLevel;
-        this.keepLogs = keepLogs;
+        //this.keepLogs = keepLogs;
         this.sheetDocID = sheetDocID;
     }
 

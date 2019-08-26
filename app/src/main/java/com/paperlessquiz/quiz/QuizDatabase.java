@@ -9,7 +9,7 @@ public class QuizDatabase {
      */
 
     // Constants needed to retrieve data from the SQL db
-    public static final String PHP_URL = "http://paperlessquiz.be/php/";
+    public static final String PHP_URL = "https://paperlessquiz.be/php/";
     public static final String PHP_STARTPARAM = "?";
     public static final String PHP_PARAMCONCATENATOR = "&";
     //Parameter names - must match those defined in constants.php

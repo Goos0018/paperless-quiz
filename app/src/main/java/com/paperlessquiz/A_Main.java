@@ -44,15 +44,6 @@ public class A_Main extends AppCompatActivity implements LoadingActivity {
         lv_QuizList = (ListView) findViewById(R.id.lvQuizList);
         adapter = new QuizListAdapter(this);
 
-        /*scriptParams = GoogleAccess.PARAMNAME_DOC_ID + QuizGenerator.QUIZLIST_DOC_ID + GoogleAccess.PARAM_CONCATENATOR +
-                GoogleAccess.PARAMNAME_SHEET + QuizGenerator.SHEET_QUIZLIST + GoogleAccess.PARAM_CONCATENATOR +
-                GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_GETDATA;
-        GoogleAccessGet<QuizListData> googleAccessGet = new GoogleAccessGet<QuizListData>(this, scriptParams);
-        googleAccessGet.getItems(new QuizListDataParser(), new GetQuizListDataLPL(adapter),
-                new LLShowProgressActWhenComplete(this, this.getString(R.string.loadingtitle), this.getString(R.string.loadingmsg_list),
-                        this.getString(R.string.loadingerror),false));
-        */
-
         request = new HTTPGetData<QuizListData>(this, QuizDatabase.SCRIPT_GET_QUIZLIST, QuizDatabase.REQUEST_ID_GET_QUIZLIST);
         request.getItems(new QuizListDataParser(),
                 new LLShowProgressActWhenComplete(this, this.getString(R.string.loadingtitle), this.getString(R.string.loadingmsg_list),

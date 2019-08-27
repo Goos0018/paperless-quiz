@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -54,6 +55,7 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
     QuizLoader quizLoader;
     //private ProgressDialog loading;
     boolean roundsLoaded, answersLoaded, scoresLoaded, answersSubmitted;
+    boolean activityBeingCreated=true;
 
     @Override
     public void loadingComplete(int requestID) {
@@ -92,11 +94,9 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
     }
 
     private void updateQuiz() {
-        quizLoader.updateQuizForUser();
-        //loading = ProgressDialog.show(this, this.getString(R.string.loader_pleasewait), this.getString(R.string.loader_updatingquiz), false,false);
-        //QuizLoaderClass.loadRounds(this, new LLSilentActWhenComplete(this,this.getString(R.string.loadingerror)));
-        //QuizLoaderClass.loadMyAnswers(this, new LLSilentActWhenComplete(this,this.getString(R.string.loadingerror)));
-        //QuizLoaderClass.loadScoresAndStandings(this, new LLSilentActWhenComplete(this,this.getString(R.string.loadingerror)));
+        quizLoader.loadRounds(roundSpinner.getPosition());
+        quizLoader.loadMyAnswers(roundSpinner.getPosition());
+        quizLoader.loadScoresAndStandings(roundSpinner.getPosition());
         //The rest is done when loading is complete
     }
 
@@ -137,8 +137,16 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
         //Dismiss the keyboard if its there
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(etAnswer.getWindowToken(), 0);
-        //Update info from the central database
-        updateQuiz();
+        //Update info from the central database if this is a real round change
+        if (!activityBeingCreated) {
+            updateQuiz();
+        }
+        else
+        {
+            activityBeingCreated=false;
+            roundResultFrag.refresh();
+            refreshDisplayFragments();
+        }
         //Rest is done when loading is complete
         //refreshDisplayFragments();
         //roundResultFrag.refresh();
@@ -155,6 +163,15 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
             thisQuiz.setAnswerForTeam(roundSpinner.getPosition(), oldPos, thisTeamNr, newAnswer);
             //Store the answer in the central quiz db
             quizLoader.submitAnswer(questionID, newAnswer);
+        }
+        //If this is a schiftingsQuestion, we only want numeric answers
+        if (thisQuiz.getQuestion(roundSpinner.getPosition(), newPos).getQuestionType() == QuizDatabase.QUESTIONTYPE_SCHIFTING)
+        {
+            etAnswer.setInputType(InputType.TYPE_CLASS_NUMBER);
+        }
+        else
+        {
+            etAnswer.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
         }
         //Set the value of the answer for the new question to what we already have in the Quiz object
         etAnswer.setText(thisQuiz.getAnswerForTeam(roundSpinner.getPosition(), newPos, thisTeamNr).getTheAnswer());
@@ -283,29 +300,8 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
         quizLoader = new QuizLoader(C_ParticipantHome.this);
         thisTeam = thisQuiz.getThisUser();
         quizLoader.updateMyStatus(QuizDatabase.USERSTATUS_PRESENTLOGGEDIN);
+        //When the RoundSpinner fragment is attached, it will call the onRoundChange method which will do the rest here.
 
-        /*
-        btnSubmit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Dismiss the keyboard if its there
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(etAnswer.getWindowToken(), 0);
-                //Update the answer if it was changed
-                String oldAnswer = thisQuiz.getAnswerForTeam(roundSpinner.getPosition(), questionSpinner.getPosition(), thisTeamNr).getTheAnswer();
-                String newAnswer = etAnswer.getText().toString().trim();
-                if (!(oldAnswer.equals(newAnswer))) {
-                    int questionID = thisQuiz.getQuestionID(roundSpinner.getPosition(), questionSpinner.getPosition());
-                    thisQuiz.setAnswerForTeam(roundSpinner.getPosition(), questionSpinner.getPosition(), thisTeamNr, newAnswer);
-                    //Store the answer in the central quiz db
-                    quizLoader.submitAnswer(questionID, newAnswer);
-                    refreshDisplayFragments();
-                    //thisQuiz.submitAnswers(C_ParticipantHome.this, roundSpinner.getPosition());
-                }
-                quizLoader.setAnswersSubmitted(roundSpinner.getPosition());
-            }
-        });
-        */
     }
 
     @Override

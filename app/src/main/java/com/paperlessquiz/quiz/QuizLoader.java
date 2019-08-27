@@ -15,6 +15,7 @@ import com.paperlessquiz.parsers.AnswerStatsParser;
 import com.paperlessquiz.parsers.ItemOrderedParser;
 import com.paperlessquiz.parsers.OrderItemParser;
 import com.paperlessquiz.parsers.OrderParser;
+import com.paperlessquiz.parsers.RoundParser;
 import com.paperlessquiz.users.Organizer;
 import com.paperlessquiz.users.Team;
 import com.paperlessquiz.users.User;
@@ -45,7 +46,6 @@ public class QuizLoader {
     public HTTPGetData<Question> getQuestionsRequest;
     public HTTPGetData<Round> getRoundsRequest;
     public HTTPGetData<Integer> getAnswerStatsRequest;
-    public HTTPGetData<EventLog> getMyEventLogsRequest;
     public HTTPGetData<ResultAfterRound> getResultsRequest;
     public HTTPGetData<OrderItem> getOrderItemsRequest;
     public HTTPGetData<Order> getOrdersRequest;
@@ -55,7 +55,6 @@ public class QuizLoader {
 
     public HTTPSubmit authenticateRequest;
     public HTTPSubmit submitAnswerRequest;
-    //public HTTPSubmit submitAnswersSubmittedRequest;
     public HTTPSubmit updateRoundStatusRequest;
     public HTTPSubmit updateUserStatusRequest;
     public HTTPSubmit correctQuestionRequest;
@@ -94,12 +93,6 @@ public class QuizLoader {
         loadOrderItems();
     }
 
-    public void updateQuizForUser() {
-        loadRounds();
-        loadMyAnswers();
-        loadScoresAndStandings();
-    }
-
     public void loadUsers(String usersList) {
         String scriptParams = QuizDatabase.SCRIPT_GET_QUIZUSERS + QuizDatabase.PHP_STARTPARAM + QuizDatabase.PARAMNAME_IDQUIZ + thisQuiz.getListData().getIdQuiz() +
                 QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_USERSLIST + usersList;
@@ -114,15 +107,22 @@ public class QuizLoader {
         loadUsers("");
     }
 
-    public void loadRounds() {
+    public void loadRounds(int roundNr) {
         int idUser = thisQuiz.getThisUser().getIdUser();
         String userPassword = thisQuiz.getThisUser().getUserPassword();
-        int idQuiz = thisQuiz.getListData().getIdQuiz();
-        String scriptParams = generateParamsPHP(QuizDatabase.PARAMVALUE_QRY_ALL_ROUNDS, idUser, userPassword, idQuiz, idQuiz);
+        //int idQuiz = thisQuiz.getListData().getIdQuiz();
+        String scriptParams = QuizDatabase.SCRIPT_GET_ROUNDS + QuizDatabase.PHP_STARTPARAM + QuizDatabase.PARAMNAME_IDUSER + idUser +
+                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_USERPASSWORD + userPassword +
+                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_ROUNDNR + roundNr;
         getRoundsRequest = new HTTPGetData<>(context, scriptParams, QuizDatabase.REQUEST_ID_GET_ROUNDS);
-        getRoundsRequest.getItems(new com.paperlessquiz.parsers.RoundParser(), new LLShowProgressActWhenComplete(context, context.getString(R.string.loader_pleasewait),
+        getRoundsRequest.getItems(new RoundParser(), new LLShowProgressActWhenComplete(context, context.getString(R.string.loader_pleasewait),
                 context.getString(R.string.loader_updatingquiz),
                 "Something went wrong: ", false));
+    }
+
+    public void loadRounds() {
+        int dummy = 0;
+        loadRounds(dummy);
     }
 
     public void loadQuestions() {
@@ -136,6 +136,7 @@ public class QuizLoader {
                 context.getString(R.string.loadingerror), false));
     }
 
+    //For the corrector, including the answers
     public void loadFullQuestions() {
         int idUser = thisQuiz.getThisUser().getIdUser();
         String userPassword = thisQuiz.getThisUser().getUserPassword();
@@ -147,17 +148,24 @@ public class QuizLoader {
                 context.getString(R.string.loadingerror), false));
     }
 
-    public void loadMyAnswers() {
+    public void loadMyAnswers(int roundNr) {
         int idUser = thisQuiz.getThisUser().getIdUser();
         String userPassword = thisQuiz.getThisUser().getUserPassword();
-        int idQuiz = thisQuiz.getListData().getIdQuiz();
-        String scriptParams = generateParamsPHP(QuizDatabase.PARAMVALUE_QRY_MY_ANSWERS, idUser, userPassword, idQuiz, idUser);
+        String scriptParams = QuizDatabase.SCRIPT_GET_MYANSWERS + QuizDatabase.PHP_STARTPARAM + QuizDatabase.PARAMNAME_IDUSER + idUser +
+                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_USERPASSWORD + userPassword +
+                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_ROUNDNR + roundNr;
         getAnswersRequest = new HTTPGetData<>(context, scriptParams, QuizDatabase.REQUEST_ID_GET_ANSWERS);
         getAnswersRequest.getItems(new AnswersParser(), new LLShowProgressActWhenComplete(context, context.getString(R.string.loader_pleasewait),
                 context.getString(R.string.loader_updatingquiz),
                 "Something went wrong: ", false));
     }
 
+    public void loadMyAnswers() {
+       int dummy=0;
+       loadMyAnswers(dummy);
+    }
+
+    //Again for the corrector
     public void loadAllAnswers() {
         int idUser = thisQuiz.getThisUser().getIdUser();
         String userPassword = thisQuiz.getThisUser().getUserPassword();
@@ -169,6 +177,7 @@ public class QuizLoader {
                 "Something went wrong: ", false));
     }
 
+    //For the QuizMaster
     public void loadAnswerStats(int roundNr, int statistic) {
         int idUser = thisQuiz.getThisUser().getIdUser();
         String userPassword = thisQuiz.getThisUser().getUserPassword();
@@ -184,26 +193,22 @@ public class QuizLoader {
                 "Something went wrong: ", false));
     }
 
-    public void loadScoresAndStandings() {
+    public void loadScoresAndStandings(int roundNr) {
         int idUser = thisQuiz.getThisUser().getIdUser();
         String userPassword = thisQuiz.getThisUser().getUserPassword();
         int idQuiz = thisQuiz.getListData().getIdQuiz();
-        String scriptParams = generateParamsPHP(QuizDatabase.PARAMVALUE_QRY_SCORES, idUser, userPassword, idQuiz, idQuiz);
+        String scriptParams = QuizDatabase.SCRIPT_GET_MYANSWERS + QuizDatabase.PHP_STARTPARAM + QuizDatabase.PARAMNAME_IDUSER + idUser +
+                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_USERPASSWORD + userPassword +
+                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_ROUNDNR + roundNr;
         getResultsRequest = new HTTPGetData<>(context, scriptParams, QuizDatabase.REQUEST_ID_GET_RESULTS);
         getResultsRequest.getItems(new com.paperlessquiz.parsers.ResultAfterRoundParser(), new LLShowProgressActWhenComplete(context, context.getString(R.string.loader_pleasewait),
                 context.getString(R.string.loader_updatingquiz),
                 "Something went wrong: ", false));
     }
 
-    public void loadMyEvents() {
-        int idUser = thisQuiz.getThisUser().getIdUser();
-        String userPassword = thisQuiz.getThisUser().getUserPassword();
-        int idQuiz = thisQuiz.getListData().getIdQuiz();
-        String scriptParams = generateParamsPHP(QuizDatabase.PARAMVALUE_QRY_MY_EVENTLOGS, idUser, userPassword, idQuiz, idUser);
-        getMyEventLogsRequest = new HTTPGetData<>(context, scriptParams, QuizDatabase.REQUEST_ID_GET_EVENTLOGS);
-        getMyEventLogsRequest.getItems(new LogMessageParser(), new LLShowProgressActWhenComplete(context, context.getString(R.string.loader_pleasewait),
-                context.getString(R.string.loader_updatingquiz),
-                "Something went wrong: ", false));
+    public void loadScoresAndStandings() {
+        int dummy=0;
+        loadScoresAndStandings(dummy);
     }
 
     public void loadOrderItems() {

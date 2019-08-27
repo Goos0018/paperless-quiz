@@ -162,6 +162,7 @@ public class D_NewOrder extends AppCompatActivity implements LoadingActivity {
 
         //Make sure we always have the latest information
         quizLoader.loadUsers(thisUser.getIdUser() + "");
+        quizLoader.loadOrderItems();
     }
 
     @Override

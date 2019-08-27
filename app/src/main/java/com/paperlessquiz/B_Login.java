@@ -53,15 +53,8 @@ public class B_Login extends AppCompatActivity implements LoadingActivity {
                 if (quizLoader.authenticateRequest.isRequestOK()) {
                     thisUser.setUserPassword(password);
                     thisQuiz.setThisUser(thisUser);
-                    //Load the rest of the quiz: rounds, questions, own answers, order items (TODO: remove AnswersSubmitted, just count the nr of answers)
-                    //loading = ProgressDialog.show(this, this.getString(R.string.loader_pleasewait), this.getString(R.string.loader_updatingquiz), false,false);
-                    //loading = ProgressDialog.show(this, "New loader", "We are loading the quiz...", false,false);
+                    //Load what is needed depending on the type of user
                     quizLoader.loadQuizFromDb();
-                    //QuizLoaderClass.loadRounds(this, new LLSilentActWhenComplete(this,this.getString(R.string.loadingerror)));
-                    //QuizLoaderClass.loadQuestions(this, new LLSilentActWhenComplete(this,this.getString(R.string.loadingerror)));
-                    //QuizLoaderClass.loadMyAnswers(this, new LLSilentActWhenComplete(this,this.getString(R.string.loadingerror)));
-                    //QuizLoaderClass.loadAnswersSubmitted(this, new LLSilentActWhenComplete(this,this.getString(R.string.loadingerror)));
-                    //QuizLoaderClass.loadOrderItems(this, new LLSilentActWhenComplete(this,this.getString(R.string.loadingerror)));
                     //Do the rest when all of these requests are complete
                 } else {
                     //Authentication failed

@@ -22,6 +22,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.TimeZone;
 
+/**
+ * Home page for the juror. Allows to answer remarks from the teams. Also used by the bar responsible for the same reason.
+ */
 public class C_JurorHome extends MyActivity implements LoadingActivity {
 
     RecyclerView rvDisplayHelpTopics;
@@ -53,13 +56,22 @@ public class C_JurorHome extends MyActivity implements LoadingActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_c_juror_home);
         quizLoader = new QuizLoader(this);
-        helpType = QuizDatabase.HELPTYPE_QUIZQUESTION;
-        quizLoader.loadRemarks(helpType,showAllMessages);
+        switch (thisQuiz.getThisUser().getUserType()) {
+            case QuizDatabase.USERTYPE_JUROR:
+                helpType = QuizDatabase.HELPTYPE_QUIZQUESTION;
+                break;
+            case QuizDatabase.USERTYPE_BARRESPONSIBLE:
+                helpType = QuizDatabase.HELPTYPE_ORDERQUESTION;
+                break;
+            default:
+                helpType = QuizDatabase.HELPTYPE_TEAM; // This should neer happen, only bar respsonsible and juror have this screen
+        }
+
+        quizLoader.loadRemarks(helpType, showAllMessages);
         rvDisplayHelpTopics = findViewById(R.id.rvDisplayHelpTopics);
         rvDisplayHelpTopics.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         rvDisplayHelpTopics.setLayoutManager(layoutManager);
-
         showHelpTopicsAdapter = new ShowHelpTopicsAdapter(this, topics, helpType);
         rvDisplayHelpTopics.setAdapter(showHelpTopicsAdapter);
     }
@@ -74,11 +86,11 @@ public class C_JurorHome extends MyActivity implements LoadingActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.refresh:
-                quizLoader.loadRemarks(helpType,showAllMessages);
+                quizLoader.loadRemarks(helpType, showAllMessages);
                 break;
             case R.id.allmessages:
-                showAllMessages=!showAllMessages;
-                quizLoader.loadRemarks(helpType,showAllMessages);
+                showAllMessages = !showAllMessages;
+                quizLoader.loadRemarks(helpType, showAllMessages);
                 break;
 
         }

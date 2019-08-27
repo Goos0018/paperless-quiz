@@ -115,8 +115,7 @@ public class FragRoundSpinner extends Fragment {
     }
 
     public void positionChanged() {
-        tvRoundName.setText(thisQuiz.getRound(position).getName());
-        tvRoundDescription.setText(thisQuiz.getRound(position).getDescription());
+        setFields();
         refreshIcons();
         activity.onRoundChanged(oldPosition, position);
     }
@@ -142,6 +141,18 @@ public class FragRoundSpinner extends Fragment {
                 ivRoundStatusR.setImageResource(R.drawable.rnd_corrected);
                 break;
         }
+    }
+
+    public void setFields(){
+        tvRoundName.setText(thisQuiz.getRound(position).getName());
+        tvRoundDescription.setText(thisQuiz.getRound(position).getDescription());
+    }
+
+    public void initialize(){
+        oldPosition=1;
+        position=1;
+        setFields();
+        refreshIcons();
     }
 
     public void moveTo(int newRoundNr) {

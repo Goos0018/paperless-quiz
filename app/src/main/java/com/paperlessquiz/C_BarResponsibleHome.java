@@ -321,6 +321,11 @@ public class C_BarResponsibleHome extends MyActivity implements LoadingActivity,
                 }
                 filterHidden = !filterHidden;
                 break;
+            case R.id.messages:
+                //Reload orders, using the given filters
+                Intent intent = new Intent(C_BarResponsibleHome.this, C_JurorHome.class);
+                startActivity(intent);
+                break;
         }
         return super.onOptionsItemSelected(item);
     }

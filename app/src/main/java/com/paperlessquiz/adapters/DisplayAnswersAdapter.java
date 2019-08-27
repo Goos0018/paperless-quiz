@@ -78,7 +78,7 @@ public class DisplayAnswersAdapter extends RecyclerView.Adapter<DisplayAnswersAd
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                String title = "Ronde " + questions.get(i).getRoundNr() + " - Vraag " + questions.get(i).getQuestionNr();
+                String title = "Opmerking bij vraag " + questions.get(i).getQuestionNr() + " Ronde " + questions.get(i).getRoundNr();
                 builder.setTitle(title);
                 final EditText input = new EditText(context);
                 input.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);

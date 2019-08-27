@@ -75,6 +75,9 @@ public class QuizDatabase {
     public static final String SCRIPT_ANSWERREMARK = "answerremark.php";
     public static final String SCRIPT_GET_REMARKS = "getremarks.php";
     public static final String SCRIPT_GET_ANSWERSTATS = "getanswerstats.php";
+    public static final String SCRIPT_GET_MYANSWERS = "getmyanswers.php";
+    public static final String SCRIPT_GET_ROUNDS = "getrounds.php";
+    public static final String SCRIPT_GET_SCORES = "getscores.php";
 
     //Param values - query names
     public static final String PARAMVALUE_QRY_ALL_ROUNDS = "rounds";
@@ -136,6 +139,8 @@ public class QuizDatabase {
     public static final int USERTYPE_RECEPTIONIST = 2;
     public static final int USERTYPE_CORRECTOR = 3;
     public static final int USERTYPE_JUROR = 4;
+    //Question Types
+    public static final int QUESTIONTYPE_SCHIFTING = 1;
     //public static final int USERTYPE_SALES = 5;
     public static final int USERTYPE_BARRESPONSIBLE = 6;
     public static final int USERTYPE_BARHELPER = 7;
@@ -300,6 +305,7 @@ public class QuizDatabase {
     public static final int ANSWERSTAT_COUNTBLANK = 0;
     public static final int ANSWERSTAT_COUNTNONBLANK = 1;
     public static final int ANSWERSTAT_COUNTCORRECTED = 2;
+
 
 }
 

@@ -70,7 +70,7 @@ public class D_OrderHome extends AppCompatActivity implements LoadingActivity, S
                 usersLoaded = true;
                 break;
         }
-        //If everything is properly loaded, we can get on wth the rest
+        //If everything is properly loaded, we can get on with the rest
         if (ordersLoaded) {
             //reset the loading statuses
             ordersLoaded = false;
@@ -145,31 +145,39 @@ public class D_OrderHome extends AppCompatActivity implements LoadingActivity, S
         tvOverviewIntro = findViewById(R.id.tvIntroOverview);
         tvDisplayAmount = findViewById(R.id.tvAmountsOrdered);
         ivRemark = findViewById(R.id.ivRemark);
-        ivRemark.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(D_OrderHome.this);
-                String title = "Ploeg " + theSelectedOrder.getUserNr() + " - Bestelling " + theSelectedOrder.getOrderNr();
-                builder.setTitle(title);
-                final EditText input = new EditText(D_OrderHome.this);
-                input.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                builder.setView(input);
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        String remark = input.getText().toString();
-                        quizLoader.submitRemark(QuizDatabase.HELPTYPE_ORDERQUESTION,title + ": " + remark);
-                    }
-                });
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-                builder.show();
-            }
-        });
+        if (thisQuiz.getThisUser().getUserType() != QuizDatabase.USERTYPE_TEAM) {
+            ivRemark.setVisibility(View.GONE);
+        } else {
+            ivRemark.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(D_OrderHome.this);
+                    String intro = "Ploeg " + theSelectedOrder.getUserNr() + " - " + theSelectedOrder.getOrderName();
+                    String title = "Vraag bij  bestelling " + theSelectedOrder.getOrderNr();
+                    builder.setTitle(title);
+                    final EditText input = new EditText(D_OrderHome.this);
+                    //final TextView tvIntro = new TextView(D_OrderHome.this);
+                    //tvIntro.setText("Opmerking bij deze bestelling: ");
+                    input.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    builder.setView(input);
+                    //builder.setView(tvIntro);
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            String remark = input.getText().toString();
+                            quizLoader.submitRemark(QuizDatabase.HELPTYPE_ORDERQUESTION, intro + ": " + remark);
+                        }
+                    });
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+                    builder.show();
+                }
+            });
+        }
         //Create empty list here, will be populated when loading is done
         myOrders = new ArrayList<>();
         //Initialize the adapter and recyclerview
@@ -240,8 +248,7 @@ public class D_OrderHome extends AppCompatActivity implements LoadingActivity, S
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.orderhome, menu);
         //Hide the remarks icon for organizers
-        if (thisQuiz.getThisUser().getUserType() !=0)
-        {
+        if (thisQuiz.getThisUser().getUserType() != 0) {
             menu.findItem(R.id.messages).setVisible(false);
         }
         return super.onCreateOptionsMenu(menu);

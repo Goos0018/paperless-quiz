@@ -9,13 +9,15 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 
+import com.paperlessquiz.loadinglisteners.LLSilent;
 import com.paperlessquiz.quiz.QuizDatabase;
-import com.paperlessquiz.quiz.QuizLoader;
 import com.paperlessquiz.webrequest.EventLogger;
 import com.paperlessquiz.orders.OrderItem;
 import com.paperlessquiz.quiz.Quiz;
-import com.paperlessquiz.quiz.QuizGenerator;
+import com.paperlessquiz.webrequest.HTTPSubmit;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -28,37 +30,39 @@ import java.util.UUID;
  */
 
 public class MyApplication extends Application {
-    public static String logDocID;                                  //The ID of a google sheet where we log things that do not belong to a particular quiz - in practice the QuizList sheet
+    //public static String logDocID;                                  //The ID of a google sheet where we log things that do not belong to a particular quiz - in practice the QuizList sheet
     public static EventLogger eventLogger;
     public static String deviceID;                                  //Contains an ID of the device on which the app runs
     public static Quiz theQuiz;                                     //The quiz for which the app is being used
     public static ArrayList<OrderItem> itemsToOrderArray;           //The items you can order here in an array for usage in an adapter
     public static HashMap<Integer, OrderItem> itemsToOrder;         //The items you can order here in a hashmap indexed by the itemId
     //public static Team theTeam;                                   //The team that is taking the quiz (null for Organizers)
-    public static ArrayList<String> googleLog = new ArrayList<>();  //An arraylist that will contain a log of all transactions to and from a Google sheet (=the back-end of this app)
+    //public static ArrayList<String> googleLog = new ArrayList<>();  //An arraylist that will contain a log of all transactions to and from a Google sheet (=the back-end of this app)
     public static boolean loggedIn;                                 //Tracks that user is logged in
     public static boolean appPaused;                                //Tracks that app was paused
-    public static int debugLevel = 3;                               //Overall debug level for the google interaction, initialized here but later overwritten with what is configured for the Quiz
-    public static boolean keepLogs = true;                          //Indicates if you want to overwrite logs of the GScript each time
-    public static int appDebugLevel = 3;                            //Overall debug level for the app itself, initialized here but later overwritten with what is configured for the Quiz
-    public static HashMap<Integer,String> helpFiles;
+    //public static int debugLevel = 3;                               //Overall debug level for the google interaction, initialized here but later overwritten with what is configured for the Quiz
+    //public static boolean keepLogs = true;                          //Indicates if you want to overwrite logs of the GScript each time
+    //public static int appDebugLevel = 3;                            //Overall debug level for the app itself, initialized here but later overwritten with what is configured for the Quiz
+    //public static HashMap<Integer,String> helpFiles;
     public static boolean authorizedBreak;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        logDocID = "1A4CGyeZZk2LW-xvh_P1dyeufZhV0qpBgCIQdrNEIDgk";
-        eventLogger = new EventLogger(this, logDocID, "EventLog");
+        //logDocID = "1A4CGyeZZk2LW-xvh_P1dyeufZhV0qpBgCIQdrNEIDgk";
+        //eventLogger = new EventLogger(this, logDocID, "EventLog");
         deviceID = getUniquePsuedoID();
         theQuiz = new Quiz();
-        itemsToOrderArray =new ArrayList<>();
+        itemsToOrderArray = new ArrayList<>();
         itemsToOrder = new HashMap<>();
+        /*
         helpFiles = new HashMap<>();
         helpFiles.put(QuizDatabase.USERTYPE_CORRECTOR, QuizDatabase.HELPFILE_CORRECTOR);
         helpFiles.put(QuizDatabase.USERTYPE_JUROR, QuizDatabase.HELPFILE_JUROR);
         helpFiles.put(QuizDatabase.USERTYPE_TEAM, QuizDatabase.HELPFILE_PARTICIPANT);
         helpFiles.put(QuizDatabase.USERTYPE_QUIZMASTER, QuizDatabase.HELPFILE_QUIZMASTER);
         helpFiles.put(QuizDatabase.USERTYPE_RECEPTIONIST, QuizDatabase.HELPFILE_RECEPTIONIST);
+        */
         //Portrait mode or landscape mode depending on screen size
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
             @Override
@@ -101,7 +105,7 @@ public class MyApplication extends Application {
         Date date = new Date();
         String strDateFormat = "hh:mm";
         DateFormat dateFormat = new SimpleDateFormat(strDateFormat);
-        String formattedDate= dateFormat.format(date);
+        String formattedDate = dateFormat.format(date);
         return formattedDate;
     }
 
@@ -136,9 +140,11 @@ public class MyApplication extends Application {
         return false;
     }
 
+    /*
     public static void setLogDocID(String logDocID) {
         MyApplication.logDocID = logDocID;
     }
+    */
 
     //Return pseudo unique ID
     public static String getUniquePsuedoID() {
@@ -190,6 +196,7 @@ public class MyApplication extends Application {
         MyApplication.appPaused = appPaused;
     }
 
+    /*
     public static int getDebugLevel() {
         return debugLevel;
     }
@@ -213,6 +220,32 @@ public class MyApplication extends Application {
     public static void setAppDebugLevel(int appDebugLevel) {
         MyApplication.appDebugLevel = appDebugLevel;
     }
+    */
 
-
+    public static void logMessage(Context context, int level, String message) {
+        //Log a message to the database
+        int idUser;
+        String password;
+        if (theQuiz.getThisUser() == null){
+            idUser=0;
+            password="";
+        }
+        else {
+            idUser = theQuiz.getThisUser().getIdUser();
+            password=theQuiz.getThisUser().getUserPassword();
+        }
+        String encodedMessage;
+        try {
+            encodedMessage = URLEncoder.encode(message.replaceAll("'", "\""), "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            encodedMessage = "Message contains characters that are not allowed";
+        }
+        String scriptParams = QuizDatabase.SCRIPT_LOGEVENT + QuizDatabase.PHP_STARTPARAM + QuizDatabase.PARAMNAME_IDUSER + idUser +
+                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_USERPASSWORD + password +
+                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_LOGLEVEL + level +
+                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_LOGMESSAGE + encodedMessage;
+        HTTPSubmit logMessageRequest = new HTTPSubmit(context, scriptParams, QuizDatabase.REQUEST_ID_LOGMESSAGE);
+        logMessageRequest.sendRequest(new LLSilent());
+    }
 }

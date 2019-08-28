@@ -23,12 +23,14 @@ public class MyActivity extends AppCompatActivity {
 
     public Quiz thisQuiz = MyApplication.theQuiz;
 
+    /*
     public void displayPDF(String pdfToDisplay, String title){
         Intent intentDisplayPDF = new Intent(MyActivity.this, DisplayPDF.class);
         intentDisplayPDF.putExtra(QuizDatabase.PDF_TO_DISPLAY, pdfToDisplay);
         intentDisplayPDF.putExtra(QuizDatabase.TITLE_FOR_PDF_DISPLAY, title);
         startActivity(intentDisplayPDF);
     }
+    */
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

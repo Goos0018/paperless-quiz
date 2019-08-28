@@ -1,7 +1,6 @@
 package com.paperlessquiz.quiz;
 
 import android.content.Context;
-import android.util.EventLog;
 
 import com.paperlessquiz.MyApplication;
 import com.paperlessquiz.R;
@@ -20,7 +19,6 @@ import com.paperlessquiz.users.Organizer;
 import com.paperlessquiz.users.Team;
 import com.paperlessquiz.users.User;
 import com.paperlessquiz.parsers.AnswersParser;
-import com.paperlessquiz.parsers.LogMessageParser;
 import com.paperlessquiz.parsers.UserParser;
 //import com.example.paperlessquiz.quizextradata.GetQuizExtraDataLPL;
 import com.paperlessquiz.webrequest.HTTPGetData;
@@ -68,6 +66,7 @@ public class QuizLoader {
     public HTTPSubmit setSoldOutRequest;
     public HTTPSubmit submitRemarkRequest;
     public HTTPSubmit answerRemarkRequest;
+    public HTTPSubmit addUnitsRequest;
 
 
     public QuizLoader(Context context) {
@@ -197,10 +196,10 @@ public class QuizLoader {
         int idUser = thisQuiz.getThisUser().getIdUser();
         String userPassword = thisQuiz.getThisUser().getUserPassword();
         int idQuiz = thisQuiz.getListData().getIdQuiz();
-        String scriptParams = QuizDatabase.SCRIPT_GET_MYANSWERS + QuizDatabase.PHP_STARTPARAM + QuizDatabase.PARAMNAME_IDUSER + idUser +
+        String scriptParams = QuizDatabase.SCRIPT_GET_SCORES + QuizDatabase.PHP_STARTPARAM + QuizDatabase.PARAMNAME_IDUSER + idUser +
                 QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_USERPASSWORD + userPassword +
                 QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_ROUNDNR + roundNr;
-        getResultsRequest = new HTTPGetData<>(context, scriptParams, QuizDatabase.REQUEST_ID_GET_RESULTS);
+        getResultsRequest = new HTTPGetData<>(context, scriptParams, QuizDatabase.REQUEST_ID_GET_SCORES);
         getResultsRequest.getItems(new com.paperlessquiz.parsers.ResultAfterRoundParser(), new LLShowProgressActWhenComplete(context, context.getString(R.string.loader_pleasewait),
                 context.getString(R.string.loader_updatingquiz),
                 "Something went wrong: ", false));
@@ -658,5 +657,17 @@ public class QuizLoader {
         answerRemarkRequest.sendRequest(new LLSilent());
     }
 
+
+    //ncrease the number of available units for an orderitem
+    public void addUnits(int itemToUpdate, int extraUnits) {
+        int idUser = thisQuiz.getThisUser().getIdUser();
+        String userPassword = thisQuiz.getThisUser().getUserPassword();
+        String scriptParams = QuizDatabase.SCRIPT_ADDUNITS + QuizDatabase.PHP_STARTPARAM + QuizDatabase.PARAMNAME_IDUSER + idUser +
+                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_USERPASSWORD + userPassword +
+                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_ITEMTOUPDATE + itemToUpdate +
+                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_EXTRAUNITS + extraUnits;
+        addUnitsRequest = new HTTPSubmit(context, scriptParams, QuizDatabase.REQUEST_ID_ADDUNITS);
+        addUnitsRequest.sendRequest(new LLSilent());
+    }
 }
 

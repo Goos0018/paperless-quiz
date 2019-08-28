@@ -5,6 +5,7 @@ import android.widget.Toast;
 
 import com.paperlessquiz.MyApplication;
 import com.paperlessquiz.loadinglisteners.LoadingListener;
+import com.paperlessquiz.quiz.QuizDatabase;
 import com.paperlessquiz.webrequest.EventLogger;
 
 /**
@@ -25,7 +26,6 @@ public class LLNotifyStartOnly implements LoadingListener {
     @Override
     public void loadingStarted() {
         Toast.makeText(context, startMessage, Toast.LENGTH_SHORT).show();
-        MyApplication.eventLogger.logEvent(userName, EventLogger.LEVEL_INFO,startMessage);
     }
 
     @Override
@@ -35,9 +35,7 @@ public class LLNotifyStartOnly implements LoadingListener {
 
     @Override
     public void loadingError(String error, int callerID) {
-        String team;
-        if (MyApplication.theQuiz.getThisUser() == null){team = "none";} else {team = MyApplication.theQuiz.getThisUser().getName();}
-        MyApplication.eventLogger.logEvent(team,EventLogger.LEVEL_ERROR,error);
+        MyApplication.logMessage(context, QuizDatabase.LOGLEVEL_ERROR, error);
         Toast.makeText(context, error, Toast.LENGTH_LONG).show();
     }
 }

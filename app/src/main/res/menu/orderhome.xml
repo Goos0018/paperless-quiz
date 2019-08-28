@@ -20,4 +20,10 @@
         app:showAsAction="always"
         android:icon="@drawable/back"/>
 
+    <item android:id="@+id/help"
+        android:title="Help"
+        android:orderInCategory="100"
+        app:showAsAction="always"
+        android:icon="@drawable/help"/>
+
 </menu>

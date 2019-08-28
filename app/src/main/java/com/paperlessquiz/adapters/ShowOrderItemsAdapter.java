@@ -6,9 +6,11 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -79,22 +81,29 @@ public class ShowOrderItemsAdapter extends RecyclerView.Adapter<ShowOrderItemsAd
             }
             tvItemCost.setText(euro + Integer.toString(orderItems.get(i).getItemCost()));
             tvAmountOrdered.setText(Integer.toString(theOrder.getAmountOrderedForItem(orderItems.get(i).getIdOrderItem())));
+            String extraInfo = "";
+            if (MyApplication.theQuiz.getThisUser().getUserType() == QuizDatabase.USERTYPE_BARRESPONSIBLE) {
+                extraInfo = "Nog " + itemsRemaining + " over";
+            } else {
+                extraInfo = "Nog maar " + itemsRemaining + " over!";
+            }
+
             if (orderItems.get(i).isItemSoldOut()) {
                 cvCardView.setCardBackgroundColor(soldOutColor);
                 tvItemsRemaining.setVisibility(View.VISIBLE);
                 tvItemsRemaining.setText("Uitverkocht!");
             } else {
                 cvCardView.setCardBackgroundColor(availableColor);
-                if (itemsRemaining < QuizDatabase.UNITS_REMAINING_FLAG) {
+                if ((itemsRemaining < QuizDatabase.UNITS_REMAINING_FLAG) || (MyApplication.theQuiz.getThisUser().getUserType() == QuizDatabase.USERTYPE_BARRESPONSIBLE)) {
                     tvItemsRemaining.setVisibility(View.VISIBLE);
-                    tvItemsRemaining.setText("Nog maar " + itemsRemaining + " over!");
+                    tvItemsRemaining.setText(extraInfo);
                 } else {
                     tvItemsRemaining.setVisibility(View.GONE);
                 }
             }
-
-
         }
+
+
     }
 
 
@@ -181,6 +190,36 @@ public class ShowOrderItemsAdapter extends RecyclerView.Adapter<ShowOrderItemsAd
                 }
             }
         });
+
+        viewHolder.tvItemName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (MyApplication.theQuiz.getThisUser().getUserType() == QuizDatabase.USERTYPE_BARRESPONSIBLE) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    String title = "Extra eenheden voor " + orderItems.get(i).getItemName() + " toevoegen?";
+                    int itemId = orderItems.get(i).getIdOrderItem();
+                    final EditText input = new EditText(context);
+                    input.setInputType(InputType.TYPE_CLASS_NUMBER);
+                    builder.setView(input);
+                    builder.setTitle(title);
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            int extraUnits = Integer.valueOf(input.getText().toString());
+                            quizLoader.addUnits(itemId, extraUnits);
+                        }
+                    });
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+                    builder.show();
+                }
+            }
+        });
+
     }
 
 

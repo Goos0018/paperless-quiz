@@ -325,7 +325,7 @@ public class C_BarHelperHome extends MyActivity implements LoadingActivity, Show
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.barresponsible, menu);
+        getMenuInflater().inflate(R.menu.barhelper, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -351,6 +351,7 @@ public class C_BarHelperHome extends MyActivity implements LoadingActivity, Show
         return super.onOptionsItemSelected(item);
     }
 
+    /*
     @Override
     //This is called when an order was edited
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -365,6 +366,7 @@ public class C_BarHelperHome extends MyActivity implements LoadingActivity, Show
                 break;
         }
     }
+    */
 
     @Override
     //Don't do anything if an order was selected - otherwise, just go back

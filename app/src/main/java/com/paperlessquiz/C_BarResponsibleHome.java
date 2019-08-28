@@ -26,7 +26,7 @@ import com.paperlessquiz.quiz.QuizLoader;
 import java.util.ArrayList;
 
 /**
- * Home screen for the bar responsible. Allows to view all or a selection of orders, change statuses of orders and modify them
+ * Home screen for the bar responsible. Allows to view all or a selection of orders, change statuses of orders and modify them. Also see and respond to remarks from teams
  */
 public class C_BarResponsibleHome extends MyActivity implements LoadingActivity, ShowOrdersAdapter.ItemClicked {
     RecyclerView rvShowAllOrders;

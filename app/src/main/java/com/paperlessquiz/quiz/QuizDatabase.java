@@ -49,6 +49,9 @@ public class QuizDatabase {
     public static final String PARAMNAME_HELPRESPONSE = "response=";
     public static final String PARAMNAME_ROUNDNR = "roundNr=";
     public static final String PARAMNAME_ANSWERSTAT = "answerStatistic=";
+    public static final String PARAMNAME_LOGMESSAGE = "message=";
+    public static final String PARAMNAME_LOGLEVEL = "level=";
+    public static final String PARAMNAME_EXTRAUNITS = "extraUnits=";
 
     // Available PHP scripts
     public static final String SCRIPT_GET_QUIZLIST = "getquizlist.php";
@@ -78,6 +81,8 @@ public class QuizDatabase {
     public static final String SCRIPT_GET_MYANSWERS = "getmyanswers.php";
     public static final String SCRIPT_GET_ROUNDS = "getrounds.php";
     public static final String SCRIPT_GET_SCORES = "getscores.php";
+    public static final String SCRIPT_LOGEVENT = "logmessage.php";
+    public static final String SCRIPT_ADDUNITS = "addunits.php";
 
     //Param values - query names
     public static final String PARAMVALUE_QRY_ALL_ROUNDS = "rounds";
@@ -106,7 +111,7 @@ public class QuizDatabase {
     public static final int REQUEST_ID_GET_EVENTLOGS = 6;
     public static final int REQUEST_ID_GET_ALLANSWERS = 7;
     public static final int REQUEST_ID_GET_FULLQUESTIONS = 8;
-    public static final int REQUEST_ID_GET_RESULTS = 9;
+    public static final int REQUEST_ID_GET_SCORES = 9;
     public static final int REQUEST_ID_GET_ORDERITEMS = 10;
     //public static final int REQUEST_ID_GET_ORDERSFORUSER = 11;
     public static final int REQUEST_ID_GET_ALLORDERS = 12;
@@ -131,6 +136,8 @@ public class QuizDatabase {
     public static final int REQUEST_ID_SETSOLDOUT = 114;
     public static final int REQUEST_ID_SUBMITREMARK = 115;
     public static final int REQUEST_ID_ANSWERREMARK = 116;
+    public static final int REQUEST_ID_LOGMESSAGE = 117;
+    public static final int REQUEST_ID_ADDUNITS = 118;
 
 
     //User types - these must match what is defined in the constants.php
@@ -191,6 +198,7 @@ public class QuizDatabase {
     //public static final int HELPTYPE_SALES = 5;
     public static final int HELPTYPE_BARRESPONSIBLE = USERTYPE_BARRESPONSIBLE;
     public static final int HELPTYPE_BARHELPER = USERTYPE_BARHELPER;
+    public static final int HELPTYPE_ORDERHELPFORORGANIZERS = 8;
     public static final int HELPTYPE_ORDERHELP = 9;
     public static final int HELPTYPE_QUIZQUESTION = 10;
     public static final int HELPTYPE_ORDERQUESTION = 11;
@@ -257,7 +265,7 @@ public class QuizDatabase {
     public static final String COLNAME_ITEMDESCRIPTION = "ItemDescription";
     public static final String COLNAME_ITEMCOST = "ItemCost";
     public static final String COLNAME_ITEMUNITSAVAIALABLE = "ItemUnitsAvailable";
-    public static final String COLNAME_ITEMSREMAINING = "ItemsRemaining";
+    public static final String COLNAME_ITEMSREMAINING = "RemainingItems";
     public static final String COLNAME_ITEMSOLDOUT = "ItemSoldOut";
     //Column names table Orders
     public static final String COLNAME_IDORDER = "idOrder";
@@ -275,10 +283,10 @@ public class QuizDatabase {
     public static final String COLNAME_HELPTOPICTYPE = "Type";
     public static final String COLNAME_HELPTOPICREMARK = "Remark";
     public static final String COLNAME_HELPTOPICRESPONSE = "Response";
-    //Column Names usd in AnswerStats
+    //Column Names used in AnswerStats
     public static final String COLNAME_NROFANSWERS="NrOfAnswers";
 
-
+    /*
     //Helpfiles
     public static final String HELPFILE_PARTICIPANT = "ParticipantHelp.pdf";
     public static final String HELPFILE_CORRECTOR = "CorrectorHelp.pdf";
@@ -288,6 +296,7 @@ public class QuizDatabase {
     public static final String PDF_TO_DISPLAY = "pdfToDisplay";
     public static final String TITLE_FOR_PDF_DISPLAY = "TitleForPDFDisplay";
     public static final String GOOGLE_PDFVIEWER_URL = "https://docs.google.com/gview?embedded=true&url=";
+    */
 
     //Various other constants
     public static final String INTENT_EXTRANAME_IS_ORGANIZER = "isOrganizer";
@@ -305,7 +314,11 @@ public class QuizDatabase {
     public static final int ANSWERSTAT_COUNTBLANK = 0;
     public static final int ANSWERSTAT_COUNTNONBLANK = 1;
     public static final int ANSWERSTAT_COUNTCORRECTED = 2;
-
+    //Log levels
+    public static final int LOGLEVEL_ERROR = 0;
+    public static final int LOGLEVEL_WARNING = 2;
+    public static final int LOGLEVEL_INFO = 4;
+    public static final int LOGLEVEL_DEBUG = 8;
 
 }
 

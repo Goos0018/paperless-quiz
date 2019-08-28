@@ -55,6 +55,8 @@ public class C_JurorHome extends MyActivity implements LoadingActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_c_juror_home);
+        setActionBarIcon();
+        setActionBarTitle();
         quizLoader = new QuizLoader(this);
         switch (thisQuiz.getThisUser().getUserType()) {
             case QuizDatabase.USERTYPE_JUROR:
@@ -64,7 +66,7 @@ public class C_JurorHome extends MyActivity implements LoadingActivity {
                 helpType = QuizDatabase.HELPTYPE_ORDERQUESTION;
                 break;
             default:
-                helpType = QuizDatabase.HELPTYPE_TEAM; // This should neer happen, only bar respsonsible and juror have this screen
+                helpType = QuizDatabase.HELPTYPE_TEAM; // This should never happen, only bar respsonsible and juror have this screen
         }
 
         quizLoader.loadRemarks(helpType, showAllMessages);
@@ -79,6 +81,10 @@ public class C_JurorHome extends MyActivity implements LoadingActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.juror, menu);
+        //Hide the back button for the Juror
+        if (thisQuiz.getThisUser().getUserType() == QuizDatabase.USERTYPE_JUROR) {
+            menu.findItem(R.id.back).setVisible(false);
+        }
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -92,7 +98,9 @@ public class C_JurorHome extends MyActivity implements LoadingActivity {
                 showAllMessages = !showAllMessages;
                 quizLoader.loadRemarks(helpType, showAllMessages);
                 break;
-
+            case R.id.back:
+                onBackPressed();
+                break;
         }
         return super.onOptionsItemSelected(item);
     }

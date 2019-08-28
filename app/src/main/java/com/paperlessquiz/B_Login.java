@@ -53,7 +53,7 @@ public class B_Login extends AppCompatActivity implements LoadingActivity {
                 if (quizLoader.authenticateRequest.isRequestOK()) {
                     thisUser.setUserPassword(password);
                     thisQuiz.setThisUser(thisUser);
-                    //Load what is needed depending on the type of user
+                    //Load what is needed (too much for some users but anyway...)
                     quizLoader.loadQuizFromDb();
                     //Do the rest when all of these requests are complete
                 } else {
@@ -85,24 +85,12 @@ public class B_Login extends AppCompatActivity implements LoadingActivity {
             answersLoaded = false;
             answersSubmittedLoaded = false;
             ordersLoaded = false;
-
             quizLoader.loadRoundsIntoQuiz();
             quizLoader.loadQuestionsIntoQuiz();
             //Make sure we have answers for all teams and all questions before we start setting the answers
             thisQuiz.initializeAllAnswers();
             quizLoader.updateAnswersIntoQuiz();
-            //quizLoader.updateAnswersSubmittedIntoQuiz();
             quizLoader.loadOrderItemsIntoQuiz();
-            /*
-            QuizLoaderClass.loadRoundsIntoQuiz();
-            QuizLoaderClass.loadQuestionsIntoQuiz();
-            //Make sure we have answers for all teams and all questions before we start setting the answers
-            thisQuiz.initializeAllAnswers();
-            QuizLoaderClass.updateAnswersIntoQuiz();
-            QuizLoaderClass.updateAnswersSubmittedIntoQuiz();
-            QuizLoaderClass.loadOrderItemsIntoQuiz();
-            //loading.dismiss();
-            */
             //Now open the appropriate home screen
 
             switch (thisUser.getUserType()) {

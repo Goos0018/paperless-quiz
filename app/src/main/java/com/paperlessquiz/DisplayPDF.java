@@ -14,6 +14,7 @@ import com.paperlessquiz.quiz.QuizGenerator;
  * This activity displays a PDF that must be passed via the StringExtra pdfToDisplay
  */
 public class DisplayPDF extends AppCompatActivity {
+    /*
     String title;
 
     @Override
@@ -62,4 +63,5 @@ public class DisplayPDF extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+    */
 }

@@ -102,7 +102,7 @@ public abstract class QuizLoaderClass {
         String userPassword = thisQuiz.getThisUser().getUserPassword();
         int idQuiz = thisQuiz.getListData().getIdQuiz();
         String scriptParams = generateParamsPHP(QuizDatabase.PARAMVALUE_QRY_SCORES, idUser, userPassword, idQuiz, idQuiz);
-        getResultsRequest = new HTTPGetData<>(context, scriptParams, QuizDatabase.REQUEST_ID_GET_RESULTS);
+        getResultsRequest = new HTTPGetData<>(context, scriptParams, QuizDatabase.REQUEST_ID_GET_SCORES);
         getResultsRequest.getItems(new com.paperlessquiz.parsers.ResultAfterRoundParser(), loadingListener);
     }
 

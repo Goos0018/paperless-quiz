@@ -258,9 +258,9 @@ public class D_OrderHome extends AppCompatActivity implements LoadingActivity, S
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.messages:
-                Intent intentHelp = new Intent(D_OrderHome.this, DisplayHelpTopics.class);
-                intentHelp.putExtra(QuizDatabase.INTENT_EXTRANAME_HELPTYPE, QuizDatabase.HELPTYPE_ORDERQUESTION);
-                startActivity(intentHelp);
+                Intent intentMessages = new Intent(D_OrderHome.this, DisplayHelpTopics.class);
+                intentMessages.putExtra(QuizDatabase.INTENT_EXTRANAME_HELPTYPE, QuizDatabase.HELPTYPE_ORDERQUESTION);
+                startActivity(intentMessages);
                 break;
             case R.id.neworder:
                 Intent intentOrder = new Intent(D_OrderHome.this, D_NewOrder.class);
@@ -269,8 +269,19 @@ public class D_OrderHome extends AppCompatActivity implements LoadingActivity, S
             case R.id.backtoquiz:
                 onBackPressed();
                 break;
+            case R.id.help:
+                Intent intentHelp = new Intent(D_OrderHome.this, DisplayHelpTopics.class);
+                if (thisQuiz.getThisUser().getUserType() == 0) {
+                    intentHelp.putExtra(QuizDatabase.INTENT_EXTRANAME_HELPTYPE, QuizDatabase.HELPTYPE_ORDERHELP);
+                } else {
+                    intentHelp.putExtra(QuizDatabase.INTENT_EXTRANAME_HELPTYPE, QuizDatabase.HELPTYPE_ORDERHELPFORORGANIZERS);
+                }
+                startActivity(intentHelp);
+                break;
         }
-        return super.onOptionsItemSelected(item);
+        return super.
+
+                onOptionsItemSelected(item);
     }
 
 }

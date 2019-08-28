@@ -7,6 +7,7 @@ import com.paperlessquiz.MyApplication;
 import java.util.Date;
 
 public class EventLogger {
+    /*
 
     public static final int LEVEL_DEBUG = 5;
     public static final int LEVEL_INFO = 3;
@@ -56,7 +57,7 @@ public class EventLogger {
                         GoogleAccess.PARAMNAME_ACTION + GoogleAccess.PARAMVALUE_ADDLINE;
                 GoogleAccessSet logger = new GoogleAccessSet(context, scriptParams);
                 logger.setData(new LLSilent());
-                */
+
             }
         } catch (Exception e) {
         }
@@ -65,4 +66,5 @@ public class EventLogger {
     public void setDocID(String docID) {
         this.docID = docID;
     }
+    */
 }

@@ -38,18 +38,6 @@ public class A_SelectRole extends AppCompatActivity implements LoadingActivity {
             case QuizDatabase.REQUEST_ID_GET_USERS:
                 //Load the users that were retrieved into the Organizers and the Teams
                 quizLoader.loadUsersIntoQuiz();
-                //QuizLoaderClass.loadUsersIntoQuiz();
-                break;
-            case QuizDatabase.REQUEST_ID_GET_ROUNDS:
-                break;
-            case QuizDatabase.REQUEST_ID_GET_QUESTIONS:
-                break;
-
-            case QuizDatabase.REQUEST_ID_GET_ANSWERS:
-                break;
-            case QuizDatabase.REQUEST_ID_GET_ANSWERSTATS:
-                break;
-            case QuizDatabase.REQUEST_ID_GET_EVENTLOGS:
                 break;
         }
     }
@@ -81,8 +69,6 @@ public class A_SelectRole extends AppCompatActivity implements LoadingActivity {
         //Load the users from the Quiz
         quizLoader = new QuizLoader(this);
         quizLoader.loadUsers();
-        //QuizLoaderClass.loadUsers(this, new LLShowProgressActWhenComplete(this, this.getString(R.string.loader_pleasewait),
-        //        this.getString(R.string.loader_updatingquiz), this.getString(R.string.loadingerror), false));
         //Access the Generator screen by tapping the logo 5 times
         ivQuizLogo.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -66,7 +66,7 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
             case QuizDatabase.REQUEST_ID_GET_ANSWERS:
                 answersLoaded = true;
                 break;
-            case QuizDatabase.REQUEST_ID_GET_RESULTS:
+            case QuizDatabase.REQUEST_ID_GET_SCORES:
                 scoresLoaded = true;
                 break;
             case QuizDatabase.REQUEST_ID_SETANSWERSSUBMITTED:
@@ -140,6 +140,7 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
         //Update info from the central database if this is a real round change
         if (!activityBeingCreated) {
             updateQuiz();
+            //Rest is done when loading is complete
         }
         else
         {
@@ -147,9 +148,6 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
             roundResultFrag.refresh();
             refreshDisplayFragments();
         }
-        //Rest is done when loading is complete
-        //refreshDisplayFragments();
-        //roundResultFrag.refresh();
     }
 
     @Override
@@ -281,9 +279,8 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
         explainRoundStatus = new FragExplainRoundStatus();
         setActionBarIcon();
         setActionBarTitle();
-        //Log that the user logged in and set LoggedIn to TRUE so we know this to track if the user pauses the app
+        //Set LoggedIn to TRUE so we know this to track if the user pauses the app
         thisTeamNr = thisQuiz.getThisUser().getUserNr();
-        MyApplication.eventLogger.logEvent(thisQuiz.getThisUser().getName(), EventLogger.LEVEL_INFO, "Logged in");
         MyApplication.setLoggedIn(true);
         //Get all the stuff from the layout
         displayAnswersLayout = findViewById(R.id.llDisplay);

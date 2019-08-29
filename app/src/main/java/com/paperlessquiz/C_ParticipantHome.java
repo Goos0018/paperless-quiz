@@ -50,7 +50,7 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
     DisplayAnswersAdapter displayAnswersAdapter;
     RecyclerView.LayoutManager layoutManager;
     String roundStatusExplanation;
-    long totalTimePaused;
+    //long totalTimePaused;
     Date lastPausedDate;
     QuizLoader quizLoader;
     //private ProgressDialog loading;
@@ -85,7 +85,6 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
             roundSpinner.refreshIcons();
             roundResultFrag.refresh();  //This will recalculate scores based on the re-loaded corrections
             refreshDisplayFragments();  //Display the correct fragments based on new round status etc.
-            //loading.dismiss();
         }
         if (answersSubmitted){
             answersSubmitted=false;
@@ -101,22 +100,7 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
     }
 
     @Override
-    public String getRoundStatusExplanation() {
-        return roundStatusExplanation;
-    }
-
-    @Override
-    public int getRound() {
-        return roundSpinner.getPosition();
-    }
-
-    @Override
-    public int getTeam() {
-        return thisTeamNr;
-    }
-
-    @Override
-    //This is called from the round spinner
+    //This is called from the round spinner after it was changed.
     public void onRoundChanged(int oldRoundNr, int roundNr) {
         //Similar as with a questionSpinner change, we save the answer that we have and load the new answer - only do this if the field was visible
         if (etAnswer.getVisibility() == View.VISIBLE) {
@@ -137,7 +121,7 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
         //Dismiss the keyboard if its there
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(etAnswer.getWindowToken(), 0);
-        //Update info from the central database if this is a real round change
+        //Update info from the central database // if the activity is being created, just refresh the screens
         if (!activityBeingCreated) {
             updateQuiz();
             //Rest is done when loading is complete
@@ -151,7 +135,7 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
     }
 
     @Override
-    //This is called from the Question spinner
+    //This is called from the Question spinner when it is changed
     public void onSpinnerChange(int oldPos, int newPos) {
         //Update the answer if it was changed
         String oldAnswer = thisQuiz.getAnswerForTeam(roundSpinner.getPosition(), oldPos, thisTeamNr).getTheAnswer();
@@ -345,4 +329,21 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
             super.onBackPressed();
         }
     }
+
+
+    @Override
+    public String getRoundStatusExplanation() {
+        return roundStatusExplanation;
+    }
+
+    @Override
+    public int getRound() {
+        return roundSpinner.getPosition();
+    }
+
+    @Override
+    public int getTeam() {
+        return thisTeamNr;
+    }
+
 }

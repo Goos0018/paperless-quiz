@@ -82,7 +82,7 @@ public class QuizLoader {
                 QuizDatabase.PARAMNAME_THEIDFORTHEQUERY + theId + QuizDatabase.PHP_PARAMCONCATENATOR +
                 QuizDatabase.PARAMNAME_IDQUIZ + idQuiz;
     }
-
+/*
     //Load the entire quiz
     public void loadQuizFromDb() {
         loadRounds();
@@ -91,7 +91,7 @@ public class QuizLoader {
         //loadAnswersSubmitted();
         loadOrderItems();
     }
-
+*/
     public void loadUsers(String usersList) {
         String scriptParams = QuizDatabase.SCRIPT_GET_QUIZUSERS + QuizDatabase.PHP_STARTPARAM + QuizDatabase.PARAMNAME_IDQUIZ + thisQuiz.getListData().getIdQuiz() +
                 QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_USERSLIST + usersList;

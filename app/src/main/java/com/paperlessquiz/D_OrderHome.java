@@ -77,9 +77,10 @@ public class D_OrderHome extends AppCompatActivity implements LoadingActivity, S
             myOrders = quizLoader.getOrdersRequest.getResultsList();
             refreshSaldo();
             if (showOrdersAdapter != null) {
-                //showOrdersAdapter.notifyDataSetChanged();
-                showOrdersAdapter = new ShowOrdersAdapter(this, myOrders);
-                rvShowOrders.setAdapter(showOrdersAdapter);
+                showOrdersAdapter.setOrders(myOrders);
+                showOrdersAdapter.notifyDataSetChanged();
+                //showOrdersAdapter = new ShowOrdersAdapter(this, myOrders);
+                //rvShowOrders.setAdapter(showOrdersAdapter);
                 //Select the top row = most recent order
                 if (myOrders.size() > 0) {
                     cvOrderDetails.setVisibility(View.VISIBLE);

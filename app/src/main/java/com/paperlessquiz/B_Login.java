@@ -42,7 +42,7 @@ public class B_Login extends AppCompatActivity implements LoadingActivity {
     int userNr;
     QuizLoader quizLoader;
     String password;
-    boolean roundsLoaded, questionsLoaded, answersLoaded, answersSubmittedLoaded, ordersLoaded; //False by default
+    boolean roundsLoaded, questionsLoaded, orderItemsLoaded, answersLoaded, scoresLoaded; //False by default
     //private ProgressDialog loading;
     Intent intent;
 
@@ -54,7 +54,12 @@ public class B_Login extends AppCompatActivity implements LoadingActivity {
                     thisUser.setUserPassword(password);
                     thisQuiz.setThisUser(thisUser);
                     //Load what is needed (too much for some users but anyway...)
-                    quizLoader.loadQuizFromDb();
+                    //quizLoader.loadQuizFromDb();
+                    quizLoader.loadRounds();
+                    quizLoader.loadQuestions();
+                    quizLoader.loadOrderItems();
+                    quizLoader.loadMyAnswers(1);
+                    quizLoader.loadScoresAndStandings(1);
                     //Do the rest when all of these requests are complete
                 } else {
                     //Authentication failed
@@ -67,29 +72,30 @@ public class B_Login extends AppCompatActivity implements LoadingActivity {
             case QuizDatabase.REQUEST_ID_GET_QUESTIONS:
                 questionsLoaded = true;
                 break;
+            case QuizDatabase.REQUEST_ID_GET_ORDERITEMS:
+                orderItemsLoaded = true;
+                break;
             case QuizDatabase.REQUEST_ID_GET_ANSWERS:
                 answersLoaded = true;
                 break;
-            case QuizDatabase.REQUEST_ID_GET_ANSWERSTATS:
-                answersSubmittedLoaded = true;
-                break;
-            case QuizDatabase.REQUEST_ID_GET_ORDERITEMS:
-                ordersLoaded = true;
+            case QuizDatabase.REQUEST_ID_GET_SCORES:
+                scoresLoaded = true;
                 break;
         }
         //Only if everything is properly loaded, we can start populating the central Quiz object
-        if (roundsLoaded && questionsLoaded && answersLoaded && ordersLoaded) {
+        if (roundsLoaded && questionsLoaded && answersLoaded && scoresLoaded && orderItemsLoaded) {
             //reset the loading statuses
             roundsLoaded = false;
             questionsLoaded = false;
             answersLoaded = false;
-            answersSubmittedLoaded = false;
-            ordersLoaded = false;
+            scoresLoaded = false;
+            orderItemsLoaded = false;
             quizLoader.loadRoundsIntoQuiz();
             quizLoader.loadQuestionsIntoQuiz();
             //Make sure we have answers for all teams and all questions before we start setting the answers
             thisQuiz.initializeAllAnswers();
             quizLoader.updateAnswersIntoQuiz();
+            quizLoader.loadResultsIntoQuiz();
             quizLoader.loadOrderItemsIntoQuiz();
             //Now open the appropriate home screen
 

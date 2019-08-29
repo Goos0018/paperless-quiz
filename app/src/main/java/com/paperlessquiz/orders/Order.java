@@ -7,8 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * This class represents and order, a hashmap of <idOrderItem,amountOrdered>
- * TODO: complete, remove Empty probably not needed
+ * This class represents and order, a hashmap of <idOrderItem,amountOrdered> + some metadata
  */
 public class Order implements Serializable {
 
@@ -18,7 +17,6 @@ public class Order implements Serializable {
     public static final String STR_ORDER = "Bestelling ";
     public static final String STR_SEPARATOR = "-";
 
-    //ArrayList<String> statusUpdates;
     int idOrder, idUser, userNr, userType, orderNr, totalCost, currentStatus;
     String lastStatusUpdate, orderCategory, userName;
     String orderName;

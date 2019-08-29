@@ -19,18 +19,18 @@ public class QuizListDataParser implements JsonParser<QuizListData> {
             description = jo.getString(QuizDatabase.COLNAME_QUIZ_DESCRIPTION);
             logoURL = jo.getString(QuizDatabase.COLNAME_QUIZ_LOGO_URL);
             quizPdfURL = jo.getString(QuizDatabase.COLNAME_QUIZ_PDFURL);
-            debugLevel = jo.getInt(QuizDatabase.COLNAME_QUIZ_DEBUG_LEVEL);
-            sheetDocID = jo.getString(QuizDatabase.COLNAME_QUIZ_SHEET_DOC_ID);
+            //debugLevel = jo.getInt(QuizDatabase.COLNAME_QUIZ_DEBUG_LEVEL);
+            //sheetDocID = jo.getString(QuizDatabase.COLNAME_QUIZ_SHEET_DOC_ID);
         } catch (Exception e) {
             idQuiz = 0;
             name = "Error parsing " + jo.toString();;
             description = "";
             logoURL = "";
             quizPdfURL = "";
-            debugLevel = 0;
-            sheetDocID = "";
+            //debugLevel = 0;
+            //sheetDocID = "";
         }
-        quizListData = new QuizListData(idQuiz, name, description, logoURL, quizPdfURL, debugLevel, sheetDocID);
+        quizListData = new QuizListData(idQuiz, name, description, logoURL, quizPdfURL);
         return quizListData;
     }
 }

@@ -344,7 +344,7 @@ public class QuizLoader {
         for (int i = 0; i < getQuestionsRequest.getResultsList().size(); i++) {
             Question thisQuestion = getQuestionsRequest.getResultsList().get(i);
             if (thisQuestion.getRoundNr() > thisQuiz.getRounds().size() + 1) {
-                //TODO: LOG EVENT
+                MyApplication.logMessage(context,QuizDatabase.LOGLEVEL_ERROR, "Load Questions error - unexpected roundNr");
             } else {
                 Round theRound = thisQuiz.getRound(thisQuestion.getRoundNr());
                 //Make sure the question is added to the correct round and on the location that corresponds to its questionNr
@@ -388,7 +388,7 @@ public class QuizLoader {
         for (int i = 0; i < getQuestionsRequest.getResultsList().size(); i++) {
             Question thisQuestion = getQuestionsRequest.getResultsList().get(i);
             if (thisQuestion.getRoundNr() > thisQuiz.getRounds().size() + 1) {
-                //TODO: LOG EVENT
+                MyApplication.logMessage(context,QuizDatabase.LOGLEVEL_ERROR, "UpdateFullQuestions error - unexpected roundNr");
             } else {
                 Round theRound = thisQuiz.getRound(thisQuestion.getRoundNr());
                 theRound.getQuestion(thisQuestion.getQuestionNr()).setCorrectAnswer(thisQuestion.getCorrectAnswer());
@@ -403,15 +403,6 @@ public class QuizLoader {
             thisQuiz.getRound(theAnswer.getRoundNr()).getQuestion(theAnswer.getQuestionNr()).getAllAnswers().set(theAnswer.getTeamNr() - 1, theAnswer);
         }
     }
-
-    /*
-    public void updateAnswersSubmittedIntoQuiz() {
-        for (int i = 0; i < getAnswersSubmittedRequest.getResultsList().size(); i++) {
-            AnswersSubmitted thisAnswerSubmitted = getAnswersSubmittedRequest.getResultsList().get(i);
-            thisQuiz.getTeam(thisAnswerSubmitted.getTeamNr()).setAnswersForRoundSubmitted(thisAnswerSubmitted.getRoundNr());
-        }
-    }
-    */
 
     public void loadResultsIntoQuiz() {
         for (int i = 0; i < getResultsRequest.getResultsList().size(); i++) {

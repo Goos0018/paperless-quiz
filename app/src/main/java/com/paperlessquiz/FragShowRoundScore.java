@@ -11,9 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.paperlessquiz.R;
 import com.paperlessquiz.quiz.Quiz;
-import com.paperlessquiz.quiz.QuizStandingsCalculator;
 import com.paperlessquiz.quiz.ResultAfterRound;
 
 

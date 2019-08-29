@@ -10,42 +10,42 @@ public class QuizListData implements Serializable {
     private String description;
     private String logoURL;
     private String quizPdfURL;
-    private int debugLevel;
-    private String sheetDocID;
+    //private int debugLevel;
+    //private String sheetDocID;
 
-    private boolean keepLogs;
+    //private boolean keepLogs;
     private int nrOfRounds;
-    private int appDebugLevel;
+    //private int appDebugLevel;
 
-    public QuizListData(int idQuiz, String name, String description, String logoURL, String quizPdfURL, int debugLevel, String sheetDocID) {
+    public QuizListData(int idQuiz, String name, String description, String logoURL, String quizPdfURL) {
         this.idQuiz = idQuiz;
         this.name = name;
         this.description = description;
         this.logoURL = logoURL;
         this.quizPdfURL = quizPdfURL;
-        this.debugLevel = debugLevel;
+        //this.debugLevel = debugLevel;
         //this.keepLogs = keepLogs;
-        this.sheetDocID = sheetDocID;
+        //this.sheetDocID = sheetDocID;
     }
 
     public QuizListData() {
         //this.id = "";
         this.name = "";
         this.description = "";
-        this.sheetDocID = "";
+        //this.sheetDocID = "";
         this.logoURL = "";
     }
 
-    public QuizListData(String name, String description, String sheetDocID, String logoURL,int debugLevel,boolean keepLogs,int appDebugLevel,String quizPdfURL) {
+    public QuizListData(String name, String description, String logoURL, String quizPdfURL) {
         //this.id = id;
         this.name = name;
         this.description = description;
-        this.sheetDocID = sheetDocID;
+        //this.sheetDocID = sheetDocID;
         this.logoURL = logoURL;
         this.quizPdfURL = quizPdfURL;
-        this.debugLevel=debugLevel;
-        this.keepLogs=keepLogs;
-        this.appDebugLevel=appDebugLevel;
+        //this.debugLevel=debugLevel;
+        //this.keepLogs=keepLogs;
+        //this.appDebugLevel=appDebugLevel;
     }
 
     /*
@@ -67,21 +67,11 @@ public class QuizListData implements Serializable {
         return description;
     }
 
-    public String getSheetDocID() {
-        return sheetDocID;
-    }
 
     public String getLogoURL() {
         return logoURL;
     }
 
-    public int getDebugLevel() {
-        return debugLevel;
-    }
-
-    public boolean isKeepLogs() {
-        return keepLogs;
-    }
 
     public int getNrOfRounds() {
         return nrOfRounds;
@@ -91,9 +81,6 @@ public class QuizListData implements Serializable {
         this.nrOfRounds = nrOfRounds;
     }
 
-    public int getAppDebugLevel() {
-        return appDebugLevel;
-    }
 
     public String getQuizPdfURL() {
         return quizPdfURL;
@@ -103,3 +90,5 @@ public class QuizListData implements Serializable {
         return idQuiz;
     }
 }
+
+

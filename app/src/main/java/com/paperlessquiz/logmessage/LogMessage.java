@@ -1,6 +1,7 @@
 package com.paperlessquiz.logmessage;
 
 public class LogMessage {
+    /*
     private int idTeam,level;
     private String dateTime;
     private String message;
@@ -27,4 +28,5 @@ public class LogMessage {
     public String getMessage() {
         return message;
     }
+    */
 }

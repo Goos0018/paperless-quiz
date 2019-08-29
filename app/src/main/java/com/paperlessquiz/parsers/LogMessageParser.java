@@ -6,7 +6,7 @@ import com.paperlessquiz.quiz.QuizDatabase;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class LogMessageParser implements JsonParser {
+public class LogMessageParser {/*implements JsonParser {
 
     @Override
     public Object parse(JSONObject jo) throws JSONException {
@@ -28,4 +28,5 @@ public class LogMessageParser implements JsonParser {
         logMessage = new LogMessage(idTeam,level,dateTime,message);
         return logMessage;
     }
+    */
 }

@@ -112,6 +112,7 @@ public class ShowOrdersAdapter extends RecyclerView.Adapter<ShowOrdersAdapter.Vi
                         tvTotalCost.setText(userName);
                     }
                     break;
+                    //For the teams...
                 default:
                     tvTotalCost.setText(euro + Integer.toString(orders.get(i).getTotalCost()));
             }

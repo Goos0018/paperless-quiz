@@ -14,7 +14,7 @@ public class Order implements Serializable {
     public static final int RESULT_NO_ORDER_CREATED = 0;
     public static final int RESULT_ORDER_CREATED = 1;
     public static final String PUTEXTRANAME_NEW_ORDER = "newOrder";
-    public static final String STR_ORDER = "Bestelling ";
+    public static final String STR_ORDER = ""; //"Bestelling ";
     public static final String STR_SEPARATOR = "-";
 
     int idOrder, idUser, userNr, userType, orderNr, totalCost, currentStatus;
@@ -83,7 +83,11 @@ public class Order implements Serializable {
     public String displayOrderAmounts() {
         String orderDetails = "";
         for (Integer i : theOrder.keySet()) {
-            orderDetails = orderDetails + " : " + theOrder.get(i) + "\n";
+            String description = MyApplication.itemsToOrder.get(i).getItemDescription();
+            if (!description.equals("")){
+                description=" ("+description+")";
+            }
+            orderDetails = orderDetails + " : " + theOrder.get(i) + description + "\n";
         }
         return orderDetails;
     }

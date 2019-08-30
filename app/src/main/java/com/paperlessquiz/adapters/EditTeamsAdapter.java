@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
+import android.text.method.DigitsKeyListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -116,7 +117,8 @@ public class EditTeamsAdapter extends RecyclerView.Adapter<EditTeamsAdapter.View
                 thisTeamID = teams.get(i).getIdUser();
                 int currentAmount = teams.get(i).getUserCredits() - teams.get(i).getTotalSpent();
                 final EditText input = new EditText(context);
-                input.setInputType(InputType.TYPE_NUMBER_FLAG_SIGNED);
+                input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_SIGNED);
+                //input.setKeyListener(DigitsKeyListener.getInstance("-0123456789"));
                 builder.setView(input);
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override

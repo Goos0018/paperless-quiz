@@ -117,13 +117,13 @@
         android:textColor="@color/wrongRed"
         android:textSize="@dimen/text_size_medium"
         android:textStyle="bold" />
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rvShowOrders"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin_huge"
-            android:layout_marginTop="@dimen/margin_large"
-            android:layout_marginRight="@dimen/margin_huge">
-        </android.support.v7.widget.RecyclerView>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvShowOrders"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_small"
+        android:layout_marginTop="@dimen/margin_large"
+        android:layout_marginRight="@dimen/margin_small"></android.support.v7.widget.RecyclerView>
 
 </android.support.v7.widget.LinearLayoutCompat>

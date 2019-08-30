@@ -7,6 +7,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
+import android.text.method.DigitsKeyListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -199,7 +200,8 @@ public class ShowOrderItemsAdapter extends RecyclerView.Adapter<ShowOrderItemsAd
                     String title = "Extra eenheden voor " + orderItems.get(i).getItemName() + " toevoegen?";
                     int itemId = orderItems.get(i).getIdOrderItem();
                     final EditText input = new EditText(context);
-                    input.setInputType(InputType.TYPE_CLASS_NUMBER);
+                    input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_SIGNED);
+                    //input.setKeyListener(DigitsKeyListener.getInstance("-0123456789"));
                     builder.setView(input);
                     builder.setTitle(title);
                     builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {

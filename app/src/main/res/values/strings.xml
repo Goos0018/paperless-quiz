@@ -24,10 +24,10 @@
     <string name="loader_updatingquiz">Ophalen gegevens...</string>
     <string name="participant_nobackallowed">Sluit en herstart de app als je opnieuw will aanmelden</string>
     <string name="participant_aboutquiztitle">Over onze quiz</string>
-    <string name="rnd_score_scoreforround">Jullie score voor deze ronde:</string>
-    <string name="rnd_score_rankafterround">Jullie positie in deze ronde:</string>
-    <string name="rnd_score_totalscore">Jullie totale score na deze ronde:</string>
-    <string name="rnd_score_totalrank">Jullie positie in de totaalstand:</string>
+    <string name="rnd_score_scoreforround">Score voor deze ronde:</string>
+    <string name="rnd_score_rankafterround">Positie in deze ronde:</string>
+    <string name="rnd_score_totalscore">Totale score na deze ronde:</string>
+    <string name="rnd_score_totalrank">Positie in de totaalstand:</string>
     <string name="participant_submitanswers">Klaar!</string>
     <string name="participant_youranswers">Jullie antwoorden:</string>
     <string name="parthome_your_answer">Jullie antwoord</string>

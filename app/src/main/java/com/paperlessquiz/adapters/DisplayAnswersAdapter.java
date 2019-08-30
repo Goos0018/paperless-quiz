@@ -9,6 +9,7 @@ import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -88,6 +89,9 @@ public class DisplayAnswersAdapter extends RecyclerView.Adapter<DisplayAnswersAd
                     public void onClick(DialogInterface dialog, int which) {
                         String remark = input.getText().toString();
                         quizLoader.submitRemark(QuizDatabase.HELPTYPE_QUIZQUESTION,title + ": " + remark);
+                        //Dismiss the keyboard explicitly
+                        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(input.getWindowToken(), 0);
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

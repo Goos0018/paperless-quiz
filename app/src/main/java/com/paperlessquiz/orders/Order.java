@@ -96,8 +96,12 @@ public class Order implements Serializable {
         String orderDetails = "";
         for (Integer i : theOrder.keySet()) {
             String itemName = MyApplication.itemsToOrder.get(i).getItemName();
+            String description = MyApplication.itemsToOrder.get(i).getItemDescription();
+            if (!description.equals("")){
+                description=" ("+description+")";
+            }
             String itemAmount = theOrder.get(i) + " x ";
-            orderDetails = orderDetails + rpad(itemAmount, 5) + itemName + "\n";
+            orderDetails = orderDetails + rpad(itemAmount, 5) + itemName + description + "\n";
         }
         return orderDetails;
     }

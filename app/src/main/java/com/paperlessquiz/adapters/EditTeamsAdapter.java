@@ -73,7 +73,7 @@ public class EditTeamsAdapter extends RecyclerView.Adapter<EditTeamsAdapter.View
         viewHolder.etTeamName.setText(teams.get(i).getName());
         viewHolder.tvTeamName.setText(teams.get(i).getName());
         viewHolder.tvTotalAmount.setText("" + QuizDatabase.EURO_SIGN + teams.get(i).getUserCredits());
-        viewHolder.tvRemaining.setText((teams.get(i).getUserCredits() - teams.get(i).getTotalSpent()) + "");
+        viewHolder.tvRemaining.setText("" + QuizDatabase.EURO_SIGN + (teams.get(i).getUserCredits() - teams.get(i).getTotalSpent()) );
         if (teams.get(i).getUserStatus() == QuizDatabase.USERSTATUS_NOTPRESENT) {
             viewHolder.ivPresent.setImageResource(R.drawable.team_not_present);
 

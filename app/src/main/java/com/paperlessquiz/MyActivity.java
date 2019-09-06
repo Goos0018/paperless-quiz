@@ -21,6 +21,7 @@ import com.squareup.picasso.Target;
  */
 public class MyActivity extends AppCompatActivity {
 
+    public Target mTarget;
     public Quiz thisQuiz = MyApplication.theQuiz;
 
     /*
@@ -61,7 +62,8 @@ public class MyActivity extends AppCompatActivity {
             //Set the action bar
             ActionBar actionBar = getSupportActionBar();
             actionBar.setDisplayHomeAsUpEnabled(true); //Display the "back" icon, we will replace this with the icon of this Quiz
-            final Target mTarget = new Target() {
+            //final Target mTarget = new Target() {
+            mTarget = new Target() {
                 @Override
                 public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom loadedFrom) {
                     BitmapDrawable mBitmapDrawable = new BitmapDrawable(getResources(), bitmap);

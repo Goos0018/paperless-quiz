@@ -38,7 +38,7 @@ public class ShowTeamsAdapter extends RecyclerView.Adapter<ShowTeamsAdapter.View
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvTeamName, tvTotalTimePaused, tvNrOfAnswers;
+        TextView tvTeamName, tvTotalTimePaused, tvNrOfAnswers, tvTeamNr;
         ImageView ivPresent, ivAnswersSubmitted;
 
         public ViewHolder(View itemView) {
@@ -46,6 +46,7 @@ public class ShowTeamsAdapter extends RecyclerView.Adapter<ShowTeamsAdapter.View
             tvTeamName = itemView.findViewById(R.id.tvTeamName);
             tvTotalTimePaused = itemView.findViewById(R.id.tvTotalTimePaused);
             tvNrOfAnswers = itemView.findViewById(R.id.tvNrOfAnswers);
+            tvTeamNr = itemView.findViewById(R.id.tvTeamNr);
             ivPresent = itemView.findViewById(R.id.ivTeamPresent);
             ivAnswersSubmitted = itemView.findViewById(R.id.ivAnswersSubmitted);
         }
@@ -62,7 +63,8 @@ public class ShowTeamsAdapter extends RecyclerView.Adapter<ShowTeamsAdapter.View
     @Override
     public void onBindViewHolder(@NonNull ShowTeamsAdapter.ViewHolder viewHolder, int i) {
         viewHolder.itemView.setTag(teams.get(i));
-        viewHolder.tvTeamName.setText(teams.get(i).getUserNr() + ". " + teams.get(i).getName());
+        viewHolder.tvTeamName.setText(teams.get(i).getName());
+        viewHolder.tvTeamNr.setText(teams.get(i).getUserNr() + "");
         if (teams.size() == nrOfAnswers.size()) {
             viewHolder.tvNrOfAnswers.setText(nrOfAnswers.get(i).toString());
             if (nrOfQuestionsInThisRound > (int) nrOfAnswers.get(i)) {

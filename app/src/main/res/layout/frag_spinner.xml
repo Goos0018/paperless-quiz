@@ -55,6 +55,7 @@
             android:layout_marginTop="@dimen/margin_tiny"
             android:layout_marginBottom="@dimen/margin_tiny"
             android:gravity="center"
+            android:autoLink="web"
             android:text="Secondary Field"
             android:textSize="@dimen/text_size_small" />
     </LinearLayout>

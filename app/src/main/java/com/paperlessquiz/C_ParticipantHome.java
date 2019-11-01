@@ -170,7 +170,7 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
 
     @Override
     public String getValueToSetForPrimaryField(int newPos) {
-        return thisQuiz.getQuestion(roundSpinner.getPosition(), newPos).getName();
+        return thisQuiz.getQuestion(roundSpinner.getPosition(), newPos).getQuestionNr() + ". " + thisQuiz.getQuestion(roundSpinner.getPosition(), newPos).getName();
     }
 
     @Override

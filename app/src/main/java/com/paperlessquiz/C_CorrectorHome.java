@@ -94,7 +94,7 @@ public class C_CorrectorHome extends MyActivity implements LoadingActivity, Frag
     @Override
     public String getValueToSetForPrimaryField(int spinnerPos) {
         if (correctPerQuestion) {
-            return thisQuiz.getQuestion(thisRoundNr, spinnerPos).getName();
+            return thisQuiz.getQuestion(thisRoundNr, spinnerPos).getQuestionNr() + ". " + thisQuiz.getQuestion(thisRoundNr, spinnerPos).getName();
         } else {
             return "Ploeg " + Integer.toString(thisQuiz.getTeam(spinnerPos).getUserNr());
         }
@@ -103,7 +103,7 @@ public class C_CorrectorHome extends MyActivity implements LoadingActivity, Frag
     @Override
     public String getValueToSetForSecondaryField(int spinnerPos) {
         if (correctPerQuestion) {
-            return thisQuiz.getQuestion(thisRoundNr, spinnerPos).getHint();
+            return "(" + thisQuiz.getQuestion(thisRoundNr, spinnerPos).getHint() + ")";
         } else {
             return thisQuiz.getTeam(spinnerPos).getName();
         }
@@ -226,7 +226,8 @@ public class C_CorrectorHome extends MyActivity implements LoadingActivity, Frag
     }
 
     private void showCorrectAnswerForQuestion(int roundNr, int questionNr) {
-        tvCorrectAnswer.setText(thisQuiz.getQuestion(roundNr, questionNr).getQuestionNr() + ": " + thisQuiz.getQuestion(roundNr, questionNr).getCorrectAnswer());
+        //tvCorrectAnswer.setText(thisQuiz.getQuestion(roundNr, questionNr).getQuestionNr() + ": " + thisQuiz.getQuestion(roundNr, questionNr).getCorrectAnswer());
+        tvCorrectAnswer.setText(thisQuiz.getQuestion(roundNr, questionNr).getCorrectAnswer());
         if (correctPerQuestion) {
             tvCorrectAnswer.setVisibility(View.VISIBLE);
         } else {

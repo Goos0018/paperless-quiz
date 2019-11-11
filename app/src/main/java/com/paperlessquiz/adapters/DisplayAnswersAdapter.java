@@ -35,18 +35,19 @@ public class DisplayAnswersAdapter extends RecyclerView.Adapter<DisplayAnswersAd
     public DisplayAnswersAdapter(Context context, ArrayList<Question> questions, int teamNr) {
         this.questions = questions;
         this.teamNr = teamNr;
-        this.context=context;
-        this.quizLoader=new QuizLoader(context);
+        this.context = context;
+        this.quizLoader = new QuizLoader(context);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvQuestionID, tvDisplayAnswer;
+        TextView tvQuestionID, tvDisplayAnswer, tvSchiftingsAnswer;
         ImageView ivIsCorrect;
 
         public ViewHolder(View itemView) {
             super(itemView);
             tvQuestionID = itemView.findViewById(R.id.tvQuestionID);
             tvDisplayAnswer = itemView.findViewById(R.id.tvDisplayAnswer);
+            tvSchiftingsAnswer = itemView.findViewById(R.id.tvSchiftingsAnswer);
             ivIsCorrect = itemView.findViewById(R.id.ivIsCorrect);
         }
     }
@@ -66,15 +67,25 @@ public class DisplayAnswersAdapter extends RecyclerView.Adapter<DisplayAnswersAd
         viewHolder.tvDisplayAnswer.setText(questions.get(i).getAnswerForTeam(teamNr).getTheAnswer());
         boolean isCorrect = questions.get(i).getAnswerForTeam(teamNr).isCorrect();
         boolean isCorrected = questions.get(i).getAnswerForTeam(teamNr).isCorrected();
+        int questionType = questions.get(i).getQuestionType();
         if (isCorrected) {
-            if (isCorrect) {
-                viewHolder.ivIsCorrect.setImageResource(R.drawable.answer_ok);
+            if (questionType == 1) {
+                //This is a Schiftingsvraag - hide the icon and display the correct answer instead
+                viewHolder.ivIsCorrect.setImageResource(R.drawable.blanc);
+                viewHolder.tvSchiftingsAnswer.setVisibility(View.VISIBLE);
+                viewHolder.tvSchiftingsAnswer.setText("N/A");
             } else {
-                viewHolder.ivIsCorrect.setImageResource(R.drawable.answer_nok);
+                //This is a normal question - show an icon indicating if it was right or wrong
+                if (isCorrect) {
+                    viewHolder.ivIsCorrect.setImageResource(R.drawable.answer_ok);
+                } else {
+                    viewHolder.ivIsCorrect.setImageResource(R.drawable.answer_nok);
+                }
             }
         } else {
             viewHolder.ivIsCorrect.setVisibility(View.INVISIBLE);
         }
+
         viewHolder.ivIsCorrect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,7 +99,7 @@ public class DisplayAnswersAdapter extends RecyclerView.Adapter<DisplayAnswersAd
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String remark = input.getText().toString();
-                        quizLoader.submitRemark(QuizDatabase.HELPTYPE_QUIZQUESTION,title + ": " + remark);
+                        quizLoader.submitRemark(QuizDatabase.HELPTYPE_QUIZQUESTION, title + ": " + remark);
                         //Dismiss the keyboard explicitly
                         InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(input.getWindowToken(), 0);

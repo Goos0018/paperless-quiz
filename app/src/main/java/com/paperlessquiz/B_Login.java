@@ -145,6 +145,9 @@ public class B_Login extends AppCompatActivity implements LoadingActivity {
             etPasskey.setText("");
             userNr = thisQuiz.getTeams().get(position).getUserNr();
         }
+        //Show the keyboard
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(etPasskey,0); //     hideSoftInputFromWindow(etPasskey.getWindowToken(), 0);
     }
 
     @Override

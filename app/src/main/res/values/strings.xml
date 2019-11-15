@@ -9,7 +9,7 @@
     <string name="loadingerror">Dit ging niet goed:</string>
     <string name="btn_participant">Ik neem deel aan de quiz</string>
     <string name="btn_organizer">Ik organizeer de quiz</string>
-    <string name="main_selectteamprompt">Tik op je ploegnaam hieronder</string>
+    <string name="main_selectteamprompt">Kies je ploegnaam uit onderstaande lijst, geef je paswoord in en klik dan op LOG IN</string>
     <string name="main_selectorganizerprompt">Tik op je rol</string>
     <string name="main_wrongpswdentered">Geef de code in die je van de organizatie kreeg</string>
     <string name="main_registeratreceptionfirst">Gelieve eerst aan te melden bij de receptie</string>
@@ -56,5 +56,11 @@
     <string name="barhelp_orderdeliver">Af te leveren bestelling</string>
     <string name="order_confirmorcancel">Bevestig of annuleer je order!</string>
     <string name="part_answerssubmitted">Genoteerd. Je kan je antwoorden nog wijzigen tot de quizmaster de ronde afsluit</string>
+    <string name="display_topics_remarks">Opmerkingen</string>
+    <string name="display_topics_myremarks">Mijn opmerkingen</string>
+    <string name="display_topics_no_remarks">Er zijn geen opmerkingen om weer te geven</string>
+    <string name="display_topics_no_remarks_entered">Je hebt nog geen opmerkingen ingegeven. Als je opmerkingen ingeeft bij een vraag (kan pas als deze verbeterd werd) of bestelling komen deze in deze lijst, samen met het antwoord van de organisatie</string>
+    <string name="display_topics_help">Help</string>
+    <string name="display_topics_no_contexthelp">Er is geen context help beschikbaar</string>
 
 </resources>

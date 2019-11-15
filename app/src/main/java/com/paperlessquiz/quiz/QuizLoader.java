@@ -527,7 +527,11 @@ public class QuizLoader {
                 QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_ITEMSTOORDER + orderDetails +
                 QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_TIME + time;
         submitOrderRequest = new HTTPSubmit(context, scriptParams, QuizDatabase.REQUEST_ID_SUBMITORDER);
-        submitOrderRequest.sendRequest(new LLSilent());
+        //submitOrderRequest.sendRequest(new LLSilent());
+        submitOrderRequest.sendRequest(new LLShowProgressActWhenComplete(context, context.getString(R.string.loader_pleasewait),
+                context.getString(R.string.loader_updatingquiz),
+                context.getString(R.string.loadingerror), false));
+
     }
 
     //Update the order that is passed
@@ -541,7 +545,10 @@ public class QuizLoader {
                 QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_IDORDER + order.getIdOrder() +
                 QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_TIME + time;
         updateExistingOrderRequest = new HTTPSubmit(context, scriptParams, QuizDatabase.REQUEST_ID_UPDATEEXISTINGORDER);
-        updateExistingOrderRequest.sendRequest(new LLSilent());
+        //updateExistingOrderRequest.sendRequest(new LLSilent());
+        updateExistingOrderRequest.sendRequest(new LLShowProgressActWhenComplete(context, context.getString(R.string.loader_pleasewait),
+                context.getString(R.string.loader_updatingquiz),
+                context.getString(R.string.loadingerror), false));
     }
 
     public void updateOrderStatus(int idOrder, int newStatus, String time) {

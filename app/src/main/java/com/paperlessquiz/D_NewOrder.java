@@ -40,7 +40,7 @@ public class D_NewOrder extends AppCompatActivity implements LoadingActivity {
     User thisUser;
     QuizLoader quizLoader;
     boolean isNewOrder;
-    boolean usersLoaded, orderItemsLoaded;
+    boolean usersLoaded, orderItemsLoaded, orderCreated, orderUpdated;
     //int thisUserId;
 
     @Override
@@ -52,6 +52,12 @@ public class D_NewOrder extends AppCompatActivity implements LoadingActivity {
             case QuizDatabase.REQUEST_ID_GET_ORDERITEMS:
                 orderItemsLoaded = true;
                 break;
+            case QuizDatabase.REQUEST_ID_SUBMITORDER:
+                orderCreated=true;
+                break;
+            case QuizDatabase.REQUEST_ID_UPDATEEXISTINGORDER:
+                orderUpdated=true;
+                        break;
         }
         if (usersLoaded) {
             usersLoaded = false;
@@ -63,6 +69,14 @@ public class D_NewOrder extends AppCompatActivity implements LoadingActivity {
             quizLoader.loadOrderItemsIntoQuiz();
             showOrderItemsAdapter.setOrderItems(MyApplication.itemsToOrderArray);
             showOrderItemsAdapter.notifyDataSetChanged();
+        }
+        if (orderCreated) {
+            orderCreated = false;
+            D_NewOrder.this.finish();
+        }
+        if (orderUpdated) {
+            orderUpdated = false;
+            D_NewOrder.this.finish();
         }
     }
 
@@ -115,6 +129,7 @@ public class D_NewOrder extends AppCompatActivity implements LoadingActivity {
             if (thisOrder.isEmpty()) {
                 setResult(Order.RESULT_NO_ORDER_CREATED, intent);
                 Toast.makeText(this, this.getString(R.string.order_nothing_to_order), Toast.LENGTH_LONG).show();
+                D_NewOrder.this.finish();
             } else {
                 setResult(Order.RESULT_ORDER_CREATED, intent);
                 quizLoader.submitOrder(thisOrder.getOrderContentsAsString(), getCurrentTime());
@@ -123,7 +138,7 @@ public class D_NewOrder extends AppCompatActivity implements LoadingActivity {
             setResult(Order.RESULT_ORDER_CREATED, intent);
             quizLoader.updateExistingOrder(thisOrder, getCurrentTime());
         }
-        D_NewOrder.this.finish();
+        //D_NewOrder.this.finish();
     }
 
     @Override

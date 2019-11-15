@@ -7,6 +7,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import com.paperlessquiz.adapters.ShowHelpTopicsAdapter;
 import com.paperlessquiz.loadinglisteners.LoadingActivity;
@@ -24,9 +26,11 @@ import java.util.TimeZone;
 
 public class DisplayHelpTopics extends AppCompatActivity implements LoadingActivity {
 
+    TextView tvNoEntries;
     RecyclerView rvDisplayHelpTopics;
     RecyclerView.LayoutManager layoutManager;
     int helpType;
+    String noEntriesString;
     ShowHelpTopicsAdapter showHelpTopicsAdapter;
     ArrayList<HelpTopic> topics = new ArrayList<>();
     Quiz thisQuiz = MyApplication.theQuiz;
@@ -45,6 +49,11 @@ public class DisplayHelpTopics extends AppCompatActivity implements LoadingActiv
             helpTopicsLoaded = false;
             showHelpTopicsAdapter.setHelpTopics(quizLoader.getHelpTopicsRequest.getResultsList());
             showHelpTopicsAdapter.notifyDataSetChanged();
+            //Display an appropriate message if there are no remarks yet
+            if (showHelpTopicsAdapter.getItemCount() == 0){
+                tvNoEntries.setVisibility(View.VISIBLE);
+                tvNoEntries.setText(noEntriesString);
+            }
         }
     }
 
@@ -64,18 +73,23 @@ public class DisplayHelpTopics extends AppCompatActivity implements LoadingActiv
                 switch (thisUser.getUserType()) {
                     case QuizDatabase.USERTYPE_BARRESPONSIBLE:
                     case QuizDatabase.USERTYPE_JUROR:
-                        actionBarTitle = "Opmerkingen";
+                        actionBarTitle = DisplayHelpTopics.this.getString(R.string.display_topics_remarks);
+                        noEntriesString = DisplayHelpTopics.this.getString(R.string.display_topics_no_remarks);
                         break;
                     default:
-                        actionBarTitle = "Mijn opmerkingen";
+                        actionBarTitle = DisplayHelpTopics.this.getString(R.string.display_topics_myremarks);
+                        noEntriesString = DisplayHelpTopics.this.getString(R.string.display_topics_no_remarks_entered);
                 }
                 break;
             default:
-                actionBarTitle = "Help";
+                actionBarTitle = DisplayHelpTopics.this.getString(R.string.display_topics_help);
+                noEntriesString = DisplayHelpTopics.this.getString(R.string.display_topics_no_contexthelp);
         }
         actionBar.setTitle(actionBarTitle);
 
+
         rvDisplayHelpTopics = findViewById(R.id.rvDisplayHelpTopics);
+        tvNoEntries=findViewById(R.id.tvNoEntries);
         rvDisplayHelpTopics.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         rvDisplayHelpTopics.setLayoutManager(layoutManager);

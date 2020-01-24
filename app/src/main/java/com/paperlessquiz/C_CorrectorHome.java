@@ -21,7 +21,7 @@ import java.util.ArrayList;
 //TODO: pass ID of loader when running LoadCompleted
 
 /**
- * This class is allows a corrector to mark answers as correct or not correct. The screen always has a round spinner to spin through the rounds.
+ * This class allows a corrector to mark answers as correct or not correct. The screen always has a round spinner to spin through the rounds.
  * Corrections are only possible if the status of a round is to allow this (acceptCorrections = true).
  * Standard is to correct all answers for a question. In that case, a questionspinner allows to scroll through the questions of the round and correct them
  * There is also the option to correct answers per team. In that case, the questionspinner is replaced by a teamSpinner
@@ -198,6 +198,7 @@ public class C_CorrectorHome extends MyActivity implements LoadingActivity, Frag
                     myAdapter.notifyDataSetChanged();
                 }
                 break;
+
             case R.id.allwrong:
                 for (int i = 0; i < allAnswers.size(); i++) {
                     allAnswers.get(i).setCorrect(false);

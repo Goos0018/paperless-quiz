@@ -78,7 +78,7 @@ public class EditTeamsAdapter extends RecyclerView.Adapter<EditTeamsAdapter.View
             viewHolder.ivPresent.setImageResource(R.drawable.team_not_present);
 
         } else {
-            viewHolder.ivPresent.setImageResource(R.drawable.team_present);
+            viewHolder.ivPresent.setImageResource(R.drawable.team_present_v2);
         }
         //Make team name field editable when clicked
         viewHolder.tvTeamName.setOnClickListener(new View.OnClickListener()

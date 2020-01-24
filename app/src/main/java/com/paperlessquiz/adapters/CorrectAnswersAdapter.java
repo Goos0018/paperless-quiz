@@ -21,8 +21,6 @@ import java.util.ArrayList;
 //Option to correct questions per team is also available
 public class CorrectAnswersAdapter extends ArrayAdapter<Answer> {
 
-    //TODO: fix bug: if correcting per team, don't score questions with the same answer as having the same score.
-
     public final Context context;
     private final ArrayList<Answer> answers;
     private CorrectAnswersAdapter adapter;
@@ -94,7 +92,7 @@ public class CorrectAnswersAdapter extends ArrayAdapter<Answer> {
                     isAnswerCorrect = 0;
                 }
                 //Loop over all answers and set the score for identical answers to the same score as this answer
-                //only if we are correcting oper question
+                //only if we are correcting per question
                 if (correctPerQuestion) {
                     for (int i = 0; i < answers.size(); i++) {
                         if (answers.get(i).getTheAnswer().equals(getItem(position).getTheAnswer())) {

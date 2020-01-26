@@ -83,6 +83,7 @@ public class QuizDatabase {
     public static final String SCRIPT_GET_SCORES = "getscores.php";
     public static final String SCRIPT_LOGEVENT = "logmessage.php";
     public static final String SCRIPT_ADDUNITS = "addunits.php";
+    public static final String SCRIPT_SETALLANSWERSTOFALSE = "setallfalse.php";
 
     //Param values - query names
     public static final String PARAMVALUE_QRY_ALL_ROUNDS = "rounds";
@@ -138,6 +139,7 @@ public class QuizDatabase {
     public static final int REQUEST_ID_ANSWERREMARK = 116;
     public static final int REQUEST_ID_LOGMESSAGE = 117;
     public static final int REQUEST_ID_ADDUNITS = 118;
+    public static final int REQUEST_ID_SETALLANSWERSTOFALSE = 119;
 
 
     //User types - these must match what is defined in the constants.php

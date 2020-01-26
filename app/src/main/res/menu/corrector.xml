@@ -22,4 +22,10 @@
         app:showAsAction="always"
         android:icon="@drawable/rounds"/>
 
+    <item android:id="@+id/allwrong"
+        android:title="AllFalse"
+        android:orderInCategory="100"
+        app:showAsAction="always"
+        android:icon="@drawable/answer_nok"/>
+
 </menu>

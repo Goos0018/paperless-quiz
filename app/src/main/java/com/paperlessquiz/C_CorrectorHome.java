@@ -43,7 +43,7 @@ public class C_CorrectorHome extends MyActivity implements LoadingActivity, Frag
     ArrayList<Answer> allAnswers;
     boolean correctPerQuestion = true;
     QuizLoader quizLoader;
-    boolean roundsLoaded,answersLoaded,fullQuestionsLoaded;
+    boolean roundsLoaded, answersLoaded, fullQuestionsLoaded;
 
     @Override
     public String getRoundStatusExplanation() {
@@ -56,7 +56,7 @@ public class C_CorrectorHome extends MyActivity implements LoadingActivity, Frag
         this.thisRoundNr = roundNr;
         refreshDisplayFragments();
         spinner.moveToFirstPos();
-        if (myAdapter != null){
+        if (myAdapter != null) {
             myAdapter.setThisRoundNr(roundNr);
         }
         showCorrectAnswerForQuestion(thisRoundNr, 1);
@@ -143,7 +143,7 @@ public class C_CorrectorHome extends MyActivity implements LoadingActivity, Frag
         }
     }
 
-    private void loadQuiz(){
+    private void loadQuiz() {
         quizLoader.loadRounds();
         quizLoader.loadAllAnswers();
         quizLoader.loadFullQuestions();
@@ -198,14 +198,18 @@ public class C_CorrectorHome extends MyActivity implements LoadingActivity, Frag
                     myAdapter.notifyDataSetChanged();
                 }
                 break;
-
+*/
             case R.id.allwrong:
                 for (int i = 0; i < allAnswers.size(); i++) {
-                    allAnswers.get(i).setCorrect(false);
-                    myAdapter.notifyDataSetChanged();
+                    if (!(allAnswers.get(i).isCorrected())) {
+                        allAnswers.get(i).setCorrect(false);
+                        allAnswers.get(i).setCorrected(true);
+                    }
                 }
+                quizLoader.setAllAnswersToFalse(thisQuiz.getQuestionID(thisRoundNr, thisQuestionNr), 0);
+                myAdapter.notifyDataSetChanged();
                 break;
-                */
+
         }
         //Force onCreateoptionsMenu to run again to make sure buttons are hidden and shown as needed
         supportInvalidateOptionsMenu();
@@ -239,7 +243,7 @@ public class C_CorrectorHome extends MyActivity implements LoadingActivity, Frag
     private void refreshDisplayFragments() {
         //Refresh what is in the display based on the current value of roundSpinner position
         Round thisRound = thisQuiz.getRound(thisRoundNr);
-        switch (thisRound.getRoundStatus()){
+        switch (thisRound.getRoundStatus()) {
             case QuizDatabase.ROUNDSTATUS_CLOSED:
                 //Round is not yet open
                 //Just display the fragment that tells you this

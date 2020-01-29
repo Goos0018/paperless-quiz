@@ -158,13 +158,16 @@ public class C_CorrectorHome extends MyActivity implements LoadingActivity, Frag
             if (correctPerQuestion) {
                 menu.findItem(R.id.rounds).setVisible(false);
                 menu.findItem(R.id.teams).setVisible(true);
+                menu.findItem(R.id.allwrong).setVisible(true);
             } else {
                 menu.findItem(R.id.rounds).setVisible(true);
                 menu.findItem(R.id.teams).setVisible(false);
+                menu.findItem(R.id.allwrong).setVisible(false);
             }
         } else {
             menu.findItem(R.id.rounds).setVisible(false);
             menu.findItem(R.id.teams).setVisible(false);
+            menu.findItem(R.id.allwrong).setVisible(false);
         }
         //MenuItem correctPerRndItem = menu.findItem(R.id.rounds);
         //MenuItem correctPerTeamItem = menu.findItem(R.id.teams);

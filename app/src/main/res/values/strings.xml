@@ -9,7 +9,7 @@
     <string name="loadingerror">Dit ging niet goed:</string>
     <string name="btn_participant">Ik neem deel aan de quiz</string>
     <string name="btn_organizer">Ik organizeer de quiz</string>
-    <string name="main_selectteamprompt">Kies je ploegnaam uit onderstaande lijst, geef je paswoord in en klik dan op LOG IN</string>
+    <string name="main_selectteamprompt">Kies je ploegnaam uit onderstaande lijst, geef je paswoord in en tik dan op LOG IN</string>
     <string name="main_selectorganizerprompt">Tik op je rol</string>
     <string name="main_wrongpswdentered">Geef de code in die je van de organizatie kreeg</string>
     <string name="main_registeratreceptionfirst">Gelieve eerst aan te melden bij de receptie</string>
@@ -19,7 +19,7 @@
     <string name="corrector_roundalreadycorrected">Deze ronde werd al verbeterd</string>
     <string name="participant_waitforroundopen">Deze ronde is nog niet geopend</string>
     <string name="participant_waitforroundcorrection">We zijn deze ronde aan het verbeteren...</string>
-    <string name="enter_passkey">Paswoord?</string>
+    <string name="enter_passkey">Tik hier om je paswoord in te geven</string>
     <string name="loader_pleasewait">Even geduld...</string>
     <string name="loader_updatingquiz">Ophalen gegevens...</string>
     <string name="participant_nobackallowed">Sluit en herstart de app als je opnieuw will aanmelden</string>

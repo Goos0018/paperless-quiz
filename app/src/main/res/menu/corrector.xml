@@ -4,28 +4,31 @@
 
 
     <item
+        android:id="@+id/allwrong"
+        android:icon="@drawable/answer_nok"
+        android:orderInCategory="100"
+        android:title="AllFalse"
+        app:showAsAction="always" />
+
+    <item
         android:id="@+id/refresh"
         android:icon="@drawable/refresh"
         android:orderInCategory="100"
         android:title="Refresh"
         app:showAsAction="always" />
 
-    <item android:id="@+id/teams"
+    <item
+        android:id="@+id/teams"
+        android:icon="@drawable/teams"
+        android:orderInCategory="100"
         android:title="Teams"
-        android:orderInCategory="100"
-        app:showAsAction="always"
-        android:icon="@drawable/teams"/>
+        app:showAsAction="always" />
 
-    <item android:id="@+id/rounds"
+    <item
+        android:id="@+id/rounds"
+        android:icon="@drawable/rounds"
+        android:orderInCategory="100"
         android:title="Rounds"
-        android:orderInCategory="100"
-        app:showAsAction="always"
-        android:icon="@drawable/rounds"/>
-
-    <item android:id="@+id/allwrong"
-        android:title="AllFalse"
-        android:orderInCategory="100"
-        app:showAsAction="always"
-        android:icon="@drawable/answer_nok"/>
+        app:showAsAction="always" />
 
 </menu>

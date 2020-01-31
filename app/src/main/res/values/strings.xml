@@ -30,7 +30,7 @@
     <string name="rnd_score_totalrank">Positie in de totaalstand:</string>
     <string name="participant_submitanswers">Klaar!</string>
     <string name="participant_youranswers">Jullie antwoorden:</string>
-    <string name="parthome_your_answer">Jullie antwoord</string>
+    <string name="parthome_your_answer">Tik hier om je antwoord in te geven</string>
     <string name="order_title">Nieuwe bestelling</string>
     <string name="order_btn_new">Nieuwe bestelling</string>
     <string name="order_btn_submit">Bestelling plaatsen!</string>

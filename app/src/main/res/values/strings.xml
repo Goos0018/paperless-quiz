@@ -62,5 +62,7 @@
     <string name="display_topics_no_remarks_entered">Je hebt nog geen opmerkingen ingegeven. Als je opmerkingen ingeeft bij een vraag (kan pas als deze verbeterd werd) of bestelling komen deze in deze lijst, samen met het antwoord van de organisatie</string>
     <string name="display_topics_help">Help</string>
     <string name="display_topics_no_contexthelp">Er is geen context help beschikbaar</string>
+    <string name="quizloader_answernotregistered">Opgelet: je antwoord werd niet geregistreerd - probeer het opnieuw</string>
+    <string name="juror_roundbeingcorrected">Deze ronde wordt momenteel verbeterd</string>
 
 </resources>

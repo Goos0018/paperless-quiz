@@ -140,7 +140,7 @@ public class QuizDatabase {
     public static final int REQUEST_ID_LOGMESSAGE = 117;
     public static final int REQUEST_ID_ADDUNITS = 118;
     public static final int REQUEST_ID_SETALLANSWERSTOFALSE = 119;
-
+    public static final int REQUEST_ID_LIMIT = 1000;
 
     //User types - these must match what is defined in the constants.php
     public static final int USERTYPE_TEAM = 0;
@@ -148,11 +148,11 @@ public class QuizDatabase {
     public static final int USERTYPE_RECEPTIONIST = 2;
     public static final int USERTYPE_CORRECTOR = 3;
     public static final int USERTYPE_JUROR = 4;
-    //Question Types
-    public static final int QUESTIONTYPE_SCHIFTING = 1;
     //public static final int USERTYPE_SALES = 5;
     public static final int USERTYPE_BARRESPONSIBLE = 6;
     public static final int USERTYPE_BARHELPER = 7;
+    //Question Types
+    public static final int QUESTIONTYPE_SCHIFTING = 1;
     //User Statuses  - these must match what is defined in the constants.php
     public static final int USERSTATUS_NOTPRESENT = 0;
     public static final int USERSTATUS_PRESENTNOTLOGGEDIN = 1;
@@ -316,6 +316,11 @@ public class QuizDatabase {
     public static final int ANSWERSTAT_COUNTBLANK = 0;
     public static final int ANSWERSTAT_COUNTNONBLANK = 1;
     public static final int ANSWERSTAT_COUNTCORRECTED = 2;
+    //Determines how ids for answers and questions and rounds are calculated
+    public static final int CALC_ROUND_FACTOR = 100;
+    public static final int CALC_QUESTION_FACTOR = 100;
+    //Default string for a blanc answer
+    public static final String BLANC_ANSWER = "-";
     //Log levels
     public static final int LOGLEVEL_ERROR = 0;
     public static final int LOGLEVEL_WARNING = 2;

@@ -55,7 +55,7 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
     QuizLoader quizLoader;
     //private ProgressDialog loading;
     boolean roundsLoaded, answersLoaded, scoresLoaded, answersSubmitted;
-    boolean activityBeingCreated=true;
+    boolean activityBeingCreated = true;
 
     @Override
     public void loadingComplete(int requestID) {
@@ -70,8 +70,17 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
                 scoresLoaded = true;
                 break;
             case QuizDatabase.REQUEST_ID_SETANSWERSSUBMITTED:
-                answersSubmitted=true;
+                answersSubmitted = true;
                 break;
+            //This is the id of a question for which an answer was submitted
+            default:
+                //Determine the round nr and question number from the id
+                int questionNr = (requestID % QuizDatabase.CALC_QUESTION_FACTOR);
+                int roundNr = ((requestID / QuizDatabase.CALC_QUESTION_FACTOR)% QuizDatabase.CALC_ROUND_FACTOR);
+                //Set the submitted status to true
+                thisQuiz.setAnswerForTeamSubmitted(roundNr,questionNr,thisTeamNr);
+                refreshAnswers();
+
         }
         //If everything is properly loaded, we can start populating the central Quiz object
         if (roundsLoaded && answersLoaded && scoresLoaded) {
@@ -86,8 +95,8 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
             roundResultFrag.refresh();  //This will recalculate scores based on the re-loaded corrections
             refreshDisplayFragments();  //Display the correct fragments based on new round status etc.
         }
-        if (answersSubmitted){
-            answersSubmitted=false;
+        if (answersSubmitted) {
+            answersSubmitted = false;
             Toast.makeText(this, this.getString(R.string.part_answerssubmitted), Toast.LENGTH_SHORT).show();
         }
     }
@@ -125,10 +134,8 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
         if (!activityBeingCreated) {
             updateQuiz();
             //Rest is done when loading is complete
-        }
-        else
-        {
-            activityBeingCreated=false;
+        } else {
+            activityBeingCreated = false;
             roundResultFrag.refresh();
             refreshDisplayFragments();
         }
@@ -140,23 +147,33 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
         //Update the answer if it was changed
         String oldAnswer = thisQuiz.getAnswerForTeam(roundSpinner.getPosition(), oldPos, thisTeamNr).getTheAnswer();
         String newAnswer = etAnswer.getText().toString().trim();
+        //If the new answer is blanc, replace it by a "-"
+        if (newAnswer.equals("")){
+            newAnswer = QuizDatabase.BLANC_ANSWER;
+        }
+        int questionID = thisQuiz.getQuestionID(roundSpinner.getPosition(), oldPos);
         if (!(oldAnswer.equals(newAnswer))) {
-            int questionID = thisQuiz.getQuestionID(roundSpinner.getPosition(), oldPos);
+            //This action also sets the submitted status to False
             thisQuiz.setAnswerForTeam(roundSpinner.getPosition(), oldPos, thisTeamNr, newAnswer);
-            //Store the answer in the central quiz db
+        }
+        //If the answer is not yet submitted, submit it now
+        if (!(thisQuiz.isAnswerSubmitted(roundSpinner.getPosition(), oldPos, thisTeamNr))){
             quizLoader.submitAnswer(questionID, newAnswer);
         }
         //If this is a schiftingsQuestion, we only want numeric answers
-        if (thisQuiz.getQuestion(roundSpinner.getPosition(), newPos).getQuestionType() == QuizDatabase.QUESTIONTYPE_SCHIFTING)
-        {
+        if (thisQuiz.getQuestion(roundSpinner.getPosition(), newPos).getQuestionType() == QuizDatabase.QUESTIONTYPE_SCHIFTING) {
             etAnswer.setInputType(InputType.TYPE_CLASS_NUMBER);
-        }
-        else
-        {
+        } else {
             etAnswer.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
         }
         //Set the value of the answer for the new question to what we already have in the Quiz object
-        etAnswer.setText(thisQuiz.getAnswerForTeam(roundSpinner.getPosition(), newPos, thisTeamNr).getTheAnswer());
+        //If this value  = "-", then set the value to a space
+        if (thisQuiz.getAnswerForTeam(roundSpinner.getPosition(), newPos, thisTeamNr).getTheAnswer().equals(QuizDatabase.BLANC_ANSWER)){
+            etAnswer.setText("");
+        }
+        else {
+            etAnswer.setText(thisQuiz.getAnswerForTeam(roundSpinner.getPosition(), newPos, thisTeamNr).getTheAnswer());
+        }
         //Dismiss the keyboard if its there
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(etAnswer.getWindowToken(), 0);
@@ -206,8 +223,13 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
                 //etAnswer is by default invisible to avoid seeing the keyboard when you shouldn't
                 etAnswer.setVisibility(View.VISIBLE);
                 //Initialize etAnswer with the correct answer
-                etAnswer.setText(thisQuiz.getAnswerForTeam(roundSpinner.getPosition(), questionSpinner.getPosition(), thisTeamNr).getTheAnswer());
-                break;
+                if (thisQuiz.getAnswerForTeam(roundSpinner.getPosition(), questionSpinner.getPosition(), thisTeamNr).getTheAnswer().equals(QuizDatabase.BLANC_ANSWER)){
+                    etAnswer.setText("");
+                }
+                else {
+                    etAnswer.setText(thisQuiz.getAnswerForTeam(roundSpinner.getPosition(), questionSpinner.getPosition(), thisTeamNr).getTheAnswer());
+                }
+              break;
             case QuizDatabase.ROUNDSTATUS_OPENFORCORRECTIONS:
                 //Round is closed for answering, but not yet corrected
                 //Just display the fragment that tells you this
@@ -295,7 +317,7 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
     protected void onPause() {
         if (thisQuiz.isAnyRoundOpen() && !MyApplication.authorizedBreak) {
             lastPausedDate = new Date();
-            quizLoader.createPauseEvent(QuizDatabase.TYPE_PAUSE_PAUSE,0);
+            quizLoader.createPauseEvent(QuizDatabase.TYPE_PAUSE_PAUSE, 0);
             MyApplication.setAppPaused(true);
             quizLoader.updateMyStatus(QuizDatabase.USERSTATUS_PRESENTNOTLOGGEDIN);
         }
@@ -309,11 +331,11 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
         if (MyApplication.isAppPaused()) {
             Date dateResumed = new Date();
             long timePaused = (dateResumed.getTime() - lastPausedDate.getTime()) / 1000;
-            quizLoader.createPauseEvent(QuizDatabase.TYPE_PAUSE_RESUME,timePaused);
+            quizLoader.createPauseEvent(QuizDatabase.TYPE_PAUSE_RESUME, timePaused);
             MyApplication.setAppPaused(false);
         }
         quizLoader.updateMyStatus(QuizDatabase.USERSTATUS_PRESENTLOGGEDIN);
-        MyApplication.authorizedBreak =false;
+        MyApplication.authorizedBreak = false;
     }
 
     @Override

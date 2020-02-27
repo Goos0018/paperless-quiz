@@ -10,7 +10,7 @@ public class AnswersParser implements JsonParser<Answer> {
 
     @Override
     public Answer parse(JSONObject jo) throws JSONException {
-        boolean isCorrect, isCorrected;
+        boolean isCorrect, isCorrected, isSubmitted;
         int teamNr, roundNr,questionNr;
         String theAnswer;
         Answer answer;
@@ -19,6 +19,7 @@ public class AnswersParser implements JsonParser<Answer> {
             isCorrected = (jo.getInt(QuizDatabase.COLNAME_ANSWER_CORRECTED) == 1);
             teamNr = jo.getInt(QuizDatabase.COLNAME_USER_NR);
             theAnswer = jo.getString(QuizDatabase.COLNAME_ANSWER);
+            isSubmitted = !(theAnswer.equals(""));
             roundNr = jo.getInt(QuizDatabase.COLNAME_ROUND_NR);
             questionNr = jo.getInt(QuizDatabase.COLNAME_QUESTION_NR);
         } catch (Exception e) {
@@ -28,8 +29,9 @@ public class AnswersParser implements JsonParser<Answer> {
             theAnswer = "Error parsing " + jo.toString();
             roundNr=0;
             questionNr=0;
+            isSubmitted=false;
         }
-        answer = new Answer(teamNr, roundNr,questionNr, theAnswer, isCorrected, isCorrect);
+        answer = new Answer(teamNr, roundNr,questionNr, theAnswer, isCorrected, isCorrect,isSubmitted);
         return answer;
     }
 }

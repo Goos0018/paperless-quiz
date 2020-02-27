@@ -33,6 +33,14 @@ public class LLSilentActWhenComplete implements LoadingListener {
     @Override
     public void loadingError(String error, int callerID) {
         MyApplication.logMessage(context,QuizDatabase.LOGLEVEL_ERROR, error);
-        Toast.makeText(context, errorMessage + error, Toast.LENGTH_LONG).show();
+        String displayError;
+        if (errorMessage.equals("")){
+            displayError = error;
+        }
+        else
+        {
+            displayError=errorMessage;
+        }
+        Toast.makeText(context, displayError, Toast.LENGTH_LONG).show();
     }
 }

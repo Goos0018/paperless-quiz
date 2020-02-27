@@ -61,7 +61,7 @@ public class Quiz implements Serializable {
                 //For each Team
                 for (int k = 0; k < teams.size(); k++) {
                     Team theTeam = teams.get(k);
-                    theQuestion.getAllAnswers().add(new Answer(theTeam.getUserNr(), theQuestion.getRoundNr(), theQuestion.getQuestionNr(), "", false, false));
+                    theQuestion.getAllAnswers().add(new Answer(theTeam.getUserNr(), theQuestion.getRoundNr(), theQuestion.getQuestionNr(), "", false, false,false));
                 }
             }
         }
@@ -215,6 +215,14 @@ public ResultAfterRound getResultForTeam(int teamNr, int roundNr){
     public Answer getAnswerForTeam(int rndNr, int questionNr, int teamNr) {
         return getQuestion(rndNr, questionNr).getAnswerForTeam(teamNr);
     }
+
+    public void setAnswerForTeamSubmitted(int roundNr, int questionNr, int teamNr){
+        getAnswerForTeam(roundNr,questionNr,teamNr).setSubmitted(true);
+    };
+
+    public boolean isAnswerSubmitted(int roundNr, int questionNr, int teamNr){
+        return getAnswerForTeam(roundNr,questionNr,teamNr).isSubmitted();
+    };
 
     public void setAnswerForTeam(int rndNr, int questionNr, int teamNr, String answer) {
         getQuestion(rndNr, questionNr).setAnswerForTeam(teamNr, answer);

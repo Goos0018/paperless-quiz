@@ -65,12 +65,14 @@ public class DisplayAnswersAdapter extends RecyclerView.Adapter<DisplayAnswersAd
         viewHolder.itemView.setTag(questions.get(i));
         viewHolder.tvQuestionID.setText(Integer.toString(questions.get(i).getQuestionNr()));
         viewHolder.tvDisplayAnswer.setText(questions.get(i).getAnswerForTeam(teamNr).getTheAnswer());
+        boolean isSubmitted = questions.get(i).getAnswerForTeam(teamNr).isSubmitted();
         boolean isCorrect = questions.get(i).getAnswerForTeam(teamNr).isCorrect();
         boolean isCorrected = questions.get(i).getAnswerForTeam(teamNr).isCorrected();
         int questionType = questions.get(i).getQuestionType();
         if (isCorrected) {
+            //The question is corrected
             if (questionType == 1) {
-                //This is a Schiftingsvraag - hide the icon and display the correct answer instead
+                //This is a Schiftingsvraag - hide the icon and display N/A
                 viewHolder.ivIsCorrect.setImageResource(R.drawable.blanc);
                 viewHolder.tvSchiftingsAnswer.setVisibility(View.VISIBLE);
                 viewHolder.tvSchiftingsAnswer.setText("N/A");
@@ -83,7 +85,14 @@ public class DisplayAnswersAdapter extends RecyclerView.Adapter<DisplayAnswersAd
                 }
             }
         } else {
-            viewHolder.ivIsCorrect.setVisibility(View.INVISIBLE);
+            //The question is not corrected - check if the answer was submitted
+            if (!isSubmitted) {
+                //Answer is not submitted - display alert icon
+                viewHolder.ivIsCorrect.setImageResource(R.drawable.answer_not_submitted);
+            } else {
+                //Answer submitted but not corrected yet - display nothing
+                viewHolder.ivIsCorrect.setVisibility(View.INVISIBLE);
+            }
         }
 
         viewHolder.ivIsCorrect.setOnClickListener(new View.OnClickListener() {

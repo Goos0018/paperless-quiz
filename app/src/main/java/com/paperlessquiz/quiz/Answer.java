@@ -7,14 +7,16 @@ public class Answer implements Serializable{
     private String theAnswer;
     private boolean corrected;
     private boolean correct;
+    private boolean submitted;
 
-    public Answer(int teamNr, int roundNr, int questionNr, String theAnswer, boolean corrected, boolean correct) {
+    public Answer(int teamNr, int roundNr, int questionNr, String theAnswer, boolean corrected, boolean correct, boolean submitted) {
         this.teamNr = teamNr;
         this.roundNr = roundNr;
         this.questionNr = questionNr;
         this.theAnswer = theAnswer;
         this.corrected = corrected;
         this.correct = correct;
+        this.submitted=submitted;
     }
 
     //TODO: check if these constructors are necessary
@@ -70,5 +72,13 @@ public class Answer implements Serializable{
 
     public int getTeamNr() {
         return teamNr;
+    }
+
+    public boolean isSubmitted() {
+        return submitted;
+    }
+
+    public void setSubmitted(boolean submitted) {
+        this.submitted = submitted;
     }
 }

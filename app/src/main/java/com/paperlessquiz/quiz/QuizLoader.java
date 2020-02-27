@@ -6,6 +6,7 @@ import com.paperlessquiz.MyApplication;
 import com.paperlessquiz.R;
 import com.paperlessquiz.loadinglisteners.LLShowProgressActWhenComplete;
 import com.paperlessquiz.loadinglisteners.LLSilent;
+import com.paperlessquiz.loadinglisteners.LLSilentActWhenComplete;
 import com.paperlessquiz.orders.ItemOrdered;
 import com.paperlessquiz.orders.Order;
 import com.paperlessquiz.orders.OrderItem;
@@ -83,16 +84,17 @@ public class QuizLoader {
                 QuizDatabase.PARAMNAME_THEIDFORTHEQUERY + theId + QuizDatabase.PHP_PARAMCONCATENATOR +
                 QuizDatabase.PARAMNAME_IDQUIZ + idQuiz;
     }
-/*
-    //Load the entire quiz
-    public void loadQuizFromDb() {
-        loadRounds();
-        loadQuestions();
-        loadMyAnswers();
-        //loadAnswersSubmitted();
-        loadOrderItems();
-    }
-*/
+
+    /*
+        //Load the entire quiz
+        public void loadQuizFromDb() {
+            loadRounds();
+            loadQuestions();
+            loadMyAnswers();
+            //loadAnswersSubmitted();
+            loadOrderItems();
+        }
+    */
     public void loadUsers(String usersList) {
         String scriptParams = QuizDatabase.SCRIPT_GET_QUIZUSERS + QuizDatabase.PHP_STARTPARAM + QuizDatabase.PARAMNAME_IDQUIZ + thisQuiz.getListData().getIdQuiz() +
                 QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_USERSLIST + usersList;
@@ -161,8 +163,8 @@ public class QuizLoader {
     }
 
     public void loadMyAnswers() {
-       int dummy=0;
-       loadMyAnswers(dummy);
+        int dummy = 0;
+        loadMyAnswers(dummy);
     }
 
     //Again for the corrector
@@ -207,7 +209,7 @@ public class QuizLoader {
     }
 
     public void loadScoresAndStandings() {
-        int dummy=0;
+        int dummy = 0;
         loadScoresAndStandings(dummy);
     }
 
@@ -345,7 +347,7 @@ public class QuizLoader {
         for (int i = 0; i < getQuestionsRequest.getResultsList().size(); i++) {
             Question thisQuestion = getQuestionsRequest.getResultsList().get(i);
             if (thisQuestion.getRoundNr() > thisQuiz.getRounds().size() + 1) {
-                MyApplication.logMessage(context,QuizDatabase.LOGLEVEL_ERROR, "Load Questions error - unexpected roundNr");
+                MyApplication.logMessage(context, QuizDatabase.LOGLEVEL_ERROR, "Load Questions error - unexpected roundNr");
             } else {
                 Round theRound = thisQuiz.getRound(thisQuestion.getRoundNr());
                 //Make sure the question is added to the correct round and on the location that corresponds to its questionNr
@@ -389,7 +391,7 @@ public class QuizLoader {
         for (int i = 0; i < getQuestionsRequest.getResultsList().size(); i++) {
             Question thisQuestion = getQuestionsRequest.getResultsList().get(i);
             if (thisQuestion.getRoundNr() > thisQuiz.getRounds().size() + 1) {
-                MyApplication.logMessage(context,QuizDatabase.LOGLEVEL_ERROR, "UpdateFullQuestions error - unexpected roundNr");
+                MyApplication.logMessage(context, QuizDatabase.LOGLEVEL_ERROR, "UpdateFullQuestions error - unexpected roundNr");
             } else {
                 Round theRound = thisQuiz.getRound(thisQuestion.getRoundNr());
                 theRound.getQuestion(thisQuestion.getQuestionNr()).setCorrectAnswer(thisQuestion.getCorrectAnswer());
@@ -439,8 +441,10 @@ public class QuizLoader {
                 QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_USERPASSWORD + userPassword +
                 QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_IDQUESTION + idQuestion +
                 QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_THEANSWER + encodedAnswer;
-        submitAnswerRequest = new HTTPSubmit(context, scriptParams, QuizDatabase.REQUEST_ID_SUBMITANSWER);
-        submitAnswerRequest.sendRequest(new LLSilent());
+        //We supply the idQuestion as request ID because we need to be able to know which answer was submitted
+        //submitAnswerRequest = new HTTPSubmit(context, scriptParams, QuizDatabase.REQUEST_ID_SUBMITANSWER);
+        submitAnswerRequest = new HTTPSubmit(context, scriptParams, idQuestion);
+        submitAnswerRequest.sendRequest(new LLSilentActWhenComplete(context, context.getString(R.string.quizloader_answernotregistered)));
     }
 
     /*

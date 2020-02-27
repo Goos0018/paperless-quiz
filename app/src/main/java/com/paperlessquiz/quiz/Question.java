@@ -172,6 +172,7 @@ public class Question implements Serializable {
     }
     public void setAnswerForTeam(int teamNr, String answer){
         getAnswerForTeam(teamNr).setTheAnswer(answer);
+        getAnswerForTeam(teamNr).setSubmitted(false);
     }
 
     public int getIdRound() {

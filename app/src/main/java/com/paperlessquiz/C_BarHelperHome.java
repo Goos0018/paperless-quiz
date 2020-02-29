@@ -26,6 +26,7 @@ import java.util.ArrayList;
 
 /*
 Home screen for barhelpers. Displays the orders based on what the barhelper selects in the radiogroup buttons
+TO DO: Fix bug where categories is blank when going back from prepare to deliver and back to prepare
  */
 public class C_BarHelperHome extends MyActivity implements LoadingActivity, ShowOrdersAdapter.ItemClicked {
 

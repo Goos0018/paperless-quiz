@@ -186,8 +186,10 @@ public class QuizDatabase {
             ORDERSTATUS_INPROGRESS_STR, ORDERSTATUS_READY_STR, ORDERSTATUS_DELIVERED_STR));
     public static final ArrayList<String> statusesArray = new ArrayList<>(Arrays.asList(Integer.toString(ORDERSTATUS_MODIFIED), Integer.toString(ORDERSTATUS_SUBMITTED),
             Integer.toString(ORDERSTATUS_INPROGRESS), Integer.toString(ORDERSTATUS_READY), Integer.toString(ORDERSTATUS_DELIVERED)));
+    //This array contains the descriptions of the barhelper roles that exist
     public static final ArrayList<String> displayHelperRolesArray = new ArrayList<>(Arrays.asList(BARHELPERROLENAME_PREPARE, BARHELPERROLENAME_DELIVER));
-    public static final ArrayList<String> helperRolesArray = new ArrayList<>(Arrays.asList(Integer.toString(ORDERSTATUS_SUBMITTED), Integer.toString(ORDERSTATUS_READY)));
+    //This array contains the corresponding statuses, meaning the orders that these roles will see in their list
+    public static final ArrayList<String> helperRolesArray = new ArrayList<>(Arrays.asList(Integer.toString(ORDERSTATUS_SUBMITTED) + "," + Integer.toString(ORDERSTATUS_INPROGRESS),  Integer.toString(ORDERSTATUS_READY)));
     //Pause event types
     public static final int TYPE_PAUSE_PAUSE = 0;
     public static final int TYPE_PAUSE_RESUME = 1;

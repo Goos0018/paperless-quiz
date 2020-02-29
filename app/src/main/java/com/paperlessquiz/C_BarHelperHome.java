@@ -24,6 +24,9 @@ import com.paperlessquiz.quiz.QuizLoader;
 
 import java.util.ArrayList;
 
+/*
+Home screen for barhelpers. Displays the orders based on what the barhelper selects in the radiogroup buttons
+ */
 public class C_BarHelperHome extends MyActivity implements LoadingActivity, ShowOrdersAdapter.ItemClicked {
 
     RecyclerView rvShowAllOrders;
@@ -33,7 +36,7 @@ public class C_BarHelperHome extends MyActivity implements LoadingActivity, Show
     TextView tvItemNames, tvItemAmounts, tvOverviewIntro, tvTable;
     TextView tvOrderStatus;
     RadioGroup rgpCategories, rgpRoles;
-    ImageView ivStatusToProcess, ivStatusProcessed;
+    ImageView ivStatusToProcess, ivStatusWorkingOnIt, ivStatusProcessed;
     LinearLayout llFilterRole, llFilterCats, llDetails, llOrderList;
 
     ArrayList<String> catsList = new ArrayList<>();
@@ -207,6 +210,14 @@ public class C_BarHelperHome extends MyActivity implements LoadingActivity, Show
                 llOrderList.setVisibility(View.VISIBLE);
             }
         }
+        //Only visible for preparers
+        if (selectedRole.equals(QuizDatabase.BARHELPERROLENAME_PREPARE)){
+            ivStatusWorkingOnIt.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            ivStatusWorkingOnIt.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -232,6 +243,7 @@ public class C_BarHelperHome extends MyActivity implements LoadingActivity, Show
         tvDetailsIntro=findViewById(R.id.tvIntroDetails);
         tvTable=findViewById(R.id.tvTable);
         ivStatusToProcess = findViewById(R.id.ivStatusToProcess);
+        ivStatusWorkingOnIt = findViewById(R.id.ivStatusWorkingOnIt);
         ivStatusProcessed = findViewById(R.id.ivStatusProcessed);
         //Initialize the (display)arrays with the filter conditions (categories and roles)
         for (int i = 0; i < MyApplication.itemsToOrderArray.size(); i++) {
@@ -284,6 +296,7 @@ public class C_BarHelperHome extends MyActivity implements LoadingActivity, Show
             }
         });
         //Set onclick listeners for the action icons, action to do depends on the role
+        //Action to do for the red "back" arrow: do nothing for deliverers, unlock the order for preparers
         ivStatusToProcess.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -298,6 +311,15 @@ public class C_BarHelperHome extends MyActivity implements LoadingActivity, Show
                 }
             }
         });
+        //Action to do for the yellow "person" button: N/A for deliverers, just save for the preparers
+        ivStatusWorkingOnIt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Just reload the orders to show the list again
+                quizLoader.loadAllOrders(selectedStatuses, selectedCategories, selectedUsers);
+            }
+        });
+        //Action to do for the green "OK" check: set the order status to the next status
         ivStatusProcessed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

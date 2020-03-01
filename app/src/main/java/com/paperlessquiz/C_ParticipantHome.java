@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,6 +45,7 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
     FragExplainRoundStatus explainRoundStatus;
     TextView tvDisplayRoundResults;
     EditText etAnswer;
+    ImageView ivChangeTextSize;
     //Button btnSubmit;
     LinearLayout displayAnswersLayout, editAnswerLayout;
     RecyclerView rvDisplayAnswers;
@@ -76,9 +78,9 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
             default:
                 //Determine the round nr and question number from the id
                 int questionNr = (requestID % QuizDatabase.CALC_QUESTION_FACTOR);
-                int roundNr = ((requestID / QuizDatabase.CALC_QUESTION_FACTOR)% QuizDatabase.CALC_ROUND_FACTOR);
+                int roundNr = ((requestID / QuizDatabase.CALC_QUESTION_FACTOR) % QuizDatabase.CALC_ROUND_FACTOR);
                 //Set the submitted status to true
-                thisQuiz.setAnswerForTeamSubmitted(roundNr,questionNr,thisTeamNr);
+                thisQuiz.setAnswerForTeamSubmitted(roundNr, questionNr, thisTeamNr);
                 refreshAnswers();
 
         }
@@ -148,7 +150,7 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
         String oldAnswer = thisQuiz.getAnswerForTeam(roundSpinner.getPosition(), oldPos, thisTeamNr).getTheAnswer();
         String newAnswer = etAnswer.getText().toString().trim();
         //If the new answer is blanc, replace it by a "-"
-        if (newAnswer.equals("")){
+        if (newAnswer.equals("")) {
             newAnswer = QuizDatabase.BLANC_ANSWER;
         }
         int questionID = thisQuiz.getQuestionID(roundSpinner.getPosition(), oldPos);
@@ -157,7 +159,7 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
             thisQuiz.setAnswerForTeam(roundSpinner.getPosition(), oldPos, thisTeamNr, newAnswer);
         }
         //If the answer is not yet submitted, submit it now
-        if (!(thisQuiz.isAnswerSubmitted(roundSpinner.getPosition(), oldPos, thisTeamNr))){
+        if (!(thisQuiz.isAnswerSubmitted(roundSpinner.getPosition(), oldPos, thisTeamNr))) {
             quizLoader.submitAnswer(questionID, newAnswer);
         }
         //If this is a schiftingsQuestion, we only want numeric answers
@@ -168,10 +170,9 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
         }
         //Set the value of the answer for the new question to what we already have in the Quiz object
         //If this value  = "-", then set the value to a space
-        if (thisQuiz.getAnswerForTeam(roundSpinner.getPosition(), newPos, thisTeamNr).getTheAnswer().equals(QuizDatabase.BLANC_ANSWER)){
+        if (thisQuiz.getAnswerForTeam(roundSpinner.getPosition(), newPos, thisTeamNr).getTheAnswer().equals(QuizDatabase.BLANC_ANSWER)) {
             etAnswer.setText("");
-        }
-        else {
+        } else {
             etAnswer.setText(thisQuiz.getAnswerForTeam(roundSpinner.getPosition(), newPos, thisTeamNr).getTheAnswer());
         }
         //Dismiss the keyboard if its there
@@ -223,13 +224,12 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
                 //etAnswer is by default invisible to avoid seeing the keyboard when you shouldn't
                 etAnswer.setVisibility(View.VISIBLE);
                 //Initialize etAnswer with the correct answer
-                if (thisQuiz.getAnswerForTeam(roundSpinner.getPosition(), questionSpinner.getPosition(), thisTeamNr).getTheAnswer().equals(QuizDatabase.BLANC_ANSWER)){
+                if (thisQuiz.getAnswerForTeam(roundSpinner.getPosition(), questionSpinner.getPosition(), thisTeamNr).getTheAnswer().equals(QuizDatabase.BLANC_ANSWER)) {
                     etAnswer.setText("");
-                }
-                else {
+                } else {
                     etAnswer.setText(thisQuiz.getAnswerForTeam(roundSpinner.getPosition(), questionSpinner.getPosition(), thisTeamNr).getTheAnswer());
                 }
-              break;
+                break;
             case QuizDatabase.ROUNDSTATUS_OPENFORCORRECTIONS:
                 //Round is closed for answering, but not yet corrected
                 //Just display the fragment that tells you this
@@ -293,6 +293,13 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
         editAnswerLayout = findViewById(R.id.llAnswers);
         tvDisplayRoundResults = findViewById(R.id.tvDisplayRound);
         etAnswer = findViewById(R.id.etAnswer);
+        ivChangeTextSize = findViewById(R.id.ivChangeTextSize);
+        ivChangeTextSize.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                displayAnswersAdapter.toggleTextSize();
+            }
+        });
         //btnSubmit = findViewById(R.id.btnSubmit);
         rvDisplayAnswers = findViewById(R.id.rvDisplayAnswers);
         rvDisplayAnswers.setHasFixedSize(true);
@@ -340,7 +347,7 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
 
     @Override
     public void onBackPressed() {
-        if (true) {
+        if (false) {
             Toast.makeText(this, C_ParticipantHome.this.getString(R.string.participant_nobackallowed), Toast.LENGTH_SHORT).show();
             /*Intent intent = new Intent(C_ParticipantHome.this, A_Main.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

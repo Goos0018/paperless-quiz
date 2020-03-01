@@ -66,14 +66,36 @@
             android:orientation="vertical">
 
 
-            <TextView
-                android:id="@+id/tvDisplayRound"
+            <TableLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="@dimen/margin_medium"
-                android:layout_marginRight="@dimen/margin_medium"
-                android:text="@string/participant_youranswers" />
+                android:layout_height="match_parent">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" >
+
+                    <TextView
+                        android:id="@+id/tvDisplayRound"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="@dimen/margin_medium"
+                        android:layout_marginRight="@dimen/margin_medium"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:text="@string/participant_youranswers"
+                        android:textColor="@color/niceBlue" />
+
+                    <ImageView
+                        android:id="@+id/ivChangeTextSize"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:srcCompat="@drawable/change_text_size" />
+
+                </TableRow>
+
+            </TableLayout>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rvDisplayAnswers"

@@ -25,8 +25,8 @@ import com.paperlessquiz.quiz.QuizLoader;
 import java.util.ArrayList;
 
 /*
-Home screen for barhelpers. Displays the orders based on what the barhelper selects in the radiogroup buttons
-TO DO: Fix bug where categories is blank when going back from prepare to deliver and back to prepare
+Home screen for barhelpers. Displays the orders based on what the barhelper selects in the radiogroup buttons role and categories.
+
  */
 public class C_BarHelperHome extends MyActivity implements LoadingActivity, ShowOrdersAdapter.ItemClicked {
 
@@ -149,13 +149,13 @@ public class C_BarHelperHome extends MyActivity implements LoadingActivity, Show
         String orderUser;
         String table;
         //Show if this is an order for a team or an organizer, in the first case, show the team nr, otherwise, the username
-        orderUser=theSelectedOrder.getUserName();
+        orderUser = theSelectedOrder.getUserName();
         if (theSelectedOrder.getUserType() == QuizDatabase.USERTYPE_TEAM) {
             table = Integer.toString(theSelectedOrder.getUserNr());
         } else {
             table = "NVT (Organisatie)";
         }
-        tvOrderNr.setText(""+ theSelectedOrder.getOrderNr());
+        tvOrderNr.setText("" + theSelectedOrder.getOrderNr());
         tvOrderUser.setText("" + orderUser);
         tvTable.setText(table);
         detailItems = theSelectedOrder.displayOrderItems();
@@ -163,11 +163,9 @@ public class C_BarHelperHome extends MyActivity implements LoadingActivity, Show
         tvItemNames.setText(detailItems);
         tvItemAmounts.setText(detailAmounts);
         tvOrderStatus.setText(theSelectedOrder.getLastStatusUpdate());
-        if (selectedRole.equals(QuizDatabase.BARHELPERROLENAME_DELIVER)){
+        if (selectedRole.equals(QuizDatabase.BARHELPERROLENAME_DELIVER)) {
             tvDetailsIntro.setText(this.getString(R.string.barhelp_orderdeliver));
-        }
-        else
-        {
+        } else {
             tvDetailsIntro.setText(this.getString(R.string.barhelp_orderdetail));
         }
         //Make sure the details part is shown
@@ -211,12 +209,10 @@ public class C_BarHelperHome extends MyActivity implements LoadingActivity, Show
                 llOrderList.setVisibility(View.VISIBLE);
             }
         }
-        //Only visible for preparers
-        if (selectedRole.equals(QuizDatabase.BARHELPERROLENAME_PREPARE)){
+        //Button ivStatusWorkingOnIt should be visible onle for preparers
+        if (selectedRole.equals(QuizDatabase.BARHELPERROLENAME_PREPARE)) {
             ivStatusWorkingOnIt.setVisibility(View.VISIBLE);
-        }
-        else
-        {
+        } else {
             ivStatusWorkingOnIt.setVisibility(View.GONE);
         }
     }
@@ -241,18 +237,20 @@ public class C_BarHelperHome extends MyActivity implements LoadingActivity, Show
         tvOrderUser = findViewById(R.id.tvUser);
         tvItemNames = findViewById(R.id.tvItemNames);
         tvItemAmounts = findViewById(R.id.tvAmounts);
-        tvDetailsIntro=findViewById(R.id.tvIntroDetails);
-        tvTable=findViewById(R.id.tvTable);
+        tvDetailsIntro = findViewById(R.id.tvIntroDetails);
+        tvTable = findViewById(R.id.tvTable);
         ivStatusToProcess = findViewById(R.id.ivStatusToProcess);
         ivStatusWorkingOnIt = findViewById(R.id.ivStatusWorkingOnIt);
         ivStatusProcessed = findViewById(R.id.ivStatusProcessed);
         //Initialize the (display)arrays with the filter conditions (categories and roles)
+        //Loop over all items tha can be ordered and add their category to the catsList if needed
         for (int i = 0; i < MyApplication.itemsToOrderArray.size(); i++) {
             String thisCategory = MyApplication.itemsToOrderArray.get(i).getItemCategory();
             if (!catsList.contains(thisCategory)) {
                 catsList.add(thisCategory);
             }
         }
+        //Possible roles and the statuses for which they need to see orders are defined in the QuizDatabase
         displayRolesList = QuizDatabase.displayHelperRolesArray;
         rolesList = QuizDatabase.helperRolesArray;
         //Populate the rgpRoles buttons
@@ -271,6 +269,17 @@ public class C_BarHelperHome extends MyActivity implements LoadingActivity, Show
             rgpCategories.addView(rbn);
         }
         //Listeners for radiogroups
+        //First define the listener for cats change and give it a name - we need to set this to null before clearing the checks
+        //Needed to fix a bug in the clearChecked method
+        RadioGroup.OnCheckedChangeListener catsCheckedListener = new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                RadioButton checkedButton = findViewById(checkedId);
+                selectedCategories = "\"" + (String) checkedButton.getText() + "\"";
+                quizLoader.loadAllOrders(selectedStatuses, selectedCategories, selectedUsers);
+            }
+        };
+        rgpCategories.setOnCheckedChangeListener(catsCheckedListener);
         rgpRoles.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -279,23 +288,22 @@ public class C_BarHelperHome extends MyActivity implements LoadingActivity, Show
                 int index = displayRolesList.indexOf(selectedRole);
                 selectedStatuses = rolesList.get(index);
                 if (selectedRole.equals(QuizDatabase.BARHELPERROLENAME_DELIVER)) {
-                    //Nothing else needs to be selected
+                    //Nothing else needs to be selected - make sure to also uncheck the rgpCategories
                     selectedCategories = "";
+                    rgpCategories.setOnCheckedChangeListener(null);
+                    rgpCategories.clearCheck();
+                    rgpCategories.setOnCheckedChangeListener(catsCheckedListener);
                     quizLoader.loadAllOrders(selectedStatuses, selectedCategories, selectedUsers);
                 } else {
                     //Refresh display to show the category selector
-                    setVisibility();
+                    //set the selectedCategories to a dummy value, it will be set correctly when the user selects a category
+                    selectedCategories = "dummy";
+                    //Reload the orders with this dummy category to make sure nothing is shown until you select a category
+                    quizLoader.loadAllOrders(selectedStatuses, selectedCategories, selectedUsers);
                 }
             }
         });
-        rgpCategories.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                RadioButton checkedButton = findViewById(checkedId);
-                selectedCategories = "\"" + (String) checkedButton.getText() + "\"";
-                quizLoader.loadAllOrders(selectedStatuses, selectedCategories, selectedUsers);
-            }
-        });
+
         //Set onclick listeners for the action icons, action to do depends on the role
         //Action to do for the red "back" arrow: do nothing for deliverers, unlock the order for preparers
         ivStatusToProcess.setOnClickListener(new View.OnClickListener() {
@@ -327,9 +335,9 @@ public class C_BarHelperHome extends MyActivity implements LoadingActivity, Show
                 //Set the order to the next appropriate status
                 int newStatus;
                 if (selectedRole.equals(QuizDatabase.BARHELPERROLENAME_PREPARE)) {
-                    newStatus=QuizDatabase.ORDERSTATUS_READY;
+                    newStatus = QuizDatabase.ORDERSTATUS_READY;
                 } else {
-                    newStatus=QuizDatabase.ORDERSTATUS_DELIVERED;
+                    newStatus = QuizDatabase.ORDERSTATUS_DELIVERED;
                 }
                 int orderId = theSelectedOrder.getIdOrder();
                 String time = MyApplication.getCurrentTime();
@@ -357,11 +365,9 @@ public class C_BarHelperHome extends MyActivity implements LoadingActivity, Show
         switch (item.getItemId()) {
             case R.id.refresh:
                 //Reload orders, using the given filters. If an order is selected here, they first need to close it
-                if (orderSelected){
+                if (orderSelected) {
                     Toast.makeText(this, this.getString(R.string.barhelp_toastclosefirst), Toast.LENGTH_LONG).show();
-                }
-                else
-                {
+                } else {
                     quizLoader.loadAllOrders(selectedStatuses, selectedCategories, selectedUsers);
                 }
                 break;
@@ -394,10 +400,9 @@ public class C_BarHelperHome extends MyActivity implements LoadingActivity, Show
     @Override
     //Don't do anything if an order was selected - otherwise, just go back
     public void onBackPressed() {
-        if (orderSelected){
+        if (orderSelected) {
             Toast.makeText(this, this.getString(R.string.barhelp_toastclosefirst), Toast.LENGTH_LONG).show();
-        }
-        else
+        } else
             super.onBackPressed();
     }
 }

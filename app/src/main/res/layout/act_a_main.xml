@@ -9,6 +9,18 @@
     tools:context="com.paperlessquiz.A_Main">
 
     <TextView
+        android:id="@+id/tvVersion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="10dp"
+        android:gravity="center"
+        android:text="TextView"
+        android:textColor="@color/niceBlue"
+        android:textStyle="italic" />
+
+    <TextView
         android:id="@+id/tv_prompt"
         android:layout_width="match_parent"
         android:layout_height="53dp"

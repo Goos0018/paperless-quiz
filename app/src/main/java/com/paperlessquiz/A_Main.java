@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.paperlessquiz.adapters.QuizListAdapter;
 import com.paperlessquiz.loadinglisteners.LLShowProgressActWhenComplete;
@@ -25,6 +26,7 @@ import com.paperlessquiz.webrequest.HTTPGetData;
 public class A_Main extends AppCompatActivity implements LoadingActivity {
     Quiz thisQuiz = MyApplication.theQuiz;
     ListView lv_QuizList;
+    TextView tvVersion;
     QuizListAdapter adapter;
     //String scriptParams;
     HTTPGetData<QuizListData> request;
@@ -42,6 +44,8 @@ public class A_Main extends AppCompatActivity implements LoadingActivity {
         setContentView(R.layout.act_a_main);
 
         lv_QuizList = (ListView) findViewById(R.id.lvQuizList);
+        tvVersion = findViewById(R.id.tvVersion);
+        tvVersion.setText("Versie "+ BuildConfig.VERSION_NAME);
         adapter = new QuizListAdapter(this);
 
         request = new HTTPGetData<QuizListData>(this, QuizDatabase.SCRIPT_GET_QUIZLIST, QuizDatabase.REQUEST_ID_GET_QUIZLIST);

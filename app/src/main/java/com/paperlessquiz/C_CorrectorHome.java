@@ -151,17 +151,11 @@ public class C_CorrectorHome extends MyActivity implements LoadingActivity, Frag
         if (thisQuiz.getRound(thisRoundNr).getRoundStatus() == QuizDatabase.ROUNDSTATUS_OPENFORCORRECTIONS) {
             //Show corrector buttons
             if (correctPerQuestion) {
-                menu.findItem(R.id.rounds).setVisible(false);
-                menu.findItem(R.id.teams).setVisible(true);
                 menu.findItem(R.id.allwrong).setVisible(true);
             } else {
-                menu.findItem(R.id.rounds).setVisible(true);
-                menu.findItem(R.id.teams).setVisible(false);
                 menu.findItem(R.id.allwrong).setVisible(false);
             }
         } else {
-            menu.findItem(R.id.rounds).setVisible(false);
-            menu.findItem(R.id.teams).setVisible(false);
             menu.findItem(R.id.allwrong).setVisible(false);
         }
         //MenuItem correctPerRndItem = menu.findItem(R.id.rounds);
@@ -175,28 +169,6 @@ public class C_CorrectorHome extends MyActivity implements LoadingActivity, Frag
             case R.id.refresh:
                 loadQuiz();
                 break;
-            case R.id.teams:
-                correctPerQuestion = !correctPerQuestion;
-                spinner.moveToFirstPos();
-                refreshAnswers();
-                showCorrectAnswerForQuestion(thisRoundNr, 1);
-                //spinner.positionChanged();
-                break;
-            case R.id.rounds:
-                correctPerQuestion = !correctPerQuestion;
-                spinner.moveToFirstPos();
-                refreshAnswers();
-                showCorrectAnswerForQuestion(thisRoundNr, 1);
-                //spinner.positionChanged();
-                break;
-/*
-            case R.id.allcorrect:
-                for (int i = 0; i < allAnswers.size(); i++) {
-                    allAnswers.get(i).setCorrect(true);
-                    myAdapter.notifyDataSetChanged();
-                }
-                break;
-*/
             case R.id.allwrong:
                 for (int i = 0; i < allAnswers.size(); i++) {
                     if (!(allAnswers.get(i).isCorrected())) {

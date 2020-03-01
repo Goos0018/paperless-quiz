@@ -10,20 +10,6 @@
         app:showAsAction="always" />
 
     <item
-        android:id="@+id/teams"
-        android:icon="@drawable/teams"
-        android:orderInCategory="100"
-        android:title="Teams"
-        app:showAsAction="always" />
-
-    <item
-        android:id="@+id/rounds"
-        android:icon="@drawable/rounds"
-        android:orderInCategory="100"
-        android:title="Rounds"
-        app:showAsAction="always" />
-
-    <item
         android:id="@+id/refresh"
         android:icon="@drawable/refresh"
         android:orderInCategory="100"

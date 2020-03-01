@@ -148,6 +148,7 @@ public class D_OrderHome extends AppCompatActivity implements LoadingActivity, S
         tvOverviewIntro = findViewById(R.id.tvIntroOverview);
         tvDisplayAmount = findViewById(R.id.tvAmountsOrdered);
         ivRemark = findViewById(R.id.ivRemark);
+        //Only show this for teams, not for organizers
         if (thisQuiz.getThisUser().getUserType() != QuizDatabase.USERTYPE_TEAM) {
             ivRemark.setVisibility(View.GONE);
         } else {

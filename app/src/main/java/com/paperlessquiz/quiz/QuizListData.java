@@ -3,29 +3,23 @@ package com.paperlessquiz.quiz;
 import java.io.Serializable;
 import java.util.Date;
 
-// This class stores the basic Quiz data as it can be found in the central QuizList sheet
+/*
+    This class stores the basic Quiz data as it can be found in the central QuizList sheet
+    Update 7/3/2020: removed QuizPDFURL + added hideTopRows
+ */
 public class QuizListData implements Serializable {
-    private int idQuiz;
+    private int idQuiz, hideTopRows;
     private String name;
     private String description;
     private String logoURL;
-    private String quizPdfURL;
-    //private int debugLevel;
-    //private String sheetDocID;
 
-    //private boolean keepLogs;
-    private int nrOfRounds;
-    //private int appDebugLevel;
-
-    public QuizListData(int idQuiz, String name, String description, String logoURL, String quizPdfURL) {
+    //Constructor used by the parser
+    public QuizListData(int idQuiz, int hideTopRows, String name, String description, String logoURL) {
         this.idQuiz = idQuiz;
+        this.hideTopRows = hideTopRows;
         this.name = name;
         this.description = description;
         this.logoURL = logoURL;
-        this.quizPdfURL = quizPdfURL;
-        //this.debugLevel = debugLevel;
-        //this.keepLogs = keepLogs;
-        //this.sheetDocID = sheetDocID;
     }
 
     public QuizListData() {
@@ -36,28 +30,11 @@ public class QuizListData implements Serializable {
         this.logoURL = "";
     }
 
-    public QuizListData(String name, String description, String logoURL, String quizPdfURL) {
-        //this.id = id;
+    public QuizListData(String name, String description, String logoURL) {
         this.name = name;
         this.description = description;
-        //this.sheetDocID = sheetDocID;
         this.logoURL = logoURL;
-        this.quizPdfURL = quizPdfURL;
-        //this.debugLevel=debugLevel;
-        //this.keepLogs=keepLogs;
-        //this.appDebugLevel=appDebugLevel;
     }
-
-    /*
-    public QuizListData(QuizListData quizListData) {
-        this.id = quizListData.id;
-        this.name = quizListData.name;
-        this.description = quizListData.description;
-        this.sheetDocID = quizListData.sheetDocID;
-        this.date = quizListData.date;
-        this.logoURL = quizListData.logoURL;
-    }
-    */
 
     public String getName() {
         return name;
@@ -72,22 +49,12 @@ public class QuizListData implements Serializable {
         return logoURL;
     }
 
-
-    public int getNrOfRounds() {
-        return nrOfRounds;
-    }
-
-    public void setNrOfRounds(int nrOfRounds) {
-        this.nrOfRounds = nrOfRounds;
-    }
-
-
-    public String getQuizPdfURL() {
-        return quizPdfURL;
-    }
-
     public int getIdQuiz() {
         return idQuiz;
+    }
+
+    public int getHideTopRows() {
+        return hideTopRows;
     }
 }
 

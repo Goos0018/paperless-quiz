@@ -39,7 +39,6 @@ public class Quiz implements Serializable {
     private Organizer thisOrganizer;
     public boolean loadingCompleted = false;
     private HashMap<String,ResultAfterRound> resultsForTeamAfterRound;
-    private int hideTopRows = 5;
 
     //20190728 - We only need an empty constructor, the QuizLoader class will populate all fields of the quiz
     public Quiz() {
@@ -296,10 +295,6 @@ public ResultAfterRound getResultForTeam(int teamNr, int roundNr){
     }
 
     public int getHideTopRows() {
-        return hideTopRows;
-    }
-
-    public void setHideTopRows(int hideTopRows) {
-        this.hideTopRows = hideTopRows;
+        return listData.getHideTopRows();
     }
 }

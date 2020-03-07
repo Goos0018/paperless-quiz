@@ -80,10 +80,11 @@ public class QuizDatabase {
     public static final String SCRIPT_GET_ANSWERSTATS = "getanswerstats.php";
     public static final String SCRIPT_GET_MYANSWERS = "getmyanswers.php";
     public static final String SCRIPT_GET_ROUNDS = "getrounds.php";
-    public static final String SCRIPT_GET_SCORES = "getscores.php";
+    public static final String SCRIPT_GET_SCORES = "getscoreafterround.php";
     public static final String SCRIPT_LOGEVENT = "logmessage.php";
     public static final String SCRIPT_ADDUNITS = "addunits.php";
     public static final String SCRIPT_SETALLANSWERSTOFALSE = "setallfalse.php";
+    //public static final String SCRIPT_GETSCOREAFTERROUND = "getscoreafterround.php";
 
     //Param values - query names
     public static final String PARAMVALUE_QRY_ALL_ROUNDS = "rounds";
@@ -140,6 +141,8 @@ public class QuizDatabase {
     public static final int REQUEST_ID_LOGMESSAGE = 117;
     public static final int REQUEST_ID_ADDUNITS = 118;
     public static final int REQUEST_ID_SETALLANSWERSTOFALSE = 119;
+
+    //Ids higher than this are assumed to contain a question ID
     public static final int REQUEST_ID_LIMIT = 1000;
 
     //User types - these must match what is defined in the constants.php
@@ -235,9 +238,8 @@ public class QuizDatabase {
     public static final String COLNAME_QUIZ_NAME = "QuizName";
     public static final String COLNAME_QUIZ_DESCRIPTION = "QuizDescription";
     public static final String COLNAME_QUIZ_LOGO_URL = "QuizLogoURL";
-    public static final String COLNAME_QUIZ_PDFURL = "QuizPDFURL";
-    public static final String COLNAME_QUIZ_DEBUG_LEVEL = "QuizDebugLevel";
-    public static final String COLNAME_QUIZ_SHEET_DOC_ID = "QuizSheetDocID";
+    public static final String COLNAME_QUIZ_HIDETOPROWS = "QuizHideTopRows";
+
     //Column names table Rounds
     public static final String COLNAME_ID_ROUND = "idRound";
     public static final String COLNAME_ROUND_NR = "RoundNr";
@@ -255,14 +257,14 @@ public class QuizDatabase {
     public static final String COLNAME_TOTALSPENTCALC = "TotalSpentCalc";
     public static final String COLNAME_TOTALTIMEPAUSED = "TotalTimePaused";
 
-    //Column names table ScoreForRound
-    public static final String COLNAME_SCOREFORROUND = "ScoreForRound";
-    //Column names table ScoreAfterRound
-    public static final String COLNAME_SCOREAFTERROUND = "ScoreAfterRound";
-    //Column names table StandingForRound
-    public static final String COLNAME_STANDINGFORROUND = "StandingForRound";
-    //Column names table StandingAfterRound
-    public static final String COLNAME_STANDINGAFTERROUND = "StandingAfterRound";
+    //Updated 7/3/20 to reflect new way of doing this
+    //Column names view ScoreAfterRoundForTeams
+    public static final String COLNAME_SCOREFORROUND = "RoundScore";
+    public static final String COLNAME_MAXSCOREFORROUND = "RoundScoreMax";
+    public static final String COLNAME_SCOREAFTERROUND = "TotalScore";
+    public static final String COLNAME_MAXSCOREAFTERROUND = "TotalScoreMax";
+    public static final String COLNAME_STANDINGAFTERROUND = "Plaats";
+
     //Column names table OrderItem
     public static final String COLNAME_IDORDERITEM = "idOrderItem";
     public static final String COLNAME_ITEMCATEGORY = "ItemCategory";

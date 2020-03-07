@@ -51,6 +51,7 @@ public class QuizLoader {
     public HTTPGetData<ItemOrdered> getOrderDetails;
     public HTTPGetData<HelpTopic> getHelpTopicsRequest;
     public HTTPGetData<HelpTopic> getRemarksRequest;
+    public HTTPGetData<HelpTopic> getScoreAfterRoundRequest;
 
     public HTTPSubmit authenticateRequest;
     public HTTPSubmit submitAnswerRequest;
@@ -179,7 +180,7 @@ public class QuizLoader {
                 "Something went wrong: ", false));
     }
 
-    //For the QuizMaster
+    //For the QuizMaster - load how many (non)empty/corredted answers there are for a round
     public void loadAnswerStats(int roundNr, int statistic) {
         int idUser = thisQuiz.getThisUser().getIdUser();
         String userPassword = thisQuiz.getThisUser().getUserPassword();
@@ -195,10 +196,10 @@ public class QuizLoader {
                 "Something went wrong: ", false));
     }
 
+    //Retrieve the scores after a round for the active user
     public void loadScoresAndStandings(int roundNr) {
         int idUser = thisQuiz.getThisUser().getIdUser();
         String userPassword = thisQuiz.getThisUser().getUserPassword();
-        int idQuiz = thisQuiz.getListData().getIdQuiz();
         String scriptParams = QuizDatabase.SCRIPT_GET_SCORES + QuizDatabase.PHP_STARTPARAM + QuizDatabase.PARAMNAME_IDUSER + idUser +
                 QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_USERPASSWORD + userPassword +
                 QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_ROUNDNR + roundNr;
@@ -520,6 +521,7 @@ public class QuizLoader {
         setAllAnswersToFalseRequest.sendRequest(new LLSilent());
     }
 
+    //Not needed anymore
     public void calculateStandings(int roundNr) {
         int idUser = thisQuiz.getThisUser().getIdUser();
         int idRound = thisQuiz.getRound(roundNr).getIdRound();

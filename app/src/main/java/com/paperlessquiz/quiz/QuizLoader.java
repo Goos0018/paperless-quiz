@@ -59,7 +59,7 @@ public class QuizLoader {
     public HTTPSubmit updateUserStatusRequest;
     public HTTPSubmit correctQuestionRequest;
     public HTTPSubmit setAllAnswersToFalseRequest;
-    public HTTPSubmit calculateStandingsRequest;
+    //public HTTPSubmit calculateStandingsRequest;
     public HTTPSubmit submitOrderRequest;
     public HTTPSubmit updateOrderStatusRequest;
     public HTTPSubmit updateExistingOrderRequest;
@@ -521,7 +521,8 @@ public class QuizLoader {
         setAllAnswersToFalseRequest.sendRequest(new LLSilent());
     }
 
-    //Not needed anymore
+    //8/3/2020: Not needed anymore
+    /*
     public void calculateStandings(int roundNr) {
         int idUser = thisQuiz.getThisUser().getIdUser();
         int idRound = thisQuiz.getRound(roundNr).getIdRound();
@@ -534,6 +535,7 @@ public class QuizLoader {
         calculateStandingsRequest = new HTTPSubmit(context, scriptParams, QuizDatabase.REQUEST_ID_CALCULATESCORES);
         calculateStandingsRequest.sendRequest(new LLSilent());
     }
+    */
 
     //Create a new order for the user that is logged in
     public void submitOrder(String orderDetails, String time) {

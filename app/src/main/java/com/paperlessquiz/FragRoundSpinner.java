@@ -93,9 +93,12 @@ public class FragRoundSpinner extends Fragment {
                 thisRound.setRoundStatus(thisRound.getRoundStatus() + 1);
             }
             //Calculate standings if the round is corrected now
+            //Obsolete - quiz standings are now looked up directly in the database
+            /*
             if (thisRound.getRoundStatus() == QuizDatabase.ROUNDSTATUS_CORRECTED) {
                 quizLoader.calculateStandings(position);
             }
+            */
             refreshIcons();
             quizLoader.updateRoundStatus(thisRound.getRoundNr(), thisRound.getRoundStatus());
         }

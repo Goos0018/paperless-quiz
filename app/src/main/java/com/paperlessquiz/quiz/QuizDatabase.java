@@ -64,7 +64,7 @@ public class QuizDatabase {
     public static final String SCRIPT_UPDATEMYSTATUS = "updatemystatus.php";
     public static final String SCRIPT_UPDATETEAM = "updateteam.php";
     public static final String SCRIPT_CORRECTQUESTION = "correctquestion.php";
-    public static final String SCRIPT_CALCULATESCORESFORROUND = "calculatescoresforround.php";
+    //public static final String SCRIPT_CALCULATESCORESFORROUND = "calculatescoresforround.php";
     public static final String SCRIPT_SUBMITORDER = "createorder.php";
     public static final String SCRIPT_GET_ALLORDERS = "getallorders.php";
     public static final String SCRIPT_UPDATEORDERSTATUS = "updateorderstatus.php";
@@ -128,7 +128,7 @@ public class QuizDatabase {
     public static final int REQUEST_ID_UPDATEMYSTATUS = 104;
     public static final int REQUEST_ID_UPDATETEAM = 105;
     public static final int REQUEST_ID_CORRECTQUESTION = 106;
-    public static final int REQUEST_ID_CALCULATESCORES = 107;
+    //public static final int REQUEST_ID_CALCULATESCORES = 107;
     public static final int REQUEST_ID_SUBMITORDER = 108;
     public static final int REQUEST_ID_UPDATEEXISTINGORDER = 109;
     public static final int REQUEST_ID_UPDATEORDERSTATUS = 110;

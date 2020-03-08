@@ -3,6 +3,7 @@ package com.paperlessquiz;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.ColorInt;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -25,6 +26,7 @@ public class FragShowRoundScore extends Fragment {
     int thisTeamNr, thisRoundNr;
     HasShowRoundScore callingActivity;
     Quiz thisQuiz = MyApplication.theQuiz;
+    int colorAlert, colorNormal;
 
     public interface HasShowRoundScore{
         int getRound();
@@ -58,18 +60,23 @@ public class FragShowRoundScore extends Fragment {
                 //If you are in the Top X, show this
                 if (yourRankAfterThisRound <=thisQuiz.getHideTopRows())
                 {
-                    //tvYourScoreTotal.setText("Top " + thisQuiz.getHideTopRows());
-                    tvYourRankAfterThisRound.setVisibility(View.GONE); //Text("Top " + thisQuiz.getHideTopRows() + "!!!");
-                    tvNrOfTeams2.setVisibility(View.GONE);//Text(" ");
-                    ivTopScore.setVisibility(View.VISIBLE);
-                    //tvYourScoreForThisRnd.setText("Top " + thisQuiz.getHideTopRows());
-                    //tvYourRankForThisRnd.setText("Top " + thisQuiz.getHideTopRows());
+                    //Option 1: show icon
+                    //tvYourRankAfterThisRound.setVisibility(View.GONE);
+                    //tvNrOfTeams2.setVisibility(View.GONE);//Text(" ");
+                    //ivTopScore.setVisibility(View.VISIBLE);
+
+                    //Option 2: show top X
+                    tvYourRankAfterThisRound.setVisibility(View.GONE);
+                    tvNrOfTeams2.setText("Top " + thisQuiz.getHideTopRows() + "!!!");
+                    tvNrOfTeams2.setTextColor(colorAlert);
                 }
-                else // reset visbility
+                else // reset visibility
                 {
                     tvYourRankAfterThisRound.setVisibility(View.VISIBLE); //Text("Top " + thisQuiz.getHideTopRows() + "!!!");
-                    tvNrOfTeams2.setVisibility(View.VISIBLE);//Text(" ");
-                    ivTopScore.setVisibility(View.GONE);
+                    tvNrOfTeams2.setTextColor(colorNormal);
+                    //For option 1
+                    //tvNrOfTeams2.setVisibility(View.VISIBLE);//Text(" ");
+                    //ivTopScore.setVisibility(View.GONE);
                 }
 
 
@@ -96,6 +103,8 @@ public class FragShowRoundScore extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         callingActivity=(HasShowRoundScore) context;
+        colorAlert = context.getResources().getColor(R.color.wrongRed);
+        colorNormal = context.getResources().getColor(R.color.colorPrimaryDark);
         //thisRoundNr= callingActivity.getRound();
         //thisTeamNr=callingActivity.getTeam();
     }

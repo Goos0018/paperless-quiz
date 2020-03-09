@@ -24,7 +24,7 @@ import java.util.ArrayList;
 
 /**
  * Main login screen, allows user to select a team to log in and proceed to their Home screen after authentication
- * Here, we also load all info needed for a participant or organizer (in some cases, to much info): TODO: remove this and load all necessary data in the activity itself
+ * After this screen is done (and authentication was successful), thisQuiz contains listData, userslist, Rounds, Questions, OrderItems and answers + scores for Round 1
  */
 public class B_Login extends AppCompatActivity implements LoadingActivity {
     Quiz thisQuiz = MyApplication.theQuiz;
@@ -43,7 +43,6 @@ public class B_Login extends AppCompatActivity implements LoadingActivity {
     QuizLoader quizLoader;
     String password;
     boolean roundsLoaded, questionsLoaded, orderItemsLoaded, answersLoaded, scoresLoaded; //False by default
-    //private ProgressDialog loading;
     Intent intent;
 
     @Override
@@ -54,7 +53,6 @@ public class B_Login extends AppCompatActivity implements LoadingActivity {
                     thisUser.setUserPassword(password);
                     thisQuiz.setThisUser(thisUser);
                     //Load what is needed (too much for some users but anyway...)
-                    //quizLoader.loadQuizFromDb();
                     quizLoader.loadRounds();
                     quizLoader.loadQuestions();
                     quizLoader.loadOrderItems();

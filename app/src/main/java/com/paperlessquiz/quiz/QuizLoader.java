@@ -86,34 +86,25 @@ public class QuizLoader {
                 QuizDatabase.PARAMNAME_IDQUIZ + idQuiz;
     }
 
-    /*
-        //Load the entire quiz
-        public void loadQuizFromDb() {
-            loadRounds();
-            loadQuestions();
-            loadMyAnswers();
-            //loadAnswersSubmitted();
-            loadOrderItems();
-        }
-    */
+    //Load details for the user ids given in usersList
     public void loadUsers(String usersList) {
         String scriptParams = QuizDatabase.SCRIPT_GET_QUIZUSERS + QuizDatabase.PHP_STARTPARAM + QuizDatabase.PARAMNAME_IDQUIZ + thisQuiz.getListData().getIdQuiz() +
                 QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_USERSLIST + usersList;
-        //generateParamsPHP(QuizDatabase.PARAMVALUE_QRY_ALL_TEAMS_FOR_QUIZ);
         getUsersRequest = new HTTPGetData<>(context, scriptParams, QuizDatabase.REQUEST_ID_GET_USERS);
         getUsersRequest.getItems(new UserParser(), new LLShowProgressActWhenComplete(context, context.getString(R.string.loader_pleasewait),
                 context.getString(R.string.loader_updatingquiz),
                 context.getString(R.string.loadingerror), false));
     }
 
+    //Load details for all users
     public void loadUsers() {
         loadUsers("");
     }
 
+    //Load details for the given round
     public void loadRounds(int roundNr) {
         int idUser = thisQuiz.getThisUser().getIdUser();
         String userPassword = thisQuiz.getThisUser().getUserPassword();
-        //int idQuiz = thisQuiz.getListData().getIdQuiz();
         String scriptParams = QuizDatabase.SCRIPT_GET_ROUNDS + QuizDatabase.PHP_STARTPARAM + QuizDatabase.PARAMNAME_IDUSER + idUser +
                 QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_USERPASSWORD + userPassword +
                 QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_ROUNDNR + roundNr;
@@ -123,6 +114,7 @@ public class QuizLoader {
                 "Something went wrong: ", false));
     }
 
+    //Load details for all rounds
     public void loadRounds() {
         int dummy = 0;
         loadRounds(dummy);

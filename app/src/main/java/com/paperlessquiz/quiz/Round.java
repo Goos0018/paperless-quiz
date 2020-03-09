@@ -12,7 +12,6 @@ import java.util.ArrayList;
  * The questions Array is  initialized by the GetQuestionsLPL, the rest comes from the GetRoundsLPL
  */
 
-//TODO: Write ToString functions for each class to upload item of the class to QuizSheet
 public class Round implements Serializable {
     private int idQuiz,idRound;
     private int roundNr, roundStatus;

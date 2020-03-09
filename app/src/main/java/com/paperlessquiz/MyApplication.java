@@ -36,33 +36,18 @@ public class MyApplication extends Application {
     public static Quiz theQuiz;                                     //The quiz for which the app is being used
     public static ArrayList<OrderItem> itemsToOrderArray;           //The items you can order here in an array for usage in an adapter
     public static HashMap<Integer, OrderItem> itemsToOrder;         //The items you can order here in a hashmap indexed by the itemId
-    //public static Team theTeam;                                   //The team that is taking the quiz (null for Organizers)
-    //public static ArrayList<String> googleLog = new ArrayList<>();  //An arraylist that will contain a log of all transactions to and from a Google sheet (=the back-end of this app)
-    public static boolean loggedIn;                                 //Tracks that user is logged in
+     public static boolean loggedIn;                                 //Tracks that user is logged in
     public static boolean appPaused;                                //Tracks that app was paused
-    //public static int debugLevel = 3;                               //Overall debug level for the google interaction, initialized here but later overwritten with what is configured for the Quiz
-    //public static boolean keepLogs = true;                          //Indicates if you want to overwrite logs of the GScript each time
-    //public static int appDebugLevel = 3;                            //Overall debug level for the app itself, initialized here but later overwritten with what is configured for the Quiz
-    //public static HashMap<Integer,String> helpFiles;
-    public static boolean authorizedBreak;
+     public static boolean authorizedBreak;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        //logDocID = "1A4CGyeZZk2LW-xvh_P1dyeufZhV0qpBgCIQdrNEIDgk";
-        //eventLogger = new EventLogger(this, logDocID, "EventLog");
         deviceID = getUniquePsuedoID();
+        //Create an empty Quiz object that will be populated later on
         theQuiz = new Quiz();
         itemsToOrderArray = new ArrayList<>();
         itemsToOrder = new HashMap<>();
-        /*
-        helpFiles = new HashMap<>();
-        helpFiles.put(QuizDatabase.USERTYPE_CORRECTOR, QuizDatabase.HELPFILE_CORRECTOR);
-        helpFiles.put(QuizDatabase.USERTYPE_JUROR, QuizDatabase.HELPFILE_JUROR);
-        helpFiles.put(QuizDatabase.USERTYPE_TEAM, QuizDatabase.HELPFILE_PARTICIPANT);
-        helpFiles.put(QuizDatabase.USERTYPE_QUIZMASTER, QuizDatabase.HELPFILE_QUIZMASTER);
-        helpFiles.put(QuizDatabase.USERTYPE_RECEPTIONIST, QuizDatabase.HELPFILE_RECEPTIONIST);
-        */
         //Portrait mode or landscape mode depending on screen size
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
             @Override
@@ -140,12 +125,6 @@ public class MyApplication extends Application {
         return false;
     }
 
-    /*
-    public static void setLogDocID(String logDocID) {
-        MyApplication.logDocID = logDocID;
-    }
-    */
-
     //Return pseudo unique ID
     public static String getUniquePsuedoID() {
         // If all else fails, if the user does have lower than API 9 (lower
@@ -196,34 +175,9 @@ public class MyApplication extends Application {
         MyApplication.appPaused = appPaused;
     }
 
-    /*
-    public static int getDebugLevel() {
-        return debugLevel;
-    }
-
-    public static void setDebugLevel(int debugLevel) {
-        MyApplication.debugLevel = debugLevel;
-    }
-
-    public static boolean isKeepLogs() {
-        return keepLogs;
-    }
-
-    public static void setKeepLogs(boolean keepLogs) {
-        MyApplication.keepLogs = keepLogs;
-    }
-
-    public static int getAppDebugLevel() {
-        return appDebugLevel;
-    }
-
-    public static void setAppDebugLevel(int appDebugLevel) {
-        MyApplication.appDebugLevel = appDebugLevel;
-    }
-    */
-
     public static void logMessage(Context context, int level, String message) {
         //Log a message to the database
+        //Do we even use this?
         int idUser;
         String password;
         if (theQuiz.getThisUser() == null){

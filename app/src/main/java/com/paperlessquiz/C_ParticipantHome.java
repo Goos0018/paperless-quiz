@@ -114,6 +114,7 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
     //This is called from the round spinner after it was changed.
     public void onRoundChanged(int oldRoundNr, int roundNr) {
         //Similar as with a questionSpinner change, we save the answer that we have and load the new answer - only do this if the field was visible
+        //Update 11/3/2020: also set the type of the keyboard correct
         if (etAnswer.getVisibility() == View.VISIBLE) {
             //Update the answer if it was changed
             String oldAnswer = thisQuiz.getAnswerForTeam(oldRoundNr, questionSpinner.getPosition(), thisTeamNr).getTheAnswer();
@@ -123,6 +124,13 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
                 thisQuiz.setAnswerForTeam(oldRoundNr, questionSpinner.getPosition(), thisTeamNr, newAnswer);
                 //Store the answer in the central quiz db
                 quizLoader.submitAnswer(questionID, newAnswer);
+            }
+            //Set the keyboard type for the first question of this round
+            if ((thisQuiz.getQuestion(roundSpinner.getPosition(), 1).getQuestionType() == QuizDatabase.QUESTIONTYPE_SCHIFTING) |
+                    thisQuiz.getQuestion(roundSpinner.getPosition(), 1).getQuestionType() == QuizDatabase.QUESTIONTYPE_NUMERIC ) {
+                etAnswer.setInputType(InputType.TYPE_CLASS_NUMBER);
+            } else {
+                etAnswer.setInputType( InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
             }
         }
         //Set the value of the answer for the new question to what we already have in the central Quiz object
@@ -149,6 +157,10 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
         //Update the answer if it was changed
         String oldAnswer = thisQuiz.getAnswerForTeam(roundSpinner.getPosition(), oldPos, thisTeamNr).getTheAnswer();
         String newAnswer = etAnswer.getText().toString().trim();
+        //If this is a normal question, convert the answer to uppercase
+        if (thisQuiz.getQuestion(roundSpinner.getPosition(), oldPos).getQuestionType() == QuizDatabase.QUESTIONTYPE_NORMAL) {
+            newAnswer = newAnswer.toUpperCase();
+        }
         //If the new answer is blanc, replace it by a "-"
         if (newAnswer.equals("")) {
             newAnswer = QuizDatabase.BLANC_ANSWER;
@@ -162,11 +174,12 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
         if (!(thisQuiz.isAnswerSubmitted(roundSpinner.getPosition(), oldPos, thisTeamNr))) {
             quizLoader.submitAnswer(questionID, newAnswer);
         }
-        //If this is a schiftingsQuestion, we only want numeric answers
-        if (thisQuiz.getQuestion(roundSpinner.getPosition(), newPos).getQuestionType() == QuizDatabase.QUESTIONTYPE_SCHIFTING) {
+        //If this is a schiftingsQuestion or numeric question, we only want numeric answers
+        if ((thisQuiz.getQuestion(roundSpinner.getPosition(), newPos).getQuestionType() == QuizDatabase.QUESTIONTYPE_SCHIFTING) |
+                thisQuiz.getQuestion(roundSpinner.getPosition(), newPos).getQuestionType() == QuizDatabase.QUESTIONTYPE_NUMERIC ) {
             etAnswer.setInputType(InputType.TYPE_CLASS_NUMBER);
         } else {
-            etAnswer.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+            etAnswer.setInputType( InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
         }
         //Set the value of the answer for the new question to what we already have in the Quiz object
         //If this value  = "-", then set the value to a space

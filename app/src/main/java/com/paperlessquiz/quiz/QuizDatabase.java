@@ -155,7 +155,10 @@ public class QuizDatabase {
     public static final int USERTYPE_BARRESPONSIBLE = 6;
     public static final int USERTYPE_BARHELPER = 7;
     //Question Types
+    public static final int QUESTIONTYPE_NORMAL = 0;
     public static final int QUESTIONTYPE_SCHIFTING = 1;
+    public static final int QUESTIONTYPE_CASESENSITIVE = 2;
+    public static final int QUESTIONTYPE_NUMERIC = 3;
     //User Statuses  - these must match what is defined in the constants.php
     public static final int USERSTATUS_NOTPRESENT = 0;
     public static final int USERSTATUS_PRESENTNOTLOGGEDIN = 1;

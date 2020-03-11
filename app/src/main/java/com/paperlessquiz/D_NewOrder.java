@@ -132,11 +132,11 @@ public class D_NewOrder extends AppCompatActivity implements LoadingActivity {
                 D_NewOrder.this.finish();
             } else {
                 setResult(Order.RESULT_ORDER_CREATED, intent);
-                quizLoader.submitOrder(thisOrder.getOrderContentsAsString(), getCurrentTime());
+                quizLoader.submitOrder(thisOrder.getOrderContentsAsString(), MyApplication.getCurrentTime());
             }
         } else {
             setResult(Order.RESULT_ORDER_CREATED, intent);
-            quizLoader.updateExistingOrder(thisOrder, getCurrentTime());
+            quizLoader.updateExistingOrder(thisOrder, MyApplication.getCurrentTime());
         }
         //D_NewOrder.this.finish();
     }
@@ -210,7 +210,9 @@ public class D_NewOrder extends AppCompatActivity implements LoadingActivity {
         Toast.makeText(this, getString(R.string.order_confirmorcancel), Toast.LENGTH_LONG).show();
     }
 
+    /*
     //Used to create the time parameter that is passed when creating orders
+    11/3/2020: replaced by My Application version
     public String getCurrentTime() {
         Date date = new Date();
         String strDateFormat = "HH:mm";
@@ -219,4 +221,5 @@ public class D_NewOrder extends AppCompatActivity implements LoadingActivity {
         String formattedDate = dateFormat.format(date);
         return formattedDate;
     }
+    */
 }

@@ -23,6 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.TimeZone;
 import java.util.UUID;
 
 /**
@@ -86,10 +87,12 @@ public class MyApplication extends Application {
         });
     }
 
+    //11/3/2020: updated to use HH:mm
     public static String getCurrentTime() {
         Date date = new Date();
-        String strDateFormat = "hh:mm";
+        String strDateFormat = "HH:mm";
         DateFormat dateFormat = new SimpleDateFormat(strDateFormat);
+        dateFormat.setTimeZone(TimeZone.getDefault());
         String formattedDate = dateFormat.format(date);
         return formattedDate;
     }

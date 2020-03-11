@@ -4,7 +4,7 @@ public class OrderItem {
     /**
      * An OrderItem is an item that can be ordered.
      * Reflects the similar table in the database, and is simply loaded once and never modified.
-     * Except for the itemSoldOut and itemunitsremaining
+     * Except for the itemSoldOut and itemUnitsremaining
      */
     int idOrderItem, itemCost, itemUnitsAvailable, itemUnitsRemaining;
     String itemCategory, itemName, itemDescription;

@@ -7,7 +7,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * This class represents and order, a hashmap of <idOrderItem,amountOrdered> + some metadata
+ * This class represents an order
+ * The main part is theOrder, a hashmap of <idOrderItem,amountOrdered> + some metadata and methods to work with this
  */
 public class Order implements Serializable {
 
@@ -71,11 +72,16 @@ public class Order implements Serializable {
         return lastStatusUpdate;
     }
 
+    //Update 11/3/2020: moved (description) from displayOrderAmounts to displayOrderItems
     public String displayOrderItems() {
         String orderDetails = "";
         for (Integer i : theOrder.keySet()) {
             String itemName = MyApplication.itemsToOrder.get(i).getItemName();
-            orderDetails = orderDetails + itemName + "\n";
+            String description = MyApplication.itemsToOrder.get(i).getItemDescription();
+            if (!description.equals("")){
+                description=" ("+description+")";
+            }
+            orderDetails = orderDetails + itemName + description + "\n";
         }
         return orderDetails;
     }
@@ -83,11 +89,14 @@ public class Order implements Serializable {
     public String displayOrderAmounts() {
         String orderDetails = "";
         for (Integer i : theOrder.keySet()) {
+            /*
             String description = MyApplication.itemsToOrder.get(i).getItemDescription();
             if (!description.equals("")){
                 description=" ("+description+")";
             }
-            orderDetails = orderDetails + " : " + theOrder.get(i) + description + "\n";
+            */
+            //orderDetails = orderDetails + " : " + theOrder.get(i) + description + "\n";
+            orderDetails = orderDetails + ": " + theOrder.get(i) + "\n";
         }
         return orderDetails;
     }

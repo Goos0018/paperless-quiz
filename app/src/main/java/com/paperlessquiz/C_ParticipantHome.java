@@ -29,7 +29,7 @@ import java.util.Date;
 
 /**
  * Home screen for teams. Contains a round spinner and a question spinner + fields that allow to answer the question that is currently selected
- * + button to indicate you are done answering the questions for this round.
+ * Answers are automatically submitted as soon as you navigate to the next question or round.
  * Parts of the screen are hidden based on round status.
  * Answers are sent to the central db when spinning through the questions
  * Info is refreshed from the central db when spinning through the rounds
@@ -46,16 +46,13 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
     TextView tvDisplayRoundResults;
     EditText etAnswer;
     ImageView ivChangeTextSize;
-    //Button btnSubmit;
     LinearLayout displayAnswersLayout, editAnswerLayout;
     RecyclerView rvDisplayAnswers;
     DisplayAnswersAdapter displayAnswersAdapter;
     RecyclerView.LayoutManager layoutManager;
     String roundStatusExplanation;
-    //long totalTimePaused;
     Date lastPausedDate;
     QuizLoader quizLoader;
-    //private ProgressDialog loading;
     boolean roundsLoaded, answersLoaded, scoresLoaded, answersSubmitted;
     boolean activityBeingCreated = true;
 
@@ -90,12 +87,22 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
             roundsLoaded = false;
             answersLoaded = false;
             scoresLoaded = false;
-            quizLoader.updateRoundsIntoQuiz();
-            quizLoader.updateAnswersIntoQuiz();
-            quizLoader.loadResultsIntoQuiz();
-            roundSpinner.refreshIcons();
-            roundResultFrag.refresh();  //This will recalculate scores based on the re-loaded corrections
-            refreshDisplayFragments();  //Display the correct fragments based on new round status etc.
+            //14/3/2020: Check if actions runs correctly before proceeding - display a message if not
+            if (quizLoader.updateRoundsIntoQuiz()) {
+                if (quizLoader.updateAnswersIntoQuiz()) {
+                    if (quizLoader.loadResultsIntoQuiz()) {
+                        roundSpinner.refreshIcons();
+                        roundResultFrag.refresh();  //This will recalculate scores based on the re-loaded corrections
+                        refreshDisplayFragments();  //Display the correct fragments based on new round status etc.
+                    } else {
+                        Toast.makeText(this, "MAIN: Error updating RESULTS into quiz - please try again", Toast.LENGTH_LONG).show();
+                    }
+                } else {
+                    Toast.makeText(this, "MAIN: Error updating ANSWERS into quiz - please try again", Toast.LENGTH_LONG).show();
+                }
+            } else {
+                Toast.makeText(this, "MAIN: Error updating ROUNDS into quiz - please try again", Toast.LENGTH_LONG).show();
+            }
         }
         if (answersSubmitted) {
             answersSubmitted = false;
@@ -127,10 +134,10 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
             }
             //Set the keyboard type for the first question of this round
             if ((thisQuiz.getQuestion(roundSpinner.getPosition(), 1).getQuestionType() == QuizDatabase.QUESTIONTYPE_SCHIFTING) |
-                    thisQuiz.getQuestion(roundSpinner.getPosition(), 1).getQuestionType() == QuizDatabase.QUESTIONTYPE_NUMERIC ) {
+                    thisQuiz.getQuestion(roundSpinner.getPosition(), 1).getQuestionType() == QuizDatabase.QUESTIONTYPE_NUMERIC) {
                 etAnswer.setInputType(InputType.TYPE_CLASS_NUMBER);
             } else {
-                etAnswer.setInputType( InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                etAnswer.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
             }
         }
         //Set the value of the answer for the new question to what we already have in the central Quiz object
@@ -176,10 +183,10 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
         }
         //If this is a schiftingsQuestion or numeric question, we only want numeric answers
         if ((thisQuiz.getQuestion(roundSpinner.getPosition(), newPos).getQuestionType() == QuizDatabase.QUESTIONTYPE_SCHIFTING) |
-                thisQuiz.getQuestion(roundSpinner.getPosition(), newPos).getQuestionType() == QuizDatabase.QUESTIONTYPE_NUMERIC ) {
+                thisQuiz.getQuestion(roundSpinner.getPosition(), newPos).getQuestionType() == QuizDatabase.QUESTIONTYPE_NUMERIC) {
             etAnswer.setInputType(InputType.TYPE_CLASS_NUMBER);
         } else {
-            etAnswer.setInputType( InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+            etAnswer.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
         }
         //Set the value of the answer for the new question to what we already have in the Quiz object
         //If this value  = "-", then set the value to a space
@@ -348,7 +355,7 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
     @Override
     protected void onPostResume() {
         super.onPostResume();
-        if (MyApplication.isAppPaused()) {
+        if (MyApplication.isAppPaused() & !(lastPausedDate == null)) {
             Date dateResumed = new Date();
             long timePaused = (dateResumed.getTime() - lastPausedDate.getTime()) / 1000;
             quizLoader.createPauseEvent(QuizDatabase.TYPE_PAUSE_RESUME, timePaused);

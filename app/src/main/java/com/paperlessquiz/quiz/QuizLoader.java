@@ -1,6 +1,7 @@
 package com.paperlessquiz.quiz;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import com.paperlessquiz.MyApplication;
 import com.paperlessquiz.R;
@@ -298,113 +299,152 @@ public class QuizLoader {
 
     //Get all the users and put them into the Teams resp. Organizers array of the Quiz
     public void loadUsersIntoQuiz() {
-        for (int i = 0; i < getUsersRequest.getResultsList().size(); i++) {
-            User thisUser = getUsersRequest.getResultsList().get(i);
-            //Make sure the user is added on the location that corresponds to its userNr
-            switch (thisUser.getUserType()) {
-                case QuizDatabase.USERTYPE_TEAM:
-                    int k = 1;
-                    while (thisQuiz.getTeams().size() < thisUser.getUserNr()) {
-                        thisQuiz.getTeams().add(new Team(k));
-                        k++;
-                    }
-                    thisQuiz.getTeams().set(thisUser.getUserNr() - 1, new Team(thisUser));
-                    break;
-                default:
-                    int m = 1;
-                    while (thisQuiz.getOrganizers().size() < thisUser.getUserNr()) {
-                        thisQuiz.getOrganizers().add(new Organizer(m));
-                        m++;
-                    }
-                    thisQuiz.getOrganizers().set(thisUser.getUserNr() - 1, new Organizer(thisUser));
+        try {
+            for (int i = 0; i < getUsersRequest.getResultsList().size(); i++) {
+                User thisUser = getUsersRequest.getResultsList().get(i);
+                //Make sure the user is added on the location that corresponds to its userNr
+                switch (thisUser.getUserType()) {
+                    case QuizDatabase.USERTYPE_TEAM:
+                        int k = 1;
+                        while (thisQuiz.getTeams().size() < thisUser.getUserNr()) {
+                            thisQuiz.getTeams().add(new Team(k));
+                            k++;
+                        }
+                        thisQuiz.getTeams().set(thisUser.getUserNr() - 1, new Team(thisUser));
+                        break;
+                    default:
+                        int m = 1;
+                        while (thisQuiz.getOrganizers().size() < thisUser.getUserNr()) {
+                            thisQuiz.getOrganizers().add(new Organizer(m));
+                            m++;
+                        }
+                        thisQuiz.getOrganizers().set(thisUser.getUserNr() - 1, new Organizer(thisUser));
+                }
             }
+        } catch (Exception e) {
+            Toast.makeText(context, "Error loading users into quiz - please try again", Toast.LENGTH_LONG).show();
         }
     }
 
     //Get all the rounds and load them in the quiz
     public void loadRoundsIntoQuiz() {
-        for (int i = 0; i < getRoundsRequest.getResultsList().size(); i++) {
-            Round thisRound = getRoundsRequest.getResultsList().get(i);
-            //Make sure the round is added on the location that corresponds to its roundNr
-            int k = 1;
-            while (thisQuiz.getRounds().size() < thisRound.getRoundNr()) {
-                thisQuiz.getRounds().add(new Round(k));
-                k++;
+        try {
+            for (int i = 0; i < getRoundsRequest.getResultsList().size(); i++) {
+                Round thisRound = getRoundsRequest.getResultsList().get(i);
+                //Make sure the round is added on the location that corresponds to its roundNr
+                int k = 1;
+                while (thisQuiz.getRounds().size() < thisRound.getRoundNr()) {
+                    thisQuiz.getRounds().add(new Round(k));
+                    k++;
+                }
+                thisQuiz.getRounds().set(thisRound.getRoundNr() - 1, thisRound);
             }
-            thisQuiz.getRounds().set(thisRound.getRoundNr() - 1, thisRound);
+        } catch (Exception e) {
+            Toast.makeText(context, "Error loading rounds into quiz - please try again", Toast.LENGTH_LONG).show();
         }
     }
 
     //Load all questions into the quiz
     public void loadQuestionsIntoQuiz() {
-        for (int i = 0; i < getQuestionsRequest.getResultsList().size(); i++) {
-            Question thisQuestion = getQuestionsRequest.getResultsList().get(i);
-            if (thisQuestion.getRoundNr() > thisQuiz.getRounds().size() + 1) {
-                MyApplication.logMessage(context, QuizDatabase.LOGLEVEL_ERROR, "Load Questions error - unexpected roundNr");
-            } else {
-                Round theRound = thisQuiz.getRound(thisQuestion.getRoundNr());
-                //Make sure the question is added to the correct round and on the location that corresponds to its questionNr
-                int k = theRound.getQuestions().size();
-                while (theRound.getQuestions().size() < thisQuestion.getQuestionNr()) {
-                    theRound.getQuestions().add(new Question(k));
-                    k++;
+        try {
+            for (int i = 0; i < getQuestionsRequest.getResultsList().size(); i++) {
+                Question thisQuestion = getQuestionsRequest.getResultsList().get(i);
+                if (thisQuestion.getRoundNr() > thisQuiz.getRounds().size() + 1) {
+                    MyApplication.logMessage(context, QuizDatabase.LOGLEVEL_ERROR, "Load Questions error - unexpected roundNr");
+                } else {
+                    Round theRound = thisQuiz.getRound(thisQuestion.getRoundNr());
+                    //Make sure the question is added to the correct round and on the location that corresponds to its questionNr
+                    int k = theRound.getQuestions().size();
+                    while (theRound.getQuestions().size() < thisQuestion.getQuestionNr()) {
+                        theRound.getQuestions().add(new Question(k));
+                        k++;
+                    }
+                    theRound.getQuestions().set(thisQuestion.getQuestionNr() - 1, thisQuestion);
                 }
-                theRound.getQuestions().set(thisQuestion.getQuestionNr() - 1, thisQuestion);
             }
+        } catch (Exception e) {
+            Toast.makeText(context, "Error loading questions into quiz - please try again", Toast.LENGTH_LONG).show();
         }
     }
 
     //Assumes rounds are already loaded in the quiz, this just updates the relevant information
-    public void updateRoundsIntoQuiz() {
-        for (int i = 0; i < getRoundsRequest.getResultsList().size(); i++) {
-            Round thisRound = getRoundsRequest.getResultsList().get(i);
-            //Rounds are already loaded, we can simply get the round from the Quiz object
-            Round roundToUpdate = thisQuiz.getRound(thisRound.getRoundNr());
-            roundToUpdate.updateRoundBasics(thisRound);
+    public boolean updateRoundsIntoQuiz() {
+        try {
+            for (int i = 0; i < getRoundsRequest.getResultsList().size(); i++) {
+                Round thisRound = getRoundsRequest.getResultsList().get(i);
+                //Rounds are already loaded, we can simply get the round from the Quiz object
+                Round roundToUpdate = thisQuiz.getRound(thisRound.getRoundNr());
+                roundToUpdate.updateRoundBasics(thisRound);
+            }
+            return true;
+        } catch (Exception e) {
+            Toast.makeText(context, "Error updating rounds into quiz - please try again", Toast.LENGTH_LONG).show();
+            return false;
         }
     }
 
     //Assumes users are already loaded in the quiz, this just updates the relevant information
     public void updateUsersIntoQuiz() {
-        for (int i = 0; i < getUsersRequest.getResultsList().size(); i++) {
-            User thisUser = getUsersRequest.getResultsList().get(i);
-            //Users are already loaded, we only care about the teams
-            if (thisUser.getUserType() == QuizDatabase.USERTYPE_TEAM) {
-                User userToUpdate = thisQuiz.getTeam(thisUser.getUserNr());
-                userToUpdate.updateUserBasics(thisUser);
-            } else {
-                User userToUpdate = thisQuiz.getOrganizer(thisUser.getUserNr());
-                userToUpdate.updateUserBasics(thisUser);
+        try {
+            for (int i = 0; i < getUsersRequest.getResultsList().size(); i++) {
+                User thisUser = getUsersRequest.getResultsList().get(i);
+                //Users are already loaded, we only care about the teams
+                if (thisUser.getUserType() == QuizDatabase.USERTYPE_TEAM) {
+                    User userToUpdate = thisQuiz.getTeam(thisUser.getUserNr());
+                    userToUpdate.updateUserBasics(thisUser);
+                } else {
+                    User userToUpdate = thisQuiz.getOrganizer(thisUser.getUserNr());
+                    userToUpdate.updateUserBasics(thisUser);
+                }
             }
+        } catch (Exception e) {
+            Toast.makeText(context, "Error updating users into quiz - please try again", Toast.LENGTH_LONG).show();
         }
     }
 
     //When this is run, all questions are already correctly added, we only add the correct answer here for the corrector
     public void updateFullQuestionsIntoQuiz() {
-        for (int i = 0; i < getQuestionsRequest.getResultsList().size(); i++) {
-            Question thisQuestion = getQuestionsRequest.getResultsList().get(i);
-            if (thisQuestion.getRoundNr() > thisQuiz.getRounds().size() + 1) {
-                MyApplication.logMessage(context, QuizDatabase.LOGLEVEL_ERROR, "UpdateFullQuestions error - unexpected roundNr");
-            } else {
-                Round theRound = thisQuiz.getRound(thisQuestion.getRoundNr());
-                theRound.getQuestion(thisQuestion.getQuestionNr()).setCorrectAnswer(thisQuestion.getCorrectAnswer());
+        try {
+            for (int i = 0; i < getQuestionsRequest.getResultsList().size(); i++) {
+                Question thisQuestion = getQuestionsRequest.getResultsList().get(i);
+                if (thisQuestion.getRoundNr() > thisQuiz.getRounds().size() + 1) {
+                    MyApplication.logMessage(context, QuizDatabase.LOGLEVEL_ERROR, "UpdateFullQuestions error - unexpected roundNr");
+                } else {
+                    Round theRound = thisQuiz.getRound(thisQuestion.getRoundNr());
+                    theRound.getQuestion(thisQuestion.getQuestionNr()).setCorrectAnswer(thisQuestion.getCorrectAnswer());
+                }
             }
+        } catch (Exception e) {
+            Toast.makeText(context, "Error updating full questions into quiz - please try again", Toast.LENGTH_LONG).show();
         }
     }
 
     //Make sure all answers are correctly initialized before calling this!
-    public void updateAnswersIntoQuiz() {
-        for (int i = 0; i < getAnswersRequest.getResultsList().size(); i++) {
-            Answer theAnswer = getAnswersRequest.getResultsList().get(i);
-            thisQuiz.getRound(theAnswer.getRoundNr()).getQuestion(theAnswer.getQuestionNr()).getAllAnswers().set(theAnswer.getTeamNr() - 1, theAnswer);
+    public boolean updateAnswersIntoQuiz() {
+        try {
+            for (int i = 0; i < getAnswersRequest.getResultsList().size(); i++) {
+                Answer theAnswer = getAnswersRequest.getResultsList().get(i);
+                thisQuiz.getRound(theAnswer.getRoundNr()).getQuestion(theAnswer.getQuestionNr()).getAllAnswers().set(theAnswer.getTeamNr() - 1, theAnswer);
+            }
+            return true;
+        } catch (Exception e) {
+            Toast.makeText(context, "Error updating answers into quiz - please try again", Toast.LENGTH_LONG).show();
+            return false;
         }
     }
 
-    public void loadResultsIntoQuiz() {
-        for (int i = 0; i < getResultsRequest.getResultsList().size(); i++) {
-            ResultAfterRound thisResult = getResultsRequest.getResultsList().get(i);
-            thisQuiz.addResult(thisResult);
+    public boolean loadResultsIntoQuiz() {
+        try {
+            for (int i = 0; i < getResultsRequest.getResultsList().size(); i++) {
+                ResultAfterRound thisResult = getResultsRequest.getResultsList().get(i);
+                thisQuiz.addResult(thisResult);
+            }
+            return true;
+        } catch (Exception e) {
+            Toast.makeText(context, "Error updating results into quiz - please try again", Toast.LENGTH_LONG).show();
+            return false;
         }
+
     }
 
     /**

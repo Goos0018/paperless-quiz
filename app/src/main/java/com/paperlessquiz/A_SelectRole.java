@@ -18,7 +18,7 @@ import com.squareup.picasso.Picasso;
  * After having selected a Quiz, this screen allows you to select if you are an organizer or a participant.
  * We also load the list of Quiz users (teams and organizers) into the central Quiz object, so they can be selected in the next screen.
  * This userlist can also be retrieved anonymously.
- * After this screen is done, thisQuiz contains the listData and the Users+Organizers of the quiz
+ * After this screen is done, thisQuiz contains the Users+Organizers of the quiz
  */
 
 public class A_SelectRole extends AppCompatActivity implements LoadingActivity {

@@ -28,18 +28,18 @@ import java.util.UUID;
 
 /**
  * This class contains stuff that is used throughout the application
+ * theQuiz is initialized as an empty quiz
  */
 
 public class MyApplication extends Application {
-    //public static String logDocID;                                  //The ID of a google sheet where we log things that do not belong to a particular quiz - in practice the QuizList sheet
     public static EventLogger eventLogger;
     public static String deviceID;                                  //Contains an ID of the device on which the app runs
     public static Quiz theQuiz;                                     //The quiz for which the app is being used
     public static ArrayList<OrderItem> itemsToOrderArray;           //The items you can order here in an array for usage in an adapter
     public static HashMap<Integer, OrderItem> itemsToOrder;         //The items you can order here in a hashmap indexed by the itemId
-     public static boolean loggedIn;                                 //Tracks that user is logged in
+    public static boolean loggedIn;                                 //Tracks that user is logged in
     public static boolean appPaused;                                //Tracks that app was paused
-     public static boolean authorizedBreak;
+    public static boolean authorizedBreak;
 
     @Override
     public void onCreate() {

@@ -88,12 +88,13 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
             answersLoaded = false;
             scoresLoaded = false;
             //14/3/2020: Check if actions runs correctly before proceeding - display a message if not
+            //TODO: optimize this code + check other home screens for similar errors - normally, these checks can be removed again...
             if (quizLoader.updateRoundsIntoQuiz()) {
                 if (quizLoader.updateAnswersIntoQuiz()) {
                     if (quizLoader.loadResultsIntoQuiz()) {
-                        roundSpinner.refreshIcons();
-                        roundResultFrag.refresh();  //This will recalculate scores based on the re-loaded corrections
-                        refreshDisplayFragments();  //Display the correct fragments based on new round status etc.
+                        //roundSpinner.refreshIcons();
+                        //roundResultFrag.refresh();  //This will recalculate scores based on the re-loaded corrections
+                        //refreshDisplayFragments();  //Display the correct fragments based on new round status etc.
                     } else {
                         Toast.makeText(this, "MAIN: Error updating RESULTS into quiz - please try again", Toast.LENGTH_LONG).show();
                     }
@@ -103,6 +104,10 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
             } else {
                 Toast.makeText(this, "MAIN: Error updating ROUNDS into quiz - please try again", Toast.LENGTH_LONG).show();
             }
+            //Do these actions anyway, even if loading was not successful - in that case, we display based on the old information
+            roundSpinner.refreshIcons();
+            roundResultFrag.refresh();  //This will recalculate scores based on the re-loaded corrections
+            refreshDisplayFragments();  //Display the correct fragments based on new round status etc.
         }
         if (answersSubmitted) {
             answersSubmitted = false;
@@ -111,6 +116,10 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
     }
 
     private void updateQuiz() {
+        //Update 14/3/2020: reset  the loading statuses here to make sure they are in the correct status in case previous requests did not complete as expected
+        roundsLoaded = false;
+        answersLoaded = false;
+        scoresLoaded = false;
         quizLoader.loadRounds(roundSpinner.getPosition());
         quizLoader.loadMyAnswers(roundSpinner.getPosition());
         quizLoader.loadScoresAndStandings(roundSpinner.getPosition());
@@ -122,17 +131,22 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
     public void onRoundChanged(int oldRoundNr, int roundNr) {
         //Similar as with a questionSpinner change, we save the answer that we have and load the new answer - only do this if the field was visible
         //Update 11/3/2020: also set the type of the keyboard correct
-        if (etAnswer.getVisibility() == View.VISIBLE) {
-            //Update the answer if it was changed
-            String oldAnswer = thisQuiz.getAnswerForTeam(oldRoundNr, questionSpinner.getPosition(), thisTeamNr).getTheAnswer();
+        //Update 14/3/2020: check on status of the old round instead of visibility of something
+        if (thisQuiz.getRound(oldRoundNr).getRoundStatus() == QuizDatabase.ROUNDSTATUS_OPENFORANSWERS) {
+            //Update the answer for the previous round if it was changed - just in case the user entered an answer and then navigate to another round directly
             String newAnswer = etAnswer.getText().toString().trim();
+            updateAnswerIfChanged(newAnswer,oldRoundNr, questionSpinner.getPosition(), thisTeamNr);
+            /*
             if (!(oldAnswer.equals(newAnswer))) {
                 int questionID = thisQuiz.getQuestionID(oldRoundNr, questionSpinner.getPosition());
                 thisQuiz.setAnswerForTeam(oldRoundNr, questionSpinner.getPosition(), thisTeamNr, newAnswer);
                 //Store the answer in the central quiz db
                 quizLoader.submitAnswer(questionID, newAnswer);
             }
-            //Set the keyboard type for the first question of this round
+            */
+        }
+        if (thisQuiz.getRound(roundNr).getRoundStatus() == QuizDatabase.ROUNDSTATUS_OPENFORANSWERS) {
+            //Set the keyboard type correct for the first question of this round
             if ((thisQuiz.getQuestion(roundSpinner.getPosition(), 1).getQuestionType() == QuizDatabase.QUESTIONTYPE_SCHIFTING) |
                     thisQuiz.getQuestion(roundSpinner.getPosition(), 1).getQuestionType() == QuizDatabase.QUESTIONTYPE_NUMERIC) {
                 etAnswer.setInputType(InputType.TYPE_CLASS_NUMBER);
@@ -162,8 +176,11 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
     //This is called from the Question spinner when it is changed
     public void onSpinnerChange(int oldPos, int newPos) {
         //Update the answer if it was changed
-        String oldAnswer = thisQuiz.getAnswerForTeam(roundSpinner.getPosition(), oldPos, thisTeamNr).getTheAnswer();
+
+        //String oldAnswer = thisQuiz.getAnswerForTeam(roundSpinner.getPosition(), oldPos, thisTeamNr).getTheAnswer();
         String newAnswer = etAnswer.getText().toString().trim();
+        updateAnswerIfChanged(newAnswer,roundSpinner.getPosition(), oldPos, thisTeamNr);
+        /*
         //If this is a normal question, convert the answer to uppercase
         if (thisQuiz.getQuestion(roundSpinner.getPosition(), oldPos).getQuestionType() == QuizDatabase.QUESTIONTYPE_NORMAL) {
             newAnswer = newAnswer.toUpperCase();
@@ -181,6 +198,7 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
         if (!(thisQuiz.isAnswerSubmitted(roundSpinner.getPosition(), oldPos, thisTeamNr))) {
             quizLoader.submitAnswer(questionID, newAnswer);
         }
+        */
         //If this is a schiftingsQuestion or numeric question, we only want numeric answers
         if ((thisQuiz.getQuestion(roundSpinner.getPosition(), newPos).getQuestionType() == QuizDatabase.QUESTIONTYPE_SCHIFTING) |
                 thisQuiz.getQuestion(roundSpinner.getPosition(), newPos).getQuestionType() == QuizDatabase.QUESTIONTYPE_NUMERIC) {
@@ -200,6 +218,29 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
         imm.hideSoftInputFromWindow(etAnswer.getWindowToken(), 0);
         refreshAnswers(); //refresh the field that shows all answers already given for this round
     }
+
+    //This method updates the answer to question questionNr of roundn roundNr for team teamNr if it was changed
+    public void updateAnswerIfChanged(String newAnswer, int roundNr, int questionNr, int teamNr){
+        String oldAnswer = thisQuiz.getAnswerForTeam(roundNr, questionNr, teamNr).getTheAnswer();
+        //If this is a normal question, convert the answer to uppercase
+        if (thisQuiz.getQuestion(roundNr, questionNr).getQuestionType() == QuizDatabase.QUESTIONTYPE_NORMAL) {
+            newAnswer = newAnswer.toUpperCase();
+        }
+        //If the new answer is blanc, replace it by a "-"
+        if (newAnswer.equals("")) {
+            newAnswer = QuizDatabase.BLANC_ANSWER;
+        }
+        int questionID = thisQuiz.getQuestionID(roundNr, questionNr);
+        if (!(oldAnswer.equals(newAnswer))) {
+            //This action also sets the submitted status to False
+            thisQuiz.setAnswerForTeam(roundNr, questionNr, teamNr, newAnswer);
+        }
+        //If the answer is not yet submitted, submit it now
+        if (!(thisQuiz.isAnswerSubmitted(roundNr, questionNr, teamNr))) {
+            quizLoader.submitAnswer(questionID, newAnswer);
+        }
+    }
+
 
     @Override
     public int getSizeOfSpinnerArray() {

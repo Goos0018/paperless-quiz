@@ -49,7 +49,7 @@ public class QuizDatabase {
     public static final String PARAMNAME_HELPRESPONSE = "response=";
     public static final String PARAMNAME_ROUNDNR = "roundNr=";
     public static final String PARAMNAME_ANSWERSTAT = "answerStatistic=";
-    public static final String PARAMNAME_LOGMESSAGE = "message=";
+    public static final String PARAMNAME_LOGMESSAGE = "logMessage=";
     public static final String PARAMNAME_LOGLEVEL = "level=";
     public static final String PARAMNAME_EXTRAUNITS = "extraUnits=";
 

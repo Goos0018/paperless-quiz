@@ -88,7 +88,7 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
             answersLoaded = false;
             scoresLoaded = false;
             //14/3/2020: Check if actions runs correctly before proceeding - display a message if not
-            //TODO: optimize this code + check other home screens for similar errors - normally, these checks can be removed again...
+            //TODO: normally, these checks can be removed again...
             if (quizLoader.updateRoundsIntoQuiz()) {
                 if (quizLoader.updateAnswersIntoQuiz()) {
                     if (quizLoader.loadResultsIntoQuiz()) {
@@ -105,6 +105,7 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
                 Toast.makeText(this, "MAIN: Error updating ROUNDS into quiz - please try again", Toast.LENGTH_LONG).show();
             }
             //Do these actions anyway, even if loading was not successful - in that case, we display based on the old information
+            //TODO: check why app crashes when calling this twice in a row
             roundSpinner.refreshIcons();
             roundResultFrag.refresh();  //This will recalculate scores based on the re-loaded corrections
             refreshDisplayFragments();  //Display the correct fragments based on new round status etc.

@@ -108,6 +108,9 @@ public class C_JurorHome extends MyActivity implements LoadingActivity, FragSpin
     }
 
     private void loadQuiz() {
+        roundsLoaded = false;
+        answersLoaded = false;
+        fullQuestionsLoaded = false;
         quizLoader.loadRounds();
         quizLoader.loadAllAnswers();
         quizLoader.loadFullQuestions();

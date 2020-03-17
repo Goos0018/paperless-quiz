@@ -180,7 +180,7 @@ public class MyApplication extends Application {
 
     public static void logMessage(Context context, int level, String message) {
         //Log a message to the database
-        //Do we even use this?
+        //Used to keep track opf common errors
         int idUser;
         String password;
         if (theQuiz.getThisUser() == null){

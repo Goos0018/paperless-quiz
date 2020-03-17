@@ -112,7 +112,7 @@ public class QuizLoader {
         getRoundsRequest = new HTTPGetData<>(context, scriptParams, QuizDatabase.REQUEST_ID_GET_ROUNDS);
         getRoundsRequest.getItems(new RoundParser(), new LLShowProgressActWhenComplete(context, context.getString(R.string.loader_pleasewait),
                 context.getString(R.string.loader_updatingquiz),
-                "Something went wrong: ", false));
+                context.getString(R.string.loadingerror), false));
     }
 
     //Load details for all rounds
@@ -153,7 +153,7 @@ public class QuizLoader {
         getAnswersRequest = new HTTPGetData<>(context, scriptParams, QuizDatabase.REQUEST_ID_GET_ANSWERS);
         getAnswersRequest.getItems(new AnswersParser(), new LLShowProgressActWhenComplete(context, context.getString(R.string.loader_pleasewait),
                 context.getString(R.string.loader_updatingquiz),
-                "Something went wrong: ", false));
+                context.getString(R.string.loadingerror), false));
     }
 
     public void loadMyAnswers() {
@@ -170,7 +170,7 @@ public class QuizLoader {
         getAnswersRequest = new HTTPGetData<>(context, scriptParams, QuizDatabase.REQUEST_ID_GET_ALLANSWERS);
         getAnswersRequest.getItems(new AnswersParser(), new LLShowProgressActWhenComplete(context, context.getString(R.string.loader_pleasewait),
                 context.getString(R.string.loader_updatingquiz),
-                "Something went wrong: ", false));
+                context.getString(R.string.loadingerror), false));
     }
 
     //For the QuizMaster - load how many (non)empty/corredted answers there are for a round
@@ -186,7 +186,7 @@ public class QuizLoader {
         getAnswerStatsRequest = new HTTPGetData<>(context, scriptParams, QuizDatabase.REQUEST_ID_GET_ANSWERSTATS);
         getAnswerStatsRequest.getItems(new AnswerStatsParser(), new LLShowProgressActWhenComplete(context, context.getString(R.string.loader_pleasewait),
                 context.getString(R.string.loader_updatingquiz),
-                "Something went wrong: ", false));
+                context.getString(R.string.loadingerror), false));
     }
 
     //Retrieve the scores after a round for the active user
@@ -199,7 +199,7 @@ public class QuizLoader {
         getResultsRequest = new HTTPGetData<>(context, scriptParams, QuizDatabase.REQUEST_ID_GET_SCORES);
         getResultsRequest.getItems(new com.paperlessquiz.parsers.ResultAfterRoundParser(), new LLShowProgressActWhenComplete(context, context.getString(R.string.loader_pleasewait),
                 context.getString(R.string.loader_updatingquiz),
-                "Something went wrong: ", false));
+                context.getString(R.string.loadingerror), false));
     }
 
     public void loadScoresAndStandings() {
@@ -215,7 +215,7 @@ public class QuizLoader {
         getOrderItemsRequest = new HTTPGetData<>(context, scriptParams, QuizDatabase.REQUEST_ID_GET_ORDERITEMS);
         getOrderItemsRequest.getItems(new OrderItemParser(), new LLShowProgressActWhenComplete(context, context.getString(R.string.loader_pleasewait),
                 context.getString(R.string.loader_updatingquiz),
-                "Something went wrong: ", false));
+                context.getString(R.string.loadingerror), false));
     }
 
     //Load ALL orders with status / category in a given comma separated list
@@ -240,7 +240,7 @@ public class QuizLoader {
         getOrdersRequest = new HTTPGetData<>(context, scriptParams, QuizDatabase.REQUEST_ID_GET_ALLORDERS);
         getOrdersRequest.getItems(new OrderParser(), new LLShowProgressActWhenComplete(context, context.getString(R.string.loader_pleasewait),
                 context.getString(R.string.loader_updatingquiz),
-                "Something went wrong: ", false));
+                context.getString(R.string.loadingerror), false));
     }
 
     public void loadAllOrders() {
@@ -255,7 +255,7 @@ public class QuizLoader {
         getOrderDetails = new HTTPGetData<>(context, scriptParams, QuizDatabase.REQUEST_ID_GET_ORDERDETAILS);
         getOrderDetails.getItems(new ItemOrderedParser(), new LLShowProgressActWhenComplete(context, context.getString(R.string.loader_pleasewait),
                 context.getString(R.string.loader_updatingquiz),
-                "Something went wrong: ", false));
+                context.getString(R.string.loadingerror), false));
     }
 
     public void loadHelpTopics(int helpType) {
@@ -267,7 +267,7 @@ public class QuizLoader {
         getHelpTopicsRequest = new HTTPGetData<>(context, scriptParams, QuizDatabase.REQUEST_ID_GET_HELPTOPICS);
         getHelpTopicsRequest.getItems(new HelpTopicParser(), new LLShowProgressActWhenComplete(context, context.getString(R.string.loader_pleasewait),
                 context.getString(R.string.loader_updatingquiz),
-                "Something went wrong: ", false));
+                context.getString(R.string.loadingerror), false));
     }
 
     public void loadRemarks(int helpType, boolean loadAllMessages) {
@@ -282,7 +282,7 @@ public class QuizLoader {
         getRemarksRequest = new HTTPGetData<>(context, scriptParams, QuizDatabase.REQUEST_ID_GET_REMARKS);
         getRemarksRequest.getItems(new HelpTopicParser(), new LLShowProgressActWhenComplete(context, context.getString(R.string.loader_pleasewait),
                 context.getString(R.string.loader_updatingquiz),
-                "Something went wrong: ", false));
+                context.getString(R.string.loadingerror), false));
     }
 
     //Get the items you can order and put them in the MyApplication itemsToOrderArray object
@@ -378,7 +378,7 @@ public class QuizLoader {
             }
             return true;
         } catch (Exception e) {
-            Toast.makeText(context, "Error updating rounds into quiz - please try again", Toast.LENGTH_LONG).show();
+            //Toast.makeText(context, "Error updating rounds into quiz - please try again", Toast.LENGTH_LONG).show();
             return false;
         }
     }
@@ -428,7 +428,7 @@ public class QuizLoader {
             }
             return true;
         } catch (Exception e) {
-            Toast.makeText(context, "Error updating answers into quiz - please try again", Toast.LENGTH_LONG).show();
+            //Toast.makeText(context, "Error updating answers into quiz - please try again", Toast.LENGTH_LONG).show();
             return false;
         }
     }
@@ -441,7 +441,7 @@ public class QuizLoader {
             }
             return true;
         } catch (Exception e) {
-            Toast.makeText(context, "Error updating results into quiz - please try again", Toast.LENGTH_LONG).show();
+            //Toast.makeText(context, "Error updating results into quiz - please try again", Toast.LENGTH_LONG).show();
             return false;
         }
 

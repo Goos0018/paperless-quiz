@@ -24,7 +24,7 @@ import java.util.ArrayList;
  * This class executes a HTTP GET request (in practice a PHP script)
  * The result must be an array of JSON objects that are parsed
  * to a list of objects T via Parser class that is passed as argument to the getItems method.
- * No error handling is done, if this doesn't work, the app cannot work properly.
+ * Update 17/3/2020: Error handling via Loading Listener
  *
  * @param <T>
  */

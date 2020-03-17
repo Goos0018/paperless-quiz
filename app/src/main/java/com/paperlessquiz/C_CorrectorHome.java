@@ -139,6 +139,10 @@ public class C_CorrectorHome extends MyActivity implements LoadingActivity, Frag
     }
 
     private void loadQuiz() {
+        //reset the loading statuses
+        roundsLoaded = false;
+        answersLoaded = false;
+        fullQuestionsLoaded = false;
         quizLoader.loadRounds();
         quizLoader.loadAllAnswers();
         quizLoader.loadFullQuestions();

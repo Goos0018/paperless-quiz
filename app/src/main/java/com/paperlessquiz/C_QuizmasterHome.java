@@ -71,6 +71,9 @@ public class C_QuizmasterHome extends MyActivity implements FragRoundSpinner.Has
     }
 
     public void refreshData() {
+        usersLoaded = false;
+        roundsLoaded=false;
+        answerStatsLoaded = false;
         quizLoader.loadUsers();
         quizLoader.loadRounds();
         switch (thisQuiz.getRound(roundNr).getRoundStatus()) {

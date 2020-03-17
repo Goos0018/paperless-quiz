@@ -48,8 +48,8 @@ public class LLShowProgressActWhenComplete implements LoadingListener {
     public void loadingError(String error, int callerID) {
         String team;
         if (MyApplication.theQuiz.getThisUser() == null){team = "none";} else {team = MyApplication.theQuiz.getThisUser().getName();}
-        MyApplication.logMessage(context, QuizDatabase.LOGLEVEL_ERROR, error);
-        Toast.makeText(context, errorMessage + error, Toast.LENGTH_LONG).show();
+        MyApplication.logMessage(context, QuizDatabase.LOGLEVEL_ERROR, "Loading error - request ID" + callerID + ": " + error);
+        Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show();
         loading.dismiss();
     }
 

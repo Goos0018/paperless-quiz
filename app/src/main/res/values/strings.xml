@@ -6,7 +6,7 @@
     <string name="please_select_a_quiz">Selecteer de quiz waaraan u wil deelnemen</string>
     <string name="loadingtitle">Even geduld</string>
     <string name="loadingmsg_list">Lijst van beschikbare quizzen ophalen</string>
-    <string name="loadingerror">Dit ging niet goed:</string>
+    <string name="loadingerror">Er was een probleem bij het ophalen van de gegevens. Controleer je internet verbinding en probeer opnieuw.</string>
     <string name="btn_participant">Ik neem deel aan de quiz</string>
     <string name="btn_organizer">Ik organizeer de quiz</string>
     <string name="main_selectteamprompt">Kies je ploegnaam uit onderstaande lijst, geef je paswoord in en tik dan op LOG IN</string>

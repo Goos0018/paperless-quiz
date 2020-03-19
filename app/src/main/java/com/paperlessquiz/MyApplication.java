@@ -180,12 +180,12 @@ public class MyApplication extends Application {
 
     public static void logMessage(Context context, int level, String message) {
         //Log a message to the database
-        //Used to keep track opf common errors
+        //Used to keep track of errors that happen in the app
         int idUser;
         String password;
         if (theQuiz.getThisUser() == null){
-            idUser=0;
-            password="";
+            idUser=QuizDatabase.DUMMY_USER_ID;
+            password=QuizDatabase.DUMMY_USER_PSWD;
         }
         else {
             idUser = theQuiz.getThisUser().getIdUser();

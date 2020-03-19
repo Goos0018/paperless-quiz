@@ -3,7 +3,7 @@ package com.paperlessquiz.loadinglisteners;
 import com.paperlessquiz.loadinglisteners.LoadingListener;
 
 /**
- * This loadinglistener simply does nothing - allows for silent "fire and forget" logging
+ * This loadinglistener simply does nothing - allows for silent "fire and forget" requests - e.g. logging
  */
 public class LLSilent implements LoadingListener {
 

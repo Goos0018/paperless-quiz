@@ -48,6 +48,8 @@ public class C_QuizmasterHome extends MyActivity implements FragRoundSpinner.Has
             case QuizDatabase.REQUEST_ID_GET_ANSWERSTATS:
                 answerStatsLoaded = true;
                 break;
+            default:
+                //donothing if any other request, like for update a round status
         }
         //If everything is properly loaded, we can start populating the central Quiz object
         if (usersLoaded && roundsLoaded && answerStatsLoaded) {

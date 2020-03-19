@@ -62,7 +62,11 @@
     <string name="display_topics_no_remarks_entered">Je hebt nog geen opmerkingen ingegeven. Als je opmerkingen ingeeft bij een vraag (kan pas als deze verbeterd werd) of bestelling komen deze in deze lijst, samen met het antwoord van de organisatie</string>
     <string name="display_topics_help">Help</string>
     <string name="display_topics_no_contexthelp">Er is geen context help beschikbaar</string>
-    <string name="quizloader_answernotregistered">Opgelet: je antwoord werd niet geregistreerd - probeer het opnieuw</string>
+    <string name="quizloader_answernotregistered">Opgelet: dit antwoord werd niet geregistreerd: </string>
     <string name="juror_roundbeingcorrected">Deze ronde wordt momenteel verbeterd</string>
+    <string name="loader_updateroundstatus">Aanpassen ronde status</string>
+    <string name="loader_errorroundstatusnotupdated">OPGELET: ronde status niet correct aangepast voor ronde</string>
+    <string name="loader_updateteamstatus">Aanpassen team status</string>
+    <string name="loader_errorteamstatusnotupdated">OPGELET: status niet correct aangepast voor team </string>
 
 </resources>

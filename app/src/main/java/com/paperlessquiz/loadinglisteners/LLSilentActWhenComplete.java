@@ -8,6 +8,9 @@ import com.paperlessquiz.MyApplication;
 import com.paperlessquiz.quiz.QuizDatabase;
 import com.paperlessquiz.webrequest.EventLogger;
 
+/**
+ * Loading listener that is silent unless something goes wrong
+ */
 public class LLSilentActWhenComplete implements LoadingListener {
 
     private Context context;
@@ -32,7 +35,7 @@ public class LLSilentActWhenComplete implements LoadingListener {
 
     @Override
     public void loadingError(String error, int callerID) {
-        MyApplication.logMessage(context,QuizDatabase.LOGLEVEL_ERROR, error);
+        MyApplication.logMessage(context,QuizDatabase.LOGLEVEL_ERROR, "Loading error - request ID" + callerID + ": " + errorMessage + " (" + error + ")");
         String displayError;
         if (errorMessage.equals("")){
             displayError = error;
@@ -42,5 +45,6 @@ public class LLSilentActWhenComplete implements LoadingListener {
             displayError=errorMessage;
         }
         Toast.makeText(context, displayError, Toast.LENGTH_LONG).show();
+
     }
 }

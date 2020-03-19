@@ -122,7 +122,10 @@ public class QuizDatabase {
     public static final int REQUEST_ID_GET_REMARKS = 15;
     //Submit requests
     public static final int REQUEST_ID_AUTHENTICATE = 100;
-    public static final int REQUEST_ID_SUBMITANSWER = 101;
+    //Submit answers have the id of the question that was answered
+    //public static final int REQUEST_ID_SUBMITANSWER = 101;
+    //Ids higher than this are assumed to contain a question ID
+    public static final int REQUEST_ID_LIMIT = 1000;
     public static final int REQUEST_ID_SETANSWERSSUBMITTED = 102;
     public static final int REQUEST_ID_UPDATEROUNDSTATUS = 103;
     public static final int REQUEST_ID_UPDATEMYSTATUS = 104;
@@ -141,9 +144,6 @@ public class QuizDatabase {
     public static final int REQUEST_ID_LOGMESSAGE = 117;
     public static final int REQUEST_ID_ADDUNITS = 118;
     public static final int REQUEST_ID_SETALLANSWERSTOFALSE = 119;
-
-    //Ids higher than this are assumed to contain a question ID
-    public static final int REQUEST_ID_LIMIT = 1000;
 
     //User types - these must match what is defined in the constants.php
     public static final int USERTYPE_TEAM = 0;
@@ -296,19 +296,10 @@ public class QuizDatabase {
     //Column Names used in AnswerStats
     public static final String COLNAME_NROFANSWERS="NrOfAnswers";
 
-    /*
-    //Helpfiles
-    public static final String HELPFILE_PARTICIPANT = "ParticipantHelp.pdf";
-    public static final String HELPFILE_CORRECTOR = "CorrectorHelp.pdf";
-    public static final String HELPFILE_QUIZMASTER = "QuizmasterHelp.pdf";
-    public static final String HELPFILE_RECEPTIONIST = "ReceptionistHelp.pdf";
-    public static final String HELPFILE_JUROR = "JurorHelp.pdf";
-    public static final String PDF_TO_DISPLAY = "pdfToDisplay";
-    public static final String TITLE_FOR_PDF_DISPLAY = "TitleForPDFDisplay";
-    public static final String GOOGLE_PDFVIEWER_URL = "https://docs.google.com/gview?embedded=true&url=";
-    */
-
     //Various other constants
+    //Dummy user - used to log error messages if no user yet logged in
+    public static final int DUMMY_USER_ID = 0;
+    public static final String DUMMY_USER_PSWD = "DUMMY";
     public static final String INTENT_EXTRANAME_IS_ORGANIZER = "isOrganizer";
     public static final String INTENT_EXTRANAME_ORDER_TO_EDIT = "orderToEdit";
     public static final String INTENT_EXTRANAME_HELPTYPE= "helpType";

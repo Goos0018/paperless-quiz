@@ -11,7 +11,7 @@ import com.paperlessquiz.quiz.QuizDatabase;
 import com.paperlessquiz.webrequest.EventLogger;
 
 /**
- * Same as ShowProgressOnly, but also calls an action in the calling activity when complete using interface LoadingActivity
+ * Show when loading starts and call an action in the calling activity when complete using interface LoadingActivity
  */
 public class LLShowProgressActWhenComplete implements LoadingListener {
 
@@ -46,11 +46,9 @@ public class LLShowProgressActWhenComplete implements LoadingListener {
 
     @Override
     public void loadingError(String error, int callerID) {
-        String team;
-        if (MyApplication.theQuiz.getThisUser() == null){team = "none";} else {team = MyApplication.theQuiz.getThisUser().getName();}
+        loading.dismiss();
         MyApplication.logMessage(context, QuizDatabase.LOGLEVEL_ERROR, "Loading error - request ID" + callerID + ": " + error);
         Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show();
-        loading.dismiss();
     }
 
 }

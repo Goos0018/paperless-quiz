@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * This class is used to populates a quiz from the SQL database
+ * This class is used to populate or update a quiz from the SQL database
  * TODO: split into loader and Getter class
  * Can probably be made abstract
  */
@@ -121,6 +121,7 @@ public class QuizLoader {
         loadRounds(dummy);
     }
 
+    //Load all the questions - except for the answers - for teams
     public void loadQuestions() {
         int idUser = thisQuiz.getThisUser().getIdUser();
         String userPassword = thisQuiz.getThisUser().getUserPassword();
@@ -144,6 +145,7 @@ public class QuizLoader {
                 context.getString(R.string.loadingerror), false));
     }
 
+    //Load answers for this team and the round given
     public void loadMyAnswers(int roundNr) {
         int idUser = thisQuiz.getThisUser().getIdUser();
         String userPassword = thisQuiz.getThisUser().getUserPassword();
@@ -156,12 +158,13 @@ public class QuizLoader {
                 context.getString(R.string.loadingerror), false));
     }
 
+    //Load all answers for this team - not used
     public void loadMyAnswers() {
         int dummy = 0;
         loadMyAnswers(dummy);
     }
 
-    //Again for the corrector
+    //Again for the corrector - load all answers for all teams
     public void loadAllAnswers() {
         int idUser = thisQuiz.getThisUser().getIdUser();
         String userPassword = thisQuiz.getThisUser().getUserPassword();
@@ -173,7 +176,8 @@ public class QuizLoader {
                 context.getString(R.string.loadingerror), false));
     }
 
-    //For the QuizMaster - load how many (non)empty/corredted answers there are for a round
+    //For the QuizMaster - load how many (non)empty/corrected answers there are for a round
+    //Statistic indicates which types of answers stats we are interested in
     public void loadAnswerStats(int roundNr, int statistic) {
         int idUser = thisQuiz.getThisUser().getIdUser();
         String userPassword = thisQuiz.getThisUser().getUserPassword();
@@ -202,11 +206,13 @@ public class QuizLoader {
                 context.getString(R.string.loadingerror), false));
     }
 
+    // Load all scores for the active user - not used
     public void loadScoresAndStandings() {
         int dummy = 0;
         loadScoresAndStandings(dummy);
     }
 
+    //Load the items that can be ordered
     public void loadOrderItems() {
         int idUser = thisQuiz.getThisUser().getIdUser();
         String userPassword = thisQuiz.getThisUser().getUserPassword();
@@ -218,8 +224,9 @@ public class QuizLoader {
                 context.getString(R.string.loadingerror), false));
     }
 
-    //Load ALL orders with status / category in a given comma separated list
-    // This will load all orders if the status resp. category is omitted
+    //Load ALL orders with status / category / users in a given comma separated list
+    //Used by bar responsible, barhelpers and users to retrieve the orders they are interested in
+    //If a parameter is blanc, no filtering will be done on that parameter
     public void loadAllOrders(String statuses, String categories, String users) {
         int idUser = thisQuiz.getThisUser().getIdUser();
         String userPassword = thisQuiz.getThisUser().getUserPassword();
@@ -243,10 +250,12 @@ public class QuizLoader {
                 context.getString(R.string.loadingerror), false));
     }
 
+    //Load all orders - not used
     public void loadAllOrders() {
         loadAllOrders("", "", "");
     }
 
+    //Load the details of a specific order
     public void loadOrderDetails(int idOrder) {
         int idUser = thisQuiz.getThisUser().getIdUser();
         String userPassword = thisQuiz.getThisUser().getUserPassword();
@@ -258,6 +267,7 @@ public class QuizLoader {
                 context.getString(R.string.loadingerror), false));
     }
 
+    //Load the helptopics for this user type
     public void loadHelpTopics(int helpType) {
         int idUser = thisQuiz.getThisUser().getIdUser();
         String userPassword = thisQuiz.getThisUser().getUserPassword();
@@ -270,6 +280,7 @@ public class QuizLoader {
                 context.getString(R.string.loadingerror), false));
     }
 
+    //Load remarks - for bar responsible and juror
     public void loadRemarks(int helpType, boolean loadAllMessages) {
         int idUser = thisQuiz.getThisUser().getIdUser();
         String userPassword = thisQuiz.getThisUser().getUserPassword();
@@ -285,6 +296,8 @@ public class QuizLoader {
                 context.getString(R.string.loadingerror), false));
     }
 
+    //METHODS USED TO PUT THE LOADED DATA IN THE QUIZ OBJECT
+
     //Get the items you can order and put them in the MyApplication itemsToOrderArray object
     public void loadOrderItemsIntoQuiz() {
         MyApplication.itemsToOrderArray = new ArrayList<>();
@@ -297,7 +310,7 @@ public class QuizLoader {
         }
     }
 
-    //Get all the users and put them into the Teams resp. Organizers array of the Quiz
+    //Put all the users into the Teams resp. Organizers arrays of the Quiz object
     public void loadUsersIntoQuiz() {
         try {
             for (int i = 0; i < getUsersRequest.getResultsList().size(); i++) {
@@ -326,7 +339,7 @@ public class QuizLoader {
         }
     }
 
-    //Get all the rounds and load them in the quiz
+    //Put all the rounds in the quiz object
     public void loadRoundsIntoQuiz() {
         try {
             for (int i = 0; i < getRoundsRequest.getResultsList().size(); i++) {
@@ -344,7 +357,7 @@ public class QuizLoader {
         }
     }
 
-    //Load all questions into the quiz
+    //Put all questions into the quiz object
     public void loadQuestionsIntoQuiz() {
         try {
             for (int i = 0; i < getQuestionsRequest.getResultsList().size(); i++) {
@@ -367,6 +380,7 @@ public class QuizLoader {
         }
     }
 
+    //Update the rounds of the quiz object
     //Assumes rounds are already loaded in the quiz, this just updates the relevant information
     public boolean updateRoundsIntoQuiz() {
         try {
@@ -378,7 +392,7 @@ public class QuizLoader {
             }
             return true;
         } catch (Exception e) {
-            //Toast.makeText(context, "Error updating rounds into quiz - please try again", Toast.LENGTH_LONG).show();
+            MyApplication.logMessage(context, QuizDatabase.LOGLEVEL_ERROR, "Error updating rounds into quiz (" + e.toString() + ")");
             return false;
         }
     }
@@ -398,7 +412,7 @@ public class QuizLoader {
                 }
             }
         } catch (Exception e) {
-            Toast.makeText(context, "Error updating users into quiz - please try again", Toast.LENGTH_LONG).show();
+            MyApplication.logMessage(context, QuizDatabase.LOGLEVEL_ERROR, "Error updating users into quiz (" + e.toString() + ")");
         }
     }
 
@@ -415,11 +429,11 @@ public class QuizLoader {
                 }
             }
         } catch (Exception e) {
-            Toast.makeText(context, "Error updating full questions into quiz - please try again", Toast.LENGTH_LONG).show();
+            MyApplication.logMessage(context, QuizDatabase.LOGLEVEL_ERROR, "Error updating full questions into quiz (" + e.toString() + ")");
         }
     }
 
-    //Make sure all answers are correctly initialized before calling this!
+    //Update answers with correction info - Make sure all answers are correctly initialized before calling this!
     public boolean updateAnswersIntoQuiz() {
         try {
             for (int i = 0; i < getAnswersRequest.getResultsList().size(); i++) {
@@ -428,11 +442,12 @@ public class QuizLoader {
             }
             return true;
         } catch (Exception e) {
-            //Toast.makeText(context, "Error updating answers into quiz - please try again", Toast.LENGTH_LONG).show();
+            MyApplication.logMessage(context, QuizDatabase.LOGLEVEL_ERROR, "Error updating answers into quiz (" + e.toString() + ")");
             return false;
         }
     }
 
+    //Put the results that were loaded (scores) into the quiz
     public boolean loadResultsIntoQuiz() {
         try {
             for (int i = 0; i < getResultsRequest.getResultsList().size(); i++) {
@@ -441,16 +456,17 @@ public class QuizLoader {
             }
             return true;
         } catch (Exception e) {
-            //Toast.makeText(context, "Error updating results into quiz - please try again", Toast.LENGTH_LONG).show();
+            MyApplication.logMessage(context, QuizDatabase.LOGLEVEL_ERROR, "Error updating results into quiz (" + e.toString() + ")");
             return false;
         }
 
     }
 
     /**
-     * Submit activities
+     * SUBMIT ACTIVITIES
      */
 
+    //Authenticate a user - php returns appropriate error when password is incorrect
     public void authenticateUser(int idUser, String userPassword) {
         String scriptParams = QuizDatabase.SCRIPT_AUTHENTICATE + QuizDatabase.PHP_STARTPARAM + QuizDatabase.PARAMNAME_IDUSER + idUser +
                 QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_USERPASSWORD + userPassword;
@@ -460,6 +476,8 @@ public class QuizLoader {
                 context.getString(R.string.loadingerror), false));
     }
 
+    //Submit an answer. If this was not successful, it will show in the interface by default.
+    //Error message will indicate the answer that failed in case another answer was submitted in the mean time
     public void submitAnswer(int idQuestion, String theAnswer) {
         int idUser = thisQuiz.getThisUser().getIdUser();
         String userPassword = thisQuiz.getThisUser().getUserPassword();
@@ -474,27 +492,13 @@ public class QuizLoader {
                 QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_USERPASSWORD + userPassword +
                 QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_IDQUESTION + idQuestion +
                 QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_THEANSWER + encodedAnswer;
-        //We supply the idQuestion as request ID because we need to be able to know which answer was submitted
-        //submitAnswerRequest = new HTTPSubmit(context, scriptParams, QuizDatabase.REQUEST_ID_SUBMITANSWER);
+        //We supply the idQuestion as request ID because we need to be able to know which question the answer was submitted
         submitAnswerRequest = new HTTPSubmit(context, scriptParams, idQuestion);
-        submitAnswerRequest.sendRequest(new LLSilentActWhenComplete(context, context.getString(R.string.quizloader_answernotregistered)));
+        submitAnswerRequest.sendRequest(new LLSilentActWhenComplete(context, context.getString(R.string.quizloader_answernotregistered) + theAnswer));
     }
 
-    /*
-    public void setAnswersSubmitted(int roundNr) {
-        int idUser = thisQuiz.getThisUser().getIdUser();
-        String userPassword = thisQuiz.getThisUser().getUserPassword();
-        int idRound = thisQuiz.getRound(roundNr).getIdRound();
-        String scriptParams = QuizDatabase.SCRIPT_SETANSWERSSUBMITTED + QuizDatabase.PHP_STARTPARAM + QuizDatabase.PARAMNAME_IDUSER + idUser +
-                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_USERPASSWORD + userPassword +
-                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_IDROUND + idRound;
-        submitAnswersSubmittedRequest = new HTTPSubmit(context, scriptParams, QuizDatabase.REQUEST_ID_SETANSWERSSUBMITTED);
-        submitAnswersSubmittedRequest.sendRequest(new LLShowProgressActWhenComplete(context, context.getString(R.string.loader_pleasewait),
-                context.getString(R.string.loader_updatingquiz),
-                context.getString(R.string.loadingerror), false));
-    }
-    */
-
+    //Update the round status - done by the quizmaster
+    //19/3/2020: no action done when complete but should not be silent!
     public void updateRoundStatus(int roundNr, int newStatus) {
         int idRound = thisQuiz.getRound(roundNr).getIdRound();
         int idUser = thisQuiz.getThisUser().getIdUser();
@@ -504,9 +508,12 @@ public class QuizLoader {
                 QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_IDROUND + idRound +
                 QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_NEWROUNDSTATUS + newStatus;
         updateRoundStatusRequest = new HTTPSubmit(context, scriptParams, QuizDatabase.REQUEST_ID_UPDATEROUNDSTATUS);
-        updateRoundStatusRequest.sendRequest(new LLSilent());
+        updateRoundStatusRequest.sendRequest(new LLShowProgressActWhenComplete(context, context.getString(R.string.loader_pleasewait),
+                context.getString(R.string.loader_updateroundstatus),
+                context.getString(R.string.loader_errorroundstatusnotupdated) + roundNr, false));
     }
 
+    //Update the status for the user to logged in - silently
     public void updateMyStatus(int newStatus) {
         int idUser = thisQuiz.getThisUser().getIdUser();
         String userPassword = thisQuiz.getThisUser().getUserPassword();
@@ -517,6 +524,9 @@ public class QuizLoader {
         updateUserStatusRequest.sendRequest(new LLSilent());
     }
 
+    //Update the status for the team given
+    //19/3/2020: no action done when complete but should not be silent!
+    //TODO: no progress but only error?
     public void updateTeam(int userNr, int newStatus, String newName) {
         int idUser = thisQuiz.getThisUser().getIdUser();
         String userPassword = thisQuiz.getThisUser().getUserPassword();
@@ -527,7 +537,9 @@ public class QuizLoader {
                 QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_NEWUSERSTATUS + newStatus +
                 QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_NEWUSERNAME + newName;
         updateUserStatusRequest = new HTTPSubmit(context, scriptParams, QuizDatabase.REQUEST_ID_UPDATETEAM);
-        updateUserStatusRequest.sendRequest(new LLSilent());
+        updateUserStatusRequest.sendRequest(new LLShowProgressActWhenComplete(context, context.getString(R.string.loader_pleasewait),
+                context.getString(R.string.loader_updateteamstatus),
+                context.getString(R.string.loader_errorteamstatusnotupdated) + userNr, false));
     }
 
     public void correctQuestion(int roundNr, int idQuestion, int isCorrect, String teamIds) {

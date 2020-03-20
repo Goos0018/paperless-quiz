@@ -8,6 +8,12 @@ import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.paperlessquiz.loadinglisteners.LLSilent;
 import com.paperlessquiz.quiz.QuizDatabase;
@@ -86,6 +92,23 @@ public class MyApplication extends Application {
             }
         });
     }
+
+    public static void showError(Activity activity, String message){
+        //Display test toast
+        LayoutInflater inflater = activity.getLayoutInflater();
+        View layout = inflater.inflate(R.layout.custom_toast,
+                (ViewGroup) activity.findViewById(R.id.custom_toast_container));
+
+        TextView text = (TextView) layout.findViewById(R.id.text);
+        text.setText(message);
+
+        Toast toast = new Toast(activity.getApplicationContext());
+        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+        toast.setDuration(Toast.LENGTH_LONG);
+        toast.setView(layout);
+        toast.show();
+    }
+
 
     //11/3/2020: updated to use HH:mm
     public static String getCurrentTime() {

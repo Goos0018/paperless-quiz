@@ -513,7 +513,8 @@ public class QuizLoader {
                 context.getString(R.string.loader_errorroundstatusnotupdated) + roundNr, false));
     }
 
-    //Update the status for the user to logged in - silently
+    //Update the status for the user to logged in
+    //Used by the teams in the background, so silently
     public void updateMyStatus(int newStatus) {
         int idUser = thisQuiz.getThisUser().getIdUser();
         String userPassword = thisQuiz.getThisUser().getUserPassword();
@@ -526,7 +527,6 @@ public class QuizLoader {
 
     //Update the status for the team given
     //19/3/2020: no action done when complete but should not be silent!
-    //TODO: no progress but only error?
     public void updateTeam(int userNr, int newStatus, String newName) {
         int idUser = thisQuiz.getThisUser().getIdUser();
         String userPassword = thisQuiz.getThisUser().getUserPassword();
@@ -542,6 +542,8 @@ public class QuizLoader {
                 context.getString(R.string.loader_errorteamstatusnotupdated) + userNr, false));
     }
 
+    //Used by the corrector and the juror to correct questions
+    //19/3/2020: Silent, but report if not done correctly
     public void correctQuestion(int roundNr, int idQuestion, int isCorrect, String teamIds) {
         int idUser = thisQuiz.getThisUser().getIdUser();
         String userPassword = thisQuiz.getThisUser().getUserPassword();
@@ -551,9 +553,11 @@ public class QuizLoader {
                 QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_ISCORRECT + isCorrect +
                 QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_IDTEAMS + teamIds;
         correctQuestionRequest = new HTTPSubmit(context, scriptParams, QuizDatabase.REQUEST_ID_CORRECTQUESTION);
-        correctQuestionRequest.sendRequest(new LLSilent());
+        correctQuestionRequest.sendRequest(new LLSilentActWhenComplete(context,context.getString(R.string.loader_errorcorrectionsnotsubmitted)));
     }
 
+    //Used by the corrector to correct questions
+    //19/3/2020: Silent, but report if not done correctly
     public void setAllAnswersToFalse(int idQuestion, int isCorrect) {
         int idUser = thisQuiz.getThisUser().getIdUser();
         String userPassword = thisQuiz.getThisUser().getUserPassword();
@@ -562,24 +566,8 @@ public class QuizLoader {
                 QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_IDQUESTION + idQuestion +
                 QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_ISCORRECT + isCorrect;
         setAllAnswersToFalseRequest = new HTTPSubmit(context, scriptParams, QuizDatabase.REQUEST_ID_SETALLANSWERSTOFALSE);
-        setAllAnswersToFalseRequest.sendRequest(new LLSilent());
+        setAllAnswersToFalseRequest.sendRequest(new LLSilentActWhenComplete(context,context.getString(R.string.loader_errorcorrectionsnotsubmitted)));
     }
-
-    //8/3/2020: Not needed anymore
-    /*
-    public void calculateStandings(int roundNr) {
-        int idUser = thisQuiz.getThisUser().getIdUser();
-        int idRound = thisQuiz.getRound(roundNr).getIdRound();
-        int idQuiz = thisQuiz.getListData().getIdQuiz();
-        String userPassword = thisQuiz.getThisUser().getUserPassword();
-        String scriptParams = QuizDatabase.SCRIPT_CALCULATESCORESFORROUND + QuizDatabase.PHP_STARTPARAM + QuizDatabase.PARAMNAME_IDUSER + idUser +
-                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_USERPASSWORD + userPassword +
-                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_IDQUIZ + idQuiz +
-                QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_IDROUND + idRound;
-        calculateStandingsRequest = new HTTPSubmit(context, scriptParams, QuizDatabase.REQUEST_ID_CALCULATESCORES);
-        calculateStandingsRequest.sendRequest(new LLSilent());
-    }
-    */
 
     //Create a new order for the user that is logged in
     public void submitOrder(String orderDetails, String time) {
@@ -599,6 +587,7 @@ public class QuizLoader {
     }
 
     //Update the order that is passed
+    //Used by the barresponsible
     public void updateExistingOrder(Order order, String time) {
         int idUser = thisQuiz.getThisUser().getIdUser();
         //int idQuiz = thisQuiz.getListData().getIdQuiz();
@@ -615,6 +604,7 @@ public class QuizLoader {
                 context.getString(R.string.loadingerror), false));
     }
 
+    //Barhelpers - update status of the order given
     public void updateOrderStatus(int idOrder, int newStatus, String time) {
         int idUser = thisQuiz.getThisUser().getIdUser();
         String userPassword = thisQuiz.getThisUser().getUserPassword();
@@ -629,6 +619,7 @@ public class QuizLoader {
                 context.getString(R.string.loadingerror), false));
     }
 
+    //Same as updating the order status, but script will check the order is not locked yet
     public void lockOrderForPrep(int idOrder, String time) {
         int idUser = thisQuiz.getThisUser().getIdUser();
         String userPassword = thisQuiz.getThisUser().getUserPassword();
@@ -656,7 +647,6 @@ public class QuizLoader {
                 context.getString(R.string.loadingerror), false));
     }
 
-
     //Create a pause event for this user
     public void createPauseEvent(int type, long timePaused) {
         int idUser = thisQuiz.getThisUser().getIdUser();
@@ -669,7 +659,7 @@ public class QuizLoader {
         createPauseEventRequest.sendRequest(new LLSilent());
     }
 
-    //Mark an item as sold out (or reset this)
+    //Mark an item as sold out (or reset this) - for the bar responsible
     public void setItemSoldOut(int itemToUpdate, int newItemStatus) {
         int idUser = thisQuiz.getThisUser().getIdUser();
         String userPassword = thisQuiz.getThisUser().getUserPassword();
@@ -681,7 +671,8 @@ public class QuizLoader {
         setSoldOutRequest.sendRequest(new LLSilent());
     }
 
-    //Submit a remark
+    //Submit a remark - for teams
+    //20/3: not silently
     public void submitRemark(int helpType, String remark) {
         int idUser = thisQuiz.getThisUser().getIdUser();
         String userPassword = thisQuiz.getThisUser().getUserPassword();
@@ -697,10 +688,11 @@ public class QuizLoader {
                 QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_HELPTYPE + helpType +
                 QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_HELPREMARK + encodedRemark;
         submitRemarkRequest = new HTTPSubmit(context, scriptParams, QuizDatabase.REQUEST_ID_SUBMITREMARK);
-        submitRemarkRequest.sendRequest(new LLSilent());
+        submitRemarkRequest.sendRequest(new LLSilentActWhenComplete(context,context.getString(R.string.loader_remarknotsubmitted) + remark));
     }
 
     //Answer a remark
+    //20/3: not silently
     public void answerRemark(int idRemark, String response) {
         int idUser = thisQuiz.getThisUser().getIdUser();
         String userPassword = thisQuiz.getThisUser().getUserPassword();
@@ -716,11 +708,12 @@ public class QuizLoader {
                 QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_HELPREMARKID + idRemark +
                 QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_HELPRESPONSE + encodedResponse;
         answerRemarkRequest = new HTTPSubmit(context, scriptParams, QuizDatabase.REQUEST_ID_ANSWERREMARK);
-        answerRemarkRequest.sendRequest(new LLSilent());
+        answerRemarkRequest.sendRequest(new LLSilentActWhenComplete(context,context.getString(R.string.loader_responsenotsubmitted) + response));
     }
 
 
-    //ncrease the number of available units for an orderitem
+    //Increase the number of available units for an orderitem
+    //20/3: not silently
     public void addUnits(int itemToUpdate, int extraUnits) {
         int idUser = thisQuiz.getThisUser().getIdUser();
         String userPassword = thisQuiz.getThisUser().getUserPassword();
@@ -729,7 +722,7 @@ public class QuizLoader {
                 QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_ITEMTOUPDATE + itemToUpdate +
                 QuizDatabase.PHP_PARAMCONCATENATOR + QuizDatabase.PARAMNAME_EXTRAUNITS + extraUnits;
         addUnitsRequest = new HTTPSubmit(context, scriptParams, QuizDatabase.REQUEST_ID_ADDUNITS);
-        addUnitsRequest.sendRequest(new LLSilent());
+        addUnitsRequest.sendRequest(new LLSilentActWhenComplete(context,context.getString(R.string.loader_itemunitsnotupdated) + itemToUpdate));
     }
 }
 

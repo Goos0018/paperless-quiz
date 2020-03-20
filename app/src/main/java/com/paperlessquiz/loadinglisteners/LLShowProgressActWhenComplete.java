@@ -1,5 +1,6 @@
 package com.paperlessquiz.loadinglisteners;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.widget.Toast;
@@ -48,7 +49,8 @@ public class LLShowProgressActWhenComplete implements LoadingListener {
     public void loadingError(String error, int callerID) {
         loading.dismiss();
         MyApplication.logMessage(context, QuizDatabase.LOGLEVEL_ERROR, "Loading error - request ID" + callerID + ": " + error);
-        Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show();
+        MyApplication.showError((Activity) context, errorMessage);
+        //Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show();
     }
 
 }

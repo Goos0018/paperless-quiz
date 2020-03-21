@@ -67,9 +67,9 @@
     <string name="loader_updateroundstatus">Aanpassen ronde status</string>
     <string name="loader_errorroundstatusnotupdated">OPGELET: ronde status niet correct aangepast voor ronde</string>
     <string name="loader_updateteamstatus">Aanpassen team status</string>
-    <string name="loader_errorteamstatusnotupdated">OPGELET: status niet correct aangepast voor team </string>
+    <string name="loader_errorteamstatusnotupdated">OPGELET: status niet correct aangepast voor team - ververs je scherm om de juiste status te zien</string>
     <string name="loader_errorcorrectionsnotsubmitted">Opgelet: je verbeteringen werden niet correct geregistreerd. Refresh je scherm en controleer opnieuw!</string>
     <string name="loader_remarknotsubmitted">Opgelet: deze opmerking werd niet correct geregistreerd - probeer het opnieuw: </string>
     <string name="loader_responsenotsubmitted">Opgelet: dit antwoord werd niet correct geregistreerd - probeer het opnieuw: </string>
-    <string name="loader_itemunitsnotupdated">Opgelet: het aantal units werd niet correctge-update voor dit item - probeer het opnieuw: </string>
+    <string name="loader_itemunitsnotupdated">Opgelet: het aantal units werd niet correct ge-update voor dit item - probeer het opnieuw: </string>
 </resources>

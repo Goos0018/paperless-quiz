@@ -124,7 +124,8 @@ public class ShowOrderItemsAdapter extends RecyclerView.Adapter<ShowOrderItemsAd
             public void onClick(View view) {
                 final int position = view.getId();
                 boolean itemSoldOut = orderItems.get(i).isItemSoldOut();
-                if (!itemSoldOut) {
+                //Barresponsible can modify even if an item is sold out
+                if ((!itemSoldOut) | MyApplication.theQuiz.getThisUser().getUserType() == QuizDatabase.USERTYPE_BARRESPONSIBLE) {
                     int itemId = orderItems.get(i).getIdOrderItem();
                     int itemsOrdered = theOrder.getAmountOrderedForItem(itemId);
                     if (itemsOrdered > 0) {
@@ -143,7 +144,8 @@ public class ShowOrderItemsAdapter extends RecyclerView.Adapter<ShowOrderItemsAd
             public void onClick(View view) {
                 final int position = view.getId();
                 boolean itemSoldOut = orderItems.get(i).isItemSoldOut();
-                if (!itemSoldOut) {
+                //Barresponsible can modify even if an item is sold out
+                if ((!itemSoldOut) | MyApplication.theQuiz.getThisUser().getUserType() == QuizDatabase.USERTYPE_BARRESPONSIBLE) {
                     int itemId = orderItems.get(i).getIdOrderItem();
                     String cur = tvSaldoAfterThis.getText().toString();
                     int curSaldo = (int) Integer.valueOf(cur);

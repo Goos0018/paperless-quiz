@@ -71,14 +71,22 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
             case QuizDatabase.REQUEST_ID_SETANSWERSSUBMITTED:
                 answersSubmitted = true;
                 break;
+            case QuizDatabase.REQUEST_ID_SUBMITREMARK:
+                //Nothing to do here
+                break;
             //This is the id of a question for which an answer was submitted
             default:
                 //Determine the round nr and question number from the id
-                int questionNr = (requestID % QuizDatabase.CALC_QUESTION_FACTOR);
-                int roundNr = ((requestID / QuizDatabase.CALC_QUESTION_FACTOR) % QuizDatabase.CALC_ROUND_FACTOR);
-                //Set the submitted status to true
-                thisQuiz.setAnswerForTeamSubmitted(roundNr, questionNr, thisTeamNr);
-                refreshAnswers();
+                //Check that this is indeed a question ID
+                if (requestID > QuizDatabase.REQUEST_ID_LIMIT) {
+                    int questionNr = (requestID % QuizDatabase.CALC_QUESTION_FACTOR);
+                    int roundNr = ((requestID / QuizDatabase.CALC_QUESTION_FACTOR) % QuizDatabase.CALC_ROUND_FACTOR);
+                    if (quizLoader.submitAnswerRequest.isRequestOK()) {
+                        //Set the submitted status to true
+                        thisQuiz.setAnswerForTeamSubmitted(roundNr, questionNr, thisTeamNr);
+                        refreshAnswers();
+                    }
+                }
 
         }
         //If everything is properly loaded, we can start populating the central Quiz object
@@ -135,8 +143,11 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
         //Update 14/3/2020: check on status of the old round instead of visibility of something
         if (thisQuiz.getRound(oldRoundNr).getRoundStatus() == QuizDatabase.ROUNDSTATUS_OPENFORANSWERS) {
             //Update the answer for the previous round if it was changed - just in case the user entered an answer and then navigate to another round directly
-            String newAnswer = etAnswer.getText().toString().trim();
-            updateAnswerIfChanged(newAnswer,oldRoundNr, questionSpinner.getPosition(), thisTeamNr);
+            //If oldRoundNr = roundNr, we don't want to do this - this is when we initialize things
+            if (!(oldRoundNr == 1 & roundNr ==1)) {
+                String newAnswer = etAnswer.getText().toString().trim();
+                updateAnswerIfChanged(newAnswer, oldRoundNr, questionSpinner.getPosition(), thisTeamNr);
+            }
             /*
             if (!(oldAnswer.equals(newAnswer))) {
                 int questionID = thisQuiz.getQuestionID(oldRoundNr, questionSpinner.getPosition());
@@ -177,10 +188,11 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
     //This is called from the Question spinner when it is changed
     public void onSpinnerChange(int oldPos, int newPos) {
         //Update the answer if it was changed
-
-        //String oldAnswer = thisQuiz.getAnswerForTeam(roundSpinner.getPosition(), oldPos, thisTeamNr).getTheAnswer();
-        String newAnswer = etAnswer.getText().toString().trim();
-        updateAnswerIfChanged(newAnswer,roundSpinner.getPosition(), oldPos, thisTeamNr);
+        //If oldPos = newPos = 1, then we don't need to do this?
+        if (!(oldPos == 1 & newPos ==1)) {
+            String newAnswer = etAnswer.getText().toString().trim();
+            updateAnswerIfChanged(newAnswer, roundSpinner.getPosition(), oldPos, thisTeamNr);
+        }
         /*
         //If this is a normal question, convert the answer to uppercase
         if (thisQuiz.getQuestion(roundSpinner.getPosition(), oldPos).getQuestionType() == QuizDatabase.QUESTIONTYPE_NORMAL) {
@@ -208,7 +220,7 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
             etAnswer.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
         }
         //Set the value of the answer for the new question to what we already have in the Quiz object
-        //If this value  = "-", then set the value to a space
+        //If this value  = "-", then set the value to a blanc
         if (thisQuiz.getAnswerForTeam(roundSpinner.getPosition(), newPos, thisTeamNr).getTheAnswer().equals(QuizDatabase.BLANC_ANSWER)) {
             etAnswer.setText("");
         } else {
@@ -221,7 +233,7 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
     }
 
     //This method updates the answer to question questionNr of roundn roundNr for team teamNr if it was changed
-    public void updateAnswerIfChanged(String newAnswer, int roundNr, int questionNr, int teamNr){
+    public void updateAnswerIfChanged(String newAnswer, int roundNr, int questionNr, int teamNr) {
         String oldAnswer = thisQuiz.getAnswerForTeam(roundNr, questionNr, teamNr).getTheAnswer();
         //If this is a normal question, convert the answer to uppercase
         if (thisQuiz.getQuestion(roundNr, questionNr).getQuestionType() == QuizDatabase.QUESTIONTYPE_NORMAL) {

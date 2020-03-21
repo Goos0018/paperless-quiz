@@ -60,8 +60,9 @@ public class B_Login extends AppCompatActivity implements LoadingActivity {
                     quizLoader.loadScoresAndStandings(1);
                     //Do the rest when all of these requests are complete
                 } else {
-                    //Authentication failed
-                    Toast.makeText(B_Login.this, B_Login.this.getString(R.string.main_wrongpassword), Toast.LENGTH_SHORT).show();
+                    //Authentication failed - error already shown by the submit activity
+                    //MyApplication.showError(this, B_Login.this.getString(R.string.main_wrongpassword));
+                    //Toast.makeText(B_Login.this, B_Login.this.getString(R.string.main_wrongpassword), Toast.LENGTH_SHORT).show();
                 }
                 break;
             case QuizDatabase.REQUEST_ID_GET_ROUNDS:

@@ -1,5 +1,6 @@
 package com.paperlessquiz.webrequest;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.widget.TextView;
@@ -13,6 +14,7 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.paperlessquiz.MyApplication;
 import com.paperlessquiz.loadinglisteners.LoadingListener;
 import com.paperlessquiz.quiz.QuizDatabase;
 
@@ -53,10 +55,12 @@ public class HTTPSubmit {
                             explanation = jo.getString(FIELDNAME_DATA);
                             if (!(resultOK == 1)) {
                                 requestOK = false;
-                                Toast toast = Toast.makeText(context, "Error: " + explanation, Toast.LENGTH_LONG);
-                                TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                                v.setBackgroundColor(Color.RED);
-                                toast.show();
+                                MyApplication.showError((Activity)context,"Fout: " + explanation);
+                                //21/3: do show a toast here, should be handled in the activity
+                                //Toast toast = Toast.makeText(context, "Error: " + explanation, Toast.LENGTH_LONG);
+                                //TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                                //v.setBackgroundColor(Color.RED);
+                                //toast.show();
                             } else {
                                 requestOK = true;
                             }

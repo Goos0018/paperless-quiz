@@ -36,6 +36,13 @@
             android:layout_marginRight="@dimen/margin_huge"
             android:orientation="vertical">
 
+            <ImageView
+                android:id="@+id/ivQuestionImage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/answer_not_submitted"
+                tools:visibility="visible" />
+
             <EditText
                 android:id="@+id/etAnswer"
                 android:layout_width="match_parent"

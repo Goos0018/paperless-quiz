@@ -78,53 +78,6 @@ public class A_SelectRole extends AppCompatActivity implements LoadingActivity {
         //Load the users from the Quiz
         quizLoader = new QuizLoader(this);
         quizLoader.loadUsers();
-        //Example to be used to display question images
-        ivQuizLogo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Dialog builder = new Dialog(A_SelectRole.this);
-                builder.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                builder.getWindow().setBackgroundDrawable(
-                        new ColorDrawable(android.graphics.Color.TRANSPARENT));
-                builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                    @Override
-                    public void onDismiss(DialogInterface dialogInterface) {
-                        //nothing;
-                    }
-                });
-                int a = view.getId();
-                /*if (R.id.go_pro == a) {
-                    uri = Uri.parse("android.resource://" + getPackageName() + "/drawable/pro");    //path of image
-                } else if (R.id.img_View == a) {
-                    uri = Uri.parse("android.resource://" + getPackageName() + "/drawable/profile"); //path of image
-                }
-                */
-                ImageView imageView = new ImageView(A_SelectRole.this);
-                if (URL.equals("")) {
-                    imageView.setImageResource(R.mipmap.placeholder);
-                } else {
-                    Picasso.with(A_SelectRole.this)
-                            .load("https://paperlessquiz.be/quizimages/2/20101.PNG")
-                            .resize(10*Quiz.TARGET_WIDTH, 10*Quiz.TARGET_HEIGHT)
-                            //.centerCrop()
-                            //.fit()
-                            .centerInside()
-                            .into(imageView);
-                }
-                //imageView.setImageURI(uri);                //set the image in dialog popup
-                //below code fullfil the requirement of xml layout file for dialoge popup
-                imageView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        builder.cancel();
-                    }
-                });
-                builder.addContentView(imageView, new RelativeLayout.LayoutParams(
-                        ViewGroup.LayoutParams.WRAP_CONTENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT));
-                builder.show();
-            }
-        });
         //Login as participant
         btnParticipant.setOnClickListener(new View.OnClickListener() {
             @Override

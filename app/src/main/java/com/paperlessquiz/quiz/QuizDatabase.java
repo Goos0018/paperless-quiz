@@ -159,6 +159,7 @@ public class QuizDatabase {
     public static final int QUESTIONTYPE_SCHIFTING = 1;
     public static final int QUESTIONTYPE_CASESENSITIVE = 2;
     public static final int QUESTIONTYPE_NUMERIC = 3;
+    public static final int QUESTIONTYPE_HASIMAGE = 4;
     //User Statuses  - these must match what is defined in the constants.php
     public static final int USERSTATUS_NOTPRESENT = 0;
     public static final int USERSTATUS_PRESENTNOTLOGGEDIN = 1;
@@ -320,6 +321,9 @@ public class QuizDatabase {
     public static final int CALC_QUESTION_FACTOR = 100;
     //Default string for a blanc answer
     public static final String BLANC_ANSWER = "-";
+    //Root URL for question images
+    public static final String QUESTIONIMAGES_ROOT="https://paperlessquiz.be/quizimages/";
+    public static final String QUESTIONIMAGES_EXTENTION = ".jpg";
     //Log levels
     public static final int LOGLEVEL_ERROR = 0;
     public static final int LOGLEVEL_WARNING = 2;

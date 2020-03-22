@@ -1,7 +1,10 @@
 package com.paperlessquiz;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,20 +13,25 @@ import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.paperlessquiz.adapters.DisplayAnswersAdapter;
+import com.paperlessquiz.quiz.Quiz;
 import com.paperlessquiz.webrequest.EventLogger;
 import com.paperlessquiz.loadinglisteners.LoadingActivity;
 import com.paperlessquiz.quiz.QuizDatabase;
 import com.paperlessquiz.quiz.QuizLoader;
 import com.paperlessquiz.quiz.Round;
 import com.paperlessquiz.users.User;
+import com.squareup.picasso.Picasso;
 
 import java.util.Date;
 
@@ -45,7 +53,7 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
     FragExplainRoundStatus explainRoundStatus;
     TextView tvDisplayRoundResults;
     EditText etAnswer;
-    ImageView ivChangeTextSize;
+    ImageView ivChangeTextSize, ivQuestionImage;
     LinearLayout displayAnswersLayout, editAnswerLayout;
     RecyclerView rvDisplayAnswers;
     DisplayAnswersAdapter displayAnswersAdapter;
@@ -144,7 +152,7 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
         if (thisQuiz.getRound(oldRoundNr).getRoundStatus() == QuizDatabase.ROUNDSTATUS_OPENFORANSWERS) {
             //Update the answer for the previous round if it was changed - just in case the user entered an answer and then navigate to another round directly
             //If oldRoundNr = roundNr, we don't want to do this - this is when we initialize things
-            if (!(oldRoundNr == 1 & roundNr ==1)) {
+            if (!(oldRoundNr == 1 & roundNr == 1)) {
                 String newAnswer = etAnswer.getText().toString().trim();
                 updateAnswerIfChanged(newAnswer, oldRoundNr, questionSpinner.getPosition(), thisTeamNr);
             }
@@ -189,7 +197,7 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
     public void onSpinnerChange(int oldPos, int newPos) {
         //Update the answer if it was changed
         //If oldPos = newPos = 1, then we don't need to do this?
-        if (!(oldPos == 1 & newPos ==1)) {
+        if (!(oldPos == 1 & newPos == 1)) {
             String newAnswer = etAnswer.getText().toString().trim();
             updateAnswerIfChanged(newAnswer, roundSpinner.getPosition(), oldPos, thisTeamNr);
         }
@@ -230,13 +238,14 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(etAnswer.getWindowToken(), 0);
         refreshAnswers(); //refresh the field that shows all answers already given for this round
+        showImageLink();
     }
 
     //This method updates the answer to question questionNr of roundn roundNr for team teamNr if it was changed
     public void updateAnswerIfChanged(String newAnswer, int roundNr, int questionNr, int teamNr) {
         String oldAnswer = thisQuiz.getAnswerForTeam(roundNr, questionNr, teamNr).getTheAnswer();
-        //If this is a normal question, convert the answer to uppercase
-        if (thisQuiz.getQuestion(roundNr, questionNr).getQuestionType() == QuizDatabase.QUESTIONTYPE_NORMAL) {
+        //If this is not a case-sensitive question, convert the answer to uppercase
+        if (!(thisQuiz.getQuestion(roundNr, questionNr).getQuestionType() == QuizDatabase.QUESTIONTYPE_CASESENSITIVE)) {
             newAnswer = newAnswer.toUpperCase();
         }
         //If the new answer is blanc, replace it by a "-"
@@ -277,6 +286,17 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
         rvDisplayAnswers.setAdapter(displayAnswersAdapter);
     }
 
+    private void showImageLink(){
+        //Show the imageView icon if the question is the right type
+        if (thisQuiz.getQuestion(roundSpinner.getPosition(),questionSpinner.getPosition()).getQuestionType() == QuizDatabase.QUESTIONTYPE_HASIMAGE) {
+            ivQuestionImage.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            ivQuestionImage.setVisibility(View.GONE);
+        }
+    }
+
     private void refreshDisplayFragments() {
         //Refresh what is in the display based on the current values of roundSpinner position
         Round thisRound = thisQuiz.getRound(roundSpinner.getPosition());
@@ -297,6 +317,8 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
                 displayAnswersLayout.setVisibility(View.VISIBLE);
                 //etAnswer is by default invisible to avoid seeing the keyboard when you shouldn't
                 etAnswer.setVisibility(View.VISIBLE);
+                //Show the imageView icon if the question is the right type
+                showImageLink();
                 //Initialize etAnswer with the correct answer
                 if (thisQuiz.getAnswerForTeam(roundSpinner.getPosition(), questionSpinner.getPosition(), thisTeamNr).getTheAnswer().equals(QuizDatabase.BLANC_ANSWER)) {
                     etAnswer.setText("");
@@ -368,25 +390,87 @@ public class C_ParticipantHome extends MyActivity implements LoadingActivity, Fr
         tvDisplayRoundResults = findViewById(R.id.tvDisplayRound);
         etAnswer = findViewById(R.id.etAnswer);
         ivChangeTextSize = findViewById(R.id.ivChangeTextSize);
-        ivChangeTextSize.setOnClickListener(new View.OnClickListener() {
+        ivQuestionImage = findViewById(R.id.ivQuestionImage);
+        ivQuestionImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                displayAnswersAdapter.toggleTextSize();
+                Dialog builder = new Dialog(C_ParticipantHome.this);
+                builder.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                builder.getWindow().setBackgroundDrawable(
+                        new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialogInterface) {
+                        //nothing;
+                    }
+                });
+                int a = view.getId();
+                /*if (R.id.go_pro == a) {
+                    uri = Uri.parse("android.resource://" + getPackageName() + "/drawable/pro");    //path of image
+                } else if (R.id.img_View == a) {
+                    uri = Uri.parse("android.resource://" + getPackageName() + "/drawable/profile"); //path of image
+                }
+                */
+                ImageView imageView = new ImageView(C_ParticipantHome.this);
+                String thisQuestionImageURL = QuizDatabase.QUESTIONIMAGES_ROOT + thisQuiz.getListData().getIdQuiz() + "/" +
+                        thisQuiz.getQuestion(roundSpinner.getPosition(),questionSpinner.getPosition()).getIdQuestion() + QuizDatabase.QUESTIONIMAGES_EXTENTION;
+                if (thisQuestionImageURL.equals("")) {
+                    imageView.setImageResource(R.mipmap.placeholder);
+                } else {
+                    Picasso.with(C_ParticipantHome.this)
+                            .load(thisQuestionImageURL)
+                            .resize(10 * Quiz.TARGET_WIDTH, 10 * Quiz.TARGET_HEIGHT)
+                            //.centerCrop()
+                            //.fit()
+                            .centerInside()
+                            .into(imageView);
+                }
+                //imageView.setImageURI(uri);                //set the image in dialog popup
+                //below code fullfil the requirement of xml layout file for dialoge popup
+                imageView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        builder.cancel();
+                    }
+                });
+                builder.addContentView(imageView, new RelativeLayout.LayoutParams(
+                        ViewGroup.LayoutParams.WRAP_CONTENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT));
+                builder.show();
             }
-        });
-        //btnSubmit = findViewById(R.id.btnSubmit);
-        rvDisplayAnswers = findViewById(R.id.rvDisplayAnswers);
-        rvDisplayAnswers.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(this);
-        rvDisplayAnswers.setLayoutManager(layoutManager);
-        //Initialize the adapter
-        displayAnswersAdapter = new DisplayAnswersAdapter(this, thisQuiz.getRound(1).getQuestions(), thisTeamNr);
-        quizLoader = new QuizLoader(C_ParticipantHome.this);
-        thisTeam = thisQuiz.getThisUser();
-        quizLoader.updateMyStatus(QuizDatabase.USERSTATUS_PRESENTLOGGEDIN);
-        //When the RoundSpinner fragment is attached, it will call the onRoundChange method which will do the rest here.
+    });
+        ivChangeTextSize.setOnClickListener(new View.OnClickListener()
 
+    {
+        @Override
+        public void onClick (View view){
+        displayAnswersAdapter.toggleTextSize();
     }
+    });
+    //btnSubmit = findViewById(R.id.btnSubmit);
+    rvDisplayAnswers =
+
+    findViewById(R.id.rvDisplayAnswers);
+        rvDisplayAnswers.setHasFixedSize(true);
+    layoutManager =new
+
+    LinearLayoutManager(this);
+        rvDisplayAnswers.setLayoutManager(layoutManager);
+    //Initialize the adapter
+    displayAnswersAdapter =new
+
+    DisplayAnswersAdapter(this,thisQuiz.getRound(1).
+
+    getQuestions(),thisTeamNr);
+    quizLoader =new
+
+    QuizLoader(C_ParticipantHome .this);
+
+    thisTeam =thisQuiz.getThisUser();
+        quizLoader.updateMyStatus(QuizDatabase.USERSTATUS_PRESENTLOGGEDIN);
+    //When the RoundSpinner fragment is attached, it will call the onRoundChange method which will do the rest here.
+
+}
 
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {

@@ -1,11 +1,19 @@
 package com.paperlessquiz;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.paperlessquiz.loadinglisteners.LoadingActivity;
@@ -70,16 +78,51 @@ public class A_SelectRole extends AppCompatActivity implements LoadingActivity {
         //Load the users from the Quiz
         quizLoader = new QuizLoader(this);
         quizLoader.loadUsers();
-        //Access the Generator screen by tapping the logo 5 times
+        //Example to be used to display question images
         ivQuizLogo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                counter++;
-                if (counter == 5) {
-                    counter = 0;
-                    //Intent intentG = new Intent(A_SelectRole.this, A__GenerateQuiz.class);
-                    //startActivity(intentG);
+                Dialog builder = new Dialog(A_SelectRole.this);
+                builder.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                builder.getWindow().setBackgroundDrawable(
+                        new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialogInterface) {
+                        //nothing;
+                    }
+                });
+                int a = view.getId();
+                /*if (R.id.go_pro == a) {
+                    uri = Uri.parse("android.resource://" + getPackageName() + "/drawable/pro");    //path of image
+                } else if (R.id.img_View == a) {
+                    uri = Uri.parse("android.resource://" + getPackageName() + "/drawable/profile"); //path of image
                 }
+                */
+                ImageView imageView = new ImageView(A_SelectRole.this);
+                if (URL.equals("")) {
+                    imageView.setImageResource(R.mipmap.placeholder);
+                } else {
+                    Picasso.with(A_SelectRole.this)
+                            .load("https://paperlessquiz.be/quizimages/2/20101.PNG")
+                            .resize(10*Quiz.TARGET_WIDTH, 10*Quiz.TARGET_HEIGHT)
+                            //.centerCrop()
+                            //.fit()
+                            .centerInside()
+                            .into(imageView);
+                }
+                //imageView.setImageURI(uri);                //set the image in dialog popup
+                //below code fullfil the requirement of xml layout file for dialoge popup
+                imageView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        builder.cancel();
+                    }
+                });
+                builder.addContentView(imageView, new RelativeLayout.LayoutParams(
+                        ViewGroup.LayoutParams.WRAP_CONTENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT));
+                builder.show();
             }
         });
         //Login as participant
@@ -100,5 +143,6 @@ public class A_SelectRole extends AppCompatActivity implements LoadingActivity {
                 startActivity(intent);
             }
         });
+
     }
 }
